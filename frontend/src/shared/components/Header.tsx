@@ -24,14 +24,14 @@ export function Header() {
     return (
         <div className="header container mx-auto flex flex-row justify-between my-10">
             <div className="header_left">
-                <img className='size-24' src={logo} alt="Logo" />
+                <img className="size-24" src={logo} alt="Logo" />
             </div>
             <nav className="header_right flex flex-row my-auto">
                 <ul className="flex flex-row">
                     <li className="me-5 p-1">
                         <NavLink 
                             to="/" 
-                            className={({ isActive }) => isActive ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'} 
+                            className={({ isActive }) => isActive || activeLink === 'inicio' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'} 
                             onClick={() => handleLinkClick('inicio')}
                         >
                             Inicio
@@ -40,7 +40,7 @@ export function Header() {
                     <li className="mx-5 p-1">
                         <NavLink 
                             to="/nosotros" 
-                            className={({ isActive }) => isActive ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'} 
+                            className={({ isActive }) => isActive || activeLink === 'nosotros' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'} 
                             onClick={() => handleLinkClick('nosotros')}
                         >
                             Nosotros
@@ -49,7 +49,7 @@ export function Header() {
                     <li className="mx-5 p-1">
                         <NavLink 
                             to="/noticias" 
-                            className={({ isActive }) => isActive ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'} 
+                            className={({ isActive }) => isActive || activeLink === 'noticias' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'} 
                             onClick={() => handleLinkClick('noticias')}
                         >
                             Noticias
@@ -58,14 +58,14 @@ export function Header() {
                     <li className="mx-5 p-1">
                         <NavLink 
                             to="/contactanos" 
-                            className={({ isActive }) => isActive ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'} 
+                            className={({ isActive }) => isActive || activeLink === 'contactanos' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'} 
                             onClick={() => handleLinkClick('contactanos')}
                         >
                             Contáctanos
                         </NavLink>
                     </li>
                 </ul>
-                <button className='ms-10 px-3 rounded-lg bg-[#00330a] text-[#ffffff]'>
+                <button className="ms-10 px-3 rounded-lg bg-[#00330a] text-[#ffffff]">
                     Consultar habilidad
                 </button>
             </nav>
