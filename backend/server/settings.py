@@ -39,8 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Aplicaciones
-    'aplicaciones.publicacion',
     'aplicaciones.colegiado',
+    'aplicaciones.contenido',
+    'aplicaciones.pago',
+    'aplicaciones.publicacion',
 
     # Aplicaciones de terceros
     'rest_framework',
