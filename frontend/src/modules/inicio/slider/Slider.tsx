@@ -2,7 +2,7 @@ import './Slider.css'
 import logo_corlad_blanco from '../../../assets/corlad_logo.png'
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css'
-import dataGallery from './dataGallery.tsx'
+import { dataGallery } from './dataGallery.tsx'
 
 export default function Slider() {
     return (

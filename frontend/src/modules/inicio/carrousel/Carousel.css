@@ -1,0 +1,14 @@
+.carousel-container {
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  .slick-slide img {
+    width: 100%;
+    padding: 10px;
+  }
+  
+  .slick-prev:before,
+  .slick-next:before {
+    color: black;
+  }

@@ -7,6 +7,10 @@ import mail from '../../assets/mail.svg'
 import Slider from "./slider/Slider";
 import Card from "../shared/Card";
 import { Link } from "react-router-dom";
+import 'react-image-gallery/styles/css/image-gallery.css'
+import Carrousel from "./carrousel/Carousel";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export function Inicio() {
     return (
@@ -38,7 +42,7 @@ export function Inicio() {
                                 <p className="text-5xl font-extrabold text-center">12+</p>
                                 <p className="text-[#a67102] text-center">Convenios institucionales</p>
                             </div>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col me-7">
                                 <p className="text-5xl font-extrabold text-center">10</p>
                                 <p className="text-[#a67102] text-center">Años sirviendo</p>
                             </div>
@@ -96,7 +100,12 @@ export function Inicio() {
                 </div>
 
                 {/*Nuestros aliados*/}
+                <div className="flex flex-col items-center mx-auto">
+                    <h3 className="font-extrabold text-center text-4xl text-[#a67102] mb-24">NUESTROS ALIADOS</h3>
+                    <Carrousel/>
+                </div>
 
+                
 
                 {/*Noticias*/}
                 <div className="flex flex-col items-center my-24 mx-auto">
@@ -104,7 +113,7 @@ export function Inicio() {
                     <div className="flex flex-wrap space-x-14 mb-12">
                         <Card imageSource={entradas} imageAlt="" cardTitle="Lanzamiento de entradas - Coandino" cardText="asdasd" cardUrl="" />
                         <Card imageSource={entradas} imageAlt="" cardTitle="Lanzamiento de entradas - Coandino" cardText="Esta es la descripcion de la carta. Esta es la descripcion de la carta. Esta es la descripcion de la carta" cardUrl="" />
-                        <Card imageSource={entradas} imageAlt="" cardTitle="Lanzamiento de entradas - Coandino" cardText="asdasd" cardUrl="" />          
+                        <Card imageSource={entradas} imageAlt="" cardTitle="Lanzamiento de entradas - Coandino" cardText="asdasd" cardUrl="" />
                     </div>
                     <Link to={'/noticias'} className="font-extrabold bg-[#a67102] text-white px-8 py-1 rounded-lg">Ver Más</Link>
                 </div>
