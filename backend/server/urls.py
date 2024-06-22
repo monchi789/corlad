@@ -22,7 +22,9 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('gestion-colegiados/', include('aplicaciones.colegiado.urls'))
+    path('gestion-colegiados/', include('aplicaciones.colegiado.urls')),
+    path('gestion-pagos/', include('aplicaciones.pago.urls')),
+    path('gestion-publicaciones/', include('aplicaciones.publicacion.urls'))
 ]
 
 # Servir imagenes staticas

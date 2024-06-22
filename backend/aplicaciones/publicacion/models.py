@@ -1,7 +1,7 @@
 from django.db import models
 from functions.validators import validar_espacio
 from django.core.validators import FileExtensionValidator
-
+from tinymce.models import HTMLField
 
 # Create your models here.
 class Categoria(models.Model):
@@ -13,7 +13,7 @@ class Categoria(models.Model):
 
 class Publicacion(models.Model):
     titulo = models.CharField(max_length=250, blank=True, null=False, validators=[validar_espacio])
-    contenido = models.TextField(blank=True, null=False, default='')
+    contenido = HTMLField()
     fecha_publicacion = models.DateField()
     imagen_publicacion = models.ImageField(upload_to='publicaciones/', blank=True, null=False)
     documento = models.FileField(upload_to='documentos/', validators=[FileExtensionValidator(allowed_extensions=['pdf'])],  default='default_value_for_documento')

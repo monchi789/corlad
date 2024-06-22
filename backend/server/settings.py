@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     # Aplicaciones de terceros
     'rest_framework',
+    'tinymce',
 ]
 
 MIDDLEWARE = [
@@ -135,6 +136,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Images
+# # Images
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
