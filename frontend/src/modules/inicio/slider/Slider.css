@@ -22,15 +22,3 @@
     width: 100%;
 }
 
-.slider-title {
-    color: white;
-    font-size: 2.5rem; /* Ajusta según tus necesidades */
-    margin-bottom: 0.5rem; /* Espacio entre h1 y h2 */
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-}
-
-.slider-subtitle {
-    color: white;
-    font-size: 2rem; /* Ajusta según tus necesidades */
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-}

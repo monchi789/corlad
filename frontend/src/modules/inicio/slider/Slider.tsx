@@ -10,8 +10,8 @@ export default function Slider() {
             <div className='container slider-container flex flex-row my-auto justify-center'>
                 <img className='w-1/4' src={logo_corlad_blanco} alt="Logotipo corlad" />
                 <div className='ml-4 flex flex-col justify-center'>
-                    <h1 className="slider-title text-5xl font-extrabold">COLEGIO DE LICENCIADOS EN ADMINISTRACION</h1>
-                    <h2 className="slider-subtitle text-5xl font-extrabold">CORLAD CUSCO</h2>
+                    <h1 className="text-white text-5xl font-extrabold mb-2">COLEGIO DE LICENCIADOS EN ADMINISTRACION</h1>
+                    <h2 className="text-white text-4xl font-extrabold">CORLAD CUSCO</h2>
                 </div>
             </div>
             <ImageGallery items={dataGallery}
