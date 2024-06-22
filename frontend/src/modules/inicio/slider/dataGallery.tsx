@@ -1,4 +1,8 @@
 import banner_corlad from '../../../assets/corlad_banner.jpg'
+import unsaac from '../../../assets/unsaac.jpg'
+import andina from '../../../assets/andina.png'
+import continental from '../../../assets/continental.png'
+
 
 const dataGallery = [
     {
@@ -11,4 +15,16 @@ const dataGallery = [
     }
 ]
 
-export default dataGallery
+const dataGalleryAliados = [
+    {
+        original: unsaac
+    },
+    {
+        original: andina
+    },
+    {
+        original: continental
+    }
+]
+
+export { dataGallery, dataGalleryAliados };
