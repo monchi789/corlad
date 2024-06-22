@@ -6,7 +6,7 @@ import dataGallery from './dataGallery.tsx'
 
 export default function Slider() {
     return (
-        <div className='container-slider'>
+        <div>
             <div className='container slider-container flex flex-row my-auto justify-center'>
                 <img className='w-1/4' src={logo_corlad_blanco} alt="Logotipo corlad" />
                 <div className='ml-4 flex flex-col justify-center'>

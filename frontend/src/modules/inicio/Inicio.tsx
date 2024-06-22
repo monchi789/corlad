@@ -1,9 +1,12 @@
 import { Header } from "../../shared/components/Header";
 import logo_corlad from '../../assets/corlad_logo.png'
+import entradas from '../../assets/entradas_conandino.png'
 import map from '../../assets/map-pin.svg'
 import phone from '../../assets/phone.svg'
 import mail from '../../assets/mail.svg'
 import Slider from "./slider/Slider";
+import Card from "../shared/Card";
+import { Link } from "react-router-dom";
 
 export function Inicio() {
     return (
@@ -14,8 +17,8 @@ export function Inicio() {
             <div className="container mx-auto px-10">
 
                 {/*INFORMACION INSTITUCIONAL*/}
-                <div className="flex flex-row my-24">
-                    <img className='w-1/6' src={logo_corlad} alt="Logotipo corlad" />
+                <div className="flex flex-row my-24 mx-auto w-4/5">
+                    <img className='w-1/4' src={logo_corlad} alt="Logotipo corlad" />
                     <div className="flex flex-col justify-center ms-8">
                         <h3 className="text-5xl font-extrabold">
                             <span className="text-[#a67102]">INFORMACION</span>
@@ -95,6 +98,16 @@ export function Inicio() {
                 {/*Nuestros aliados*/}
 
 
+                {/*Noticias*/}
+                <div className="flex flex-col items-center my-24 mx-auto">
+                    <h3 className="font-extrabold text-center text-4xl text-[#a67102] mb-24">NOTICIAS</h3>
+                    <div className="flex flex-wrap space-x-14 mb-12">
+                        <Card imageSource={entradas} imageAlt="" cardTitle="Lanzamiento de entradas - Coandino" cardText="asdasd" cardUrl="" />
+                        <Card imageSource={entradas} imageAlt="" cardTitle="Lanzamiento de entradas - Coandino" cardText="Esta es la descripcion de la carta. Esta es la descripcion de la carta. Esta es la descripcion de la carta" cardUrl="" />
+                        <Card imageSource={entradas} imageAlt="" cardTitle="Lanzamiento de entradas - Coandino" cardText="asdasd" cardUrl="" />          
+                    </div>
+                    <Link to={'/noticias'} className="font-extrabold bg-[#a67102] text-white px-8 py-1 rounded-lg">Ver Más</Link>
+                </div>
 
                 {/*Contáctanos*/}
                 <div className="my-24 mx-auto">
