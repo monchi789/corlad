@@ -8,11 +8,29 @@ import Slider from "./slider/Slider";
 import Card from "../shared/Card";
 import { Link } from "react-router-dom";
 import 'react-image-gallery/styles/css/image-gallery.css'
-import Carrousel from "./carrousel/Carousel";
+import Carrousel from "./carousel/Carousel";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Noticia } from "../../interfaces/Noticia";
 
 export function Inicio() {
+    const noticias: Noticia[] = [
+        {
+            img: entradas,
+            title: "Lanzamiento de entradas - Coandino",
+            description: "Esta es la descripcion de la carta. Esta es la descripcion de la carta. Esta es la descripcion de la carta"
+        },
+        {
+            img: entradas,
+            title: "Lanzamiento de entradas - Coandino",
+            description: "Esta es la descripcion de la carta. Esta es la descripcion de la carta. Esta es la descripcion de la carta"
+        },
+        {
+            img: entradas,
+            title: "Lanzamiento de entradas - Coandino",
+            description: "Esta es la descripcion de la carta. Esta es la descripcion de la carta. Esta es la descripcion de la carta"
+        }
+    ]
     return (
         <div>
             <Header />
@@ -51,7 +69,7 @@ export function Inicio() {
                 </div>
 
                 {/*Nuestros servicios*/}
-                <div className="flex flex-col my-24 mx-auto">
+                <div className="flex flex-col my-24 mx-auto w-4/5">
                     <h3 className="font-extrabold text-center text-4xl text-[#a67102] mb-32">NUESTROS SERVICIOS</h3>
                     <div className="flex flex-row space-x-6 justify-between text-center mb-24">
                         <div className="rounded-3xl w-2/5 py-10 px-8 bg-[#F0F0F0] relative pt-16">
@@ -102,18 +120,16 @@ export function Inicio() {
                 {/*Nuestros aliados*/}
                 <div className="flex flex-col items-center mx-auto">
                     <h3 className="font-extrabold text-center text-4xl text-[#a67102] mb-24">NUESTROS ALIADOS</h3>
-                    <Carrousel/>
+                    <Carrousel />
                 </div>
-
-                
 
                 {/*Noticias*/}
                 <div className="flex flex-col items-center my-24 mx-auto">
                     <h3 className="font-extrabold text-center text-4xl text-[#a67102] mb-24">NOTICIAS</h3>
                     <div className="flex flex-wrap space-x-14 mb-12">
-                        <Card imageSource={entradas} imageAlt="" cardTitle="Lanzamiento de entradas - Coandino" cardText="asdasd" cardUrl="" />
-                        <Card imageSource={entradas} imageAlt="" cardTitle="Lanzamiento de entradas - Coandino" cardText="Esta es la descripcion de la carta. Esta es la descripcion de la carta. Esta es la descripcion de la carta" cardUrl="" />
-                        <Card imageSource={entradas} imageAlt="" cardTitle="Lanzamiento de entradas - Coandino" cardText="asdasd" cardUrl="" />
+                        {noticias.map((element, index) => (
+                            <Card imageSource={element.img} imageAlt="" cardTitle={element.title} cardText={element.description} cardUrl="" />
+                        ))}
                     </div>
                     <Link to={'/noticias'} className="font-extrabold bg-[#a67102] text-white px-8 py-1 rounded-lg">Ver Más</Link>
                 </div>
