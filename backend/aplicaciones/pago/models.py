@@ -12,19 +12,20 @@ class EstadoCuenta(models.Model):
     fecha_actualizacion = models.DateField(null=False, blank=False, default=timezone.now)
     id_colegiado = models.OneToOneField(Colegiado, on_delete=models.CASCADE, null=False, blank=False)
 
-    #TODO: Corregir que si cuando actualizo el pago y es el mismo, no se sume en el estado de cuenta
-    def actualizar_saldo(self, pago):
-        if pago != pago:
-            self.saldo += pago.monto_pago
-            self.fecha_actualizacion = timezone.now()
-            self.save()
+    def actualizar_saldo(self):
+        pagos = Pago.objects.filter(id_colegiado=self.id_colegiado)
+        total_pagos = sum(pago.monto_pago for pago in pagos)
+        self.saldo = total_pagos
+        self.fecha_actualizacion = timezone.now()
+        self.save()
 
     def __str__(self) -> str:
         return f'{self.saldo} - {self.id_colegiado.nombre}'
 
+
 class Pago(models.Model):
-    #TODO: PONER FECHAS
     monto_pago = models.FloatField(default=0.00, validators=[MinValueValidator(0)])
+    fecha_pago = models.DateField(null=False, blank=False, default=timezone.now)
     id_colegiado = models.ForeignKey(Colegiado, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
@@ -34,4 +35,4 @@ class Pago(models.Model):
 @receiver(post_save, sender=Pago)
 def actualizar_estado_cuenta(sender, instance, **kwars):
     estado_cuenta, created = EstadoCuenta.objects.get_or_create(id_colegiado=instance.id_colegiado)
-    estado_cuenta.actualizar_saldo(instance)
+    estado_cuenta.actualizar_saldo()
