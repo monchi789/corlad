@@ -24,6 +24,8 @@ const MyCarousel: React.FC = () => {
   //Configuracion para el carousel
   const settings = {
     dots: true,
+    arrows: false,
+    focusOnSelect: true,
     infinite: true,
     slidesToShow: 3,
     slidesToScroll: 1,

@@ -12,6 +12,7 @@ import Carrousel from "./carousel/Carousel";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Noticia } from "../../interfaces/Noticia";
+import { Footer } from "../../shared/components/Footer";
 
 export function Inicio() {
     const noticias: Noticia[] = [
@@ -127,7 +128,7 @@ export function Inicio() {
                 <div className="flex flex-col items-center my-24 mx-auto">
                     <h3 className="font-extrabold text-center text-4xl text-[#a67102] mb-24">NOTICIAS</h3>
                     <div className="flex flex-wrap space-x-14 mb-12">
-                        {noticias.map((element, index) => (
+                        {noticias.map((element) => (
                             <Card imageSource={element.img} imageAlt="" cardTitle={element.title} cardText={element.description} cardUrl="" />
                         ))}
                     </div>
@@ -197,8 +198,9 @@ export function Inicio() {
                         </div>
                     </div>
                 </div>
-
             </div>
+
+            <Footer/>
         </div>
     )
 }
