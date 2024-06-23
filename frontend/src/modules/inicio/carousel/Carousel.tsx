@@ -16,16 +16,17 @@ interface ImageSlide {
 
 const MyCarousel: React.FC = () => {
   const images: ImageSlide[] = [
-    { src: andina, alt: "Slide 1" },
-    { src: unsaac, alt: "Slide 2" },
-    { src: continental, alt: "Slide 3" },
-    { src: andina, alt: "Slide 4" },
-    { src: unsaac, alt: "Slide 5" },
+    { src: andina, alt: "Logo Andina" },
+    { src: unsaac, alt: "Logo Unsaac" },
+    { src: continental, alt: "Logo Continental" }
   ];
 
+  //Configuracion para el carousel
   const settings = {
     dots: true,
-    infinite: false,
+    arrows: false,
+    focusOnSelect: true,
+    infinite: true,
     slidesToShow: 3,
     slidesToScroll: 1,
     speed: 500,
