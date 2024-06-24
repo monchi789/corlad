@@ -17,6 +17,7 @@ export function Header() {
       '/nosotros': 'nosotros',
       '/noticias': 'noticias',
       '/contactanos': 'contactanos',
+      '/consultar-habilidad': 'consultar-habilidad'
     };
     setActiveLink(pathToLinkName[currentPath] || 'inicio');
   }, [location]);
@@ -68,9 +69,15 @@ export function Header() {
             Contáctanos
           </NavLink>
         </li>
-        <button className="mt-4 px-5 py-3 rounded-lg bg-[#00330a] text-[#ffffff]">
-          Consultar habilidad
-        </button>
+        <NavLink
+          to="/consultar-habilidad"
+          className={({ isActive }) => isActive || activeLink === 'consultar-habilidad' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}
+          onClick={() => handleLinkClick('consultar-habilidad')}
+        >
+          <button className="mt-4 px-5 py-1 rounded-lg bg-[#00330a] text-[#ffffff]">
+            Consultar habilidad
+          </button>
+        </NavLink>
       </ul>
     </div>
 
@@ -123,9 +130,16 @@ export function Header() {
                 </NavLink>
               </li>
             </ul>
-            <button className="ms-10 px-3 rounded-lg bg-[#00330a] text-[#ffffff]">
-              Consultar habilidad
-            </button>
+            <NavLink
+              to="/consultar-habilidad"
+              className={({ isActive }) => isActive || activeLink === 'consultar-habilidad' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}
+              onClick={() => handleLinkClick('consultar-habilidad')}
+            >
+              <button className="ms-10 py-1 px-3 rounded-lg bg-[#00330a] text-[#ffffff]">
+
+                Consultar habilidad
+              </button>
+            </NavLink>
           </div>
         </div>
         <div>
