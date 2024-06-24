@@ -32,7 +32,7 @@ export function Header() {
 
   const content = <>
     <div className='lg:hidden block absolute w-full top-28 left-0 right-0 bg-white transition z-20 pb-10'>
-      <ul className="text-center text-xl px-20">
+      <ul className="text-center text-xl px-20 font-nunito font-semibold">
         <li className="my-4 py-4 border-b">
           <NavLink
             to="/"
@@ -74,7 +74,7 @@ export function Header() {
           className={({ isActive }) => isActive || activeLink === 'consultar-habilidad' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}
           onClick={() => handleLinkClick('consultar-habilidad')}
         >
-          <button className="mt-4 px-5 py-1 rounded-lg bg-[#00330a] text-[#ffffff]">
+          <button className="mt-4 px-5 py-1 rounded-lg bg-[#00330a] text-[#ffffff] font-nunito font-semibold">
             Consultar habilidad
           </button>
         </NavLink>
@@ -92,7 +92,7 @@ export function Header() {
         </div>
         <div className="lg:flex md:flex lg:flex-1 my-auto items-center justify-end hidden">
           <div className='flex flex-row flex-10'>
-            <ul className="flex gap-8">
+            <ul className="flex gap-8 font-nunito font-semibold">
               <li className="me-5 p-1">
                 <NavLink
                   to="/"
@@ -135,7 +135,7 @@ export function Header() {
               className={({ isActive }) => isActive || activeLink === 'consultar-habilidad' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}
               onClick={() => handleLinkClick('consultar-habilidad')}
             >
-              <button className="ms-10 py-1 px-3 rounded-lg bg-[#00330a] text-[#ffffff]">
+              <button className="ms-10 py-1 px-3 rounded-lg bg-[#00330a] text-[#ffffff] font-nunito font-semibold">
 
                 Consultar habilidad
               </button>
@@ -146,7 +146,7 @@ export function Header() {
           {click && content}
         </div>
         <button className='block sm:hidden transition me-10' onClick={handleClick}>
-          {click ? <FaTimes /> : <FiAlignJustify />}
+          {click ? <FaTimes size={25} color="#00330A"/> : <FiAlignJustify size={25} color="#00330A" />}
         </button>
       </div>
     </nav>

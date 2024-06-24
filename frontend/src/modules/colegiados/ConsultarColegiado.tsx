@@ -6,7 +6,7 @@ export function ConsultarColegiado() {
     <div>
       <Header />
       <div className="flex flex-col mx-auto my-12 items-center">
-        <h1 className="flex flex-row font-extrabold text-4xl"><p className="text-[#a67102]">COLEGIADOS</p>&nbsp;<p> - CONSULTAR HABILIDAD</p></h1>
+        <h1 className="flex flex-row font-extrabold text-4xl font-nunito"><span className="text-[#a67102]">COLEGIADOS</span>&nbsp;<span> - CONSULTAR HABILIDAD</span></h1>
         <div className="flex flex-row pt-24 w-4/6">
           <select className="block w-1/5 appearance-none hover:border-gray-500 pr-8 shadow leading-tight focus:outline-none focus:shadow-outline bg-[#00330a] text-white px-3 py-1 rounded-s" name="opciones" id="opciones">
             <option className="bg-white text-black" value="apellidos-nombres">Apellidos o nombres</option>
@@ -20,34 +20,39 @@ export function ConsultarColegiado() {
 
       <div className="mx-auto px-10">
         <div className="flex flex-row mx-auto py-16 my-24 w-4/5 rounded-lg shadow-xl">
-          <img className="w-1/4 mx-24" src={colegiado} alt="Foto del colegiado" />
-          <div className="w-full flex flex-row justify-centerspace-x-5 items-center">
-            <div className="w-full flex flex-col">
+          <img className="w-1/4 mx-24 rounded" src={colegiado} alt="Foto del colegiado" />
+          <div className="w-full flex flex-row justify-centerspace-x-5 items-start me-24">
+            <div className="w-full flex flex-col space-y-10">
               <div>
-                <p>Nombres</p>
+                <p className="text-[#a67102] font-semibold">Nombres</p>
                 <p>Juan Manuel</p>
               </div>
               <div>
-                <p>Documento de identidad</p>
-                <p>70894367</p>
-              </div>
-              <div>
-                <p>Número de colegiatura</p>
-                <p>23456</p>
-              </div>
-              <div>
-                <p>Estado</p>
-                <p>Habilitado</p>
-              </div>
-            </div>
-            <div className="w-full flex flex-col">
-              <div>
-                <p>Apellidos</p>
+                <p className="text-[#a67102] font-semibold">Apellidos</p>
                 <p>Perez Mamani</p>
               </div>
               <div>
-                <p>Correo electrónico</p>
+                <p className="text-[#a67102] font-semibold">Número de colegiatura</p>
+                <p>23456</p>
+              </div>
+              <div>
+                <p className="text-[#a67102] font-semibold">Estado</p>
+                <p>Habilitado</p>
+              </div>
+            </div>
+            <div className="w-full flex flex-col space-y-10">
+              <div>
+                <p className="text-[#a67102] font-semibold">Correo electrónico</p>
                 <p>example@uandina.edu.pe</p>
+              </div>
+
+              <div>
+                <p className="text-[#a67102] font-semibold">Capitulo</p>
+                <p>Administracion</p>
+              </div>
+              <div>
+                <p className="text-[#a67102] font-semibold">Sub especialidad</p>
+                <p>Pública</p>
               </div>
             </div>
           </div>

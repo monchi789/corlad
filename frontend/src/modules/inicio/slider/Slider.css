@@ -7,13 +7,12 @@
 }
   
 .my-custom-gallery .image-gallery-slide img {
-    height: 700px; 
+    height: 750px; 
     object-fit: cover;
     filter: brightness(0.5); 
 }
 
 .slider-container {
-    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
