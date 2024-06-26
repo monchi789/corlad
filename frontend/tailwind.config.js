@@ -5,7 +5,14 @@ export default {
     './src/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'nunito': ['Nunito Sans', 'sans-serif'],
+        'mukta': ['Mukta', 'sans-serif'],
+        'didact': ['Didact Gothic', 'sans-serif']
+        
+      }
+    },
   },
   plugins: [],
 }

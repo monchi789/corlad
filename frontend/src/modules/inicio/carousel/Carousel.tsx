@@ -1,4 +1,3 @@
-import { dataGalleryAliados } from '../slider/dataGallery'
 
 import React from 'react';
 import Slider from "react-slick";
