@@ -7,10 +7,10 @@ import { dataGallery } from './dataGallery.tsx'
 export default function Slider() {
   return (
     <div className='relative'>
-      <div className='container flex flex-col lg:flex-row mx-auto slider-container justify-center absolute'>
-        <img className='w-1/2 md:w-1/4 md:ms-24' src={logo_corlad_blanco} alt="Logotipo corlad" />
-        <div className='w-2/4 me-24 flex flex-col justify-center'>
-          <h1 className="text-white text-2xl leading-loose md:text-5xl font-bold mb-2 font-mukta md:leading-loose">COLEGIO DE LICENCIADOS EN ADMINISTRACION <br /> <span className='text-lg md:text-4xl'>CORLAD CUSCO</span></h1>
+      <div className='container flex flex-col md:flex-row mx-auto slider-container justify-center items-center absolute'>
+        <img className='w-4/6 md:w-2/4 xl:w-2/6' src={logo_corlad_blanco} alt="Logotipo corlad" />
+        <div className='w-2/4 mt-5 md:my-auto md:me-24 flex flex-col justify-center items-center'>
+          <h1 className="text-white text-2xl md:text-3xl lg:text-5xl xl:text-5xl font-bold font-mukta leading-loose md:leading-loose lg:leading-loose xl:leading-loose">COLEGIO DE LICENCIADOS EN ADMINISTRACION <br /> <span className='text-2xl lg:text-4xl'>CORLAD CUSCO</span></h1>
         </div>
       </div>
       <ImageGallery items={dataGallery}

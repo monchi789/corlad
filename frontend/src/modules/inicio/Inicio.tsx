@@ -64,61 +64,63 @@ export function Inicio() {
 
       <div className="container mx-auto md:px-10">
         {/*INFORMACION INSTITUCIONAL*/}
-        <div className="flex flex-row my-24 mx-auto w-4/5">
-          <img className='w-2/5 hidden md:block' src={logo_corlad} alt="Logotipo corlad" />
+        <div className="flex md:flex-col lg:flex-row items-center my-24 mx-auto w-4/5">
+          <img className='md:w-2/5 hidden lg:block md:mb-10' src={logo_corlad} alt="Logotipo corlad" />
           <div className="flex flex-col justify-center md:ms-8">
-            <h3 className="text-4xl md:text-5xl font-extrabold">
+            <h3 className="text-3xl md:text-5xl text-center md:text-start font-extrabold">
               <span className="text-[#a67102] font-nunito">INFORMACIÓN</span>
               <br />
               <span className="text-[#00330A] font-nunito">INSTITUCIONAL</span>
             </h3>
-            <p className="text-lg md:text-xl my-5 font-didact">
+            <p className="text-md md:text-xl text-center md:text-start my-5 font-didact">
               En el CORLAD CUSCO estamos comprometidos con la noble misión de seguir educando a nuestros profesionales.
               Complementamos la educación de nuestros profesionales con temas relevantes para la profesión y la región.
             </p>
             <div className="flex flex-col md:flex-row space-y-10 md:space-y-0 justify-between mt-5">
               <div className="flex flex-col font-nunito">
-                <p className="text-5xl font-extrabold text-center">1589+</p>
-                <p className="text-[#a67102] text-xl font-semibold text-center">Colegiados</p>
+                <p className="text-4xl xl:text-5xl font-extrabold text-center">1589+</p>
+                <p className="text-[#a67102] text-lg xl:text-xl font-semibold text-center">Colegiados</p>
               </div>
               <div className="flex flex-col font-nunito">
-                <p className="text-5xl font-extrabold text-center">12+</p>
-                <p className="text-[#a67102] text-xl font-semibold text-center">Convenios institucionales</p>
+                <p className="text-4xl xl:text-5xl font-extrabold text-center">12+</p>
+                <p className="text-[#a67102] text-lg xl:text-xl font-semibold text-center">Convenios institucionales</p>
               </div>
               <div className="flex flex-col font-nunito">
-                <p className="text-5xl font-extrabold text-center">10</p>
-                <p className="text-[#a67102] text-xl font-semibold text-center">Años sirviendo</p>
+                <p className="text-4xl xl:text-5xl font-extrabold text-center">10</p>
+                <p className="text-[#a67102] text-lg xl:text-xl font-semibold text-center">Años sirviendo</p>
               </div>
             </div>
           </div>
         </div>
 
         {/*Nuestros servicios*/}
-        <div className="flex flex-col my-12 mx-auto w-4/5">
-          <h3 className="font-extrabold text-center text-4xl text-[#a67102] mb-32 font-nunito">NUESTROS SERVICIOS</h3>
+        <div className="flex flex-col my-12 mx-auto w-4/5 lg:w-4/5">
+          <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-32 font-nunito">NUESTROS SERVICIOS</h3>
           <Servicios />
         </div>
 
 
         {/*Nuestros aliados*/}
         <div className="flex flex-col items-center mx-auto">
-          <h3 className="font-extrabold text-center text-4xl text-[#a67102] mb-24 font-nunito">NUESTROS ALIADOS</h3>
+          <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-24 font-nunito">NUESTROS CONVENIOS</h3>
           <Carrousel />
         </div>
 
         {/*Noticias*/}
         <div className="flex flex-col items-center my-24 mx-auto">
-          <h3 className="font-extrabold text-center text-4xl text-[#a67102] mb-24 font-nunito">NOTICIAS</h3>
-          <div className="flex flex-wrap space-x-14 mb-12">
+          <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-24 font-nunito">NOTICIAS</h3>
+          <div className="flex flex-col xl:flex-row space-y-10 xl:space-y-0 xl:space-x-14 mb-12">
             {data.map((noticia, index) => (
               <Card key={index} imageSource={noticia.imagen_publicacion} imageAlt="" cardTitle={noticia.titulo} cardText={limitarContenido(noticia.contenido, 30)} cardUrl="" />
             ))}
           </div>
           <Link to={'/noticias'} className="font-extrabold bg-[#a67102] text-white px-8 py-1 rounded-lg font-nunito">Ver Más</Link>
         </div>
+
       </div>
+
       <div className="w-full">
-        <h3 className="font-extrabold text-center text-4xl text-[#a67102] mb-12 font-nunito">CONTÁCTANOS</h3>
+        <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-12 font-nunito">CONTÁCTANOS</h3>
         <div className="mx-auto py-24 bg-cover bg-center" style={{ backgroundImage: `url(${background})` }}>
           <Contacto />
         </div>

@@ -4,9 +4,9 @@ import mail from '../../../assets/mail.svg'
 
 export function Contacto() {
   return (
-    <div className="bg-[#03853D] p-8 rounded-3xl flex max-w-5xl mx-auto relative font-nunito">
-      <div className="bg-[#00330A] text-[#a67102] p-5 rounded-2xl w-2/5 absolute -left-24 top-4 bottom-4 shadow-lg z-10 my-10">
-        <div className="py-5 ms-8">
+    <div className="flex flex-col relative xl:flex-row bg-[#03853D] max-w-5xl md:mx-10 xl:mx-auto p-8 md:px-12 font-nunito rounded-3xl">
+      <div className="bg-[#00330A] text-[#a67102] p-5 rounded-2xl xl:w-2/5 xl:absolute -left-24 top-4 bottom-4 shadow-lg z-10 my-5 xl:my-10">
+        <div className="py-5 md:ms-8">
           <h3 className="text-center text-2xl font-bold mb-6">Contacto</h3>
           <div className="space-y-8">
             <div className="flex flex-row space-x-5 items-center">
@@ -35,10 +35,10 @@ export function Contacto() {
         </div>
       </div>
 
-      <div className="w-2/6 me-10"></div>
+      <div className="lg:w-2/6 me-10"></div>
 
-      <div className="w-3/5 pl-8 my-5">
-        <form className="space-y-4 me-10">
+      <div className="lg:w-3/5 my-5">
+        <form className="space-y-4 md:mx-10">
           <div>
             <label htmlFor="nombre" className="block text-white mb-1">Nombre</label>
             <input type="text" id="nombre" name="nombre" className="w-full p-2 rounded focus:outline-none" />
