@@ -23,4 +23,5 @@ class ColegiadoSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Colegiado
+        ref_name = 'ColegiadoSerializerColegiado'
         fields =  ['id', 'nombre', 'apellido_paterno', 'apellido_materno', 'celular', 'universidad', 'correo', 'estado', 'dni_colegiado', 'numero_colegiatura', 'foto_colegiado', 'id_especialidad']

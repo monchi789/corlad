@@ -6,6 +6,7 @@ from aplicaciones.colegiado.serializer import ColegiadoSerializer
 class ColegiadoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Colegiado
+        ref_name = 'ColegiadoSerializerPago'
         fields = ['id', 'nombre', 'apellido_paterno', 'apellido_materno', 'numero_colegiatura']
 
 
