@@ -1,7 +1,7 @@
 import { Header } from "../../shared/components/Header";
 import logo_corlad from '../../assets/corlad_logo.png'
 import Slider from "./slider/Slider";
-import Card from "../shared/Card";
+import Card from "../shared/Cards";
 import { Link } from "react-router-dom";
 import 'react-image-gallery/styles/css/image-gallery.css'
 import Carrousel from "./carousel/Carousel";
@@ -15,6 +15,8 @@ import { Noticia } from "../../interfaces/Noticia";
 import { getAllNoticias } from "../../shared/api/noticia.api";
 import { useEffect, useState } from "react";
 import { Servicios } from "./servicios/Servicios";
+import { PopUps } from "../shared/PopUps";
+
 
 export function Inicio() {
 
@@ -58,6 +60,7 @@ export function Inicio() {
 
   return (
     <div>
+
       <Header />
 
       <Slider />
@@ -126,6 +129,9 @@ export function Inicio() {
         </div>
       </div>
       <Footer />
+
+      <PopUps />
+
     </div >
   )
 }
