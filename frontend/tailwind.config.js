@@ -10,7 +10,6 @@ export default {
         'nunito': ['Nunito Sans', 'sans-serif'],
         'mukta': ['Mukta', 'sans-serif'],
         'didact': ['Didact Gothic', 'sans-serif']
-        
       }
     },
   },

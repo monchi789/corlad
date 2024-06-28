@@ -7,7 +7,7 @@ export function Nosotros() {
     <div>
       <Header />
       <div className="container flex flex-col mx-auto my-12 items-center">
-        <h1 className="flex flex-row font-extrabold text-4xl font-nunito"><span className="text-[#a67102]">INFORMACION</span>&nbsp;<span>INSTITUCIONAL</span></h1>
+        <h1 className="flex flex-row font-extrabold text-4xl font-nunito"><span className="text-[#a67102]">INFORMACIÓN</span>&nbsp;<span className="text-[#363636]">INSTITUCIONAL</span></h1>
         <div className="flex flex-row items-center w-4/5 my-24">
           <img className="w-1/3 mx-16" src={corlad_logo} alt="Logo corlad cusco" />
           <p className="mx-16 font-didact">
