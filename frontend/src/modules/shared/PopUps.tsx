@@ -1,6 +1,5 @@
 import { Dialog } from "primereact/dialog";
 import { useEffect, useState } from "react";
-import logo_corlad from '../../assets/corlad_logo.png'
 import { PopUp } from "../../interfaces/PopUp";
 import { getPopUp } from "../../shared/api/popup.api";
 
@@ -31,7 +30,7 @@ export function PopUps() {
 
   const [data, setData] = useState<PopUp[]>([]);
   useEffect(() => {
-    async function cargarNoticias() {
+    async function cargarPopUp() {
       const res = await getPopUp();
 
       /*
@@ -46,13 +45,13 @@ export function PopUps() {
       setData(popups)
 
     }
-    cargarNoticias();
+    cargarPopUp();
   }, []);
 
   const popUpsActivo = data.filter(item => item.estado_popup)
 
   return (
-    <div className={`${visible ? 'fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm' : ''} flex justify-center items-center z-10`}>
+    <div className={`${visible ? 'fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm' : ''} flex justify-center items-center z-20`}>
       <div className="w-5/6 lg:w-1/2">
         <Dialog className="w-5/6 lg:w-1/2 bg-white rounded items-center lg:px-10" header={headerContent} visible={visible} draggable={false} closable={false} closeOnEscape onHide={() => { if (!visible) return; setVisible(false); }}>
           {popUpsActivo.map(element => (
