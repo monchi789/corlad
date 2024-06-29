@@ -56,7 +56,7 @@ export function Contacto() {
             <textarea id="mensaje" name="mensaje" rows={4} className="w-full p-2 rounded resize-none focus:outline-none"></textarea>
           </div>
           <div className="text-center">
-            <button type="submit" className="bg-[#00330A] text-white px-10 py-1 rounded hover:bg-green-800">
+            <button type="submit" className="bg-[#00330A] text-white px-10 py-1 rounded hover:bg-green-800 transition duration-300">
               Enviar
             </button>
           </div>

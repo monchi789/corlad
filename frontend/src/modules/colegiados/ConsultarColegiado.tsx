@@ -25,7 +25,7 @@ export function ConsultarColegiado() {
   return (
     <div>
       <Header />
-      <div className="flex flex-col mx-auto my-12 items-center">
+      <div className="flex flex-col mx-auto my-12 items-center mt-48">
         <h1 className="flex flex-col md:flex-row font-extrabold text-4xl font-nunito text-center text-[#A67102]">CONSULTAR&nbsp;<p className="text-[#363636]">HABILIDAD</p></h1>
         <div className="flex flex-col w-5/6 md:w-4/6 space-y-3 md:space-y-0 md:flex-row pt-12 lg:pt-24">
           <Dropdown className="w-full md:w-1/5 md:w-14rem p-3 bg-[#00330a] text-[#f0f0f0] rounded-s rounded-none items-center border-cyan-50"

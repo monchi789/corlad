@@ -86,11 +86,11 @@ export function Header() {
 
   return (
     <nav>
-      <div className="container h-10vh flex flex-row justify-between lg:py-5 mx-auto my-5">
+      <div className="fixed bg-[#fff] h-10vh flex flex-row justify-between top-0 py-3 lg:py-5 mx-auto w-full xl:px-32  z-20">
         <div className='flex items-center flex-1 ms-10'>
-          <img className="size-24" src={logo} alt="Logo" />
+          <img className="size-20 lg:size-24" src={logo} alt="Logo" />
         </div>
-        <div className="lg:flex md:flex lg:flex-1 my-auto items-center justify-end hidden">
+        <div className="lg:flex md:flex lg:flex-1 my-auto items-center justify-end hidden me-10">
           <div className='flex flex-row flex-10'>
             <ul className="flex gap-8 font-nunito font-semibold">
               <li className="me-5 p-1">
@@ -135,7 +135,7 @@ export function Header() {
               className={({ isActive }) => isActive || activeLink === 'consultar-habilidad' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}
               onClick={() => handleLinkClick('consultar-habilidad')}
             >
-              <button className="ms-10 py-1 px-3 rounded-lg bg-[#00330a] text-[#ffffff] font-nunito font-semibold">
+              <button className="ms-10 py-1 px-3 rounded-lg bg-[#00330a] text-[#ffffff] font-nunito font-semibold hover:bg-green-800 transition duration-300">
 
                 Consultar habilidad
               </button>

@@ -9,7 +9,7 @@
 .my-custom-gallery .image-gallery-slide img {
     height: 750px; 
     object-fit: cover;
-    filter: brightness(0.5); 
+    filter: brightness(0.4); 
 }
 
 .slider-container {
