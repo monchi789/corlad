@@ -2,31 +2,23 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Colegiado, Escuela, Especialidad, HistorialEducativo
-from .serializer import ColegiadoSerializer, EscuelaSerializer, EspecialidadSerializer, HistorialEducativoSerializer
-from .filters import ColegiadoFilter, HistorialEducativoFilter
-
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
-#TODO: Terminar los filtros y las vista
+from .models import Colegiado, Escuela, Especialidad, HistorialEducativo
+from .serializer import ColegiadoSerializer, EscuelaSerializer, EspecialidadSerializer, HistorialEducativoSerializer
+from .filters import HistorialEducativoFilter
+
+
 # Create your views here.
 class EscuelaViewSet(viewsets.ViewSet):
     queryset = Escuela.objects.all()
     serializer_class = EscuelaSerializer
 
     # Metodos
-    def filter_queryset(self, queryset):
-        filterset = self.filterset_class(self.request.query_params, queryset=queryset)
-        return filterset.qs
-
-
-
-    def list(self, request, *args, **kwargs):
-        escuelas = self.get_queryset()
-        serializer = self.get_serializer(escuelas, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
+    # def filter_queryset(self, queryset):
+    #     filterset = self.filterset_class(self.request.query_params, queryset=queryset)
+    #     return filterset.qs
 
     @swagger_auto_schema(
         operation_id='Listar escuelas profesionales',
@@ -37,7 +29,7 @@ class EscuelaViewSet(viewsets.ViewSet):
         if request.query_params:
             return Response({'detail': 'No se permiten los parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
         
-        queryset = self.filter_queryset(self.queryset)
+        queryset = self.queryset
         serializer =  self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -47,9 +39,9 @@ class EspecialidadViewSet(viewsets.ViewSet):
     serializer_class = EspecialidadSerializer
 
     # Metodos
-    def filter_queryset(self, queryset):
-        filterset = self.filterset_class(self.request.query_params, queryset=queryset)
-        return filterset.qs
+    # def filter_queryset(self, queryset):
+    #     filterset = self.filterset_class(self.request.query_params, queryset=queryset)
+    #     return filterset.qs
     
     @swagger_auto_schema(
         operation_id='Listar especialidad profesional',
@@ -60,7 +52,7 @@ class EspecialidadViewSet(viewsets.ViewSet):
         if request.query_params:
             return Response({'detail': 'No se permiten los parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
         
-        queryset = self.filter_queryset(self.queryset)
+        queryset = self.queryset
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -70,9 +62,9 @@ class ColegiadoViewSet(viewsets.ViewSet):
     serializer_class = ColegiadoSerializer
 
     # Metodos
-    def filter_queryset(self, queryset):
-        filterset = self.filterset_class(self.request.query_params, queryset=queryset)
-        return filterset.qs
+    # def filter_queryset(self, queryset):
+    #     filterset = self.filterset_class(self.request.query_params, queryset=queryset)
+    #     return filterset.qs
 
 
     @swagger_auto_schema(
@@ -84,7 +76,7 @@ class ColegiadoViewSet(viewsets.ViewSet):
         if request.query_params:
             return Response({'detail': 'No se permiten los parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
 
-        queryset = self.filter_queryset(self.queryset)
+        queryset = self.queryset
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

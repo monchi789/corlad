@@ -21,15 +21,30 @@ class EstadoCuenta(models.Model):
 
     def __str__(self) -> str:
         return f'{self.saldo} - {self.id_colegiado.nombre}'
+    
 
+class MetodoPago(models.Model):
+    nombre_metodo_pago = models.CharField(max_length=250, null=False, blank=False, unique=True, default='')
+
+    def __str__(self) -> str:
+        return self.nombre_metodo_pago
+
+
+class TipoPago(models.Model):
+    nombre_tipo_pago = models.CharField(max_length=250, null=False, blank=False, unique=True, default='')
+
+    def __str__(self) -> str:
+        return self.nombre_tipo_pago
 
 class Pago(models.Model):
     monto_pago = models.FloatField(default=0.00, validators=[MinValueValidator(0)])
     fecha_pago = models.DateField(null=False, blank=False, default=timezone.now)
     id_colegiado = models.ForeignKey(Colegiado, on_delete=models.CASCADE)
+    id_tipo_pago = models.ForeignKey(TipoPago, on_delete=models.CASCADE, default=0)
+    id_metodo_pago = models.ForeignKey(MetodoPago, on_delete=models.CASCADE, default=0)
 
     def __str__(self) -> str:
-        return f'{self.monto_pago} - {self.id_colegiado.nombre}'
+        return f'{self.monto_pago} - {self.id_colegiado.nombre} - {self.id_metodo_pago.nombre_metodo_pago} - {self.id_tipo_pago.nombre_tipo_pago}'
 
 
 @receiver(post_save, sender=Pago)
