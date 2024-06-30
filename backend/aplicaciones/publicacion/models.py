@@ -16,7 +16,7 @@ class Publicacion(models.Model):
     contenido = HTMLField()
     fecha_publicacion = models.DateField()
     imagen_publicacion = models.ImageField(upload_to='publicaciones/', blank=True, null=False)
-    documento = models.FileField(upload_to='documentos/', validators=[FileExtensionValidator(allowed_extensions=['pdf'])],  default='default_value_for_documento')
+    documento = models.FileField(upload_to='documentos/', null=True, blank=True, validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
     id_categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, default=1)
 
     def __str__(self) -> str:
