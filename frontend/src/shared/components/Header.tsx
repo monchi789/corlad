@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import logo from '../../assets/corlad_logo.png';
+import logo from '../../assets/corlad_logo.svg';
 import { NavLink, useLocation } from 'react-router-dom';
-
 import { FaTimes } from "react-icons/fa";
 import { FiAlignJustify } from "react-icons/fi";
 
@@ -31,7 +30,7 @@ export function Header() {
   const handleClick = () => setClick(!click)
 
   const content = <>
-    <div className='lg:hidden block absolute w-full top-28 left-0 right-0 bg-white transition z-20 pb-10'>
+    <div className='lg:hidden block absolute w-full top-24 left-0 right-0 bg-white transition z-20 pb-10'>
       <ul className="text-center text-xl px-20 font-nunito font-semibold">
         <li className="my-4 py-4 border-b">
           <NavLink
@@ -88,12 +87,12 @@ export function Header() {
     <nav>
       <div className="fixed bg-[#fff] h-10vh flex flex-row justify-between top-0 py-3 lg:py-5 mx-auto w-full xl:px-32  z-20">
         <div className='flex items-center flex-1 ms-10'>
-          <img className="size-20 lg:size-24" src={logo} alt="Logo" />
+          <img className="size-20 lg:size-20" src={logo} alt="Logo" />
         </div>
         <div className="lg:flex md:flex lg:flex-1 my-auto items-center justify-end hidden me-10">
           <div className='flex flex-row flex-10'>
-            <ul className="flex gap-8 font-nunito font-semibold">
-              <li className="me-5 p-1">
+            <ul className="flex gap-8 font-nunito font-semibol items-center space-x-10 lg:space-x-0">
+              <li className="p-1">
                 <NavLink
                   to="/"
                   className={({ isActive }) => isActive || activeLink === 'inicio' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}
@@ -102,7 +101,7 @@ export function Header() {
                   Inicio
                 </NavLink>
               </li>
-              <li className="mx-5 p-1">
+              <li className="p-1">
                 <NavLink
                   to="/nosotros"
                   className={({ isActive }) => isActive || activeLink === 'nosotros' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}
@@ -111,7 +110,7 @@ export function Header() {
                   Nosotros
                 </NavLink>
               </li>
-              <li className="mx-5 p-1">
+              <li className="p-1">
                 <NavLink
                   to="/noticias"
                   className={({ isActive }) => isActive || activeLink === 'noticias' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}
@@ -120,7 +119,7 @@ export function Header() {
                   Noticias
                 </NavLink>
               </li>
-              <li className="mx-5 p-1">
+              <li className="p-1">
                 <NavLink
                   to="/contactanos"
                   className={({ isActive }) => isActive || activeLink === 'contactanos' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}

@@ -9,14 +9,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Footer } from "../../shared/components/Footer";
 import { Contacto } from "../contactanos/contacto/Contacto";
-import background from "../../assets/machupicchu.jpg"
-
 import { Noticia } from "../../interfaces/Noticia";
 import { getAllNoticias } from "../../shared/api/noticia.api";
 import { useEffect, useState } from "react";
 import { Servicios } from "./servicios/Servicios";
 import { PopUps } from "../shared/PopUps";
-
+import background from "../../assets/machupicchu.jpg"
 
 export function Inicio() {
 
@@ -81,28 +79,29 @@ export function Inicio() {
             </p>
             <div className="flex flex-col md:flex-row space-y-10 md:space-y-0 justify-between mt-5">
               <div className="flex flex-col font-nunito">
-                <p className="text-4xl xl:text-5xl font-extrabold text-center">1589+</p>
+                <p className="text-4xl xl:text-5xl font-extrabold text-center">2000+</p>
                 <p className="text-[#a67102] text-lg xl:text-xl font-semibold text-center">Colegiados</p>
               </div>
               <div className="flex flex-col font-nunito">
-                <p className="text-4xl xl:text-5xl font-extrabold text-center">12+</p>
-                <p className="text-[#a67102] text-lg xl:text-xl font-semibold text-center">Convenios institucionales</p>
+                <p className="text-4xl xl:text-5xl font-extrabold text-center">2+</p>
+                <p className="text-[#a67102] text-lg xl:text-xl font-semibold text-center">Convenios</p>
               </div>
               <div className="flex flex-col font-nunito">
-                <p className="text-4xl xl:text-5xl font-extrabold text-center">10</p>
+                <p className="text-4xl xl:text-5xl font-extrabold text-center">40</p>
                 <p className="text-[#a67102] text-lg xl:text-xl font-semibold text-center">Años sirviendo</p>
               </div>
             </div>
           </div>
         </div>
-
+        </div>
+      
         {/*Nuestros servicios*/}
         <div className="flex flex-col my-12 mx-auto w-4/5 lg:w-4/5">
           <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-32 font-nunito">NUESTROS SERVICIOS</h3>
           <Servicios />
         </div>
 
-
+        <div className="container mx-auto md:px-10">
         {/*Nuestros aliados*/}
         <div className="flex flex-col items-center mx-auto">
           <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-24 font-nunito">NUESTROS CONVENIOS</h3>

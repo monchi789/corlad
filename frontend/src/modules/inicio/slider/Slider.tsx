@@ -1,11 +1,11 @@
 import './Slider.css'
-import logo_corlad_blanco from '../../../assets/corlad_logo.png'
+import logo_corlad_blanco from '../../../assets/corlad_logo_blanco.png'
 import 'react-image-gallery/styles/css/image-gallery.css'
 import { DataGallery } from './dataGallery.tsx'
 
 export default function Slider() {
   return (
-    <div className='relative mt-36'>
+    <div className='relative mt-28 xl:mt-32'>
       <div className='container flex flex-col md:flex-row mx-auto slider-container justify-center items-center absolute'>
         <img className='w-4/6 md:w-2/4 xl:w-2/6' src={logo_corlad_blanco} alt="Logotipo corlad" />
         <div className='w-2/4 mt-5 md:my-auto md:me-24 flex flex-col justify-center items-center'>

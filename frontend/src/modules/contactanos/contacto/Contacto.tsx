@@ -20,15 +20,14 @@ export function Contacto() {
               <img src={mail} alt="icon_map" className="w-8 h-8" />
               <div className="space-y-1">
                 <p className="font-semibold">Correo electrónico</p>
-                <p className="text-white">example@gmail.com</p>
+                <p className="text-white">cuscocorlad@gmail.com</p>
               </div>
             </div>
             <div className="flex flex-row space-x-5 items-center">
               <img src={phone} alt="icon_map" className="w-8 h-8" />
               <div className="space-y-1">
                 <p className="font-semibold">Celulares</p>
-                <p className="text-white">+999887232</p>
-                <p className="text-white">+987674534</p>
+                <p className="text-white">+51940033003</p>
               </div>
             </div>
           </div>

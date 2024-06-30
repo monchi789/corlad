@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import logo_corlad_blanco from '../../assets/corlad_logo.png'
+import logo_corlad_blanco from '../../assets/corlad_logo_blanco.png'
 import { CiFacebook } from "react-icons/ci";
 import { LiaYoutube } from "react-icons/lia";
 import { CiLinkedin } from "react-icons/ci";
@@ -12,8 +12,8 @@ export function Footer() {
           <img className='w-3/6 md:w-5/6 lg:w-1/2' src={logo_corlad_blanco} alt="" />
           <h3 className='font-extrabold text-xl text-[#a67102] mt-6 mb-3 font-nunito'>HORARIO</h3>
           <div className='text-white text-lg font-didact'>
-            <p>Lunes a viernes 8:00 h. - 20:00 h.</p>
-            <p>Sábado 8:00 h. - 13:00 h.</p>
+            <p>Lunes a viernes 09:00 h. - 18:00 h.</p>
+            <p>Sábados 09:00 h. - 13:00 h.</p>
           </div>
         </div>
         <div className='flex flex-col md:w-1/5'>
@@ -47,8 +47,7 @@ export function Footer() {
         <div className='md:w-1/5'>
           <h3 className='font-extrabold text-xl text-[#a67102] mt-20 mb-5 font-nunito'>TELÉFONOS</h3>
           <div className='text-white text-lg space-y-3 font-didact'>
-            <p>Colegiatura y Trámites 9999999</p>
-            <p>Eventos Académicos 99999999</p>
+            <p>Informes y Trámites +51940033003</p>
           </div>
         </div>
       </div>
