@@ -26,12 +26,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG')
 
 # Configuración de CORS
-if os.getenv('CORS_ALLOW_ALL_ORIGINS') == 'True':
-    CORS_ALLOW_ALL_ORIGINS = True
-else:
-    CORS_ALLOWED_ORIGINS = [
-        os.getenv('CORS_ALLOWED_ORIGINS'),
-    ]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
 
 # Application definition
 
