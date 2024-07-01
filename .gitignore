@@ -1,3 +1,4 @@
 mediafiles
 data
 servers.json
+.env

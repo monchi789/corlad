@@ -1,0 +1,4 @@
+env/
+media/
+.gitignore
+.example.env
