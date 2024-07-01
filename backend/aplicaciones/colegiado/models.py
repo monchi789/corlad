@@ -44,9 +44,9 @@ class Colegiado(models.Model):
     numero_colegiatura = models.CharField(max_length=250, blank=False, null=False, unique=True, validators=[validar_numero, validar_espacio], default='')
     numero_regulacion = models.CharField(max_length=250, blank=False, null=False, unique=True, validators=[validar_numero, validar_espacio], default='')
     fecha_colegiatura = models.DateField(null=False, blank=False, default=timezone.now)
-    sexo_colegiado = models.CharField(choices=SEXO, null=False, blank=False, default=SEXO['Otro'])
+    sexo_colegiado = models.CharField(max_length=9, choices=SEXO, null=False, blank=False, default=SEXO['Otro'])
     fecha_nacimiento = models.DateField(null=False, blank=False, default=timezone.now)
-    estado_civil = models.CharField(null=False, blank=False, default=ESTADO_CIVIL['Soltero'])
+    estado_civil = models.CharField(max_length=7, null=False, blank=False, default=ESTADO_CIVIL['Soltero'])
     direccion = models.CharField(max_length=300, blank=False, null=False, default='')
 
     def __str__(self) -> str:

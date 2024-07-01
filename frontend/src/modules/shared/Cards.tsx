@@ -9,7 +9,7 @@ interface CardProps {
   cardUrl: string;
 }
 
-const Card: React.FC<CardProps> = ({ imageSource, imageAlt, cardTitle, cardText, cardUrl }) => {
+const Card: React.FC<CardProps> = ({ imageSource, imageAlt, cardTitle, cardText }) => {
 
   return (
     <div className="bg-[#F0F0F0] rounded-3xl shadow-xl max-w-[300px] flex flex-col">

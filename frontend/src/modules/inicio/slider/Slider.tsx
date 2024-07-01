@@ -10,7 +10,7 @@ export default function Slider() {
         <img className='w-4/6 md:w-2/4 xl:w-2/6' src={logo_corlad_blanco} alt="Logotipo corlad" />
         <div className='w-2/4 mt-5 md:my-auto md:me-24 flex flex-col justify-center items-center'>
           <h1 className="text-white text-2xl md:text-3xl lg:text-5xl xl:text-5xl font-bold font-mukta leading-loose md:leading-loose lg:leading-loose xl:leading-loose">
-            COLEGIO REGIONAL DE LICENCIADOS EN ADMINISTRACION <br />
+            COLEGIO REGIONAL DE LICENCIADOS EN ADMINISTRACIÓN <br />
             <span className='text-2xl lg:text-4xl'>CORLAD - CUSCO</span>
           </h1>
         </div>
