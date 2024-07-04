@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react'
-import banner_corlad from '../../../assets/corlad_banner.jpg'
-import { getSlider } from '../../../shared/api/slider.api';
+import banner_corlad from '../../assets/corlad_banner.jpg'
+import { getSlider } from '../../shared/api/slider.api';
 import ImageGallery from 'react-image-gallery';
+import { Slider } from '../../interfaces/Slider';
+import { useLocation } from 'react-router-dom';
 
-export const DataGallery = () => {
+export function Gallery() {
   const [data, setData] = useState<Slider[]>([]);
+  const location = useLocation(); // Hook to get current location
+  const currentPath = location.pathname; // Get current path
 
   useEffect(() => {
     async function cargarSliders() {
@@ -27,28 +31,43 @@ export const DataGallery = () => {
 
   let dataSlider = popUpsActivo.flatMap(element => [
     {
-      original: element.imagen_1,
+      original: element.imagen_1
     },
     {
-      original: element.imagen_2,
+      original: element.imagen_2
     },
     {
-      original: element.imagen_3,
+      original: element.imagen_3
     },
     {
-      original: element.imagen_4,
+      original: element.imagen_4
     }
   ]);
 
+  const renderImageInicio = (item: any) => {
+    return (
+      <img src={item.original} alt="" className="h-[750px] w-full object-cover brightness-[0.40]" />
+    );
+  };
+
+  const renderImageNosotros = (item: any) => {
+    return (
+      <img src={item.original} alt="" className="h-[750px] w-full object-cover" />
+    );
+  };
+
   if (dataSlider.length == 0) {
     dataSlider = [
-      {original: banner_corlad }
+      { original: banner_corlad }
     ]
   }
+
+  const renderItem = currentPath === '/' ? renderImageInicio : renderImageNosotros;
 
   return (
     <>
       <ImageGallery items={dataSlider}
+        renderItem={renderItem}
         showPlayButton={false}
         showNav={false}
         showBullets={true}
@@ -56,7 +75,7 @@ export const DataGallery = () => {
         autoPlay={true}
         slideInterval={5000}
         slideDuration={1000}
-        additionalClass="my-custom-gallery"
+        additionalClass="w-full max-w-[2500px] mx-auto"
       />
     </>
   )

@@ -29,7 +29,7 @@ export function Footer() {
               <p className='py-0.5'>Noticias</p>
             </Link>
             <Link to={'/Inicio'}>
-              <p className='py-0.5'>Contactanos</p>
+              <p className='py-0.5'>Contáctenos</p>
             </Link>
             <Link to={'/Inicio'}>
               <p className='py-0.5'>Consultar habilidad</p>

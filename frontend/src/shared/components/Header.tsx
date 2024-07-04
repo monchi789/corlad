@@ -125,7 +125,7 @@ export function Header() {
                   className={({ isActive }) => isActive || activeLink === 'contactanos' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}
                   onClick={() => handleLinkClick('contactanos')}
                 >
-                  Contáctanos
+                  Contáctenos
                 </NavLink>
               </li>
             </ul>

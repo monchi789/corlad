@@ -45,15 +45,15 @@ export function ConsultarColegiado() {
             <div className="w-full flex flex-col space-y-5 lg:space-y-10 px-5 pb-5 lg:pb-0">
               <div>
                 <p className="text-[#a67102] font-semibold">Nombres</p>
-                <p>Juan Manuel</p>
+                <p>Ejemplo</p>
               </div>
               <div>
                 <p className="text-[#a67102] font-semibold">Apellidos</p>
-                <p>Perez Mamani</p>
+                <p>Ejemplo</p>
               </div>
               <div>
                 <p className="text-[#a67102] font-semibold">Número de colegiatura</p>
-                <p>23456</p>
+                <p>12345</p>
               </div>
               <div>
                 <p className="text-[#a67102] font-semibold">Estado</p>
@@ -67,8 +67,8 @@ export function ConsultarColegiado() {
               </div>
 
               <div>
-                <p className="text-[#a67102] font-semibold">Capitulo</p>
-                <p>Administracion</p>
+                <p className="text-[#a67102] font-semibold">Capítulo</p>
+                <p>Administración</p>
               </div>
               <div>
                 <p className="text-[#a67102] font-semibold">Sub especialidad</p>

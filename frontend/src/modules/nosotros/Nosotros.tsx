@@ -1,8 +1,54 @@
 import { Header } from "../../shared/components/Header";
 import corlad_logo from "../../assets/corlad_logo.png"
 import { Footer } from "../../shared/components/Footer";
+import Carousel from "../shared/Carousel";
+import { Gallery } from "../shared/Gallery";
 
 export function Nosotros() {
+
+  const directivos = [
+    {
+      imgDirectivo: corlad_logo,
+      nombreDirectivo: "Willy Bravo Aparicio",
+      cargoDirectivo: "Decano Regional"
+    },
+    {
+      imgDirectivo: corlad_logo,
+      nombreDirectivo: "Gabriel Suyo Cruz",
+      cargoDirectivo: "Vicedecano Regional"
+    },
+    {
+      imgDirectivo: corlad_logo,
+      nombreDirectivo: "Edgar Quispe Reyes",
+      cargoDirectivo: "Director De Economía Y Finanzas"
+    },
+    {
+      imgDirectivo: corlad_logo,
+      nombreDirectivo: "Ruth Josefina Salazar Herrera",
+      cargoDirectivo: "Directora De Habilidad Profesional"
+    },
+    {
+      imgDirectivo: corlad_logo,
+      nombreDirectivo: "Wilfredo Loayza Palma",
+      cargoDirectivo: "Director De Información Científica"
+    },
+    {
+      imgDirectivo: corlad_logo,
+      nombreDirectivo: "Manuel Jesus Zvietcovich Alvarez",
+      cargoDirectivo: "Director De Imagen Institucional"
+    }
+  ]
+
+  const cardDirectivo = (imgDirectivo: string, nombreDirectivo: string, cargoDirectivo: string) => {
+    return (
+      <>
+        <img className="w-2/3 mx-auto" src={imgDirectivo} alt="" />
+        <span className="text-2xl text-[#00330A] font-nunito font-bold py-3">{nombreDirectivo}</span>
+        <p>{cargoDirectivo}</p>
+      </>
+    )
+  }
+
   return (
     <div>
       <Header />
@@ -10,31 +56,79 @@ export function Nosotros() {
         <h1 className="flex flex-col lg:flex-row font-extrabold text-4xl font-nunito text-[#a67102]">INFORMACIÓN&nbsp;<span className="text-[#363636]">INSTITUCIONAL</span></h1>
         <div className="flex flex-col lg:flex-row items-center w-4/5 my-6 lg:my-12">
           <img className="lg:w-1/3 mx-16" src={corlad_logo} alt="Logo corlad cusco" />
-          <p className="my-6 lg:my-0 xl:mx-24 font-didact">
-            En el CORLAD - CUSCO estamos comprometidos con la noble misión de seguir educando a nuestros profesionales.
-            Complementamos la educación de nuestros profesionales con temas relevantes para la profesión y la región.
-            En el CORLAD - CUSCO estamos comprometidos con la noble misión de seguir educando a nuestros profesionales.
-            Complementamos la educación de nuestros profesionales con temas relevantes para la profesión y la región.
-            En el CORLAD CUSCO estamos comprometidos con la noble misión de seguir educando a nuestros profesionales.
-            Complementamos la educación de nuestros profesionales con temas relevantes para la profesión y la región.
+          <p className="text-xl lg:my-0 xl:mx-24 font-didact my-6">
+            El colegio regional de licenciados en administración Cusco CORLAD con 40 años de ser fundado, creado en el año 1984, agrupa a las carreras de administración,
+            negocios internacionales, marketing y finanzas dirigido por el decano willy bravo aparicio en su gestión 2024 - 2025 con el lema <b>“integridad y servicio”</b> para sus agremiados.
           </p>
         </div>
       </div>
-      <div className="flex flex-col lg:flex-row mx-auto w-full mb-6 font-nunito items-center space-y-10 lg:space-y-0">
+
+      <div className="flex flex-col lg:flex-row mx-auto w-full mb-24 font-nunito items-center space-y-10 lg:space-y-0">
         <div className="lg:w-1/3 text-center">
-          <p className="text-4xl lg:text-5xl font-extrabold">1589+</p>
+          <p className="text-4xl lg:text-5xl font-extrabold">2000+</p>
           <p className="font-semibold text-lg lg:text-xl text-[#a67102]">Colegiados</p>
         </div>
         <div className="lg:w-1/3 text-center">
-          <p className="text-4xl lg:text-5xl font-extrabold">12+</p>
+          <p className="text-4xl lg:text-5xl font-extrabold">2+</p>
           <p className="font-semibold text-lg text-[#a67102]">Convenios institucionales</p>
         </div>
         <div className="lg:w-1/3 text-center">
-          <p className="text-4xl lg:text-5xl font-extrabold">10</p>
+          <p className="text-4xl lg:text-5xl font-extrabold">40</p>
           <p className="font-semibold text-lg text-[#a67102]">Años sirviendo</p>
         </div>
       </div>
-      <Footer/>
+      
+      <Gallery />
+
+      <div className="container flex flex-row mx-auto my-24 items-center justify-center">
+        <h4 className="w-1/3 text-center text-4xl text-[#00330A] mx-10 font-nunito font-bold">HIMNO INSTITUCIONAL <br /> DEL COLEGIO DE LICENCIADOS <br /> EN ADMINISTRACIÓN</h4>
+        <p className="w-1/3 text-center font-didact font-semibold mx-10">
+          UN LEGADO CULTURAL Y DE CONDUCTA <br />
+          PARA NUESTRA JUVENTUD <br />
+          LA TECNOLOGÍA Y CIENCIA, LA EXPERIENCIA DETERMINAN LA VISIÓN <br />
+          LICENCIADOS <br />
+          EN ADMINISTRACIÓN <br />
+          GRAN PASIÓN POR LA PROFESIÓN (BIS) <br />
+          ESTRATEGIA <br />
+          Y GESTIÓN DE SERVICIO <br />
+          LICENCIADOS EN ADMINISTRACIÓN <br />
+          PLANIFICACIÓN CONTROL TOTAL <br />
+          NUESTRA META ES LA PRODUCTIVIDAD <br />
+          TRABAJANDO <br />
+          ENSANCHEMOS CAMINOS <br />
+          EXTENDIÉNDONOS TODO EL PERÚ <br />
+          DE NORTE A SUR <br />
+          DE ESTE A OESTE <br />
+          LICENCIADOS EN ADMINISTRACION <br />
+          LLEVANDO LA MISION DE HONRAR NUESTRA NACION <br />
+          LICENCIADOS EN ADMINISTRACION <br />
+          EL 14 DE FEBRERO ES EL DIA <br />
+          DEL LICENCIADO EN ADMINISTRACION <br />
+          TRABAJANDO CON TESON <br />
+          POR AMOR A LA NACION <br />
+          POR EL DON QUE NOS HA DADO DIOS <br />
+          LICENCIADOS EN ADMINISTRACION <br />
+          GRAN PASION POR LA PROFESION (BIS) <br />
+        </p>
+      </div>
+
+      <div className="container mx-auto">
+        <div className="flex flex-col items-center mx-auto mb-24">
+          <h3 className="font-extrabold text-center text-4xl md:text-4xl text-[#a67102] mb-24 font-nunito">NUESTROS CONVENIOS</h3>
+          <Carousel />
+        </div>
+        <div>
+          <h3 className="font-extrabold text-center text-4xl md:text-4xl text-[#a67102] mb-24 font-nunito">CONSEJO DIRECTIVO</h3>
+          <div className="flex flex-wrap justify-center mb-24">
+            {directivos.map((directivo, index) => (
+              <div className="flex flex-col w-1/5 bg-gray-300 rounded text-center mb-10 mx-10 py-5 px-5" key={index}>
+                {cardDirectivo(directivo.imgDirectivo, directivo.nombreDirectivo, directivo.cargoDirectivo)}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <Footer />
     </div>
   )
 }
