@@ -61,12 +61,6 @@ class ColegiadoViewSet(viewsets.ViewSet):
     queryset = Colegiado.objects.all()
     serializer_class = ColegiadoSerializer
 
-    # Metodos
-    # def filter_queryset(self, queryset):
-    #     filterset = self.filterset_class(self.request.query_params, queryset=queryset)
-    #     return filterset.qs
-
-
     @swagger_auto_schema(
         operation_id='Listar colegiados',
         responses={200: openapi.Response(description='Lista de colegiados')},
