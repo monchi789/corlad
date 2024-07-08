@@ -6,19 +6,23 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .models import PopUp, Slider
 from .serializers import PopUpSerializer, SliderSerializer
+from .filters import PopUpFilter, SliderFilter
 
 # Create your views here.
-#TODO: Definir el metodo get por ID
 class PopUpViewSet(viewsets.ViewSet):
     queryset = PopUp.objects.all()
     serializer_class = PopUpSerializer
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['estado_popup']
+    filter_class = PopUpFilter
+
+    allow_query_params = {
+        'estado'
+    }
 
     # Metodos
-    def filter_query(self, queryset):
+    def filter_queryset(self, queryset):
         filterset = self.filter_class(self.request.query_params, queryset=queryset)
         return filterset.qs
 
@@ -44,8 +48,8 @@ class PopUpViewSet(viewsets.ViewSet):
     )
     def list(self, request, *args, **kwargs):
         # Validar los parametros permitidos
-        if request.query_params:
-            return Response({'detail': 'No se permiten los parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
+        for param in request.query_params:
+            return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
         
         queryset = self.get_queryset()
         serializer =  self.serializer_class(queryset, many=True)
@@ -111,14 +115,17 @@ class PopUpViewSet(viewsets.ViewSet):
             return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
 
-#TODO: Definir el metodo get por ID
 class SliderViewSet(viewsets.ModelViewSet):
     queryset = Slider.objects.all()
     serializer_class = SliderSerializer
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['estado_slider']
+    filter_class = SliderFilter
+
+    allow_query_params = {
+        'estado'
+    }
 
     # Metodos
     def filter_queryset(self, queryset):
@@ -147,10 +154,11 @@ class SliderViewSet(viewsets.ModelViewSet):
     )
     def list(self, request, *args, **kwargs):
         # Validar los parametros permitidos
-        if request.query_params:
-            return Response({'detail': 'No se permiten los parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
+        for param in request.query_params:
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
         
-        queryset = self.get_queryset()
+        queryset = self.filter_queryset(self.get_queryset())
         serializer =  self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

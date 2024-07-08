@@ -3,17 +3,26 @@ from rest_framework.response import Response
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import EstadoCuenta, Pago, MetodoPago, TipoPago
+from .filters import EstadoCuentaFilter, TipoPagoFilter, PagoFilter, MetodoPagoFilter
 from ..colegiado.models import Colegiado
 from .serializers import PagoSerializer, EstadoCuentaSerializer, MetodoPagoSerializer, TipoPagoSerializer
 
 
-#TODO: Definir el metodo get por ID
 # Create your views here.
 class MetodoPagoViewSet(viewsets.ViewSet):
     queryset = MetodoPago.objects.all()
     serializer_class = MetodoPagoSerializer
+
+    # Aplicamos los filtros
+    filter_backends = [DjangoFilterBackend]
+    filter_class = MetodoPagoFilter
+
+    allow_query_params = {
+        'nombre_metodo_pago'
+    }
 
     # Metodos
     def filter_queryset(self, queryset):
@@ -42,10 +51,11 @@ class MetodoPagoViewSet(viewsets.ViewSet):
     )
     def list(self, request, *args, **kwargs):
         # Validar los parametros permitidos
-        if request.query_params:
-            return Response({'detail': 'No se permiten los parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
+        for param in request.query_params:
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
         
-        queryset = self.get_queryset()
+        queryset = self.filter_queryset(self.get_queryset())
         serializer =  self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -109,10 +119,17 @@ class MetodoPagoViewSet(viewsets.ViewSet):
             return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
 
-#TODO: Definir el metodo get por ID
 class TipoPagoViewSet(viewsets.ViewSet):
     queryset = TipoPago.objects.all()
     serializer_class = TipoPagoSerializer
+
+    # Aplicamos los filtros
+    filter_backends = [DjangoFilterBackend]
+    filter_class = TipoPagoFilter
+
+    allow_query_params = {
+        'nombre_tipo_pago'
+    }
 
     # Metodos
     def filter_queryset(self, queryset):
@@ -141,10 +158,11 @@ class TipoPagoViewSet(viewsets.ViewSet):
     )
     def list(self, request, *args, **kwargs):
         # Validar los parametros permitidos
-        if request.query_params:
-            return Response({'detail': 'No se permiten los parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
+        for param in request.query_params:
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
         
-        queryset = self.get_queryset()
+        queryset = self.filter_queryset(self.get_queryset())
         serializer =  self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -208,12 +226,24 @@ class TipoPagoViewSet(viewsets.ViewSet):
             return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
 
-#TODO: Definir el metodo get por ID
 class PagoViewSet(viewsets.ViewSet):
     queryset = Pago.objects.all()
     serializer_class = PagoSerializer
 
+    # Aplicamos los filtros
+    filter_backends = [DjangoFilterBackend]
+    filter_class = PagoFilter
+
+    allow_query_params = {
+        'apellido_paterno', 'dni_colegiado', 'numero_colegiatura',
+        'metodo_pago', 'tipo_pago', 'fecha_pago'
+    }
+
     # Metodos para los metodos
+    def filter_queryset(self, queryset):
+        filterset = self.filterset_class(self.request.query_params, queryset=queryset)
+        return filterset.qs
+
     def get_object(self):
         pk = self.kwargs.get('pk')
         try:
@@ -248,10 +278,11 @@ class PagoViewSet(viewsets.ViewSet):
     )
     def list(self, request, *args, **kwargs):
         # Validar los parametros permitidos
-        if request.query_params:
-            return Response({'detail': 'No se permiten los parametros de la solicitud.'}, status=status.HTTP_400_BAD_REQUEST)
+        for param in request.query_params:
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
         
-        queryset = self.queryset
+        queryset = self.filter_queryset(self.get_queryset())
         serializer = self.serializer_class(queryset, many=True)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -313,11 +344,18 @@ class PagoViewSet(viewsets.ViewSet):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
    
-    
-#TODO: Definir el metodo get por ID
+
 class EstadoCuentaViewSet(viewsets.ViewSet):
     queryset = EstadoCuenta.objects.all()
     serializer_class = EstadoCuentaSerializer
+
+    # Aplicamos los filtros
+    filter_backends = [DjangoFilterBackend]
+    filter_class = EstadoCuentaFilter
+
+    allow_query_params = {
+        'apellido_paterno', 'dni_colegiado', 'numero_colegiatura'
+    }
 
     # Metodos
     def filter_queryset(self, queryset):
@@ -346,10 +384,11 @@ class EstadoCuentaViewSet(viewsets.ViewSet):
     )
     def list(self, request, *args, **kwargs):
         # Validar los parametros permitidos
-        if request.query_params:
-            return Response({'detail': 'No se permiten los parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
+        for param in request.query_params:
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
         
-        queryset = self.get_queryset()
+        queryset = self.filter_queryset(self.get_queryset())
         serializer =  self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

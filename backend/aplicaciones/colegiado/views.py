@@ -7,13 +7,21 @@ from drf_yasg import openapi
 
 from .models import Colegiado, Escuela, Especialidad, HistorialEducativo
 from .serializers import ColegiadoSerializer, EscuelaSerializer, EspecialidadSerializer, HistorialEducativoSerializer
-from .filters import HistorialEducativoFilter
+from .filters import HistorialEducativoFilter, ColegiadoFilter, EscuelaFilter, EspecialidadFilter
 
 
 # Vista de Escuela
 class EscuelaViewSet(viewsets.ViewSet):
     queryset = Escuela.objects.all()
     serializer_class = EscuelaSerializer
+
+    # Aplicamos los filtros
+    filter_backends = [DjangoFilterBackend]
+    filter_class = EscuelaFilter
+
+    allow_query_params = {
+        'nombre_escuela'
+    }
 
     # Metodos
     def filter_queryset(self, queryset):
@@ -42,10 +50,11 @@ class EscuelaViewSet(viewsets.ViewSet):
     )
     def list(self, request, *args, **kwargs):
         # Validar los parametros permitidos
-        if request.query_params:
-            return Response({'detail': 'No se permiten los parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
+        for param in request.query_params:
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
         
-        queryset = self.get_queryset()
+        queryset = self.filter_queryset(self.get_queryset())
         serializer =  self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -113,6 +122,14 @@ class EspecialidadViewSet(viewsets.ViewSet):
     queryset = Especialidad.objects.all()
     serializer_class = EspecialidadSerializer
 
+    # Aplicamos los filtros
+    filterset_class = EspecialidadFilter
+    filter_backends = [DjangoFilterBackend]
+
+    allow_query_params = {
+        'nombre_escuela', 'nombre_especialidad'
+    }
+
     # Metodos
     def filter_queryset(self, queryset):
         filterset = self.filterset_class(self.request.query_params, queryset=queryset)
@@ -146,10 +163,11 @@ class EspecialidadViewSet(viewsets.ViewSet):
     )
     def list(self, request, *args, **kwargs):
         # Validar los parametros permitidos
-        if request.query_params:
-            return Response({'detail': 'No se permiten los parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        queryset = self.get_queryset()
+        for param in request.query_params:
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
+
+        queryset = self.filter_queryset(self.get_queryset())
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -222,6 +240,15 @@ class ColegiadoViewSet(viewsets.ViewSet):
     queryset = Colegiado.objects.all()
     serializer_class = ColegiadoSerializer
 
+    # Aplicamos los filtros
+    filterset_class = ColegiadoFilter
+    filter_backends = [DjangoFilterBackend]
+
+    allow_query_params = {
+        'numero_colegiatura', 'dni_colegiado', 'apellido_paterno',
+        'estado'
+    }
+
     # Metodos
     def filter_queryset(self, queryset):
         filterset = self.filterset_class(self.request.query_params, queryset=queryset)
@@ -249,10 +276,11 @@ class ColegiadoViewSet(viewsets.ViewSet):
     )
     def list(self, request, *args, **kwargs):
         # Validar los parametros permitidos
-        if request.query_params:
-            return Response({'detail': 'No se permiten los parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
+        for param in request.query_params:
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
 
-        queryset = self.get_queryset()
+        queryset = self.filter_queryset(self.get_queryset())
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -319,6 +347,8 @@ class ColegiadoViewSet(viewsets.ViewSet):
 class HistorialEducativoViewSet(viewsets.ViewSet):
     queryset = HistorialEducativo.objects.all()
     serializer_class = HistorialEducativoSerializer
+    
+    # Aplicamos los filtros
     filterset_class = HistorialEducativoFilter
     filter_backends = [DjangoFilterBackend]
 
@@ -360,7 +390,7 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
     def list(self, request, *args, **kwargs):
         for param in request.query_params:
             if param not in self.allow_query_params:
-                return Response({'detail': f'Los parametros permitidos son {self.allow_query_params}'})
+                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
 
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.serializer_class(queryset, many=True)

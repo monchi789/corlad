@@ -1,15 +1,25 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .models import Categoria, Publicacion
+from .filters import CategoriaFilter, PublicacionFilter
 from .serializers import CategoriaSerializer, PublicacionSerializer
 
 # Create your views here.
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
+
+    # Aplicamos los filtros
+    filter_backends = [DjangoFilterBackend]
+    filter_class = CategoriaFilter
+
+    allow_query_params = {
+        'nombre_categoria'
+    }
 
     # Metodos
     def filter_queryset(self, queryset):
@@ -38,10 +48,11 @@ class CategoriaViewSet(viewsets.ModelViewSet):
     )
     def list(self, request, *args, **kwargs):
         # Validar los parametros permitidos
-        if request.query_params:
-            return Response({'detail': 'No se permiten los parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        queryset = self.get_queryset()
+        for param in request.query_params:
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
+
+        queryset = self.filter_queryset(self.get_queryset())
         serializer =  self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -109,6 +120,14 @@ class PublicacionViewSet(viewsets.ModelViewSet):
     queryset = Publicacion.objects.all()
     serializer_class = PublicacionSerializer
 
+    # Aplicamos los filtros
+    filter_backends = [DjangoFilterBackend]
+    filter_class = PublicacionFilter
+
+    allow_query_params = {
+        'titulo', 'fecha', 'categoria'
+    }
+
     # Metodos
     def filter_queryset(self, queryset):
         filterset = self.filterset_class(self.request.query_params, queryset=queryset)
@@ -136,10 +155,10 @@ class PublicacionViewSet(viewsets.ModelViewSet):
     )
     def list(self, request, *args, **kwargs):
         # Validar los parametros permitidos
-        if request.query_params:
-            return Response({'detail': 'No se permiten los parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
+        for param in request.query_params:
+            return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
         
-        queryset = self.get_queryset()
+        queryset = self.filter_queryset(self.get_queryset())
         serializer =  self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
