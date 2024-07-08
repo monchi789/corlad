@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import EstadoCuenta, Pago, MetodoPago, TipoPago
 from ..colegiado.models import Colegiado
-from aplicaciones.colegiado.serializer import ColegiadoSerializer
+from aplicaciones.colegiado.serializers import ColegiadoSerializer
 from django.db import transaction, IntegrityError
 from django.db.models import Q 
 

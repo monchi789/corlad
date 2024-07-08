@@ -23,14 +23,14 @@ class Especialidad(models.Model):
 class Colegiado(models.Model):
 
     SEXO =[
-        ('Masculino', 'M'),
-        ('Femenimo', 'F'),
-        ('Otro', 'O'),
+        ('M', 'Masculino'),
+        ('F', 'Femenino'),
+        ('O', 'Otro'),
     ]
 
     ESTADO_CIVIL = [
-        ('Casado', 'CASADO'),
-        ('Soltero', 'SOLTERO')
+        ('CASADO', 'Casado'),
+        ('SOLTERO', 'Soltero')
     ]
 
     nombre = models.CharField(max_length=100, blank=False, null=False, validators=[validar_espacio], default='')

@@ -2,15 +2,14 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
-from django.core.exceptions import ValidationError
 from drf_yasg import openapi
-from django.db import transaction, IntegrityError
 
 from .models import EstadoCuenta, Pago, MetodoPago, TipoPago
 from ..colegiado.models import Colegiado
-from .serializer import PagoSerializer, EstadoCuentaSerializer, MetodoPagoSerializer, TipoPagoSerializer
+from .serializers import PagoSerializer, EstadoCuentaSerializer, MetodoPagoSerializer, TipoPagoSerializer
 
 
+#TODO: Definir el metodo get por ID
 # Create your views here.
 class MetodoPagoViewSet(viewsets.ViewSet):
     queryset = MetodoPago.objects.all()
@@ -31,6 +30,7 @@ class MetodoPagoViewSet(viewsets.ViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+#TODO: Definir el metodo get por ID
 class TipoPagoViewSet(viewsets.ViewSet):
     queryset = TipoPago.objects.all()
     serializer_class = TipoPagoSerializer
@@ -49,6 +49,7 @@ class TipoPagoViewSet(viewsets.ViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+#TODO: Definir el metodo get por ID
 class PagoViewSet(viewsets.ViewSet):
     queryset = Pago.objects.all()
     serializer_class = PagoSerializer
@@ -65,13 +66,19 @@ class PagoViewSet(viewsets.ViewSet):
         try:
             return self.serializer_class(*args, **kwargs)
         except:
-            return Response({'detail': 'Error al obtener el sertializer'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'detail': 'Error al obtener el serializer'}, status=status.HTTP_404_NOT_FOUND)
 
     def perform_update(self, serializer):
         try:
             serializer.save()
         except:
             return Response({'detail': 'Error al actualizar'}, status=status.HTTP_400_BAD_REQUEST)
+        
+    def get_queryset(self):
+        try:
+            return self.queryset
+        except:
+            return Response({'detail': 'Error al obtener el queryset'}, status=status.HTTP_404_NOT_FOUND)
 
 
     @swagger_auto_schema(
@@ -86,6 +93,16 @@ class PagoViewSet(viewsets.ViewSet):
         queryset = self.queryset
         serializer = self.serializer_class(queryset, many=True)
         
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def retrieve(self, request, pk=None):
+        try:
+            instance = self.get_queryset().get(pk=pk)
+        except Pago.DoesNotExist:
+            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(instance)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -119,6 +136,7 @@ class PagoViewSet(viewsets.ViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
    
     
+#TODO: Definir el metodo get por ID
 class EstadoCuentaViewSet(viewsets.ViewSet):
     queryset = EstadoCuenta.objects.all()
     serializer_class = EstadoCuentaSerializer

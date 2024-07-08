@@ -3,9 +3,10 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from rest_framework import status
 from .models import PopUp, Slider
-from .serializer import PopUpSerializer, SliderSerializer
+from .serializers import PopUpSerializer, SliderSerializer
 
 # Create your views here.
+#TODO: Definir el metodo get por ID
 class PopUpViewSet(viewsets.ModelViewSet):
     queryset = PopUp.objects.all()
     serializer_class = PopUpSerializer
@@ -20,6 +21,7 @@ class PopUpViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+#TODO: Definir el metodo get por ID
 class SliderViewSet(viewsets.ModelViewSet):
     queryset = Slider.objects.all()
     serializer_class = SliderSerializer

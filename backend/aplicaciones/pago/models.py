@@ -54,6 +54,7 @@ class TipoPago(models.Model):
         return self.nombre_tipo_pago
 
 
+#TODO: Bloquear que no se pueda crear un pago sin antes tener un pago de tipo MATRICULA
 class Pago(models.Model):
     monto_pago = models.FloatField(default=0.00, validators=[MinValueValidator(0)])
     fecha_pago = models.DateField(null=False, blank=False, default=timezone.now)
