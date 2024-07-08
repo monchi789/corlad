@@ -16,8 +16,8 @@ class EscuelaViewSet(viewsets.ViewSet):
     serializer_class = EscuelaSerializer
 
     # Aplicamos los filtros
+    filterset_class = EscuelaFilter
     filter_backends = [DjangoFilterBackend]
-    filter_class = EscuelaFilter
 
     allow_query_params = {
         'nombre_escuela'

@@ -15,7 +15,7 @@ class CategoriaViewSet(viewsets.ModelViewSet):
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
-    filter_class = CategoriaFilter
+    filterset_class = CategoriaFilter
 
     allow_query_params = {
         'nombre_categoria'
@@ -122,7 +122,7 @@ class PublicacionViewSet(viewsets.ModelViewSet):
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
-    filter_class = PublicacionFilter
+    filterset_class = PublicacionFilter
 
     allow_query_params = {
         'titulo', 'fecha', 'categoria'

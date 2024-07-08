@@ -15,7 +15,7 @@ class PopUpViewSet(viewsets.ViewSet):
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
-    filter_class = PopUpFilter
+    filterset_class = PopUpFilter
 
     allow_query_params = {
         'estado'
@@ -121,7 +121,7 @@ class SliderViewSet(viewsets.ModelViewSet):
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
-    filter_class = SliderFilter
+    filterset_class = SliderFilter
 
     allow_query_params = {
         'estado'

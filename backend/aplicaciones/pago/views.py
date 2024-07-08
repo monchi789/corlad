@@ -18,7 +18,7 @@ class MetodoPagoViewSet(viewsets.ViewSet):
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
-    filter_class = MetodoPagoFilter
+    filterset_class = MetodoPagoFilter
 
     allow_query_params = {
         'nombre_metodo_pago'
@@ -125,7 +125,7 @@ class TipoPagoViewSet(viewsets.ViewSet):
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
-    filter_class = TipoPagoFilter
+    filterset_class = TipoPagoFilter
 
     allow_query_params = {
         'nombre_tipo_pago'
@@ -232,7 +232,7 @@ class PagoViewSet(viewsets.ViewSet):
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
-    filter_class = PagoFilter
+    filterset_class = PagoFilter
 
     allow_query_params = {
         'apellido_paterno', 'dni_colegiado', 'numero_colegiatura',
@@ -351,7 +351,7 @@ class EstadoCuentaViewSet(viewsets.ViewSet):
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
-    filter_class = EstadoCuentaFilter
+    filterset_class = EstadoCuentaFilter
 
     allow_query_params = {
         'apellido_paterno', 'dni_colegiado', 'numero_colegiatura'
