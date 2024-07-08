@@ -15,19 +15,98 @@ class MetodoPagoViewSet(viewsets.ViewSet):
     queryset = MetodoPago.objects.all()
     serializer_class = MetodoPagoSerializer
 
+    # Metodos
+    def filter_queryset(self, queryset):
+        filterset = self.filterset_class(self.request.query_params, queryset=queryset)
+        return filterset.qs
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        try:
+            return MetodoPago.objects.get(pk=pk)
+        except MetodoPago.DoesNotExist:
+            return Response({'detail': 'No se encontro el ID'}, status=status.HTTP_404_NOT_FOUND)
+
+    def get_serializer(self, *args, **kwargs):
+        return self.serializer_class(*args, **kwargs)
+    
+    def get_queryset(self):
+        return MetodoPago.objects.all()
+
+    # Metodos GET, UPDATE, CREATE y DELETE
+
+    # Metodo GET
     @swagger_auto_schema(
         operation_id='Listar metodos de pago',
-        responses={200: openapi.Response(description='Lista de los metodos de pago')}
+        responses={200: openapi.Response(description='Lista de metodos de pago')}
     )
     def list(self, request, *args, **kwargs):
         # Validar los parametros permitidos
         if request.query_params:
-            return Response({'detail': 'No se permiten los  parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'No se permiten los parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
         
-        queryset = self.queryset
-        serializer = self.serializer_class(queryset, many=True)
-
+        queryset = self.get_queryset()
+        serializer =  self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Metodo GET por ID
+    @swagger_auto_schema(
+        operation_id='Obtener un Metodo de Pago',
+        responses={200: openapi.Response(description='Detalle de un Metodo de Pago')}
+    )
+    def retrieve(self, request, pk=None):
+        try:
+            instance = self.get_queryset().get(pk=pk)
+        except MetodoPago.DoesNotExist:
+            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(instance)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Metodo CREATE
+    @swagger_auto_schema(
+        operation_id='Crear un metodo de pago',
+        request_body=MetodoPagoSerializer,
+        responses={201: openapi.Response(description='Metodo de pago creado')}
+    )
+    def create(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Metodo UPDATE
+    @swagger_auto_schema(
+        operation_id='Actualizar un Metodo de Pago',
+        request_body=MetodoPagoSerializer,
+        responses={200: openapi.Response(description='Metodo de pago Actualizado')}
+    )
+    def update(self, request, pk=None):
+        try:
+            instance = self.get_queryset().get(pk=pk)
+        except MetodoPago.DoesNotExist:
+            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = self.get_serializer(instance, data=request.data, partial=False)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Metodo DELETE
+    @swagger_auto_schema(
+        operation_id='Eliminar un Metodo de Pago',
+        responses={204: openapi.Response(description='Metodo de Pago eliminado')}
+    )
+    def destroy(self, request, pk=None):
+        try:
+            instance = self.get_queryset().get(pk=pk)
+            instance.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except MetodoPago.DoesNotExist:
+            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
 
 #TODO: Definir el metodo get por ID
@@ -35,18 +114,98 @@ class TipoPagoViewSet(viewsets.ViewSet):
     queryset = TipoPago.objects.all()
     serializer_class = TipoPagoSerializer
 
+    # Metodos
+    def filter_queryset(self, queryset):
+        filterset = self.filterset_class(self.request.query_params, queryset=queryset)
+        return filterset.qs
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        try:
+            return TipoPago.objects.get(pk=pk)
+        except TipoPago.DoesNotExist:
+            return Response({'detail': 'No se encontro el ID'}, status=status.HTTP_404_NOT_FOUND)
+
+    def get_serializer(self, *args, **kwargs):
+        return self.serializer_class(*args, **kwargs)
+    
+    def get_queryset(self):
+        return TipoPago.objects.all()
+
+    # Metodos GET, UPDATE, CREATE y DELETE
+
+    # Metodo GET
     @swagger_auto_schema(
-        operation_id='Listar tipos de pagos',
-        responses={200: openapi.Response(description='Lista del tipo de pago')}
+        operation_id='Listar Tipo de Pago',
+        responses={200: openapi.Response(description='Lista de Tipo de Pagos')}
     )
     def list(self, request, *args, **kwargs):
         # Validar los parametros permitidos
         if request.query_params:
             return Response({'detail': 'No se permiten los parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
         
-        queryset = self.queryset
-        serializer = self.serializer_class(queryset, many=True)
+        queryset = self.get_queryset()
+        serializer =  self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Metodo GET por ID
+    @swagger_auto_schema(
+        operation_id='Obtener un Metodo de Pago',
+        responses={200: openapi.Response(description='Detalle de un Metodo de Pago')}
+    )
+    def retrieve(self, request, pk=None):
+        try:
+            instance = self.get_queryset().get(pk=pk)
+        except TipoPago.DoesNotExist:
+            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(instance)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Metodo CREATE
+    @swagger_auto_schema(
+        operation_id='Crear un Metodo de Pago',
+        request_body=TipoPagoSerializer,
+        responses={201: openapi.Response(description='Metodo de Pago creado')}
+    )
+    def create(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Metodo UPDATE
+    @swagger_auto_schema(
+        operation_id='Actualizar un Metodo de Pago',
+        request_body=TipoPagoSerializer,
+        responses={200: openapi.Response(description='Metodo de Pago Actualizado')}
+    )
+    def update(self, request, pk=None):
+        try:
+            instance = self.get_queryset().get(pk=pk)
+        except TipoPago.DoesNotExist:
+            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = self.get_serializer(instance, data=request.data, partial=False)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Metodo DELETE
+    @swagger_auto_schema(
+        operation_id='Eliminar un Metodo de Pago',
+        responses={204: openapi.Response(description='Metodo de Pago Eliminado')}
+    )
+    def destroy(self, request, pk=None):
+        try:
+            instance = self.get_queryset().get(pk=pk)
+            instance.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except TipoPago.DoesNotExist:
+            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
 
 #TODO: Definir el metodo get por ID
@@ -80,9 +239,11 @@ class PagoViewSet(viewsets.ViewSet):
         except:
             return Response({'detail': 'Error al obtener el queryset'}, status=status.HTTP_404_NOT_FOUND)
 
+    # Metodos GET, UPDATE, CREATE y DELETE
 
+    # Metodo GET
     @swagger_auto_schema(
-        operation_id='Lista de pagos',
+        operation_id='Listar los Pagos',
         responses={200: openapi.Response(description='Lista de Pagos de los colegiados')}    
     )
     def list(self, request, *args, **kwargs):
@@ -95,6 +256,11 @@ class PagoViewSet(viewsets.ViewSet):
         
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    # Metodo GET por ID
+    @swagger_auto_schema(
+        operation_id='Obtener un Pago',
+        responses={200: openapi.Response(description='Detalle de un Pago')}    
+    )
     def retrieve(self, request, pk=None):
         try:
             instance = self.get_queryset().get(pk=pk)
@@ -105,10 +271,22 @@ class PagoViewSet(viewsets.ViewSet):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    # Metodo CREATE
+    @swagger_auto_schema(
+        operation_id='Crear un Pago',
+        request_body=PagoSerializer,
+        responses={201: openapi.Response(description='Pago creado')}
+    )
+    def create(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(
-        operation_id='Actualizar pagos',
-        responses={201: openapi.Response(description='Actualizar un pago')}
+        operation_id='Actualizar un Pago',
+        responses={201: openapi.Response(description='Pago actualizado')}
     )
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -141,15 +319,95 @@ class EstadoCuentaViewSet(viewsets.ViewSet):
     queryset = EstadoCuenta.objects.all()
     serializer_class = EstadoCuentaSerializer
 
+    # Metodos
+    def filter_queryset(self, queryset):
+        filterset = self.filterset_class(self.request.query_params, queryset=queryset)
+        return filterset.qs
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        try:
+            return EstadoCuenta.objects.get(pk=pk)
+        except EstadoCuenta.DoesNotExist:
+            return Response({'detail': 'No se encontro el ID'}, status=status.HTTP_404_NOT_FOUND)
+
+    def get_serializer(self, *args, **kwargs):
+        return self.serializer_class(*args, **kwargs)
+    
+    def get_queryset(self):
+        return EstadoCuenta.objects.all()
+
+    # Metodos GET, UPDATE, CREATE y DELETE
+
+    # Metodo GET
     @swagger_auto_schema(
-        operation_id='Listar estado de cuenttas de colegiados',
-        responses={200: openapi.Response(description='Lista de los estado de cuenta de los colegiados')}
+        operation_id='Listar Estado de Cuentas',
+        responses={200: openapi.Response(description='Lista de Estados de Cuentas')}
     )
     def list(self, request, *args, **kwargs):
         # Validar los parametros permitidos
         if request.query_params:
             return Response({'detail': 'No se permiten los parametros de la solicitud'}, status=status.HTTP_400_BAD_REQUEST)
-
-        estado_cuentas = self.queryset
-        serializer = self.serializer_class(estado_cuentas, many=True)
+        
+        queryset = self.get_queryset()
+        serializer =  self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Metodo GET por ID
+    @swagger_auto_schema(
+        operation_id='Obtener un Estado de Cuenta',
+        responses={200: openapi.Response(description='Detalle de un Estado de Cuenta')}
+    )
+    def retrieve(self, request, pk=None):
+        try:
+            instance = self.get_queryset().get(pk=pk)
+        except EstadoCuenta.DoesNotExist:
+            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(instance)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Metodo CREATE
+    @swagger_auto_schema(
+        operation_id='Crear un Estado de Cuenta',
+        request_body=EstadoCuentaSerializer,
+        responses={201: openapi.Response(description='Estado de Cuenta creado')}
+    )
+    def create(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Metodo UPDATE
+    @swagger_auto_schema(
+        operation_id='Actualizar un Estado de Cuenta',
+        request_body=EstadoCuentaSerializer,
+        responses={200: openapi.Response(description='Estado de Cuenta actualizado')}
+    )
+    def update(self, request, pk=None):
+        try:
+            instance = self.get_queryset().get(pk=pk)
+        except EstadoCuenta.DoesNotExist:
+            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = self.get_serializer(instance, data=request.data, partial=False)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Metodo DELETE
+    @swagger_auto_schema(
+        operation_id='Eliminar un Estado de Cuenta',
+        responses={204: openapi.Response(description='Estado de Cuenta eliminado')}
+    )
+    def destroy(self, request, pk=None):
+        try:
+            instance = self.get_queryset().get(pk=pk)
+            instance.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except EstadoCuenta.DoesNotExist:
+            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
