@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'aplicaciones.contenido',
     'aplicaciones.pago',
     'aplicaciones.publicacion',
+    'aplicaciones.emails',
 
     # Aplicaciones de terceros
     'rest_framework',

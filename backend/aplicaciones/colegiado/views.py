@@ -6,8 +6,8 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
 from .models import Colegiado, Escuela, Especialidad, HistorialEducativo
-from .serializers import ColegiadoSerializer, EscuelaSerializer, EspecialidadSerializer, HistorialEducativoSerializer
-from .filters import HistorialEducativoFilter, ColegiadoFilter, EscuelaFilter, EspecialidadFilter
+from .serializers import ColegiadoSerializer, EscuelaSerializer, EspecialidadSerializer, HistorialEducativoSerializer, ConsultarHabilidadSerializer
+from .filters import HistorialEducativoFilter, ColegiadoFilter, EscuelaFilter, EspecialidadFilter, ConsultarHabilidadFilter
 
 
 # Vista de Escuela
@@ -459,3 +459,39 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except HistorialEducativo.DoesNotExist:
             return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+# Consultar Habilidad
+class ConsultarHabilidadViewSet(viewsets.ViewSet):
+    queryset = HistorialEducativo.objects.all()
+    serializer_class = ConsultarHabilidadSerializer
+    
+    # Aplicamos los filtros
+    filterset_class = ConsultarHabilidadFilter
+    filter_backends = [DjangoFilterBackend]
+
+    allow_query_params = {'dni_colegiado', 'numero_colegiatura', 'apellido_paterno', 'apellido_materno'}
+    
+    # Metodos
+    def filter_queryset(self, queryset):
+        filterset = self.filterset_class(self.request.query_params, queryset=queryset)
+        return filterset.qs
+
+    def get_serializer(self, *args, **kwargs):
+        return self.serializer_class(*args, **kwargs)
+    
+    def get_queryset(self):
+        return HistorialEducativo.objects.all()
+
+    @swagger_auto_schema(
+        operation_id='Listar Habilidades Colegiados',
+        responses={200: openapi.Response(description='Lista de habilidades  de colegiados')}
+    )
+    def list(self, request, *args, **kwargs):
+        # Validar los parametros permitidos
+        for param in request.query_params:
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
+        
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer =  self.serializer_class(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
