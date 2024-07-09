@@ -156,8 +156,9 @@ class PublicacionViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         # Validar los parametros permitidos
         for param in request.query_params:
-            return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
-        
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
+                
         queryset = self.filter_queryset(self.get_queryset())
         serializer =  self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
