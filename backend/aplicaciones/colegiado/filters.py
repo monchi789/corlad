@@ -51,4 +51,3 @@ class ConsultarHabilidadFilter(filters.FilterSet):
     class Meta:
         model = HistorialEducativo
         fields = ['dni_colegiado', 'numero_colegiatura', 'apellido_paterno', 'apellido_materno']
-

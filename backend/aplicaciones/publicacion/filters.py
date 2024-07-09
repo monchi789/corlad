@@ -13,7 +13,7 @@ class CategoriaFilter(filters.FilterSet):
 class PublicacionFilter(filters.FilterSet):
     titulo = filters.CharFilter(field_name='titulo', lookup_expr='startswith')
     fecha = filters.CharFilter(field_name='fecha', lookup_expr='iexact')
-    categoria = filters.CharFilter(field_name='id_categoria_nombre_categoria')
+    categoria = filters.CharFilter(field_name='id_categoria__nombre_categoria')
 
     class Meta:
         model = Publicacion

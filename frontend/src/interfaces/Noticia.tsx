@@ -1,3 +1,5 @@
+import { defaultCategoria } from "./Categoria";
+
 export interface Noticia {
   id: number;
   titulo: string;
@@ -9,4 +11,14 @@ export interface Noticia {
     id: number;
     nombre_categoria: string;
   };
+}
+
+export const defaultNoticia = {
+  id: 0,
+  titulo: "",
+  contenido: "",
+  fecha_publicacion: "",
+  imagen_publicacion: "",
+  documento: "",
+  id_categoria: defaultCategoria
 }
