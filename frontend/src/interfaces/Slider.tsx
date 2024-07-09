@@ -1,4 +1,4 @@
-interface Slider {
+export interface Slider {
   id: number,
   imagen_1: string,
   imagen_2: string,

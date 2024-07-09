@@ -22,16 +22,16 @@ class Especialidad(models.Model):
 
 class Colegiado(models.Model):
 
-    SEXO = {
-        'Masculino': 'M',
-        'Femenimo': 'F',
-        'Otro': 'O'
-    }
+    SEXO =[
+        ('M', 'Masculino'),
+        ('F', 'Femenino'),
+        ('O', 'Otro'),
+    ]
 
-    ESTADO_CIVIL = {
-        'Casado': 'CASADO',
-        'Soltero': 'SOLTERO'
-    }
+    ESTADO_CIVIL = [
+        ('CASADO', 'Casado'),
+        ('SOLTERO', 'Soltero')
+    ]
 
     nombre = models.CharField(max_length=100, blank=False, null=False, validators=[validar_espacio], default='')
     apellido_paterno = models.CharField(max_length=100, blank=False, null=False, validators=[validar_espacio], default='')
@@ -39,14 +39,14 @@ class Colegiado(models.Model):
     celular = models.CharField(max_length=9, blank=False, null=False, validators=[validar_numero, validar_espacio], default='')
     correo = models.EmailField(blank=False, null=False, validators=[EmailValidator], default='')
     estado = models.BooleanField(blank=False, null=False, default=False)
-    foto_colegiado = models.ImageField(upload_to='foto_colegiados/', null=False, blank=False, default='')
+    foto_colegiado = models.ImageField(upload_to='foto_colegiados/', null=False, blank=True, default='')
     dni_colegiado = models.CharField(max_length=8, blank=False, null=False, unique=True, validators=[validar_numero, validar_espacio], default='')
     numero_colegiatura = models.CharField(max_length=250, blank=False, null=False, unique=True, validators=[validar_numero, validar_espacio], default='')
     numero_regulacion = models.CharField(max_length=250, blank=False, null=False, unique=True, validators=[validar_numero, validar_espacio], default='')
     fecha_colegiatura = models.DateField(null=False, blank=False, default=timezone.now)
-    sexo_colegiado = models.CharField(max_length=9, choices=SEXO, null=False, blank=False, default=SEXO['Otro'])
+    sexo_colegiado = models.CharField(max_length=9, choices=SEXO, null=False, blank=False, default='O')
     fecha_nacimiento = models.DateField(null=False, blank=False, default=timezone.now)
-    estado_civil = models.CharField(max_length=7, null=False, blank=False, default=ESTADO_CIVIL['Soltero'])
+    estado_civil = models.CharField(max_length=7, null=False, blank=False, choices=ESTADO_CIVIL, default='SOLTERO')
     direccion = models.CharField(max_length=300, blank=False, null=False, default='')
 
     def __str__(self) -> str:

@@ -1,10 +1,9 @@
 import { Header } from "../../shared/components/Header";
 import logo_corlad from '../../assets/corlad_logo.png'
-import Slider from "./slider/Slider";
-import Card from "../shared/Cards";
+import { Card } from "../shared/Cards";
 import { Link } from "react-router-dom";
 import 'react-image-gallery/styles/css/image-gallery.css'
-import Carrousel from "./carousel/Carousel";
+import Carrousel from "./../shared/Carousel";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Footer } from "../../shared/components/Footer";
@@ -15,6 +14,8 @@ import { useEffect, useState } from "react";
 import { Servicios } from "./servicios/Servicios";
 import { PopUps } from "../shared/PopUps";
 import background from "../../assets/machupicchu.jpg"
+import { Gallery } from "../shared/Gallery";
+import logo_corlad_blanco from '../../assets/corlad_logo_blanco.png'
 
 export function Inicio() {
 
@@ -61,8 +62,19 @@ export function Inicio() {
 
       <Header />
 
-      <Slider />
-
+      <div className='relative mt-28 xl:mt-32'>
+      <div className='container flex flex-col md:flex-row mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-center w-full justify-center items-center'>
+        <img className='w-4/6 md:w-2/4 xl:w-2/6' src={logo_corlad_blanco} alt="Logotipo corlad" />
+        <div className='w-2/4 mt-5 md:my-auto md:me-24 flex flex-col justify-center items-center'>
+          <h1 className="text-white text-2xl md:text-3xl lg:text-5xl xl:text-5xl font-bold font-mukta leading-loose md:leading-loose lg:leading-loose xl:leading-loose">
+            COLEGIO REGIONAL DE LICENCIADOS EN ADMINISTRACIÓN <br />
+            <span className='text-2xl lg:text-4xl'>CORLAD - CUSCO</span>
+          </h1>
+        </div>
+      </div>
+      <Gallery />
+      </div>
+      
       <div className="container mx-auto md:px-10">
         {/*INFORMACION INSTITUCIONAL*/}
         <div className="flex md:flex-col lg:flex-row items-center my-24 mx-auto w-4/5">
@@ -113,7 +125,7 @@ export function Inicio() {
           <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-24 font-nunito">NOTICIAS</h3>
           <div className="flex flex-col xl:flex-row space-y-10 xl:space-y-0 xl:space-x-14 mb-12">
             {data.map((noticia, index) => (
-              <Card key={index} imageSource={noticia.imagen_publicacion} imageAlt="" cardTitle={noticia.titulo} cardText={limitarContenido(noticia.contenido, 30)} cardUrl="" />
+              <Card key={index} imageSource={import.meta.env.VITE_API_URL_ALTER+noticia.imagen_publicacion} imageAlt="" cardTitle={noticia.titulo} cardText={limitarContenido(noticia.contenido, 30)} noticiaId={0} />
             ))}
           </div>
           <Link to={'/noticias'} className="font-extrabold bg-[#a67102] text-white px-8 py-1 rounded-lg font-nunito">Ver Más</Link>

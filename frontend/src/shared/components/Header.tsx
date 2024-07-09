@@ -6,7 +6,7 @@ import { FiAlignJustify } from "react-icons/fi";
 
 
 export function Header() {
-  const [activeLink, setActiveLink] = useState<string>('inicio');
+  const [activeLink, setActiveLink] = useState<string>('');
   const location = useLocation();
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export function Header() {
       '/contactanos': 'contactanos',
       '/consultar-habilidad': 'consultar-habilidad'
     };
-    setActiveLink(pathToLinkName[currentPath] || 'inicio');
+    setActiveLink(pathToLinkName[currentPath]);
   }, [location]);
 
   const handleLinkClick = (link: string) => {
@@ -79,8 +79,6 @@ export function Header() {
         </NavLink>
       </ul>
     </div>
-
-
   </>
 
   return (
@@ -125,7 +123,7 @@ export function Header() {
                   className={({ isActive }) => isActive || activeLink === 'contactanos' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}
                   onClick={() => handleLinkClick('contactanos')}
                 >
-                  Contáctanos
+                  Contáctenos
                 </NavLink>
               </li>
             </ul>

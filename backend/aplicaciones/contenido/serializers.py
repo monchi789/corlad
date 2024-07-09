@@ -5,10 +5,10 @@ from .models import PopUp, Slider
 class PopUpSerializer(serializers.ModelSerializer):
     class Meta:
         model = PopUp
-        fields = ['id', 'imagen', 'estado_popup']
+        fields = '__all__'
     
 
 class SliderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Slider
-        fields = ['id', 'imagen_1', 'imagen_2', 'imagen_3', 'imagen_4', 'estado_slider']
+        fields = '__all__'

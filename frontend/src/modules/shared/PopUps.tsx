@@ -5,6 +5,7 @@ import { getPopUp } from "../../shared/api/popup.api";
 
 export function PopUps() {
 
+  const [data, setData] = useState<PopUp[]>([]);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -28,7 +29,6 @@ export function PopUps() {
     </div>
   )
 
-  const [data, setData] = useState<PopUp[]>([]);
   useEffect(() => {
     async function cargarPopUp() {
       const res = await getPopUp();
