@@ -13,6 +13,7 @@ class EmailAPIView(APIView):
             data = JSONParser().parse(request)
             
             # Extrae los campos del mensaje
+            asunto = data.get('asunto', '')
             nombre = data.get('nombre', '')
             correo = data.get('correo', '')
             celular = data.get('celular', '')
@@ -24,7 +25,7 @@ class EmailAPIView(APIView):
             from_email = correo  
 
             # Envia el email
-            send_mail(subject, message, from_email, ['salazarsergio1082@gmail.com'])
+            send_mail(subject, message, from_email, ['corladcusco043@gmail.com'])
             
             # Retorna un mensaje de confirmacion
             return Response({'message': 'Correo Enviado con Exito'}, status=status.HTTP_200_OK)
