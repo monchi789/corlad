@@ -18,3 +18,4 @@ EXPOSE 5173
 
 # Comando para ejecutar la aplicación en modo de desarrollo
 CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+

@@ -3,3 +3,4 @@ data
 servers.json
 .env
 .env.prod
+.env.local
