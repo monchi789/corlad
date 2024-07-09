@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import logo_banner from '../../assets/corlad_banner.jpg'
 import { Footer } from '../../shared/components/Footer'
 import { Header } from '../../shared/components/Header'
 import { useEffect, useState } from 'react';
