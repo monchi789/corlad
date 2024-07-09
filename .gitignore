@@ -2,3 +2,4 @@ mediafiles
 data
 servers.json
 .env
+.env.prod
