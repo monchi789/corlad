@@ -67,3 +67,19 @@ class HistorialEducativoSerializer(serializers.ModelSerializer):
 
         return instance
 
+# Serializer para una vista personalizada
+
+# Colegiado
+class ColegiadoDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Colegiado
+        fields = ['id', 'nombre', 'apellido_paterno', 'apellido_materno', 'correo', 'numero_colegiatura', 'estado', 'foto_colegiado']
+
+
+class ConsultarHabilidadSerializer(serializers.ModelSerializer):
+    id_especialidad = EspecialidadSerializer()
+    id_colegiado = ColegiadoDetailSerializer()
+
+    class Meta:
+        model = HistorialEducativo
+        fields = ['id_colegiado', 'id_especialidad']

@@ -7,13 +7,13 @@ import { useLocation } from 'react-router-dom';
 
 export function Gallery() {
   const [data, setData] = useState<Slider[]>([]);
-  const location = useLocation(); // Hook to get current location
-  const currentPath = location.pathname; // Get current path
+  const location = useLocation();
+  const currentPath = location.pathname; 
 
   useEffect(() => {
     async function cargarSliders() {
       const res = await getSlider();
-      const popup: Slider[] = res.data.map((element: Slider) => ({
+      const slider: Slider[] = res.data.map((element: Slider) => ({
         id: element.id,
         imagen_1: element.imagen_1,
         imagen_2: element.imagen_2,
@@ -21,26 +21,28 @@ export function Gallery() {
         imagen_4: element.imagen_4,
         estado_slider: element.estado_slider
       }))
-      setData(popup)
+      setData(slider)
     }
     cargarSliders()
+
   }, [])
+  console.log(data)
 
-  const popUpsActivo = data.filter(item => item.estado_slider)
+  const SliderActivo = data.filter(item => item.estado_slider)
 
 
-  let dataSlider = popUpsActivo.flatMap(element => [
+  let dataSlider = SliderActivo.flatMap(element => [
     {
-      original: element.imagen_1
+      original: import.meta.env.VITE_API_URL_ALTER+element.imagen_1
     },
     {
-      original: element.imagen_2
+      original: import.meta.env.VITE_API_URL_ALTER+element.imagen_2
     },
     {
-      original: element.imagen_3
+      original: import.meta.env.VITE_API_URL_ALTER+element.imagen_3
     },
     {
-      original: element.imagen_4
+      original: import.meta.env.VITE_API_URL_ALTER+element.imagen_4
     }
   ]);
 

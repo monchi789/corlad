@@ -1,6 +1,6 @@
 import { Header } from "../../shared/components/Header";
 import logo_corlad from '../../assets/corlad_logo.png'
-import Card from "../shared/Cards";
+import { Card } from "../shared/Cards";
 import { Link } from "react-router-dom";
 import 'react-image-gallery/styles/css/image-gallery.css'
 import Carrousel from "./../shared/Carousel";
@@ -125,7 +125,7 @@ export function Inicio() {
           <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-24 font-nunito">NOTICIAS</h3>
           <div className="flex flex-col xl:flex-row space-y-10 xl:space-y-0 xl:space-x-14 mb-12">
             {data.map((noticia, index) => (
-              <Card key={index} imageSource={noticia.imagen_publicacion} imageAlt="" cardTitle={noticia.titulo} cardText={limitarContenido(noticia.contenido, 30)} cardUrl="" />
+              <Card key={index} imageSource={import.meta.env.VITE_API_URL_ALTER+noticia.imagen_publicacion} imageAlt="" cardTitle={noticia.titulo} cardText={limitarContenido(noticia.contenido, 30)} noticiaId={0} />
             ))}
           </div>
           <Link to={'/noticias'} className="font-extrabold bg-[#a67102] text-white px-8 py-1 rounded-lg font-nunito">Ver Más</Link>
