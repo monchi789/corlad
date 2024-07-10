@@ -1,5 +1,5 @@
 import { Header } from "../../shared/components/Header";
-import colegiado from "../../assets/corlad_logo.png"
+import colegiado from "../../assets/person_perfil.webp"
 import { Dropdown } from 'primereact/dropdown';
 import { useState } from "react";
 import { getColegiadoByFilters } from "../../shared/api/colegiado.api";
@@ -99,36 +99,35 @@ export function ConsultarColegiado() {
           <img className="w-1/2 lg:w-1/4 mx-auto my-10 lg:my-0 lg:mx-24 rounded" src={colegiado} alt="Foto del colegiado" />
           <div className="w-full flex flex-col md:flex-row justify-centerspace-x-5 items-start me-24">
             <div className="w-full flex flex-col space-y-5 lg:space-y-10 px-5 pb-5 lg:pb-0">
-              <div>
+              <div className="space-y-2">
                 <p className="text-[#a67102] font-semibold">Nombres</p>
-                <p>{colegiadoData.id_colegiado.nombre}</p>
+                <p>{colegiadoData.id_colegiado.nombre || <br/> }</p>
               </div>
-              <div>
+              <div className="space-y-2">
                 <p className="text-[#a67102] font-semibold">Apellidos</p>
-                <p>{colegiadoData.id_colegiado.apellido_paterno+colegiadoData.id_colegiado.apellido_materno}</p>
+                <p>{colegiadoData.id_colegiado.apellido_paterno+colegiadoData.id_colegiado.apellido_materno || <br/>}</p>
               </div>
-              <div>
+              <div className="space-y-2">
                 <p className="text-[#a67102] font-semibold">Número de colegiatura</p>
-                <p>{colegiadoData.id_colegiado.numero_colegiatura}</p>
+                <p>{colegiadoData.id_colegiado.numero_colegiatura || <br/>}</p>
               </div>
-              <div>
+              <div className="space-y-2">
                 <p className="text-[#a67102] font-semibold">Estado</p>
-                <p>{colegiadoData.id_colegiado.estado}</p>
+                <p>{colegiadoData.id_colegiado.estado ? "Habilitado" : "No Habilitado"}</p>
               </div>
             </div>
             <div className="w-full flex flex-col space-y-5 lg:space-y-10 px-5 pb-5 lg:pb-0">
-              <div>
+              <div className="space-y-2">
                 <p className="text-[#a67102] font-semibold">Correo electrónico</p>
-                <p>{colegiadoData.id_colegiado.correo}</p>
+                <p>{colegiadoData.id_colegiado.correo || <br/>}</p>
               </div>
-
-              <div>
+              <div className="space-y-2">
                 <p className="text-[#a67102] font-semibold">Capítulo</p>
-                <p>{colegiadoData.id_especialidad.id_escuela.nombre_escuela}</p>
+                <p>{colegiadoData.id_especialidad.id_escuela.nombre_escuela || <br/>}</p>
               </div>
-              <div>
+              <div className="space-y-2">
                 <p className="text-[#a67102] font-semibold">Sub especialidad</p>
-                <p>{colegiadoData.id_especialidad.nombre_especialidad}</p>
+                <p>{colegiadoData.id_especialidad.nombre_especialidad || <br/>}</p>
               </div>
             </div>
           </div>

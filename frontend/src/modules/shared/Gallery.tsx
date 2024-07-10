@@ -26,7 +26,6 @@ export function Gallery() {
     cargarSliders()
 
   }, [])
-  console.log(data)
 
   const SliderActivo = data.filter(item => item.estado_slider)
 
@@ -48,13 +47,13 @@ export function Gallery() {
 
   const renderImageInicio = (item: any) => {
     return (
-      <img src={item.original} alt="" className="h-[750px] w-full object-cover brightness-[0.40]" />
+      <img src={item.original} alt="" className="h-[750px] w-full object-cover brightness-[0.40] cursor-default" />
     );
   };
 
   const renderImageNosotros = (item: any) => {
     return (
-      <img src={item.original} alt="" className="h-[750px] w-full object-cover" />
+      <img src={item.original} alt="" className="h-[750px] w-full object-cover cursor-default" />
     );
   };
 

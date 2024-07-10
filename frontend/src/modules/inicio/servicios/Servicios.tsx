@@ -3,6 +3,7 @@ import { TbCertificate } from "react-icons/tb";
 import { TbSchool } from "react-icons/tb";
 import { HiOutlineNewspaper } from "react-icons/hi";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 export function Servicios() {
   return (
@@ -15,10 +16,12 @@ export function Servicios() {
           CONSULTAR <br /> COLEGIATURA
         </h3>
         <p className="font-didact mt-auto mb-5">Consulta tu información y tu estado de colegiatura.</p>
+        <Link to={"/consultar-habilidad"}>
         <button className="mt-auto bg-[#a67102] text-white py-2 px-4 rounded-lg mx-auto font-mukta flex items-center justify-center space-x-2">
           <span>Más información</span>
           <FaArrowRightLong />
         </button>
+        </Link>
       </div>
 
       <div className="flex flex-col w-full xl:w-1/3 py-8 lg:px-8 bg-[#F0F0F0] relative pt-16 rounded-3xl">
@@ -51,11 +54,12 @@ export function Servicios() {
         </div>
         <h3 className="font-extrabold text-xl my-5 font-nunito">NOTICIAS</h3>
         <p className="font-didact mt-auto mb-5">Mantente informado sobre nuestra institución y del sector profesional.</p>
+        <Link to={"/noticias"}>
         <button className="mt-auto bg-[#a67102] text-white py-2 px-4 rounded-lg mx-auto font-mukta flex items-center justify-center space-x-2">
           <span>Más información</span>
           <FaArrowRightLong />
         </button>
-
+        </Link>
       </div>
     </div>
 

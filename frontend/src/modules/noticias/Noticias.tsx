@@ -86,16 +86,16 @@ export function Noticias() {
       <Header />
       <div className="container flex flex-col my-48 mx-auto">
         <h1 className="text-4xl text-[#a67102] font-extrabold font-nunito text-center mb-24">NOTICIAS</h1>
-        <div className="flex flex-row mx-auto justify-center">
+        <div className="flex flex-col lg:flex-row mx-auto justify-center">
           <div className="flex flex-col w-1/6 mx-10 items-start px-5">
-            <p className="font-nunito font-extrabold text-2xl text-[#a67102] mb-10">Categorías</p>
+            <p className="font-nunito font-extrabold text-2xl text-[#00330A] mb-10">Categorías</p>
             <div className="flex flex-col items-start space-y-5">
               {categoriaData.map((element, index) => (
                 <button key={index} className="py-5" onClick={() => handleCategoriaClick(element.nombre_categoria)}>{element.nombre_categoria}</button>
               ))}
             </div>
           </div>
-          <div className="w-4/6 mx-5 space-y-10 mb-24">
+          <div className="lg:w-4/6 mx-5 space-y-10 mb-24">
             {noticiasList.map((noticia, index) => (
               <div key={index}>
                 <HorizontalCard 
