@@ -7,3 +7,6 @@ media/
 .env
 static
 .env.prod
+
+# Desarrollo
+Dockerfile

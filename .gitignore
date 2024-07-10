@@ -1,3 +1,6 @@
 mediafiles
 data
 servers.json
+
+# Desarrollo
+docker-compose.yml
