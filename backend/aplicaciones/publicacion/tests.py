@@ -7,6 +7,7 @@ from django.utils import timezone
 class CategoriaTestCase(TestCase):
     '''Setup inicial para CategoriaTestCase'''
     def setUp(self):
+        ''' Configura una categoría inicial para las pruebas '''
         self.categoria = Categoria.objects.create(nombre_categoria='Noticias')
 
     def test_categoria_nombre(self):
@@ -19,6 +20,7 @@ class CategoriaTestCase(TestCase):
 
     def test_categoria_nombre_unico(self):
         '''Categoria no puede tener nombres duplicados'''
+        ''' Intenta crear una categoría con un nombre duplicado y verifica que se lance un ValidationError '''
         with self.assertRaises(ValidationError):
             categoria_duplicada = Categoria(nombre_categoria='Noticias')
             categoria_duplicada.full_clean()  # Verifica las validaciones
@@ -28,6 +30,7 @@ class CategoriaTestCase(TestCase):
 class PublicacionTestCase(TestCase):
     '''Setup inicial para PublicacionTestCase'''
     def setUp(self):
+        ''' Configura una categoría y una publicación inicial para las pruebas '''
         self.categoria = Categoria.objects.create(nombre_categoria='Noticias')
         self.publicacion = Publicacion.objects.create(
             titulo='Nueva Publicacion',
@@ -68,6 +71,7 @@ class PublicacionTestCase(TestCase):
 
     def test_publicacion_documento_extension_invalida(self):
         '''Publicacion no permite documentos con extensiones inválidas'''
+        ''' Intenta crear una publicación con un documento de extensión no permitida y verifica que se lance un ValidationError '''
         with self.assertRaises(ValidationError):
             publicacion_con_documento_invalido = Publicacion(
                 titulo='Publicacion con documento inválido',
@@ -90,4 +94,5 @@ class PublicacionTestCase(TestCase):
             documento='documento_valido.pdf',  # Extensión permitida
             id_categoria=self.categoria
         )
+        ''' Verifica que la publicación con documento válido se haya creado correctamente '''
         self.assertEqual(publicacion_con_documento_valido.documento, 'documento_valido.pdf')

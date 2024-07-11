@@ -1,14 +1,14 @@
 from rest_framework import serializers
 from .models import Colegiado, Escuela, Especialidad, HistorialEducativo
 
-# Serializer Escuela
+# Serializer para Escuela
 class EscuelaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Escuela
         fields = '__all__'
 
 
-# Serializer Especialidad
+# Serializer para Especialidad
 class EspecialidadSerializer(serializers.ModelSerializer):
     id_escuela = EscuelaSerializer(read_only=True)
 
@@ -23,20 +23,21 @@ class EspecialidadSerializer(serializers.ModelSerializer):
         fields = ['id', 'id_escuela', 'nombre_especialidad', 'id_escuela_id']
 
     def update(self, instance, validated_data):
+        '''Actualiza y devuelve una instancia de Especialidad.'''
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
 
         return instance
 
-# Serializer Colegiado
+# Serializer para Colegiado
 class ColegiadoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Colegiado
         fields = '__all__'
 
 
-# Serializer HistorialEducativo
+# Serializer para HistorialEducativo
 class HistorialEducativoSerializer(serializers.ModelSerializer):
     id_colegiado = ColegiadoSerializer(read_only=True)
     id_especialidad = EspecialidadSerializer(read_only=True)
@@ -61,21 +62,23 @@ class HistorialEducativoSerializer(serializers.ModelSerializer):
         ]
 
     def update(self, instance, validated_data):
+        '''Actualiza y devuelve una instancia de HistorialEducativo.'''
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
 
         return instance
 
-# Serializer para una vista personalizada
+# Serializer personalizado para la vista
 
-# Colegiado
+# Serializer detallado para Colegiado
 class ColegiadoDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Colegiado
         fields = ['id', 'nombre', 'apellido_paterno', 'apellido_materno', 'correo', 'numero_colegiatura', 'estado', 'foto_colegiado']
 
 
+# Serializer para consulta de habilidades
 class ConsultarHabilidadSerializer(serializers.ModelSerializer):
     id_especialidad = EspecialidadSerializer()
     id_colegiado = ColegiadoDetailSerializer()

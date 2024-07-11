@@ -1,16 +1,16 @@
 from django_filters import rest_framework as filters
 from .models import Categoria, Publicacion
 
-
 class CategoriaFilter(filters.FilterSet):
+    '''Filtro para el modelo Categoria basado en el campo nombre_categoria'''
     nombre_categoria = filters.CharFilter(field_name='nombre_categoria', lookup_expr='startswith')
 
     class Meta:
         model = Categoria
         fields = ['nombre_categoria']
 
-
 class PublicacionFilter(filters.FilterSet):
+    '''Filtro para el modelo Publicacion basado en los campos titulo, fecha y categoria'''
     titulo = filters.CharFilter(field_name='titulo', lookup_expr='startswith')
     fecha = filters.CharFilter(field_name='fecha', lookup_expr='iexact')
     categoria = filters.CharFilter(field_name='id_categoria__nombre_categoria')
