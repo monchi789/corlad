@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import andina from '../../assets/andina.png'
-import unsaac from '../../assets/unsaac.jpg'
+import unsaac from '../../assets/unsaac.png'
 import continental from '../../assets/continental.png'
 
 interface ImageSlide {

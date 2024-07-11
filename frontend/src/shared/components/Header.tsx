@@ -87,7 +87,7 @@ export function Header() {
         <div className='flex items-center flex-1 ms-10'>
           <img className="size-20 lg:size-20" src={logo} alt="Logo" />
         </div>
-        <div className="lg:flex md:flex lg:flex-1 my-auto items-center justify-end hidden me-10">
+        <div className="hidden  lg:flex lg:flex-1 my-auto items-center justify-end me-10">
           <div className='flex flex-row flex-10'>
             <ul className="flex gap-8 font-nunito font-semibol items-center space-x-10 lg:space-x-0">
               <li className="p-1">
@@ -142,7 +142,7 @@ export function Header() {
         <div>
           {click && content}
         </div>
-        <button className='block sm:hidden transition me-10' onClick={handleClick}>
+        <button className='block lg:hidden transition me-10' onClick={handleClick}>
           {click ? <FaTimes size={25} color="#00330A"/> : <FiAlignJustify size={25} color="#00330A" />}
         </button>
       </div>
