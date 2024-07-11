@@ -193,7 +193,7 @@ class EspecialidadViewSet(viewsets.ViewSet):
         responses={201: openapi.Response(description='Especialidad profesional creada')}
     )
     def create(self, request):
-        serializer = self.get_serializer(data=request.data)
+        serializer = EspecialidadSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -211,16 +211,16 @@ class EspecialidadViewSet(viewsets.ViewSet):
 
         data = request.data.copy()
 
-        # Manejar los IDs de las relaciones
+        # Manejar los IDs de las relaciones si es necesario
         if 'id_escuela' in data and isinstance(data['id_escuela'], dict):
             data['id_escuela_id'] = data['id_escuela'].get('id')
             del data['id_escuela']
-        
+
         serializer = self.get_serializer(instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
+        serializer.save() 
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     # Metodo DELETE
     @swagger_auto_schema(
@@ -244,41 +244,42 @@ class ColegiadoViewSet(viewsets.ViewSet):
     filterset_class = ColegiadoFilter
     filter_backends = [DjangoFilterBackend]
 
+    # Métodos permitidos para filtros en la URL
     allow_query_params = {
-        'numero_colegiatura', 'dni_colegiado', 'apellido_paterno',
-        'estado'
+        'numero_colegiatura', 'dni_colegiado', 'apellido_paterno', 'estado'
     }
 
-    # Metodos
     def filter_queryset(self, queryset):
+        # Filtrar utilizando el filtro definido
         filterset = self.filterset_class(self.request.query_params, queryset=queryset)
         return filterset.qs
 
     def get_object(self):
+        # Obtener un objeto por su clave primaria (id)
         pk = self.kwargs.get('pk')
         try:
             return Colegiado.objects.get(pk=pk)
         except Colegiado.DoesNotExist:
-            return Response({'detail': 'No se encontro el ID'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'detail': 'No se encontró el ID'}, status=status.HTTP_404_NOT_FOUND)
 
     def get_serializer(self, *args, **kwargs):
+        # Obtener el serializador para la vista
         return self.serializer_class(*args, **kwargs)
     
     def get_queryset(self):
+        # Obtener el queryset de todos los colegiados
         return Colegiado.objects.all()
-
-    # Metodos GET, UPDATE, CREATE y DELETE
 
     # Metodo GET
     @swagger_auto_schema(
         operation_id='Listar colegiados',
-        responses={200: openapi.Response(description='Lista de colegiados')},
+        responses={200: openapi.Response(description='Lista de colegiados')}
     )
     def list(self, request, *args, **kwargs):
-        # Validar los parametros permitidos
+        # Validar los parámetros de la consulta permitidos
         for param in request.query_params:
             if param not in self.allow_query_params:
-                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_400_BAD_REQUEST)
 
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.serializer_class(queryset, many=True)
@@ -296,14 +297,13 @@ class ColegiadoViewSet(viewsets.ViewSet):
             return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = self.get_serializer(instance)
-        
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     # Metodo CREATE
     @swagger_auto_schema(
         operation_id='Crear un colegiado',
         request_body=ColegiadoSerializer,
-        responses={201: openapi.Response(description='Colegiado Creado')}
+        responses={201: openapi.Response(description='Colegiado creado')}
     )
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -316,7 +316,7 @@ class ColegiadoViewSet(viewsets.ViewSet):
     @swagger_auto_schema(
         operation_id='Actualizar un colegiado',
         request_body=ColegiadoSerializer,
-        responses={200: openapi.Response(description='Colegiado Actualizado')}
+        responses={200: openapi.Response(description='Colegiado actualizado')}
     )
     def update(self, request, pk=None):
         try:
@@ -329,10 +329,10 @@ class ColegiadoViewSet(viewsets.ViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     # Metodo DELETE
     @swagger_auto_schema(
-        operation_id='Eliminar colegiado',
+        operation_id='Eliminar un colegiado',
         responses={204: openapi.Response(description='Colegiado eliminado')}
     )
     def destroy(self, request, pk=None):
