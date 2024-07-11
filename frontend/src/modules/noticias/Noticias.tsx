@@ -1,16 +1,22 @@
 import { Footer } from "../../shared/components/Footer";
 import { Header } from "../../shared/components/Header";
 import { Divider } from 'primereact/divider';
+import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
 import { useEffect, useState } from "react";
 import { Categoria } from "../../interfaces/Categoria";
 import { getAllCategorias } from "../../shared/api/categoria.api";
 import { HorizontalCard } from "../shared/Cards";
 import { Noticia } from "../../interfaces/Noticia";
-import { getAllNoticias, getNoticiasByFilter } from "../../shared/api/noticia.api";
+import { getAllNoticiasByPage, getNoticiasByFilter } from "../../shared/api/noticia.api";
+import { classNames } from "primereact/utils";
 
 export function Noticias() {
   const [categoriaData, setCategorias] = useState<Categoria[]>([]);
   const [noticiasList, setNoticiasList] = useState<Noticia[]>([]);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(5); // Número de noticias por página
+  const [activeCategoria, setActiveCategoria] = useState<string | null>(null);
 
   // Manejo del api de todas las categorias de noticias
   useEffect(() => {
@@ -25,11 +31,11 @@ export function Noticias() {
     cargarCategorias();
   }, []);
 
-  // Manejo del api de todas las noticias 
-  useEffect(() => {
-    async function cargarNoticias() {
-      const res = await getAllNoticias();
-      const noticias: Noticia[] = res.data.map((noticia: any) => ({
+  // Función para cargar noticias con paginación
+  const cargarNoticias = async (page = 0, pageSize = rows) => {
+    try {
+      const res = await getAllNoticiasByPage(page, pageSize);
+      const noticias: Noticia[] = res.data.results.map((noticia: any) => ({
         id: noticia.id,
         titulo: noticia.titulo,
         contenido: noticia.contenido,
@@ -42,13 +48,18 @@ export function Noticias() {
         }
       }));
       setNoticiasList(noticias);
+      setTotalRecords(res.data.count);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
+  };
+
+  // Cargar noticias iniciales
+  useEffect(() => {
     cargarNoticias();
   }, []);
 
-  /*
-    Limitar el contenido de la Card de Noticias
-  */
+  // Función para limitar el contenido de la Card de Noticias
   function limitarContenido(texto: string, limitePalabras: number): string {
     const palabras = texto.split(' ');
     if (palabras.length > limitePalabras) {
@@ -59,11 +70,12 @@ export function Noticias() {
 
   // Manejo de la selección de categoría
   const handleCategoriaClick = async (categoria: string) => {
-    const params = `?categoria=${categoria}`;
+    setActiveCategoria(categoria);
+    const params = `?categoria=${categoria}&page=1&page_size=${rows}`;
 
     try {
       const response = await getNoticiasByFilter(params);
-      const noticias: Noticia[] = response.data.map((noticia: any) => ({
+      const noticias: Noticia[] = response.data.results.map((noticia: any) => ({
         id: noticia.id,
         titulo: noticia.titulo,
         contenido: noticia.contenido,
@@ -76,8 +88,38 @@ export function Noticias() {
         }
       }));
       setNoticiasList(noticias);
+      setTotalRecords(response.data.count);
+      setFirst(0); // Reinicia a la primera página
     } catch (error) {
       console.error('Error fetching data:', error);
+    }
+  };
+
+  // Función para manejar el cambio de página
+  const onPageChange = (event: PaginatorPageChangeEvent) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    cargarNoticias(event.page, event.rows);
+    window.scrollTo(0, 0);
+  };
+
+  const template = {
+    layout: 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink',
+    PageLinks: (options: any) => {
+
+      const isActive = options.page === options.currentPage;
+
+      return (
+        <button
+          className={classNames('px-3 py-1 mx-1 rounded-lg transition duration-300', {
+            'bg-[#00330A] text-white': isActive,
+            'bg-white text-black': !isActive
+          })}
+          onClick={options.onClick}
+        >
+          {options.page + 1}
+        </button>
+      )
     }
   };
 
@@ -88,17 +130,27 @@ export function Noticias() {
         <h1 className="text-4xl text-[#a67102] font-extrabold font-nunito text-center mb-24">NOTICIAS</h1>
         <div className="flex flex-col lg:flex-row mx-auto justify-center">
           <div className="flex flex-col w-1/6 mx-10 items-start px-5">
-            <p className="font-nunito font-extrabold text-2xl text-[#00330A] mb-10">Categorías</p>
-            <div className="flex flex-col items-start space-y-5">
+            <p className="font-nunito font-extrabold text-2xl text-[#00330A] mb-10 px-3">Categorías</p>
+            <div className="flex flex-col items-start space-y-5 w-full">
               {categoriaData.map((element, index) => (
-                <button key={index} className="py-5" onClick={() => handleCategoriaClick(element.nombre_categoria)}>{element.nombre_categoria}</button>
+                <button
+                  key={index}
+                  className={classNames('py-3 px-3 w-full text-left transition duration-300', {
+                    'bg-[#00330A] text-white': activeCategoria === element.nombre_categoria,
+                    'hover:bg-[#00330A] hover:text-white': activeCategoria !== element.nombre_categoria,
+                    'bg-white text-black': activeCategoria !== element.nombre_categoria && !classNames('hover:bg-[#00330A] hover:text-white')
+                  })}
+                  onClick={() => handleCategoriaClick(element.nombre_categoria)}
+                >
+                  {element.nombre_categoria}
+                </button>
               ))}
             </div>
           </div>
           <div className="lg:w-4/6 mx-5 space-y-10 mb-24">
             {noticiasList.map((noticia, index) => (
               <div key={index}>
-                <HorizontalCard 
+                <HorizontalCard
                   imageSource={import.meta.env.VITE_API_URL_ALTER + noticia.imagen_publicacion}
                   imageAlt=""
                   cardTitle={noticia.titulo}
@@ -108,6 +160,14 @@ export function Noticias() {
                 <Divider className="border border-solid my-10" />
               </div>
             ))}
+            <Paginator
+              first={first}
+              rows={rows}
+              totalRecords={totalRecords}
+              onPageChange={onPageChange}
+              className="space-x-5"
+              template={template}
+            />
           </div>
         </div>
       </div>

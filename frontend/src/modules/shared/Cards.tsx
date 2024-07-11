@@ -17,17 +17,17 @@ interface horizontalCardProps {
   noticiaId: number;
 }
 
-export const Card: React.FC<CardProps> = ({ imageSource, imageAlt, cardTitle, cardText }) => {
+export const Card: React.FC<CardProps> = ({ imageSource, imageAlt, cardTitle, cardText, noticiaId }) => {
   return (
     <div className="flex flex-col bg-[#F0F0F0] rounded-3xl shadow-xl max-w-[300px]">
       <img className="w-full h-48 object-cover rounded-t-3xl" src={imageSource} alt={imageAlt} />
       <div className="flex flex-col justify-between flex-1 px-6 py-4">
         <div>
-          <h4 className="text-xl font-nunito font-extrabold mb-3">{cardTitle}</h4>
-          <p dangerouslySetInnerHTML={{ __html: cardText }} />
+          <h4 className="text-xl text-[#363636] font-nunito font-extrabold mb-3">{cardTitle}</h4>
+          <p className="text-[#363636]" dangerouslySetInnerHTML={{ __html: cardText }} />
         </div>
         <div className="mt-auto pt-6 pb-3 text-center">
-          <Link to="/noticias" className="text-center align-middle w-full mx-auto px-5 py-1 text-white rounded-lg bg-[#A67102]">
+          <Link to={`/noticias/${noticiaId}/titulo${encodeURIComponent(cardTitle)}`} className="text-center align-middle w-full mx-auto px-5 py-1 text-white rounded-lg bg-[#A67102]">
             Leer más &#8594;
           </Link>
         </div>

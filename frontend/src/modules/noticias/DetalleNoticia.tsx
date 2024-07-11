@@ -78,7 +78,7 @@ export function DetalleNoticia() {
         <h4 className="text-2xl text-[#A67102] font-nunito font-extrabold mx-5 lg:mx-0">Otras noticias</h4>
         <div className="flex flex-col my-12 mx-5 lg:mx-auto">
           <div className="flex flex-col md:flex-row space-y-10 md:space-y-0 md:space-x-3 xl:space-x-14 mb-12">
-            {data.map((noticia, index) => (
+            {data.slice(0, 3).map((noticia, index) => (
               <Card key={index} imageSource={import.meta.env.VITE_API_URL_ALTER+noticia.imagen_publicacion} imageAlt="" cardTitle={noticia.titulo} cardText={limitarContenido(noticia.contenido, 30)} noticiaId={0} />
             ))}
           </div>

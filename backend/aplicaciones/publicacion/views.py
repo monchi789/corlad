@@ -7,6 +7,7 @@ from drf_yasg import openapi
 from .models import Categoria, Publicacion
 from .filters import CategoriaFilter, PublicacionFilter
 from .serializers import CategoriaSerializer, PublicacionSerializer
+from rest_framework.pagination import PageNumberPagination
 
 # Create your views here.
 class CategoriaViewSet(viewsets.ModelViewSet):
@@ -115,17 +116,22 @@ class CategoriaViewSet(viewsets.ModelViewSet):
         except Categoria.DoesNotExist:
             return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
+class CustomPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 class PublicacionViewSet(viewsets.ModelViewSet):
     queryset = Publicacion.objects.all()
     serializer_class = PublicacionSerializer
+    pagination_class = CustomPagination
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
     filterset_class = PublicacionFilter
 
     allow_query_params = {
-        'titulo', 'fecha', 'categoria'
+        'titulo', 'fecha', 'categoria', 'page', 'page_size'
     }
 
     # Metodos
@@ -151,17 +157,26 @@ class PublicacionViewSet(viewsets.ModelViewSet):
     # Metodo GET
     @swagger_auto_schema(
         operation_id='Listar Publicaciones',
-        responses={200: openapi.Response(description='Lista de Publicaciones')}
+        responses={200: openapi.Response(description='Lista de Publicaciones')},
+        manual_parameters=[
+            openapi.Parameter('page', openapi.IN_QUERY, description="Número de página", type=openapi.TYPE_INTEGER),
+            openapi.Parameter('page_size', openapi.IN_QUERY, description="Tamaño de página", type=openapi.TYPE_INTEGER),
+        ]
     )
     def list(self, request, *args, **kwargs):
-        # Validar los parametros permitidos
+        # Validar los parámetros permitidos
         for param in request.query_params:
             if param not in self.allow_query_params:
-                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_400_BAD_REQUEST)
                 
         queryset = self.filter_queryset(self.get_queryset())
-        serializer =  self.serializer_class(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     # Metodo GET por ID
     @swagger_auto_schema(

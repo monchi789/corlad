@@ -24,11 +24,10 @@ export function Inicio() {
   useEffect(() => {
     async function cargarNoticias() {
       const res = await getAllNoticias();
-
       /*
         Mapeo del api 
       */
-      const noticias: Noticia[] = res.data.map((noticia: any) => ({
+      const noticias: Noticia[] = res.data.results.map((noticia: any) => ({
         id: noticia.id,
         titulo: noticia.titulo,
         contenido: noticia.contenido,
@@ -41,7 +40,6 @@ export function Inicio() {
         }
       }));
       setData(noticias);
-
     }
     cargarNoticias();
   }, []);
@@ -85,21 +83,21 @@ export function Inicio() {
               <br />
               <span className="text-[#00330A] font-nunito">INSTITUCIONAL</span>
             </h3>
-            <p className="text-md md:text-xl text-center md:text-start my-5 font-didact">
+            <p className="text-md text-[#363636] md:text-xl text-center md:text-start my-5 font-didact">
               En el CORLAD CUSCO estamos comprometidos con la noble misión de seguir educando a nuestros profesionales.
               Complementamos la educación de nuestros profesionales con temas relevantes para la profesión y la región.
             </p>
             <div className="flex flex-col md:flex-row space-y-10 md:space-y-0 justify-between mt-5">
               <div className="flex flex-col font-nunito">
-                <p className="text-4xl xl:text-5xl font-extrabold text-center">2000+</p>
+                <p className="text-4xl text-[#00330A] xl:text-5xl font-extrabold text-center">2000+</p>
                 <p className="text-[#a67102] text-lg xl:text-xl font-semibold text-center">Colegiados</p>
               </div>
               <div className="flex flex-col font-nunito">
-                <p className="text-4xl xl:text-5xl font-extrabold text-center">2+</p>
+                <p className="text-4xl text-[#00330A] xl:text-5xl font-extrabold text-center">2+</p>
                 <p className="text-[#a67102] text-lg xl:text-xl font-semibold text-center">Convenios</p>
               </div>
               <div className="flex flex-col font-nunito">
-                <p className="text-4xl xl:text-5xl font-extrabold text-center">40</p>
+                <p className="text-4xl text-[#00330A] xl:text-5xl font-extrabold text-center">40</p>
                 <p className="text-[#a67102] text-lg xl:text-xl font-semibold text-center">Años sirviendo</p>
               </div>
             </div>
@@ -124,8 +122,8 @@ export function Inicio() {
         <div className="flex flex-col items-center my-24 mx-auto">
           <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-24 font-nunito">NOTICIAS</h3>
           <div className="flex flex-col xl:flex-row space-y-10 xl:space-y-0 xl:space-x-14 mb-12">
-            {data.map((noticia, index) => (
-              <Card key={index} imageSource={import.meta.env.VITE_API_URL_ALTER+noticia.imagen_publicacion} imageAlt="" cardTitle={noticia.titulo} cardText={limitarContenido(noticia.contenido, 30)} noticiaId={0} />
+            {data.slice(0, 3).map((noticia, index) => (
+              <Card key={index} imageSource={import.meta.env.VITE_API_URL_ALTER+noticia.imagen_publicacion} imageAlt="" cardTitle={noticia.titulo} cardText={limitarContenido(noticia.contenido, 30)} noticiaId={noticia.id} />
             ))}
           </div>
           <Link to={'/noticias'} className="font-extrabold bg-[#a67102] text-white px-8 py-1 rounded-lg font-nunito">Ver Más</Link>
