@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import logo_corlad_blanco from '../../assets/corlad_logo_blanco.png'
+import logo_corlad_blanco from '../../assets/web/corlad_logo_blanco.png'
 import { CiFacebook } from "react-icons/ci";
 import { LiaYoutube } from "react-icons/lia";
 import { CiLinkedin } from "react-icons/ci";

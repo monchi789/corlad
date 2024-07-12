@@ -4,9 +4,9 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import andina from '../../assets/andina.png'
-import unsaac from '../../assets/unsaac.png'
-import continental from '../../assets/continental.png'
+import andina from '../../assets/web/andina.png'
+import unsaac from '../../assets/web/unsaac.png'
+import continental from '../../assets/web/continental.png'
 
 interface ImageSlide {
   src: string;

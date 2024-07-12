@@ -1,18 +1,18 @@
-import { Footer } from "../../shared/components/Footer";
-import { Header } from "../../shared/components/Header";
+import { Footer } from "../../shared/Footer";
+import { Header } from "../../shared/Header";
 import { Divider } from 'primereact/divider';
 import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
 import { useEffect, useState } from "react";
-import { Categoria } from "../../interfaces/Categoria";
-import { getAllCategorias } from "../../shared/api/categoria.api";
-import { HorizontalCard } from "../shared/Cards";
-import { Noticia } from "../../interfaces/Noticia";
-import { getAllNoticiasByPage, getNoticiasByFilter } from "../../shared/api/noticia.api";
+import { Categoria } from "../../../interfaces/model/Categoria";
+import { getAllCategorias } from "../../../api/categoria.api";
+import { HorizontalCard } from "../../shared/Cards";
+import { Publicacion } from "../../../interfaces/model/Publicacion";
+import { getAllNoticiasByPage, getNoticiasByFilter } from "../../../api/noticia.api";
 import { classNames } from "primereact/utils";
 
 export function Noticias() {
   const [categoriaData, setCategorias] = useState<Categoria[]>([]);
-  const [noticiasList, setNoticiasList] = useState<Noticia[]>([]);
+  const [noticiasList, setNoticiasList] = useState<Publicacion[]>([]);
   const [totalRecords, setTotalRecords] = useState(0);
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(5); // Número de noticias por página
@@ -35,7 +35,7 @@ export function Noticias() {
   const cargarNoticias = async (page = 0, pageSize = rows) => {
     try {
       const res = await getAllNoticiasByPage(page, pageSize);
-      const noticias: Noticia[] = res.data.results.map((noticia: any) => ({
+      const noticias: Publicacion[] = res.data.results.map((noticia: any) => ({
         id: noticia.id,
         titulo: noticia.titulo,
         contenido: noticia.contenido,
@@ -54,7 +54,7 @@ export function Noticias() {
     }
   };
 
-  // Cargar noticias iniciales
+  // Cargar noticias iniciales al iniciar el componente
   useEffect(() => {
     cargarNoticias();
   }, []);
@@ -75,7 +75,7 @@ export function Noticias() {
 
     try {
       const response = await getNoticiasByFilter(params);
-      const noticias: Noticia[] = response.data.results.map((noticia: any) => ({
+      const noticias: Publicacion[] = response.data.results.map((noticia: any) => ({
         id: noticia.id,
         titulo: noticia.titulo,
         contenido: noticia.contenido,
@@ -129,7 +129,7 @@ export function Noticias() {
       <div className="container flex flex-col my-48 mx-auto">
         <h1 className="text-4xl text-[#a67102] font-extrabold font-nunito text-center mb-24">NOTICIAS</h1>
         <div className="flex flex-col lg:flex-row mx-auto justify-center">
-          <div className="flex flex-col w-1/6 mx-10 items-start px-5">
+          <div className="flex flex-col w-full lg:w-1/6 items-center lg:items-start px-5">
             <p className="font-nunito font-extrabold text-2xl text-[#00330A] mb-10 px-3">Categorías</p>
             <div className="flex flex-col items-start space-y-5 w-full">
               {categoriaData.map((element, index) => (

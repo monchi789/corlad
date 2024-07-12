@@ -1,15 +1,15 @@
-import { useParams } from 'react-router-dom';
-import { Footer } from '../../shared/components/Footer'
-import { Header } from '../../shared/components/Header'
 import { useEffect, useState } from 'react';
-import { defaultNoticia, Noticia } from '../../interfaces/Noticia';
-import { getAllNoticias, getNoticiasById } from '../../shared/api/noticia.api';
-import { Card } from '../shared/Cards';
+import { useParams } from 'react-router-dom';
+import { Footer } from '../../../shared/Footer'
+import { Header } from '../../../shared/Header'
+import { defaultPublicacion, Publicacion } from '../../../../interfaces/model/Publicacion';
+import { getAllNoticias, getNoticiasById } from '../../../../api/noticia.api';
+import { Card } from '../../../shared/Cards';
 
-export function DetalleNoticia() {
+export function Noticia() {
   const { id } = useParams<{ id: string }>();
-  const [noticia, setNoticia] = useState<Noticia>(defaultNoticia);
-  const [data, setData] = useState<Noticia[]>([]);
+  const [noticia, setNoticia] = useState<Publicacion>(defaultPublicacion);
+  const [data, setData] = useState<Publicacion[]>([]);
 
   useEffect(() => {
     async function cargarNoticias() {
@@ -18,7 +18,7 @@ export function DetalleNoticia() {
       /*
         Mapeo del api 
       */
-      const noticias: Noticia[] = res.data.map((noticia: any) => ({
+      const noticias: Publicacion[] = res.data.results.map((noticia: any) => ({
         id: noticia.id,
         titulo: noticia.titulo,
         contenido: noticia.contenido,
@@ -79,7 +79,7 @@ export function DetalleNoticia() {
         <div className="flex flex-col my-12 mx-5 lg:mx-auto">
           <div className="flex flex-col md:flex-row space-y-10 md:space-y-0 md:space-x-3 xl:space-x-14 mb-12">
             {data.slice(0, 3).map((noticia, index) => (
-              <Card key={index} imageSource={import.meta.env.VITE_API_URL_ALTER+noticia.imagen_publicacion} imageAlt="" cardTitle={noticia.titulo} cardText={limitarContenido(noticia.contenido, 30)} noticiaId={0} />
+              <Card key={index} imageSource={import.meta.env.VITE_API_URL_ALTER+noticia.imagen_publicacion} imageAlt="" cardTitle={noticia.titulo} cardText={limitarContenido(noticia.contenido, 30)} noticiaId={noticia.id} />
             ))}
           </div>
         </div>

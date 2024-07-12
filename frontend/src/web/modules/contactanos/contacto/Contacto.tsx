@@ -1,10 +1,10 @@
-import map from '../../../assets/map-pin.svg'
-import phone from '../../../assets/phone.svg'
-import mail from '../../../assets/mail.svg'
 import { useState } from 'react';
-import { ContactoData } from '../../../interfaces/Contacto';
 import toast, { Toaster } from 'react-hot-toast';
-import { sendEmail } from '../../../shared/api/contacto.api';
+import map from '../../../../assets/icons/map-pin.svg'
+import phone from '../../../../assets/icons/phone.svg'
+import mail from '../../../../assets/icons/mail.svg'
+import { ContactoData } from '../../../../interfaces/Contacto';
+import { sendEmail } from '../../../../api/contacto.api';
 
 export function Contacto() {
   const [formData, setFormData] = useState<ContactoData>({ nombre: '', correo: '', celular: '', mensaje: '' });

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import banner_corlad from '../../assets/corlad_banner.jpg'
-import { getSlider } from '../../shared/api/slider.api';
+import banner_corlad from '../../assets/web/corlad_banner.jpg'
+import { getSlider } from '../../api/slider.api';
 import ImageGallery from 'react-image-gallery';
 import { Slider } from '../../interfaces/Slider';
 import { useLocation } from 'react-router-dom';

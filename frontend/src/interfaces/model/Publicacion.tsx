@@ -1,6 +1,6 @@
 import { defaultCategoria } from "./Categoria";
 
-export interface Noticia {
+export interface Publicacion {
   id: number;
   titulo: string;
   contenido: string;
@@ -13,7 +13,7 @@ export interface Noticia {
   };
 }
 
-export const defaultNoticia = {
+export const defaultPublicacion = {
   id: 0,
   titulo: "",
   contenido: "",

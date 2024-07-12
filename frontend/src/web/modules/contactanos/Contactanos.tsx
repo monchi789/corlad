@@ -1,5 +1,5 @@
-import { Footer } from "../../shared/components/Footer";
-import { Header } from "../../shared/components/Header";
+import { Footer } from "../../shared/Footer";
+import { Header } from "../../shared/Header";
 import Contacto from "./contacto/Contacto";
 
 export function Contactanos() {

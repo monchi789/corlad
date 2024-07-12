@@ -1,25 +1,25 @@
-import { Header } from "../../shared/components/Header";
-import logo_corlad from '../../assets/corlad_logo.png'
-import { Card } from "../shared/Cards";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Header } from "../../shared/Header";
+import { Card } from "../../shared/Cards";
+import Carrousel from "../../shared/Carousel";
+import { Footer } from "../../shared/Footer";
+import { Contacto } from "../contactanos/contacto/Contacto";
+import { Publicacion } from "../../../interfaces/model/Publicacion";
+import { getAllNoticias } from "../../../api/noticia.api";
+import { Servicios } from "./servicios/Servicios";
+import { PopUps } from "../../shared/PopUps";
+import { Gallery } from "../../shared/Gallery";
+import logo_corlad_blanco from '../../../assets/web/corlad_logo_blanco.png'
+import logo_corlad from '../../../assets/web/corlad_logo.png'
+import background from "../../../assets/web/machupicchu.jpg"
 import 'react-image-gallery/styles/css/image-gallery.css'
-import Carrousel from "./../shared/Carousel";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Footer } from "../../shared/components/Footer";
-import { Contacto } from "../contactanos/contacto/Contacto";
-import { Noticia } from "../../interfaces/Noticia";
-import { getAllNoticias } from "../../shared/api/noticia.api";
-import { useEffect, useState } from "react";
-import { Servicios } from "./servicios/Servicios";
-import { PopUps } from "../shared/PopUps";
-import background from "../../assets/machupicchu.jpg"
-import { Gallery } from "../shared/Gallery";
-import logo_corlad_blanco from '../../assets/corlad_logo_blanco.png'
 
 export function Inicio() {
 
-  const [data, setData] = useState<Noticia[]>([]);
+  const [data, setData] = useState<Publicacion[]>([]);
 
   useEffect(() => {
     async function cargarNoticias() {
@@ -27,7 +27,7 @@ export function Inicio() {
       /*
         Mapeo del api 
       */
-      const noticias: Noticia[] = res.data.results.map((noticia: any) => ({
+      const noticias: Publicacion[] = res.data.results.map((noticia: any) => ({
         id: noticia.id,
         titulo: noticia.titulo,
         contenido: noticia.contenido,
@@ -60,7 +60,7 @@ export function Inicio() {
 
       <Header />
 
-      <div className='relative mt-28 xl:mt-32'>
+      <div className='relative mt-24 xl:mt-32'>
       <div className='container flex flex-col md:flex-row mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-center w-full justify-center items-center'>
         <img className='w-4/6 md:w-2/4 xl:w-2/6' src={logo_corlad_blanco} alt="Logotipo corlad" />
         <div className='w-2/4 mt-5 md:my-auto md:me-24 flex flex-col justify-center items-center'>

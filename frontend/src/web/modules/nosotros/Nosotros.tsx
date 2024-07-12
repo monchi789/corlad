@@ -1,8 +1,8 @@
-import { Header } from "../../shared/components/Header";
-import corlad_logo from "../../assets/corlad_logo.png"
-import { Footer } from "../../shared/components/Footer";
-import Carousel from "../shared/Carousel";
-import { Gallery } from "../shared/Gallery";
+import { Header } from "../../shared/Header";
+import corlad_logo from "../../../assets/web/corlad_logo.png"
+import { Footer } from "../../shared/Footer";
+import Carousel from "../../shared/Carousel";
+import { Gallery } from "../../shared/Gallery";
 
 export function Nosotros() {
 
