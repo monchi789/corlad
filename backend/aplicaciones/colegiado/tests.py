@@ -1,5 +1,8 @@
 from django.test import TestCase
+from django.contrib.auth.models import User
+from rest_framework.test import APIClient
 from django.utils import timezone
+from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Escuela, Especialidad, Colegiado, HistorialEducativo
 
 # Pruebas unitarias para el modelo Escuela
@@ -102,3 +105,28 @@ class HistorialEducativoTestCase(TestCase):
         self.assertEqual(historial.universidad, 'Universidad Nacional')
         self.assertEqual(historial.id_colegiado.nombre, 'Juan')
         self.assertEqual(historial.id_especialidad.nombre_especialidad, 'Publica')
+
+# API Test
+class EscuelaViewSetPermissionTest(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(username='sergio', password='Loquillo12m')
+        self.client.login(username='sergio', password='Loquillo12m')
+        
+        # Obtener el token JWT para el usuario
+        refresh = RefreshToken.for_user(self.user)
+        self.token = str(refresh.access_token)
+        
+        # Incluir el token JWT en las solicitudes
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
+
+    def test_list_escuelas_permission(self):
+        response = self.client.get('/gestion-colegiados/escuelas/')
+        self.assertEqual(response.status_code, 403)  # Esperamos un 403 Forbidden si no tiene permisos
+
+    def test_create_escuela_permission(self):
+        data = {
+            "nombre_escuela": "Ingeniería"
+        }
+        response = self.client.post('/gestion-colegiados/escuelas/', data, format='json')
+        self.assertEqual(response.status_code, 403)

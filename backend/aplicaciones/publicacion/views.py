@@ -2,6 +2,8 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .models import Categoria, Publicacion
@@ -10,9 +12,54 @@ from .serializers import CategoriaSerializer, PublicacionSerializer
 from rest_framework.pagination import PageNumberPagination
 
 # ViewSet para el modelo Categoria
+class CategoriaAPIView(viewsets.ModelViewSet):
+    queryset = Categoria.objects.all()  # Consulta para obtener todas las categorías
+    serializer_class = CategoriaSerializer  # Serializer para el modelo Categoria
+
+    # Aplicamos los filtros
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = CategoriaFilter
+
+    # Parámetros permitidos para consultas
+    allow_query_params = {
+        'nombre_categoria'
+    }
+
+    # Métodos
+
+    def filter_queryset(self, queryset):
+        """Filtra el queryset según los parámetros permitidos"""
+        filterset = self.filterset_class(self.request.query_params, queryset=queryset)
+        return filterset.qs
+    
+    def get_queryset(self):
+        """Obtiene el queryset para el ViewSet"""
+        return Categoria.objects.all()
+    
+    # Método GET
+    @swagger_auto_schema(
+        operation_id='Listar Categorias',
+        responses={200: openapi.Response(description='Lista de Categorias')}
+    )
+    def list(self, request, *args, **kwargs):
+        """Lista todas las categorías"""
+        # Validar los parámetros permitidos
+        for param in request.query_params:
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
+
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer =  self.serializer_class(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()  # Consulta para obtener todas las categorías
     serializer_class = CategoriaSerializer  # Serializer para el modelo Categoria
+
+    # JWT
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
@@ -133,11 +180,72 @@ class CustomPagination(PageNumberPagination):
     page_size_query_param = 'page_size'  # Parámetro para especificar el tamaño de página
     max_page_size = 100  # Tamaño máximo de página
 
+class PublicacionAPIView(viewsets.ViewSet):
+    queryset = Publicacion.objects.all()  # Consulta para obtener todas las publicaciones
+    serializer_class = PublicacionSerializer  # Serializer para el modelo Publicacion
+    pagination_class = CustomPagination  # Clase de paginación personalizada
+
+    # Aplicamos los filtros
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = PublicacionFilter
+
+    # Parámetros permitidos para consultas
+    allow_query_params = {
+        'titulo', 'fecha', 'categoria', 'page', 'page_size'
+    }
+
+    # Métodos
+
+    def filter_queryset(self, queryset):
+        """Filtra el queryset según los parámetros permitidos"""
+        filterset = self.filterset_class(self.request.query_params, queryset=queryset)
+        return filterset.qs
+
+    def get_serializer(self, *args, **kwargs):
+        """Obtiene el serializer para el ViewSet"""
+        return self.serializer_class(*args, **kwargs)
+    
+    def get_queryset(self):
+        """Obtiene el queryset para el ViewSet"""
+        return Publicacion.objects.all()
+
+    # Métodos GET, UPDATE, CREATE y DELETE
+
+    # Método GET
+    @swagger_auto_schema(
+        operation_id='Listar Publicaciones',
+        responses={200: openapi.Response(description='Lista de Publicaciones')},
+        manual_parameters=[
+            openapi.Parameter('page', openapi.IN_QUERY, description="Número de página", type=openapi.TYPE_INTEGER),
+            openapi.Parameter('page_size', openapi.IN_QUERY, description="Tamaño de página", type=openapi.TYPE_INTEGER),
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        """Lista todas las publicaciones"""
+        # Validar los parámetros permitidos
+        for param in request.query_params:
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_400_BAD_REQUEST)
+                
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
 # ViewSet para el modelo Publicacion
 class PublicacionViewSet(viewsets.ModelViewSet):
     queryset = Publicacion.objects.all()  # Consulta para obtener todas las publicaciones
     serializer_class = PublicacionSerializer  # Serializer para el modelo Publicacion
     pagination_class = CustomPagination  # Clase de paginación personalizada
+    
+    # JWT
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]

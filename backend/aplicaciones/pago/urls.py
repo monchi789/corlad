@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PagoViewSet, EstadoCuentaViewSet, TipoPagoViewSet, MetodoPagoViewSet
+from .views import PagoViewSet, TipoPagoViewSet, MetodoPagoViewSet
 
 # Creamos un enrutador predeterminado para los ViewSets
 router = DefaultRouter()
@@ -11,7 +11,7 @@ router = DefaultRouter()
 router.register(r'pagos', PagoViewSet, basename='pago')
 
 # Ruta para los estados de cuenta
-router.register(r'estado-cuentas', EstadoCuentaViewSet, basename='estado_cuenta'),
+# router.register(r'estado-cuentas', EstadoCuentaViewSet, basename='estado_cuenta'),
 
 # Ruta para los tipos de pago
 router.register(r'tipo-pagos', TipoPagoViewSet, basename='tipo_pago')

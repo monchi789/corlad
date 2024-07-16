@@ -21,6 +21,7 @@ from rest_framework.permissions import AllowAny
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from django.conf import settings
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from aplicaciones.emails.views import EmailAPIView
 
 
@@ -44,7 +45,9 @@ urlpatterns = [
     path('gestion-publicaciones/', include('aplicaciones.publicacion.urls')),
     path('gestion-contenidos/', include('aplicaciones.contenido.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('enviar-email/', EmailAPIView.as_view(), name='send-email')
+    path('enviar-email/', EmailAPIView.as_view(), name='send-email'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), 
 ]
 
 # Servir imagenes staticas

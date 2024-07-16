@@ -4,16 +4,22 @@ from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import AllowAny
 
 from .models import Colegiado, Escuela, Especialidad, HistorialEducativo
 from .serializers import ColegiadoSerializer, EscuelaSerializer, EspecialidadSerializer, HistorialEducativoSerializer, ConsultarHabilidadSerializer
 from .filters import HistorialEducativoFilter, ColegiadoFilter, EscuelaFilter, EspecialidadFilter, ConsultarHabilidadFilter
+from .permission import EscuelaPermissions, ColegiadoPermissions, EspecialidadPermissions, HistorialEducativoPermissions
 
 
-# Vista de Escuela
 class EscuelaViewSet(viewsets.ViewSet):
     queryset = Escuela.objects.all()
     serializer_class = EscuelaSerializer
+
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, EscuelaPermissions]
+    authentication_classes = [JWTAuthentication]
 
     # Aplicamos los filtros
     filterset_class = EscuelaFilter
@@ -116,11 +122,15 @@ class EscuelaViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Escuela.DoesNotExist:
             return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
-
+        
 
 class EspecialidadViewSet(viewsets.ViewSet):
     queryset = Especialidad.objects.all()
     serializer_class = EspecialidadSerializer
+    
+    # JWT
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, EspecialidadPermissions]
+    authentication_classes = [JWTAuthentication]
 
     # Aplicamos los filtros
     filterset_class = EspecialidadFilter
@@ -236,9 +246,13 @@ class EspecialidadViewSet(viewsets.ViewSet):
             return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
 
-class ColegiadoViewSet(viewsets.ViewSet):
+class ColegiadoViewSet(viewsets.ModelViewSet):
     queryset = Colegiado.objects.all()
     serializer_class = ColegiadoSerializer
+
+    # JWT
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, ColegiadoPermissions]
+    authentication_classes = [JWTAuthentication]
 
     # Aplicamos los filtros
     filterset_class = ColegiadoFilter
@@ -347,6 +361,10 @@ class ColegiadoViewSet(viewsets.ViewSet):
 class HistorialEducativoViewSet(viewsets.ViewSet):
     queryset = HistorialEducativo.objects.all()
     serializer_class = HistorialEducativoSerializer
+
+    # JWT
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, HistorialEducativoPermissions]
+    authentication_classes = [JWTAuthentication]
     
     # Aplicamos los filtros
     filterset_class = HistorialEducativoFilter
@@ -437,9 +455,9 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
             data['id_colegiado_id'] = data['id_colegiado'].get('id')
             del data['id_colegiado']
         
-        if 'id_especilidad' in data and isinstance(data['id_especialidad'], dict):
+        if 'id_especialidad' in data and isinstance(data['id_especialidad'], dict):
             data['id_especialidad_id'] = data['id_especialidad'].get('id')
-            del data['id_especilidad']
+            del data['id_especialidad']
         
         serializer = self.get_serializer(instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
@@ -464,6 +482,7 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
 class ConsultarHabilidadViewSet(viewsets.ViewSet):
     queryset = HistorialEducativo.objects.all()
     serializer_class = ConsultarHabilidadSerializer
+    permission_classes = [AllowAny]
     
     # Aplicamos los filtros
     filterset_class = ConsultarHabilidadFilter

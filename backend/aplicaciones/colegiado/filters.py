@@ -1,6 +1,8 @@
 from django_filters import rest_framework as filters
 from .models import Escuela, Especialidad, Colegiado, HistorialEducativo
 
+# TODO: Quitar filtro de apellido y nombres
+
 # Filtros para la entidad Escuela
 class EscuelaFilter(filters.FilterSet):
     # Filtro para buscar por nombre de escuela (case-insensitive exact match)
