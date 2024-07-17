@@ -1,20 +1,18 @@
 from django_filters import rest_framework as filters
 from .models import PopUp, Slider
 
-# Filtro para PopUp
+# PopUp
 class PopUpFilter(filters.FilterSet):
-    # Definición del filtro para el estado del PopUp
     estado = filters.CharFilter(field_name='estado_popup', lookup_expr='iexact')
 
     class Meta:
-        model = PopUp  # Especificamos el modelo al que pertenece el filtro
-        fields = ['estado']  # Campos por los que se pueden filtrar los PopUps
+        model = PopUp
+        fields = ['estado']
 
-# Filtro para Slider
+# Slider
 class SliderFilter(filters.FilterSet):
-    # Definición del filtro para el estado del Slider
     estado = filters.CharFilter(field_name='estado_slider', lookup_expr='iexact')
 
     class Meta:
-        model = Slider  # Especificamos el modelo al que pertenece el filtro
-        fields = ['estado']  # Campos por los que se pueden filtrar los Sliders
+        model = Slider  
+        fields = ['estado']

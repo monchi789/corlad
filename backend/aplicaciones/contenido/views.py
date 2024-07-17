@@ -1,15 +1,19 @@
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions, AllowAny
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+
 from .models import PopUp, Slider
 from .serializers import PopUpSerializer, SliderSerializer
 from .filters import PopUpFilter, SliderFilter
+from .permissions import PopUpPermissions, SliderPermissions
 
 # Vista para PopUps
-class PopUpViewSet(viewsets.ViewSet):
+class PopUpAPIView(viewsets.ViewSet):
     queryset = PopUp.objects.all()
     serializer_class = PopUpSerializer
 
@@ -21,7 +25,51 @@ class PopUpViewSet(viewsets.ViewSet):
         'estado'
     }
 
-    # Método para filtrar el queryset según los parámetros de consulta
+    # Método para filtrar el queryset según los parámetros de consulta      
+    def filter_queryset(self, queryset):
+        filterset = self.filter_class(self.request.query_params, queryset=queryset)
+        return filterset.qs
+    
+    # Obtener el serializador con los argumentos proporcionados
+    def get_serializer(self, *args, **kwargs):
+        return self.serializer_class(*args, **kwargs)
+
+    # Obtener el queryset completo de PopUps
+    def get_queryset(self):
+        return PopUp.objects.all()
+
+    @swagger_auto_schema(
+        operation_id='Listar PopUps',
+        responses={200: openapi.Response(description='Lista PopUps disponibles')}
+    )
+    def list(self, request, *args, **kwargs):
+        # Validar los parámetros permitidos en la consulta
+        for param in request.query_params:
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_404_NOT_FOUND)
+
+        queryset = self.get_queryset()
+        serializer =  self.serializer_class(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class PopUpViewSet(viewsets.ViewSet):
+    queryset = PopUp.objects.all()
+    serializer_class = PopUpSerializer
+
+    # JWT
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, PopUpPermissions]
+    authentication_classes = [JWTAuthentication]
+
+    # Aplicamos los filtros
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = PopUpFilter
+
+    allow_query_params = {
+        'estado'
+    }
+
+    # Método para filtrar el queryset según los parámetros de consulta      
     def filter_queryset(self, queryset):
         filterset = self.filter_class(self.request.query_params, queryset=queryset)
         return filterset.qs
@@ -52,8 +100,9 @@ class PopUpViewSet(viewsets.ViewSet):
     def list(self, request, *args, **kwargs):
         # Validar los parámetros permitidos en la consulta
         for param in request.query_params:
-            return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_404_NOT_FOUND)
-        
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_404_NOT_FOUND)
+
         queryset = self.get_queryset()
         serializer =  self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -79,8 +128,8 @@ class PopUpViewSet(viewsets.ViewSet):
         request_body=PopUpSerializer,
         responses={201: openapi.Response(description='PopUp creado')}
     )
-    def create(self, request):
-        serializer = self.get_serializer(data=request.data)
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -119,9 +168,54 @@ class PopUpViewSet(viewsets.ViewSet):
 
 
 # Vista para Sliders
+class SliderAPIView(viewsets.ViewSet):
+    queryset = Slider.objects.all()
+    serializer_class = SliderSerializer
+
+    # Aplicamos los filtros
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = SliderFilter
+
+    allow_query_params = {
+        'estado'
+    }
+
+    # Método para filtrar el queryset según los parámetros de consulta
+    def filter_queryset(self, queryset):
+        filterset = self.filterset_class(self.request.query_params, queryset=queryset)
+        return filterset.qs
+
+    # Obtener el serializador con los argumentos proporcionados
+    def get_serializer(self, *args, **kwargs):
+        return self.serializer_class(*args, **kwargs)
+    
+    # Obtener el queryset completo de Sliders
+    def get_queryset(self):
+        return Slider.objects.all()
+    
+    # Listar todos los Sliders
+    @swagger_auto_schema(
+        operation_id='Listar Sliders',
+        responses={200: openapi.Response(description='Lista de sliders')}
+    )
+    def list(self, request, *args, **kwargs):
+        # Validar los parámetros permitidos en la consulta
+        for param in request.query_params:
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_404_NOT_FOUND)
+        
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer =  self.serializer_class(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
 class SliderViewSet(viewsets.ModelViewSet):
     queryset = Slider.objects.all()
     serializer_class = SliderSerializer
+    
+    # JWT
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, SliderPermissions]
+    authentication_classes = [JWTAuthentication]
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
