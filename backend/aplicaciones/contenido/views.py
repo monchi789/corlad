@@ -1,14 +1,16 @@
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+
 from .models import PopUp, Slider
 from .serializers import PopUpSerializer, SliderSerializer
 from .filters import PopUpFilter, SliderFilter
+from .permissions import PopUpPermissions, SliderPermissions
 
 # Vista para PopUps
 class PopUpAPIView(viewsets.ViewSet):
@@ -56,7 +58,7 @@ class PopUpViewSet(viewsets.ViewSet):
     serializer_class = PopUpSerializer
 
     # JWT
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, PopUpPermissions]
     authentication_classes = [JWTAuthentication]
 
     # Aplicamos los filtros
@@ -212,7 +214,7 @@ class SliderViewSet(viewsets.ModelViewSet):
     serializer_class = SliderSerializer
     
     # JWT
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, SliderPermissions]
     authentication_classes = [JWTAuthentication]
 
     # Aplicamos los filtros

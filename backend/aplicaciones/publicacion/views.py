@@ -2,19 +2,21 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+
 from .models import Categoria, Publicacion
 from .filters import CategoriaFilter, PublicacionFilter
 from .serializers import CategoriaSerializer, PublicacionSerializer
-from rest_framework.pagination import PageNumberPagination
+from functions.paginations import CustomPagination
+from .permissions import CategoriaPermissions, PublicacionPermissions
 
 # ViewSet para el modelo Categoria
-class CategoriaAPIView(viewsets.ModelViewSet):
-    queryset = Categoria.objects.all()  # Consulta para obtener todas las categorías
-    serializer_class = CategoriaSerializer  # Serializer para el modelo Categoria
+class CategoriaAPIView(viewsets.ViewSet):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer  
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
@@ -26,14 +28,11 @@ class CategoriaAPIView(viewsets.ModelViewSet):
     }
 
     # Métodos
-
     def filter_queryset(self, queryset):
-        """Filtra el queryset según los parámetros permitidos"""
         filterset = self.filterset_class(self.request.query_params, queryset=queryset)
         return filterset.qs
     
     def get_queryset(self):
-        """Obtiene el queryset para el ViewSet"""
         return Categoria.objects.all()
     
     # Método GET
@@ -53,32 +52,28 @@ class CategoriaAPIView(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class CategoriaViewSet(viewsets.ModelViewSet):
-    queryset = Categoria.objects.all()  # Consulta para obtener todas las categorías
-    serializer_class = CategoriaSerializer  # Serializer para el modelo Categoria
+class CategoriaViewSet(viewsets.ViewSet):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
 
     # JWT
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, CategoriaPermissions]
     authentication_classes = [JWTAuthentication]
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
     filterset_class = CategoriaFilter
 
-    # Parámetros permitidos para consultas
     allow_query_params = {
         'nombre_categoria'
     }
 
     # Métodos
-
     def filter_queryset(self, queryset):
-        """Filtra el queryset según los parámetros permitidos"""
         filterset = self.filterset_class(self.request.query_params, queryset=queryset)
         return filterset.qs
 
     def get_object(self):
-        """Obtiene una instancia de Categoria por su ID"""
         pk = self.kwargs.get('pk')
         try:
             return Categoria.objects.get(pk=pk)
@@ -86,15 +81,12 @@ class CategoriaViewSet(viewsets.ModelViewSet):
             return Response({'detail': 'No se encontro el ID'}, status=status.HTTP_404_NOT_FOUND)
 
     def get_serializer(self, *args, **kwargs):
-        """Obtiene el serializer para el ViewSet"""
         return self.serializer_class(*args, **kwargs)
     
     def get_queryset(self):
-        """Obtiene el queryset para el ViewSet"""
         return Categoria.objects.all()
 
     # Métodos GET, UPDATE, CREATE y DELETE
-
     # Método GET
     @swagger_auto_schema(
         operation_id='Listar Categorias',
@@ -134,7 +126,6 @@ class CategoriaViewSet(viewsets.ModelViewSet):
         responses={201: openapi.Response(description='Categoria creada')}
     )
     def create(self, request):
-        """Crea una nueva categoría"""
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -148,7 +139,6 @@ class CategoriaViewSet(viewsets.ModelViewSet):
         responses={200: openapi.Response(description='Categoria actualizada')}
     )
     def update(self, request, pk=None):
-        """Actualiza una categoría existente"""
         try:
             instance = self.get_queryset().get(pk=pk)
         except Categoria.DoesNotExist:
@@ -166,7 +156,6 @@ class CategoriaViewSet(viewsets.ModelViewSet):
         responses={204: openapi.Response(description='Categoria eliminada')}
     )
     def destroy(self, request, pk=None):
-        """Elimina una categoría existente"""
         try:
             instance = self.get_queryset().get(pk=pk)
             instance.delete()
@@ -174,20 +163,11 @@ class CategoriaViewSet(viewsets.ModelViewSet):
         except Categoria.DoesNotExist:
             return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
-# Paginación personalizada para el modelo Publicacion
-class CustomPagination(PageNumberPagination):
-    page_size = 10  # Tamaño de página por defecto
-    page_size_query_param = 'page_size'  # Parámetro para especificar el tamaño de página
-    max_page_size = 100  # Tamaño máximo de página
 
 class PublicacionAPIView(viewsets.ViewSet):
-    queryset = Publicacion.objects.all()  # Consulta para obtener todas las publicaciones
-    serializer_class = PublicacionSerializer  # Serializer para el modelo Publicacion
-    pagination_class = CustomPagination  # Clase de paginación personalizada
-
-    # Aplicamos los filtros
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = PublicacionFilter
+    queryset = Publicacion.objects.all() 
+    serializer_class = PublicacionSerializer 
+    pagination_class = CustomPagination  
 
     # Parámetros permitidos para consultas
     allow_query_params = {
@@ -195,22 +175,25 @@ class PublicacionAPIView(viewsets.ViewSet):
     }
 
     # Métodos
-
     def filter_queryset(self, queryset):
-        """Filtra el queryset según los parámetros permitidos"""
         filterset = self.filterset_class(self.request.query_params, queryset=queryset)
         return filterset.qs
 
     def get_serializer(self, *args, **kwargs):
-        """Obtiene el serializer para el ViewSet"""
         return self.serializer_class(*args, **kwargs)
     
     def get_queryset(self):
-        """Obtiene el queryset para el ViewSet"""
         return Publicacion.objects.all()
+    
+    def paginate_queryset(self, queryset):
+        paginator = self.pagination_class()
+        return paginator.paginate_queryset(queryset, self.request, view=self)
+
+    def get_paginated_response(self, data):
+        paginator = self.pagination_class()
+        return paginator.get_paginated_response(data)
 
     # Métodos GET, UPDATE, CREATE y DELETE
-
     # Método GET
     @swagger_auto_schema(
         operation_id='Listar Publicaciones',
@@ -238,18 +221,18 @@ class PublicacionAPIView(viewsets.ViewSet):
 
 
 # ViewSet para el modelo Publicacion
-class PublicacionViewSet(viewsets.ModelViewSet):
-    queryset = Publicacion.objects.all()  # Consulta para obtener todas las publicaciones
-    serializer_class = PublicacionSerializer  # Serializer para el modelo Publicacion
-    pagination_class = CustomPagination  # Clase de paginación personalizada
+class PublicacionViewSet(viewsets.ViewSet):
+    queryset = Publicacion.objects.all()
+    serializer_class = PublicacionSerializer
+    pagination_class = CustomPagination
     
     # JWT
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, PublicacionPermissions]
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
     filterset_class = PublicacionFilter
+
 
     # Parámetros permitidos para consultas
     allow_query_params = {
@@ -257,14 +240,11 @@ class PublicacionViewSet(viewsets.ModelViewSet):
     }
 
     # Métodos
-
     def filter_queryset(self, queryset):
-        """Filtra el queryset según los parámetros permitidos"""
         filterset = self.filterset_class(self.request.query_params, queryset=queryset)
         return filterset.qs
 
     def get_object(self):
-        """Obtiene una instancia de Publicacion por su ID"""
         pk = self.kwargs.get('pk')
         try:
             return Publicacion.objects.get(pk=pk)
@@ -272,12 +252,24 @@ class PublicacionViewSet(viewsets.ModelViewSet):
             return Response({'detail': 'No se encontro el ID'}, status=status.HTTP_404_NOT_FOUND)
 
     def get_serializer(self, *args, **kwargs):
-        """Obtiene el serializer para el ViewSet"""
         return self.serializer_class(*args, **kwargs)
     
     def get_queryset(self):
-        """Obtiene el queryset para el ViewSet"""
         return Publicacion.objects.all()
+    
+    def perform_update(self, serializer):
+        try:
+            serializer.save()
+        except Exception as e:
+            return Response({'detail': f'Error al actualizar: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def paginate_queryset(self, queryset):
+        paginator = self.pagination_class()
+        return paginator.paginate_queryset(queryset, self.request, view=self)
+
+    def get_paginated_response(self, data):
+        paginator = self.pagination_class()
+        return paginator.get_paginated_response(data)
 
     # Métodos GET, UPDATE, CREATE y DELETE
 
