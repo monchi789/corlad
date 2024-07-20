@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import {
   Box, Typography, TextField, Button, IconButton, InputAdornment, Grid,
   Container
@@ -7,15 +7,35 @@ import { FaUser } from "react-icons/fa";
 import { AiOutlineEye } from "react-icons/ai";
 import { PiEyeClosed } from "react-icons/pi";
 import { MdLock } from "react-icons/md";
-import login_img from '../../../assets/dashboard/login_img.png'
+import login_img from '../../../assets/dashboard/login_img.png';
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export function Login() {
   const [showPassword, setShowPassword] = useState(false);
-
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const response = await axios.post(`${apiUrl}api/token/`, { username, password });
+      const token = response.data.access;
+      localStorage.setItem('authToken', token);
+      // Redirigir al inicio
+      navigate('/admin');
+    } catch (error) {
+      setError('Error al iniciar sesión');
+    }
+  };
+
   return (
     <div className="w-full h-screen bg-[#ECFFF4] flex justify-center items-center">
       <div className="w-full max-w-4xl mx-auto">
@@ -33,7 +53,7 @@ export function Login() {
               <Typography component="p" sx={{ fontFamily: 'Nunito Sans', color: 'black', marginBottom: 4 }}>
                 Inicie sesión con los datos que ingresó durante el registro
               </Typography>
-              <Box component="form" noValidate sx={{ mt: 1 }}>
+              <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleLogin}>
                 <TextField
                   margin="normal"
                   required
@@ -44,6 +64,8 @@ export function Login() {
                   autoFocus
                   variant="outlined"
                   placeholder="Usuario"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       backgroundColor: '#94b38f',
@@ -82,8 +104,9 @@ export function Login() {
                   type={showPassword ? 'text' : 'password'}
                   id="password"
                   autoComplete="current-password"
-                  variant="outlined"
                   placeholder="Contraseña"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       backgroundColor: '#94b38f',
@@ -121,6 +144,7 @@ export function Login() {
                     ),
                   }}
                 />
+                {error && <Typography color="error" variant="body2">{error}</Typography>}
                 <Button
                   type="submit"
                   variant="contained"
@@ -156,6 +180,5 @@ export function Login() {
         </Container>
       </div>
     </div>
-
   )
 }

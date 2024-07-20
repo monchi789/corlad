@@ -4,7 +4,7 @@ import { FaCircleCheck } from "react-icons/fa6";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { Avatar } from "primereact/avatar";
 import { useEffect, useState } from "react";
-import { Colegiado, defaultColegiado } from "../../interfaces/model/Colegiado";
+import { Colegiado } from "../../interfaces/model/Colegiado";
 import { getAllColegiados } from "../../api/colegiado.api";
 
 interface CardProps {

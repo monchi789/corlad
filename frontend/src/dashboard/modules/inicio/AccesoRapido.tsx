@@ -7,7 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 const AccesoRapido = () => {
   const buttons = [
     { label: 'Nuevo usuario', icon: <PersonAdd sx={{ color: '#5F4102' }} />, link: '/new-user' },
-    { label: 'Nuevo colegiado', icon: <School sx={{ color: '#5F4102' }} />, link: '/new-member' },
+    { label: 'Nuevo colegiado', icon: <School sx={{ color: '#5F4102' }} />, link: '/admin/colegiado' },
     { label: 'Nueva escuela', icon: <AccountBalance sx={{ color: '#5F4102' }} />, link: '/new-school' },
     { label: 'Nueva publicación', icon: <Publish sx={{ color: '#5F4102' }} />, link: '/new-publication' },
     { label: 'Nuevo pago', icon: <Payment sx={{ color: '#5F4102' }} />, link: '/new-payment' },
