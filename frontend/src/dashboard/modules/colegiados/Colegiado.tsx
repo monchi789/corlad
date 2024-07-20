@@ -44,7 +44,7 @@ const Colegiado2 = () => {
               sx={{
                 '& .MuiOutlinedInput-root': {
                   backgroundColor: '#5F4102',
-                  borderRadius: 5,
+                  borderRadius: 3,
                   '& fieldset': {
                     borderColor: '#5F4102',
                   },

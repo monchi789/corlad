@@ -10,6 +10,9 @@ import { ColegiadosAdmin } from '../dashboard/modules/colegiados/ColegiadosAdmin
 import { AgregarColegiado } from '../dashboard/modules/colegiados/AgregarColegiado.tsx';
 import { Login } from '../dashboard/modules/login/Login.tsx';
 import { Escuelas } from '../dashboard/modules/escuelas/Escuelas.tsx';
+import { PopUpsAdmin } from '../dashboard/modules/popups/PopUpsAdmin.tsx';
+import { SlidersAdmin } from '../dashboard/modules/sliders/SlidersAdmin.tsx';
+import { PublicacionesAdmin } from '../dashboard/modules/publicaciones/PublicacionesAdmin.tsx';
 
 const AppRoutes = () => {
   return (
@@ -26,7 +29,10 @@ const AppRoutes = () => {
       <Route path="/admin/colegiado" element={<ColegiadosAdmin/>}/>
       <Route path="/admin/colegiado/agregar-colegiado" element={<AgregarColegiado/>}/>
       <Route path="/admin/escuelas" element={<Escuelas/>}/>
-      
+      <Route path="/admin/publicaciones" element={<PublicacionesAdmin />}/>
+      <Route path="/admin/anuncios" element={<PopUpsAdmin />}/>
+      <Route path="/admin/galeria" element={<SlidersAdmin />}/>
+
     </Routes>
   );
 };
