@@ -8,6 +8,7 @@ class PopUpFilter(filters.FilterSet):
     class Meta:
         model = PopUp
         fields = ['estado']
+        
 
 # Slider
 class SliderFilter(filters.FilterSet):

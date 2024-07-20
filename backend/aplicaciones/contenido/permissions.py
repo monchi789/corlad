@@ -23,7 +23,7 @@ class SliderPermissions(BasePermission):
         if view.action == 'create':
             return request.user.has_perm('contenido.add_slider')
         if view.action in ['update', 'partial_update']:
-            return request.user.has_perm('contenido.change_popup')
+            return request.user.has_perm('contenido.change_slider')
         if view.action == 'destroy':
             return request.user.has_perm('contenido.delete_slider')
         return False

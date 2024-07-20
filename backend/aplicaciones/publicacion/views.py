@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -21,6 +21,9 @@ class CategoriaAPIView(viewsets.ViewSet):
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
     filterset_class = CategoriaFilter
+
+    # Aplicamos los permisos
+    permission_classes = [AllowAny]
 
     # Parámetros permitidos para consultas
     allow_query_params = {
@@ -169,10 +172,15 @@ class PublicacionAPIView(viewsets.ViewSet):
     serializer_class = PublicacionSerializer 
     pagination_class = CustomPagination  
 
+    # Aplicamos los permisos
+    permission_classes = [AllowAny]
+    filterset_class = PublicacionFilter
+
     # Parámetros permitidos para consultas
     allow_query_params = {
         'titulo', 'fecha', 'categoria', 'page', 'page_size'
     }
+
 
     # Métodos
     def filter_queryset(self, queryset):
