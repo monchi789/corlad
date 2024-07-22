@@ -6,7 +6,7 @@ import Carrousel from "../../shared/Carousel";
 import { Footer } from "../../shared/Footer";
 import { Contacto } from "../contactanos/contacto/Contacto";
 import { Publicacion } from "../../../interfaces/model/Publicacion";
-import { getAllNoticias } from "../../../api/noticia.api";
+import { getAllNoticiasByPage } from "../../../api/noticia.api";
 import { Servicios } from "./servicios/Servicios";
 import { PopUps } from "../../shared/PopUps";
 import { Gallery } from "../../shared/Gallery";
@@ -23,12 +23,11 @@ export function Inicio() {
 
   useEffect(() => {
     async function cargarNoticias() {
-      const res = await getAllNoticias();
-      console.log(res)
+      const res = await getAllNoticiasByPage(0,3);
       /*
         Mapeo del api 
       */
-      const noticias: Publicacion[] = res.data.map((noticia: any) => ({
+      const noticias: Publicacion[] = res.data.results.map((noticia: any) => ({
         id: noticia.id,
         titulo: noticia.titulo,
         contenido: noticia.contenido,
