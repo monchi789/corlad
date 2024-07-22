@@ -213,17 +213,16 @@ class PublicacionAPIView(viewsets.ViewSet):
         ]
     )
     def list(self, request, *args, **kwargs):
-        """Lista todas las publicaciones"""
-        # Validar los parámetros permitidos
         for param in request.query_params:
             if param not in self.allow_query_params:
                 return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_400_BAD_REQUEST)
                 
         queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(queryset, request, self)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+            return paginator.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
@@ -292,17 +291,16 @@ class PublicacionViewSet(viewsets.ViewSet):
         ]
     )
     def list(self, request, *args, **kwargs):
-        """Lista todas las publicaciones"""
-        # Validar los parámetros permitidos
         for param in request.query_params:
             if param not in self.allow_query_params:
                 return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_400_BAD_REQUEST)
                 
         queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(queryset, request, self)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+            return paginator.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
