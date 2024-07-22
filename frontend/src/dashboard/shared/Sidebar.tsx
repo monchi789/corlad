@@ -10,6 +10,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import logo_corlad from "../../assets/web/corlad_logo_blanco.png"
 
 export function Sidebar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -25,9 +26,10 @@ export function Sidebar() {
   };
 
   return (
-    <div className="w-1/5 h-svh bg-[#00330A] rounded-2xl shadow-2xl m-3 p-3">
+    <div className="w-1/5 h-dvh bg-[#007336] rounded-2xl shadow-2xl m-3 p-3">
       <div className="flex flex-col w-full font-nunito text-2xl">
-        <h1 className="text-center text-[#F1E9D0] font-black m-10">CORLAD</h1>
+        <img className="w-3/6 justify-center mx-auto" src={logo_corlad} alt="Logo del corlad cusco" />
+        <h1 className="text-center text-[#F1E9D0] font-black m-5">CORLAD - CUSCO</h1>
         <ul className="flex flex-col w-full justify-between">
           <Link to={"/admin"}>
             <li className="flex flex-row text-[#ECF6E8] hover:bg-[#5F4102] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-5 p-3">

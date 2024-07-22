@@ -45,13 +45,13 @@ const AppRoutes = () => {
       } />
 
       <Route path="/admin/colegiado/agregar-colegiado" element={
-        <GroupProtectedRoute allowedGroups={['publicador']}>
+        <GroupProtectedRoute allowedGroups={['secretaria']}>
           <AgregarColegiado />
         </GroupProtectedRoute>
       } />
 
       <Route path="/admin/escuelas" element={
-        <GroupProtectedRoute allowedGroups={['publicador']}>
+        <GroupProtectedRoute allowedGroups={['secretaria']}>
           <Escuelas />
         </GroupProtectedRoute>
       } />
