@@ -24,10 +24,11 @@ export function Inicio() {
   useEffect(() => {
     async function cargarNoticias() {
       const res = await getAllNoticias();
+      console.log(res)
       /*
         Mapeo del api 
       */
-      const noticias: Publicacion[] = res.data.results.map((noticia: any) => ({
+      const noticias: Publicacion[] = res.data.map((noticia: any) => ({
         id: noticia.id,
         titulo: noticia.titulo,
         contenido: noticia.contenido,

@@ -13,26 +13,69 @@ import { Escuelas } from '../dashboard/modules/escuelas/Escuelas.tsx';
 import { PopUpsAdmin } from '../dashboard/modules/popups/PopUpsAdmin.tsx';
 import { SlidersAdmin } from '../dashboard/modules/sliders/SlidersAdmin.tsx';
 import { PublicacionesAdmin } from '../dashboard/modules/publicaciones/PublicacionesAdmin.tsx';
+import { GroupProtectedRoute } from './GroupProtectedRoute.tsx';
+import { Unauthorized } from '../dashboard/shared/NoAutorizado.tsx';
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Inicio/>} />
-      <Route path="/nosotros" element={<Nosotros/>} />
+      {/* Rutas públicas */}
+      <Route path="/" element={<Inicio />} />
+      <Route path="/nosotros" element={<Nosotros />} />
       <Route path="/noticias" element={<Noticias />} />
       <Route path="/noticias/:id/:titulo" element={<Noticia />} />
       <Route path="/contactanos" element={<Contactanos />} />
-      <Route path="/consultar-habilidad" element={<ConsultarHabilidad/>}/>
-      
-      <Route path="/admin" element={<InicioAdmin/>}/>
-      <Route path="/admin/login" element={<Login />}/>
-      <Route path="/admin/colegiado" element={<ColegiadosAdmin/>}/>
-      <Route path="/admin/colegiado/agregar-colegiado" element={<AgregarColegiado/>}/>
-      <Route path="/admin/escuelas" element={<Escuelas/>}/>
-      <Route path="/admin/publicaciones" element={<PublicacionesAdmin />}/>
-      <Route path="/admin/anuncios" element={<PopUpsAdmin />}/>
-      <Route path="/admin/galeria" element={<SlidersAdmin />}/>
+      <Route path="/consultar-habilidad" element={<ConsultarHabilidad />} />
 
+      {/* Ruta de login */}
+      <Route path="/admin/login" element={<Login />} />
+
+      {/* Rutas protegidas */}
+      <Route path="/admin" element={
+        <GroupProtectedRoute allowedGroups={['publicador', 'secretaria']}>
+          <InicioAdmin />
+        </GroupProtectedRoute>
+      } />
+
+      {/* Rutas protegidas para la secretaria */}
+      <Route path="/admin/colegiado" element={
+        <GroupProtectedRoute allowedGroups={['secretaria']}>
+          <ColegiadosAdmin />
+        </GroupProtectedRoute>
+      } />
+
+      <Route path="/admin/colegiado/agregar-colegiado" element={
+        <GroupProtectedRoute allowedGroups={['publicador']}>
+          <AgregarColegiado />
+        </GroupProtectedRoute>
+      } />
+
+      <Route path="/admin/escuelas" element={
+        <GroupProtectedRoute allowedGroups={['publicador']}>
+          <Escuelas />
+        </GroupProtectedRoute>
+      } />
+
+      {/* Rutas protegidas para el publicador */}
+
+      <Route path="/admin/publicaciones" element={
+        <GroupProtectedRoute allowedGroups={['publicador']}>
+          <PublicacionesAdmin />
+        </GroupProtectedRoute>
+      } />
+      <Route path="/admin/anuncios" element={
+        <GroupProtectedRoute allowedGroups={['publicador']}>
+          <PopUpsAdmin />
+        </GroupProtectedRoute>
+      } />
+      <Route path="/admin/galeria" element={
+        <GroupProtectedRoute allowedGroups={['publicador']}>
+          <SlidersAdmin />
+        </GroupProtectedRoute>
+      } />
+
+      {/* Ruta para usuarios no autorizados */}
+      <Route path="/unauthorized" element={<Unauthorized />} />
     </Routes>
   );
 };

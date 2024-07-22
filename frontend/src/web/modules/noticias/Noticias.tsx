@@ -75,7 +75,7 @@ export function Noticias() {
 
     try {
       const response = await getNoticiasByFilter(params);
-      const noticias: Publicacion[] = response.data.results.map((noticia: any) => ({
+      const noticias: Publicacion[] = response.data.map((noticia: any) => ({
         id: noticia.id,
         titulo: noticia.titulo,
         contenido: noticia.contenido,
