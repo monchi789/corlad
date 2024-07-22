@@ -226,6 +226,22 @@ class PublicacionAPIView(viewsets.ViewSet):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+    
+    # Método GET por ID
+    @swagger_auto_schema(
+        operation_id='Obtener una Publicacion',
+        responses={200: openapi.Response(description='Detalle de una Publicacion')}
+    )
+    def retrieve(self, request, pk=None):
+        """Obtiene una publicación por su ID"""
+        try:
+            instance = self.get_queryset().get(pk=pk)
+        except Publicacion.DoesNotExist:
+            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(instance)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # ViewSet para el modelo Publicacion
