@@ -148,18 +148,24 @@ export function Noticias() {
             </div>
           </div>
           <div className="lg:w-4/6 mx-5 space-y-10 mb-24">
-            {noticiasList.map((noticia, index) => (
-              <div key={index}>
-                <HorizontalCard
-                  imageSource={import.meta.env.VITE_API_URL_ALTER + noticia.imagen_publicacion}
-                  imageAlt=""
-                  cardTitle={noticia.titulo}
-                  cardText={limitarContenido(noticia.contenido, 100)}
-                  noticiaId={noticia.id}
-                />
-                <Divider className="border border-solid my-10" />
+            {noticiasList.length === 0 ? (
+              <div className="flex flex-col text-center text-xl text-gray-500 mx-auto mt-10">
+                <p className="justify-center">No hay publicaciones disponibles todavía.</p>
               </div>
-            ))}
+            ) : (
+              noticiasList.map((noticia, index) => (
+                <div key={index}>
+                  <HorizontalCard
+                    imageSource={import.meta.env.VITE_API_URL_ALTER + noticia.imagen_publicacion}
+                    imageAlt=""
+                    cardTitle={noticia.titulo}
+                    cardText={limitarContenido(noticia.contenido, 100)}
+                    noticiaId={noticia.id}
+                  />
+                  <Divider className="border border-solid my-10" />
+                </div>
+              ))
+            )}
             <Paginator
               first={first}
               rows={rows}

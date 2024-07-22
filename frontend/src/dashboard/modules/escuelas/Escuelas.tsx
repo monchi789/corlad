@@ -34,7 +34,7 @@ export function Escuelas() {
       <Sidebar />
       <div className="w-4/5 m-3 p-3">
         <SessionHeader />
-        <div className="mt-10">
+        <div className="mt-10 space-y-5">
           <Grid container spacing={2} justifyContent="space-between" alignItems="center">
             <Grid item>
               <h4 className="text-4xl text-[#5F4102] font-nunito-sans font-bold">Capitulos</h4>
@@ -80,7 +80,7 @@ export function Escuelas() {
             )}
           </div>
 
-          <Grid container spacing={2} justifyContent="space-between" alignItems="center" className="mt-10">
+          <Grid container spacing={2} justifyContent="space-between" alignItems="center">
             <Grid item>
               <h4 className="text-4xl text-[#5F4102] font-nunito-sans font-bold">Especialidades</h4>
             </Grid>
@@ -121,7 +121,7 @@ export function Escuelas() {
                     {especialidad.nombre_especialidad}
                   </h5>
                   <p className="text-sm font-semibold font-nunito-sans text-[#00330A]">
-                    Escuela: {especialidad.nombre_escuela}
+                    Capitulo: {especialidad.id_escuela.nombre_escuela}
                   </p>
                 </div>
               ))
