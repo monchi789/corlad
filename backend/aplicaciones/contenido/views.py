@@ -19,6 +19,7 @@ class PopUpAPIView(viewsets.ViewSet):
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
+    permission_classes = [AllowAny]
     filterset_class = PopUpFilter
 
     allow_query_params = {
@@ -174,7 +175,9 @@ class SliderAPIView(viewsets.ViewSet):
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
+    permission_classes = [AllowAny]
     filterset_class = SliderFilter
+
 
     allow_query_params = {
         'estado'

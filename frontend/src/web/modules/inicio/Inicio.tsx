@@ -6,7 +6,7 @@ import Carrousel from "../../shared/Carousel";
 import { Footer } from "../../shared/Footer";
 import { Contacto } from "../contactanos/contacto/Contacto";
 import { Publicacion } from "../../../interfaces/model/Publicacion";
-import { getAllNoticias } from "../../../api/noticia.api";
+import { getAllNoticiasByPage } from "../../../api/noticia.api";
 import { Servicios } from "./servicios/Servicios";
 import { PopUps } from "../../shared/PopUps";
 import { Gallery } from "../../shared/Gallery";
@@ -23,7 +23,7 @@ export function Inicio() {
 
   useEffect(() => {
     async function cargarNoticias() {
-      const res = await getAllNoticias();
+      const res = await getAllNoticiasByPage(0,3);
       /*
         Mapeo del api 
       */

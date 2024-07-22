@@ -10,13 +10,33 @@ import { MdLock } from "react-icons/md";
 import login_img from '../../../assets/dashboard/login_img.png';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from 'jwt-decode';
+import { useAuth } from "../../contexts/AuthContext";
 
+// Función para decodificar el token JWT
+export function getDecodedToken(token: string){
+  try {
+   
+    const decoded = jwtDecode(token); // Usa el tipo genérico aquí
+    
+    return decoded;
+  
+  } catch (error) {
+    
+    return null;
+  
+  }
+}
+
+// Componente de inicio de sesión
 export function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -28,8 +48,12 @@ export function Login() {
       const apiUrl = import.meta.env.VITE_API_URL;
       const response = await axios.post(`${apiUrl}api/token/`, { username, password });
       const token = response.data.access;
-      localStorage.setItem('authToken', token);
-      // Redirigir al inicio
+      
+      // Usa la función login del contexto de autenticación
+      // Esta función ahora decodifica el token y almacena la información del usuario
+      login(token);
+
+      // Redirige al inicio
       navigate('/admin');
     } catch (error) {
       setError('Error al iniciar sesión');

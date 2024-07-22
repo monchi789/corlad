@@ -315,14 +315,19 @@ class ColegiadoViewSet(viewsets.ViewSet):
         responses={200: openapi.Response(description='Lista de colegiados')}
     )
     def list(self, request, *args, **kwargs):
-        # Validar los parámetros de la consulta permitidos
         for param in request.query_params:
             if param not in self.allow_query_params:
                 return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_400_BAD_REQUEST)
-
+                
         queryset = self.filter_queryset(self.get_queryset())
-        serializer = self.serializer_class(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(queryset, request, self)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
     
     # Metodo GET por ID
     @swagger_auto_schema(
@@ -506,6 +511,7 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
 class ConsultarHabilidadViewSet(viewsets.ViewSet):
     queryset = HistorialEducativo.objects.all()
     serializer_class = ConsultarHabilidadSerializer
+    pagination_class = CustomPagination
     permission_classes = [AllowAny]
     
     # Aplicamos los filtros
@@ -530,11 +536,16 @@ class ConsultarHabilidadViewSet(viewsets.ViewSet):
         responses={200: openapi.Response(description='Lista de habilidades  de colegiados')}
     )
     def list(self, request, *args, **kwargs):
-        # Validar los parametros permitidos
         for param in request.query_params:
             if param not in self.allow_query_params:
-                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
-        
+                return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_400_BAD_REQUEST)
+                
         queryset = self.filter_queryset(self.get_queryset())
-        serializer =  self.serializer_class(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(queryset, request, self)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
