@@ -22,7 +22,6 @@ export function Sidebar() {
 
   const handleLogout = () => {
     logout();
-    // Aquí podrías añadir una redirección a la página de login si es necesario
   };
 
   return (

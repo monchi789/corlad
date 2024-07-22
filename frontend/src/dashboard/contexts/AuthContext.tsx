@@ -35,16 +35,29 @@ function getDecodedToken(token: string): DecodedToken | null {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<DecodedToken | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = Cookies.get('authToken');
-    if (token) {
-      const decodedToken = getDecodedToken(token);
-      if (decodedToken) {
-        setIsAuthenticated(true);
-        setUser(decodedToken);
+    const checkAuth = () => {
+      const token = Cookies.get('authToken');
+      if (token) {
+        const decodedToken = getDecodedToken(token);
+        if (decodedToken && decodedToken.exp * 1000 > Date.now()) {
+          setIsAuthenticated(true);
+          setUser(decodedToken);
+        } else {
+          Cookies.remove('authToken');
+          setIsAuthenticated(false);
+          setUser(null);
+        }
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
       }
-    }
+      setLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
   const login = (token: string) => {
@@ -65,6 +78,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const hasGroup = (group: string) => {
     return user?.groups.includes(group) || false;
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // O cualquier componente de carga que prefieras
+  }
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, user, login, logout, hasGroup }}>

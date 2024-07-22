@@ -5,7 +5,7 @@ import { PersonAdd } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom';
 
-const Colegiado2 = () => {
+const Colegiado = () => {
   return (
     <div className="mt-10 pb-5">
       <Grid container spacing={2} justifyContent="space-between" alignItems="center">
@@ -80,4 +80,4 @@ const Colegiado2 = () => {
   );
 };
 
-export default Colegiado2;
+export default Colegiado;

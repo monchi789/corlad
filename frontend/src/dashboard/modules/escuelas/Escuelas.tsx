@@ -50,7 +50,7 @@ export function Escuelas() {
                 startIcon={<PersonAdd />}
               >
                 <Link to={"/admin/colegiado/agregar-colegiado"}>
-                  <span className="font-nunito-sans font-extrabold">Agregar Escuela</span>
+                  <span className="font-nunito-sans font-extrabold">Agregar Capitulo</span>
                 </Link>
               </Button>
             </Grid>

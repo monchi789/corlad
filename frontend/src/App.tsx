@@ -19,8 +19,8 @@ function App() {
   };
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <AuthProvider>
-        <ScrollToTop />
         <AppRoutes />
       </AuthProvider>
     </BrowserRouter>

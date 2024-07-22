@@ -67,7 +67,6 @@ export function TableCards() {
   useEffect(() => {
     async function cargarColegiados() {
       const res = await getAllColegiados();
-      console.log(res)
       /*
       const colegiadoList: Colegiado[] = res.data.map((element: any) => ({
         id: element.id,

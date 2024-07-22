@@ -13,7 +13,7 @@ export const GroupProtectedRoute: React.FC<GroupProtectedRouteProps> = ({ childr
 
   if (!isAuthenticated) {
     return <Navigate to="/admin/login" state={{ from: location }} replace />;
-  }
+  } 
 
   const hasAllowedGroup = allowedGroups.some(group => hasGroup(group));
 
