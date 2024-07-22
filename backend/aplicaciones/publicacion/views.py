@@ -173,6 +173,7 @@ class PublicacionAPIView(viewsets.ViewSet):
     pagination_class = CustomPagination  
 
     # Aplicamos los permisos
+    filter_backends = [DjangoFilterBackend]
     permission_classes = [AllowAny]
     filterset_class = PublicacionFilter
 
