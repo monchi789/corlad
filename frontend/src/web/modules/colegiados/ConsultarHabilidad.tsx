@@ -49,8 +49,8 @@ export function ConsultarHabilidad() {
         const startTime = Date.now();
   
         const response = await getColegiadoByFilters(params);
-        if (response.data && response.data.length > 0) {
-          const element = response.data[0];
+        if (response.data.results && response.data.results.length > 0) {
+          const element = response.data.results[0];
   
           const colegiadoFilter: HistorialDetalleColegiado = {
             id_colegiado: {
