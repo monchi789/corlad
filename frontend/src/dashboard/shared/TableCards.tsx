@@ -35,7 +35,7 @@ export function TableCards() {
     return (
       <div className="flex flex-row w-full justify-between text-base font-nunito font-semibold border-solid border-2 border-[#5F4102] rounded-2xl hover:bg-[#C9D9C6] transition duration-200 space-x-2 mt-5 p-3">
         <div className="w-2/6 flex flex-row space-x-3">
-          <Avatar className="my-auto" image={imagen} size="xlarge" />
+          <Avatar className="my-auto" shape="circle" image={imagen} size="xlarge" />
           <div className="flex flex-col">
             <p>{nombres}</p>
             <p>{apellidos}</p>
@@ -72,7 +72,7 @@ export function TableCards() {
         id: element.id,
         nombre_categoria: element.nombre_categoria,
       }));*/
-      setColegiados(res.data);
+      setColegiados(res.data.results);
     }
     cargarColegiados();
   }, []);

@@ -72,10 +72,10 @@ export function Noticias() {
   const handleCategoriaClick = async (categoria: string) => {
     setActiveCategoria(categoria);
     const params = `?categoria=${categoria}&page=1&page_size=${rows}`;
-
+  
     try {
-      const response = await getNoticiasByFilter(params);
-      const noticias: Publicacion[] = response.data.results.map((noticia: any) => ({
+      const res = await getNoticiasByFilter(params);
+      const noticias: Publicacion[] = res.data.results.map((noticia: any) => ({
         id: noticia.id,
         titulo: noticia.titulo,
         contenido: noticia.contenido,
@@ -88,7 +88,7 @@ export function Noticias() {
         }
       }));
       setNoticiasList(noticias);
-      setTotalRecords(response.data.count);
+      setTotalRecords(res.data.count);
       setFirst(0); // Reinicia a la primera página
     } catch (error) {
       console.error('Error fetching data:', error);

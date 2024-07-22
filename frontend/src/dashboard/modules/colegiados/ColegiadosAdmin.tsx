@@ -1,7 +1,7 @@
 import { SessionHeader } from "../../shared/SessionHeader";
 import { Sidebar } from "../../shared/Sidebar";
 import { TableCards } from "../../shared/TableCards";
-import Colegiado2 from "./Colegiado";
+import Colegiado from "./Colegiado";
 
 export function ColegiadosAdmin() {
   return (
@@ -10,7 +10,7 @@ export function ColegiadosAdmin() {
 
       <div className="w-4/5 m-3 p-3">
         <SessionHeader />
-        <Colegiado2/>
+        <Colegiado/>
 
         <TableCards/>
         

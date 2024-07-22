@@ -1,8 +1,9 @@
 import axios from "axios";
+import Cookies from 'js-cookie';
 
 export const getAllColegiados = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
-  const token = localStorage.getItem('authToken'); // Obteniendo el token del localStorage
+  const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
   return axios.get(`${apiUrl}gestion-colegiados/colegiados/`, {
     headers: {
