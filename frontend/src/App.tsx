@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import 'primereact/resources/primereact.min.css';
 import { useEffect } from 'react';
 import { AuthProvider } from './dashboard/contexts/AuthContext';
+import WhatsAppButton from './web/shared/WhatsAppButton';
 
 function App() {
   const ScrollToTop = () => {
@@ -23,6 +24,7 @@ function App() {
       <AuthProvider>
         <AppRoutes />
       </AuthProvider>
+      <WhatsAppButton />
     </BrowserRouter>
   )
 }
