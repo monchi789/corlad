@@ -3,14 +3,14 @@ from functions.validators import validar_espacio
 from django.core.validators import FileExtensionValidator
 from tinymce.models import HTMLField
 
-# Create your models here.
+# Modelo Categoria
 class Categoria(models.Model):
     nombre_categoria = models.CharField(max_length=250, unique=True, blank=False, null=False, validators=[validar_espacio])
 
     def __str__(self) -> str:
         return self.nombre_categoria
 
-
+# Modelo Publicacion
 class Publicacion(models.Model):
     titulo = models.CharField(max_length=250, blank=True, null=False, validators=[validar_espacio])
     contenido = HTMLField()

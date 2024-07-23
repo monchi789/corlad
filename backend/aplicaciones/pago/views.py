@@ -3,12 +3,16 @@ from rest_framework.response import Response
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from django_filters.rest_framework import DjangoFilterBackend
 
+
 from .models import EstadoCuenta, Pago, MetodoPago, TipoPago
-from .filters import EstadoCuentaFilter, TipoPagoFilter, PagoFilter, MetodoPagoFilter
-from ..colegiado.models import Colegiado
-from .serializers import PagoSerializer, EstadoCuentaSerializer, MetodoPagoSerializer, TipoPagoSerializer
+from .serializers import PagoSerializer, MetodoPagoSerializer, TipoPagoSerializer, EstadoCuentaSerializer
+from .filters import EstadoCuentaFilter, MetodoPagoFilter, TipoPagoFilter, PagoFilter
+from .permissions import EstadoCuentaPermissions, MetodoPagoPermissions, PagoPermissions, TipoPagoPermissions
+
 
 
 # Create your views here.
@@ -16,15 +20,18 @@ class MetodoPagoViewSet(viewsets.ViewSet):
     queryset = MetodoPago.objects.all()
     serializer_class = MetodoPagoSerializer
 
+    # JWT
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, MetodoPagoPermissions]
+    authentication_classes = [JWTAuthentication]
+
     # Aplicamos los filtros
-    filter_backends = [DjangoFilterBackend]
     filterset_class = MetodoPagoFilter
+    filter_backends = [DjangoFilterBackend]
 
     allow_query_params = {
         'nombre_metodo_pago'
     }
 
-    # Metodos
     def filter_queryset(self, queryset):
         filterset = self.filterset_class(self.request.query_params, queryset=queryset)
         return filterset.qs
@@ -42,15 +49,11 @@ class MetodoPagoViewSet(viewsets.ViewSet):
     def get_queryset(self):
         return MetodoPago.objects.all()
 
-    # Metodos GET, UPDATE, CREATE y DELETE
-
-    # Metodo GET
     @swagger_auto_schema(
         operation_id='Listar metodos de pago',
         responses={200: openapi.Response(description='Lista de metodos de pago')}
     )
     def list(self, request, *args, **kwargs):
-        # Validar los parametros permitidos
         for param in request.query_params:
             if param not in self.allow_query_params:
                 return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
@@ -59,73 +62,27 @@ class MetodoPagoViewSet(viewsets.ViewSet):
         serializer =  self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # Metodo GET por ID
     @swagger_auto_schema(
         operation_id='Obtener un Metodo de Pago',
         responses={200: openapi.Response(description='Detalle de un Metodo de Pago')}
     )
     def retrieve(self, request, pk=None):
-        try:
-            instance = self.get_queryset().get(pk=pk)
-        except MetodoPago.DoesNotExist:
-            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
-
+        instance = self.get_object()
         serializer = self.get_serializer(instance)
-        
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # Metodo CREATE
-    @swagger_auto_schema(
-        operation_id='Crear un metodo de pago',
-        request_body=MetodoPagoSerializer,
-        responses={201: openapi.Response(description='Metodo de pago creado')}
-    )
-    def create(self, request):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    # Metodo UPDATE
-    @swagger_auto_schema(
-        operation_id='Actualizar un Metodo de Pago',
-        request_body=MetodoPagoSerializer,
-        responses={200: openapi.Response(description='Metodo de pago Actualizado')}
-    )
-    def update(self, request, pk=None):
-        try:
-            instance = self.get_queryset().get(pk=pk)
-        except MetodoPago.DoesNotExist:
-            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
-        
-        serializer = self.get_serializer(instance, data=request.data, partial=False)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    # Metodo DELETE
-    @swagger_auto_schema(
-        operation_id='Eliminar un Metodo de Pago',
-        responses={204: openapi.Response(description='Metodo de Pago eliminado')}
-    )
-    def destroy(self, request, pk=None):
-        try:
-            instance = self.get_queryset().get(pk=pk)
-            instance.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except MetodoPago.DoesNotExist:
-            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class TipoPagoViewSet(viewsets.ViewSet):
     queryset = TipoPago.objects.all()
     serializer_class = TipoPagoSerializer
 
+    # JWT
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, TipoPagoPermissions]
+    authentication_classes = [JWTAuthentication]
+
     # Aplicamos los filtros
-    filter_backends = [DjangoFilterBackend]
     filterset_class = TipoPagoFilter
+    filter_backends = [DjangoFilterBackend]
 
     allow_query_params = {
         'nombre_tipo_pago'
@@ -150,7 +107,6 @@ class TipoPagoViewSet(viewsets.ViewSet):
         return TipoPago.objects.all()
 
     # Metodos GET, UPDATE, CREATE y DELETE
-
     # Metodo GET
     @swagger_auto_schema(
         operation_id='Listar Tipo de Pago',
@@ -181,65 +137,27 @@ class TipoPagoViewSet(viewsets.ViewSet):
         
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # Metodo CREATE
-    @swagger_auto_schema(
-        operation_id='Crear un Metodo de Pago',
-        request_body=TipoPagoSerializer,
-        responses={201: openapi.Response(description='Metodo de Pago creado')}
-    )
-    def create(self, request):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # Metodo UPDATE
-    @swagger_auto_schema(
-        operation_id='Actualizar un Metodo de Pago',
-        request_body=TipoPagoSerializer,
-        responses={200: openapi.Response(description='Metodo de Pago Actualizado')}
-    )
-    def update(self, request, pk=None):
-        try:
-            instance = self.get_queryset().get(pk=pk)
-        except TipoPago.DoesNotExist:
-            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
-        
-        serializer = self.get_serializer(instance, data=request.data, partial=False)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    # Metodo DELETE
-    @swagger_auto_schema(
-        operation_id='Eliminar un Metodo de Pago',
-        responses={204: openapi.Response(description='Metodo de Pago Eliminado')}
-    )
-    def destroy(self, request, pk=None):
-        try:
-            instance = self.get_queryset().get(pk=pk)
-            instance.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except TipoPago.DoesNotExist:
-            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
-
-
+# Pago
 class PagoViewSet(viewsets.ViewSet):
     queryset = Pago.objects.all()
     serializer_class = PagoSerializer
+
+    # JWT
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, PagoPermissions]
+    authentication_classes = [JWTAuthentication]
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
     filterset_class = PagoFilter
 
     allow_query_params = {
-        'apellido_paterno', 'dni_colegiado', 'numero_colegiatura',
-        'metodo_pago', 'tipo_pago', 'fecha_pago'
+        'apellido_paterno', 'dni_colegiado',
+        'numero_colegiatura', 'metodo_pago',
+        'tipo_pago', 'fecha_pago'
     }
 
-    # Metodos para los metodos
+    # Metodos
     def filter_queryset(self, queryset):
         filterset = self.filterset_class(self.request.query_params, queryset=queryset)
         return filterset.qs
@@ -249,45 +167,39 @@ class PagoViewSet(viewsets.ViewSet):
         try:
             return Pago.objects.get(pk=pk)
         except Pago.DoesNotExist:
-            return Response({'detail': 'No se encontro el ID'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'detail': 'No se encontró el ID'}, status=status.HTTP_404_NOT_FOUND)
     
     def get_serializer(self, *args, **kwargs):
         try:
             return self.serializer_class(*args, **kwargs)
-        except:
-            return Response({'detail': 'Error al obtener el serializer'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'detail': f'Error al obtener el serializer: {str(e)}'}, status=status.HTTP_404_NOT_FOUND)
 
     def perform_update(self, serializer):
         try:
             serializer.save()
-        except:
-            return Response({'detail': 'Error al actualizar'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({'detail': f'Error al actualizar: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
         
     def get_queryset(self):
         try:
             return self.queryset
-        except:
-            return Response({'detail': 'Error al obtener el queryset'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'detail': f'Error al obtener el queryset: {str(e)}'}, status=status.HTTP_404_NOT_FOUND)
 
-    # Metodos GET, UPDATE, CREATE y DELETE
-
-    # Metodo GET
     @swagger_auto_schema(
         operation_id='Listar los Pagos',
         responses={200: openapi.Response(description='Lista de Pagos de los colegiados')}    
     )
     def list(self, request, *args, **kwargs):
-        # Validar los parametros permitidos
-        for param in request.query_params:
-            if param not in self.allow_query_params:
-                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
+        if request.query_params:
+            return Response({'detail': 'No se permiten los parámetros de la solicitud.'}, status=status.HTTP_400_BAD_REQUEST)
         
-        queryset = self.filter_queryset(self.get_queryset())
+        queryset = self.queryset
         serializer = self.serializer_class(queryset, many=True)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # Metodo GET por ID
     @swagger_auto_schema(
         operation_id='Obtener un Pago',
         responses={200: openapi.Response(description='Detalle de un Pago')}    
@@ -301,57 +213,68 @@ class PagoViewSet(viewsets.ViewSet):
         serializer = self.get_serializer(instance)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # Metodo CREATE
+    
     @swagger_auto_schema(
         operation_id='Crear un Pago',
         request_body=PagoSerializer,
         responses={201: openapi.Response(description='Pago creado')}
     )
     def create(self, request):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    @swagger_auto_schema(
-        operation_id='Actualizar un Pago',
-        responses={201: openapi.Response(description='Pago actualizado')}
-    )
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-
         data = request.data.copy()
 
         # Manejar los IDs de las relaciones
         if 'id_colegiado' in data and isinstance(data['id_colegiado'], dict):
             data['id_colegiado_id'] = data['id_colegiado'].get('id')
-            del data['id_colegiado']
-        
         if 'id_metodo_pago' in data and isinstance(data['id_metodo_pago'], dict):
             data['id_metodo_pago_id'] = data['id_metodo_pago'].get('id')
-            del data['id_metodo_pago']
-
         if 'id_tipo_pago' in data and isinstance(data['id_tipo_pago'], dict):
             data['id_tipo_pago_id'] = data['id_tipo_pago'].get('id')
-            del data['id_tipo_pago']
+
+        serializer = self.get_serializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @swagger_auto_schema(
+        operation_id='Actualizar un Pago',
+        request_body=PagoSerializer,
+        responses={200: openapi.Response(description='Pago actualizado')}
+    )
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        data = request.data.copy()
+
+        # Manejar los IDs de las relaciones
+        if 'id_colegiado' in data and isinstance(data['id_colegiado'], dict):
+            data['id_colegiado_id'] = data['id_colegiado'].get('id')
+        if 'id_metodo_pago' in data and isinstance(data['id_metodo_pago'], dict):
+            data['id_metodo_pago_id'] = data['id_metodo_pago'].get('id')
+        if 'id_tipo_pago' in data and isinstance(data['id_tipo_pago'], dict):
+            data['id_tipo_pago_id'] = data['id_tipo_pago'].get('id')
         
         serializer = self.get_serializer(instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-   
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
 
+
+#TODO: Definir el metodo get por ID
 class EstadoCuentaViewSet(viewsets.ViewSet):
     queryset = EstadoCuenta.objects.all()
     serializer_class = EstadoCuentaSerializer
 
+    # JWT
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, EstadoCuentaPermissions]
+    authentication_classes = [JWTAuthentication]
+
     # Aplicamos los filtros
-    filter_backends = [DjangoFilterBackend]
     filterset_class = EstadoCuentaFilter
+    filter_backends = [DjangoFilterBackend]
 
     allow_query_params = {
         'apellido_paterno', 'dni_colegiado', 'numero_colegiatura'
@@ -374,13 +297,18 @@ class EstadoCuentaViewSet(viewsets.ViewSet):
     
     def get_queryset(self):
         return EstadoCuenta.objects.all()
+    
+    def perform_update(self, serializer):
+        try:
+            serializer.save()
+        except Exception as e:
+            return Response({'detail': f'Error al actualizar: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
     # Metodos GET, UPDATE, CREATE y DELETE
-
     # Metodo GET
     @swagger_auto_schema(
-        operation_id='Listar Estado de Cuentas',
-        responses={200: openapi.Response(description='Lista de Estados de Cuentas')}
+        operation_id='Listar los Estados de Cuenta',
+        responses={200: openapi.Response(description='Lista de Estados de Cuenta de los colegiados')}
     )
     def list(self, request, *args, **kwargs):
         # Validar los parametros permitidos
@@ -414,10 +342,18 @@ class EstadoCuentaViewSet(viewsets.ViewSet):
         responses={201: openapi.Response(description='Estado de Cuenta creado')}
     )
     def create(self, request):
-        serializer = self.get_serializer(data=request.data)
+        data = request.data.copy()
+
+        # Manejar los IDs de las relaciones
+        if 'id_colegiado' in data and isinstance(data['id_colegiado'], dict):
+            data['id_colegiado_id'] = data['id_colegiado'].get('id')
+            del data['id_colegiado']
+
+        serializer = self.get_serializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # Metodo UPDATE
@@ -426,17 +362,22 @@ class EstadoCuentaViewSet(viewsets.ViewSet):
         request_body=EstadoCuentaSerializer,
         responses={200: openapi.Response(description='Estado de Cuenta actualizado')}
     )
-    def update(self, request, pk=None):
-        try:
-            instance = self.get_queryset().get(pk=pk)
-        except EstadoCuenta.DoesNotExist:
-            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+
+        data = request.data.copy()
+
+        # Manejar los IDs de las relaciones
+        if 'id_colegiado' in data and isinstance(data['id_colegiado'], dict):
+            data['id_colegiado_id'] = data['id_colegiado'].get('id')
+            del data['id_colegiado']
         
-        serializer = self.get_serializer(instance, data=request.data, partial=False)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.get_serializer(instance, data=data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     # Metodo DELETE
     @swagger_auto_schema(
@@ -444,9 +385,6 @@ class EstadoCuentaViewSet(viewsets.ViewSet):
         responses={204: openapi.Response(description='Estado de Cuenta eliminado')}
     )
     def destroy(self, request, pk=None):
-        try:
-            instance = self.get_queryset().get(pk=pk)
-            instance.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except EstadoCuenta.DoesNotExist:
-            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        instance = self.get_object()
+        instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

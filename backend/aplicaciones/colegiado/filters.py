@@ -2,6 +2,7 @@ from django_filters import rest_framework as filters
 from .models import Escuela, Especialidad, Colegiado, HistorialEducativo
 
 
+# Filtros para la entidad Escuela
 class EscuelaFilter(filters.FilterSet):
     nombre_escuela = filters.CharFilter(field_name='nombre_escuela', lookup_expr='iexact')
 
@@ -10,8 +11,9 @@ class EscuelaFilter(filters.FilterSet):
         fields = ['nombre_escuela']
 
 
+# Filtros para la entidad Especialidad
 class EspecialidadFilter(filters.FilterSet):
-    nombre_escuela = filters.CharFilter(field_name='nombre_escuela', lookup_expr='iexact')
+    nombre_escuela = filters.CharFilter(field_name='id_escuela__nombre_escuela', lookup_expr='iexact')
     nombre_especialidad = filters.CharFilter(field_name='nombre_especialidad', lookup_expr='iexact')
 
     class Meta:
@@ -19,6 +21,7 @@ class EspecialidadFilter(filters.FilterSet):
         fields = ['nombre_escuela', 'nombre_especialidad']
 
 
+# Filtros para la entidad Colegiado
 class ColegiadoFilter(filters.FilterSet):
     numero_colegiatura = filters.CharFilter(field_name='numero_colegiatura', lookup_expr='iexact')
     dni_colegiado = filters.CharFilter(field_name='dni_colegiado', lookup_expr='iexact')
@@ -30,11 +33,12 @@ class ColegiadoFilter(filters.FilterSet):
         fields = ['numero_colegiatura', 'dni_colegiado', 'apellido_paterno', 'estado']
 
 
+# Filtros para la entidad HistorialEducativo
 class HistorialEducativoFilter(filters.FilterSet):
-    apellido_paterno = filters.CharFilter(field_name='id_colegiado_apellido_paterno', lookup_expr='istartswith')
-    nombre_escuela = filters.CharFilter(field_name='id_especialidad_id_escuela_nombre_escuela', lookup_expr='icontains')
-    dni_colegiado = filters.CharFilter(field_name='id_colegiado_dni_colegiado', lookup_expr='iexact')
-    numero_colegiatura = filters.CharFilter(field_name='id_colegiado_numero_colegiatura', lookup_expr='iexact')
+    apellido_paterno = filters.CharFilter(field_name='id_colegiado__apellido_paterno', lookup_expr='istartswith')
+    nombre_escuela = filters.CharFilter(field_name='id_especialidad__id_escuela__nombre_escuela', lookup_expr='icontains')
+    dni_colegiado = filters.CharFilter(field_name='id_colegiado__dni_colegiado', lookup_expr='iexact')
+    numero_colegiatura = filters.CharFilter(field_name='id_colegiado__numero_colegiatura', lookup_expr='iexact')
     universidad = filters.CharFilter(field_name='universidad', lookup_expr='istartswith')
 
     class Meta:
@@ -42,6 +46,7 @@ class HistorialEducativoFilter(filters.FilterSet):
         fields = ['apellido_paterno', 'nombre_escuela', 'dni_colegiado', 'numero_colegiatura', 'universidad']
 
 
+# Filtros para consultar habilidad de un colegiado
 class ConsultarHabilidadFilter(filters.FilterSet):
     dni_colegiado = filters.CharFilter(field_name='id_colegiado__dni_colegiado', lookup_expr='iexact')
     numero_colegiatura = filters.CharFilter(field_name='id_colegiado__numero_colegiatura', lookup_expr='iexact')
