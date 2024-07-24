@@ -14,9 +14,9 @@ export interface HistorialColegiado {
 export interface HistorialDetalleColegiado {
   id_colegiado: DetalleColegiado,
   id_especialidad: Especialidad
-};
+}
 
 export const defaultHistorialDetalleColegiado = {
   id_colegiado: defaultColegiado,
   id_especialidad: defaultEspecialidad
-};
+}

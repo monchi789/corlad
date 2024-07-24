@@ -1,7 +1,7 @@
 import { FaEdit } from "react-icons/fa";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaCircleCheck } from "react-icons/fa6";
-import { FaRegCircleCheck } from "react-icons/fa6";
+import { IoIosCloseCircle } from "react-icons/io";
 import { Avatar } from "primereact/avatar";
 import { useEffect, useState } from "react";
 import { Colegiado } from "../../interfaces/model/Colegiado";
@@ -51,14 +51,14 @@ export function TableCards() {
           {celular}
         </div>
         <div className="w-1/6 text-[#5F4102] my-auto">
-          {estado ? <FaCircleCheck size={"25px"} /> : <FaRegCircleCheck size={"25px"} />}
+          {estado ? <FaCircleCheck className="text-[#007336]" size={"25px"} /> : <IoIosCloseCircle className="text-[#B50C0C]" size={"25px"} />}
         </div>
         <div className="w-1/6 my-auto">
           {email}
         </div>
         <div className="flex flex-row w-1/6 text-[#8F650C] text-2xl space-x-3 justify-center my-auto">
-          <button><FaEdit /></button>
-          <button><FaTrashAlt /></button>
+          <button><FaEdit size={"25px"}/></button>
+          <button><FaTrashAlt className="text-[#B50C0C]" /></button>
         </div>
       </div>
     )
@@ -79,7 +79,7 @@ export function TableCards() {
 
   return (
     <>
-      <div className="flex flex-row w-full justify-between text-[#F9ECD9] font-nunito font-extrabold bg-[#5F4102] rounded-lg space-x-2 mt-5 py-3 px-3">
+      <div className="flex flex-row w-full justify-between text-[#F9ECD9] font-nunito font-extrabold bg-[#007336] rounded-lg space-x-2 mt-5 py-3 px-3">
         <button className="w-2/6 text-start">Apellidos y nombres</button>
         <button className="w-1/6 text-start">Documento de identidad</button>
         <button className="w-1/6 text-start">N° colegiatura</button>

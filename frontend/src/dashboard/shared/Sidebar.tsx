@@ -6,15 +6,14 @@ import { IoMdImages } from "react-icons/io";
 import { AiFillNotification } from "react-icons/ai";
 import { MdLogout } from "react-icons/md";
 import { PiNewspaperClippingFill } from "react-icons/pi";
-import { IoIosArrowDown } from "react-icons/io";
-import { IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import logo_corlad from "../../assets/web/corlad_logo_blanco.png"
+import logo_corlad from "../../assets/web/corlad_logo_blanco.png";
 
 export function Sidebar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { hasGroup, logout } = useAuth(); // Usamos el hook useAuth para acceder a las funciones del contexto
+  const { hasGroup, logout } = useAuth();
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -31,17 +30,35 @@ export function Sidebar() {
         <h1 className="text-center text-[#F1E9D0] font-black m-5">CORLAD - CUSCO</h1>
         <ul className="flex flex-col w-full justify-between">
           <Link to={"/admin"}>
-            <li className="flex flex-row text-[#ECF6E8] hover:bg-[#5F4102] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-5 p-3">
+            <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-5 p-3">
               <AiFillHome size={"30px"} />
               <span className="my-auto">Inicio</span>
             </li>
           </Link>
 
-          {hasGroup('publicador') && (
+          {hasGroup('secretaria', 'admin') && (
+            <>
+              <Link to={"/admin/colegiado"}>
+                <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-5 p-3">
+                  <FaUsers size={"30px"} />
+                  <span className="my-auto">Colegiados</span>
+                </li>
+              </Link>
+
+              <Link to={"/admin/escuelas"}>
+                <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-5 p-3">
+                  <IoSchoolSharp size={"30px"} />
+                  <span className="my-auto">Escuelas</span>
+                </li>
+              </Link>
+            </>
+          )}
+
+{hasGroup('publicador', 'admin') && (
             <>
               <li className="flex flex-col text-[#ECF6E8] hover:text-[#F1E9D0] transition duration-300 mx-5 mb-5">
                 <div
-                  className="flex flex-row justify-between space-x-4 rounded-lg p-3 cursor-pointer hover:bg-[#5F4102]"
+                  className="flex flex-row justify-between space-x-4 rounded-lg p-3 cursor-pointer hover:bg-[#CCB23A]"
                   onClick={toggleDropdown}
                 >
                   <div className="flex flex-row space-x-4">
@@ -57,12 +74,12 @@ export function Sidebar() {
                 {isDropdownOpen && (
                   <ul className="flex flex-col space-y-2 pl-12 pt-2">
                     <Link to={"/admin/publicaciones"}>
-                      <li className="flex flex-row text-[#ECF6E8] hover:bg-[#5F4102] hover:text-[#F1E9D0] rounded-lg transition duration-300 p-2">
+                      <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] rounded-lg transition duration-300 p-2">
                         <span className="my-auto">Publicaciones</span>
                       </li>
                     </Link>
-                    <Link to={"/admin/publicaciones/lista"}>
-                      <li className="flex flex-row text-[#ECF6E8] hover:bg-[#5F4102] hover:text-[#F1E9D0] rounded-lg transition duration-300 p-2">
+                    <Link to={"/admin/publicaciones/categorias"}>
+                      <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] rounded-lg transition duration-300 p-2">
                         <span className="my-auto">Categorias</span>
                       </li>
                     </Link>
@@ -71,40 +88,23 @@ export function Sidebar() {
               </li>
 
               <Link to={"/admin/anuncios"}>
-                <li className="flex flex-row text-[#ECF6E8] hover:bg-[#5F4102] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-5 p-3">
+                <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-5 p-3">
                   <AiFillNotification size={"30px"} />
                   <span className="my-auto">PopUps</span>
                 </li>
               </Link>
               
               <Link to={"/admin/galeria"}>
-                <li className="flex flex-row text-[#ECF6E8] hover:bg-[#5F4102] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-5 p-3">
+                <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-5 p-3">
                   <IoMdImages size={"30px"} />
                   <span className="my-auto">Sliders</span>
                 </li>
               </Link>
             </>
           )}
-
-          {hasGroup('secretaria') && (
-            <>
-              <Link to={"/admin/colegiado"}>
-                <li className="flex flex-row text-[#ECF6E8] hover:bg-[#5F4102] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-5 p-3">
-                  <FaUsers size={"30px"} />
-                  <span className="my-auto">Colegiados</span>
-                </li>
-              </Link>
-
-              <Link to={"/admin/escuelas"}>
-                <li className="flex flex-row text-[#ECF6E8] hover:bg-[#5F4102] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-5 p-3">
-                  <IoSchoolSharp size={"30px"} />
-                  <span className="my-auto">Escuelas</span>
-                </li>
-              </Link>
-            </>
-          )}
+          
         </ul>
-        <li onClick={handleLogout} className="flex flex-row text-[#ECF6E8] hover:bg-[#5F4102] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-5 p-3 cursor-pointer">
+        <li onClick={handleLogout} className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-5 p-3 cursor-pointer">
           <MdLogout size={"30px"} />
           <span className="my-auto">Salir</span>
         </li>

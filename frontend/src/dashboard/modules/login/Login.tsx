@@ -1,30 +1,30 @@
 import { FormEvent, useState } from "react";
 import {
-  Box, Typography, TextField, Button, IconButton, InputAdornment, Grid,
+  Box, Typography, TextField, IconButton, InputAdornment, Grid,
   Container
 } from '@mui/material';
 import { FaUser } from "react-icons/fa";
 import { AiOutlineEye } from "react-icons/ai";
 import { PiEyeClosed } from "react-icons/pi";
 import { MdLock } from "react-icons/md";
-import login_img from '../../../assets/dashboard/login_img.png';
+import logo_corlad from '../../../assets/web/corlad_logo.png';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import { useAuth } from "../../contexts/AuthContext";
 
 // Función para decodificar el token JWT
-export function getDecodedToken(token: string){
+export function getDecodedToken(token: string) {
   try {
-   
+
     const decoded = jwtDecode(token); // Usa el tipo genérico aquí
-    
+
     return decoded;
-  
+
   } catch (error) {
-    
+
     return null;
-  
+
   }
 }
 
@@ -34,7 +34,7 @@ export function Login() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
-  
+
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -48,7 +48,7 @@ export function Login() {
       const apiUrl = import.meta.env.VITE_API_URL;
       const response = await axios.post(`${apiUrl}api/token/`, { username, password });
       const token = response.data.access;
-      
+
       // Usa la función login del contexto de autenticación
       // Esta función ahora decodifica el token y almacena la información del usuario
       login(token);
@@ -63,7 +63,7 @@ export function Login() {
   return (
     <div className="w-full h-screen bg-[#ECFFF4] flex justify-center items-center">
       <div className="w-full max-w-4xl mx-auto">
-        <Container className="bg-[#ffffff]" sx={{ position: 'relative', p: 4, borderRadius: '20px', boxShadow: '0 4px 8px rgba(43, 94, 59, 0.4)' }}>
+        <Container className="bg-white" sx={{ position: 'relative', p: 5, borderRadius: '20px', boxShadow: '0 4px 8px rgba(43, 94, 59, 0.4)' }}>
           <Box sx={{ textAlign: 'center', mb: 4 }}>
             <Typography component="h1" variant="h5" sx={{ fontFamily: 'Nunito Sans', color: '#00330A' }}>
               Colegio Regional de Licenciados en Administración - Cusco
@@ -168,24 +168,10 @@ export function Login() {
                     ),
                   }}
                 />
-                {error && <Typography color="error" variant="body2">{error}</Typography>}
-                <Button
-                  type="submit"
-                  variant="contained"
-                  sx={{
-                    mt: 3, mb: 2,
-                    backgroundColor: '#00330A',
-                    color: 'white',
-                    '&:hover': { backgroundColor: '#5F4102' },
-                    fontFamily: 'Nunito Sans',
-                    textTransform: 'capitalize',
-                    fontWeight: 'bold',
-                    width: 'auto',
-                    padding: '6px 24px',
-                  }}
-                >
-                  Ingresar
-                </Button>
+                  <span className="text-[#B50C0C] mt-2">{error}</span><br />
+                  <button className="bg-[#00330A] hover:bg-[#5F4102] text-white font-nunito font-bold shadow-md transition duration-200 rounded mt-3 mb-2 px-6 py-1.5" type="submit">
+                    Ingresar
+                  </button>
               </Box>
             </Grid>
             <Grid item xs={12} md={6}>
@@ -197,7 +183,7 @@ export function Login() {
                   objectFit: 'cover',
                 }}
                 alt="Login"
-                src={login_img}
+                src={logo_corlad}
               />
             </Grid>
           </Grid>

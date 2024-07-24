@@ -4,9 +4,9 @@ import logo_wpp from '../../assets/web/icono.png'
 function WhatsAppButton() {
   const location = useLocation();
 
-  if (location.pathname.startsWith('/admin')) {
+  if (location.pathname.startsWith('/admin') || location.pathname.startsWith('/unauthorized')) {
     return null;
-  }
+  }  
 
   return (
     <a 

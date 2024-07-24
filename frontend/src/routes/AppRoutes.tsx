@@ -13,66 +13,53 @@ import { Escuelas } from '../dashboard/modules/escuelas/Escuelas.tsx';
 import { PopUpsAdmin } from '../dashboard/modules/popups/PopUpsAdmin.tsx';
 import { SlidersAdmin } from '../dashboard/modules/sliders/SlidersAdmin.tsx';
 import { PublicacionesAdmin } from '../dashboard/modules/publicaciones/PublicacionesAdmin.tsx';
+import { CategoriasAdmin } from '../dashboard/modules/publicaciones/CategoriasAdmin.tsx';
 import { GroupProtectedRoute } from './GroupProtectedRoute.tsx';
 import { Unauthorized } from '../dashboard/shared/NoAutorizado.tsx';
+
+const publicRoutes = [
+  { path: "/", element: <Inicio /> },
+  { path: "/nosotros", element: <Nosotros /> },
+  { path: "/noticias", element: <Noticias /> },
+  { path: "/noticias/:id/:titulo", element: <Noticia /> },
+  { path: "/contactanos", element: <Contactanos /> },
+  { path: "/consultar-habilidad", element: <ConsultarHabilidad /> },
+];
+
+const adminRoutes = [
+  { path: "/admin", element: <InicioAdmin />, allowedGroups: ['admin', 'secretaria', 'publicador'] },
+  { path: "/admin/colegiado", element: <ColegiadosAdmin />, allowedGroups: ['admin', 'secretaria'] },
+  { path: "/admin/colegiado/agregar-colegiado", element: <AgregarColegiado />, allowedGroups: ['admin', 'secretaria'] },
+  { path: "/admin/escuelas", element: <Escuelas />, allowedGroups: ['admin', 'secretaria'] },
+  { path: "/admin/publicaciones", element: <PublicacionesAdmin />, allowedGroups: ['admin', 'publicador'] },
+  { path: "/admin/publicaciones/categorias", element: <CategoriasAdmin />, allowedGroups: ['admin', 'publicador'] },
+  { path: "/admin/anuncios", element: <PopUpsAdmin />, allowedGroups: ['admin', 'publicador'] },
+  { path: "/admin/galeria", element: <SlidersAdmin />, allowedGroups: ['admin', 'publicador'] },
+];
 
 const AppRoutes = () => {
   return (
     <Routes>
       {/* Rutas públicas */}
-      <Route path="/" element={<Inicio />} />
-      <Route path="/nosotros" element={<Nosotros />} />
-      <Route path="/noticias" element={<Noticias />} />
-      <Route path="/noticias/:id/:titulo" element={<Noticia />} />
-      <Route path="/contactanos" element={<Contactanos />} />
-      <Route path="/consultar-habilidad" element={<ConsultarHabilidad />} />
+      {publicRoutes.map(({ path, element }) => (
+        <Route key={path} path={path} element={element} />
+      ))}
 
       {/* Ruta de login */}
       <Route path="/admin/login" element={<Login />} />
 
       {/* Rutas protegidas */}
-      <Route path="/admin" element={
-        <GroupProtectedRoute allowedGroups={['publicador', 'secretaria']}>
-          <InicioAdmin />
-        </GroupProtectedRoute>
-      } />
-
-      {/* Rutas protegidas para la secretaria */}
-      <Route path="/admin/colegiado" element={
-        <GroupProtectedRoute allowedGroups={['secretaria']}>
-          <ColegiadosAdmin />
-        </GroupProtectedRoute>
-      } />
-
-      <Route path="/admin/colegiado/agregar-colegiado" element={
-        <GroupProtectedRoute allowedGroups={['secretaria']}>
-          <AgregarColegiado />
-        </GroupProtectedRoute>
-      } />
-
-      <Route path="/admin/escuelas" element={
-        <GroupProtectedRoute allowedGroups={['secretaria']}>
-          <Escuelas />
-        </GroupProtectedRoute>
-      } />
-
-      {/* Rutas protegidas para el publicador */}
-
-      <Route path="/admin/publicaciones" element={
-        <GroupProtectedRoute allowedGroups={['publicador']}>
-          <PublicacionesAdmin />
-        </GroupProtectedRoute>
-      } />
-      <Route path="/admin/anuncios" element={
-        <GroupProtectedRoute allowedGroups={['publicador']}>
-          <PopUpsAdmin />
-        </GroupProtectedRoute>
-      } />
-      <Route path="/admin/galeria" element={
-        <GroupProtectedRoute allowedGroups={['publicador']}>
-          <SlidersAdmin />
-        </GroupProtectedRoute>
-      } />
+      {adminRoutes.map(({ path, element, allowedGroups }) => (
+        <Route
+          key={path}
+          path={path}
+          element={
+            <GroupProtectedRoute allowedGroups={allowedGroups}>
+              {element}
+            </GroupProtectedRoute>
+          }
+        />
+      ))}
 
       {/* Ruta para usuarios no autorizados */}
       <Route path="/unauthorized" element={<Unauthorized />} />

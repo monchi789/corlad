@@ -34,42 +34,42 @@ const Colegiado = () => {
       <div className="mt-5 bg-[#C9D9C6] rounded-2xl">
         <div className="flex flex-row space-x-5 p-5">
           <div className="w-2/6 flex flex-col">
-            <label htmlFor="nombre" className="block mb-1">DNI</label>
+            <label htmlFor="nombre" className="block font-nunito font-bold mb-1">DNI</label>
             <input
               type="text"
               id="nombre"
               name="nombre"
-              className="w-full bg-[#5F4102] text-[#ECF6E8] rounded-xl focus:outline-none p-2 px-2"
+              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-xl focus:outline-none p-2 px-2"
               required
             />
           </div>
           <div className="w-2/6 flex flex-col">
-            <label htmlFor="nombre" className="block mb-1">N° Colegiatura</label>
+            <label htmlFor="nombre" className="block font-nunito font-bold mb-1">N° Colegiatura</label>
             <input
               type="text"
               id="nombre"
               name="nombre"
-              className="w-full bg-[#5F4102] text-[#ECF6E8] rounded-xl focus:outline-none p-2 px-2"
+              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-xl focus:outline-none p-2 px-2"
               required
             />
           </div>
           <div className="w-2/6 flex flex-col">
-            <label htmlFor="nombre" className="block mb-1">Apellidos</label>
+            <label htmlFor="nombre" className="block font-nunito font-bold mb-1">Apellidos</label>
             <input
               type="text"
               id="nombre"
               name="nombre"
-              className="w-full bg-[#5F4102] text-[#ECF6E8] rounded-xl focus:outline-none p-2 px-2"
+              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-xl focus:outline-none p-2 px-2"
               required
             />
           </div>
           <div className="w-1/6 flex flex-col">
-            <label htmlFor="nombre" className="block mb-1">Estado</label>
+            <label htmlFor="nombre" className="block font-nunito font-bold mb-1">Estado</label>
             <input
               type="text"
               id="nombre"
               name="nombre"
-              className="w-full bg-[#5F4102] text-[#ECF6E8] rounded-xl focus:outline-none p-2 px-2"
+              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-xl focus:outline-none p-2 px-2"
               required
             />
           </div>
