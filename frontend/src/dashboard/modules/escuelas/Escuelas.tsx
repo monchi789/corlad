@@ -2,17 +2,21 @@ import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { PersonAdd } from "@mui/icons-material";
-import { Link } from "react-router-dom";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { SessionHeader } from "../../shared/SessionHeader";
 import { Sidebar } from "../../shared/Sidebar";
 import { getAllEscuelas, getAllEspecialidades } from "../../../api/escuela.api";
-import { Escuela} from "../../../interfaces/model/Escuela";
+import { Escuela } from "../../../interfaces/model/Escuela";
 import { Especialidad } from "../../../interfaces/model/Especialidad";
+import { AgregarEscuela } from "./AgregarEscuela"; // Importar el nuevo componente
+import { AgregarEspecialidad } from "./AgregarEspecialidad"; // Importar el nuevo componente
+import contabilidad from '../../../assets/dashboard/contabilidad.png';
 
 export function Escuelas() {
   const [escuelasList, setEscuelasList] = useState<Escuela[]>([]);
   const [especialidadesList, setEspecialidadesList] = useState<Especialidad[]>([]);
+  const [isEscuelaModalOpen, setIsEscuelaModalOpen] = useState(false);
+  const [isEspecialidadModalOpen, setIsEspecialidadModalOpen] = useState(false);
 
   useEffect(() => {
     async function cargarDatos() {
@@ -29,6 +33,22 @@ export function Escuelas() {
     cargarDatos();
   }, []);
 
+  const handleAddSchool = () => {
+    setIsEscuelaModalOpen(true);
+  };
+
+  const handleAddSpecialty = () => {
+    setIsEspecialidadModalOpen(true);
+  };
+
+  const handleCloseEscuelaModal = () => {
+    setIsEscuelaModalOpen(false);
+  };
+
+  const handleCloseEspecialidadModal = () => {
+    setIsEspecialidadModalOpen(false);
+  };
+
   return (
     <div className="flex flex-row w-full bg-[#ECF6E8]">
       <Sidebar />
@@ -37,21 +57,20 @@ export function Escuelas() {
         <div className="mt-10 space-y-5">
           <Grid container spacing={2} justifyContent="space-between" alignItems="center">
             <Grid item>
-              <h4 className="text-4xl text-[#5F4102] font-nunito-sans font-bold">Capitulos</h4>
+              <h4 className="text-4xl text-[#3A3A3A] font-nunito-sans font-bold">Capitulos</h4>
             </Grid>
             <Grid item>
               <Button
                 variant="contained"
                 sx={{
-                  backgroundColor: '#00330A',
+                  backgroundColor: '#007336',
                   color: 'white',
-                  '&:hover': { backgroundColor: '#5F4102' },
+                  '&:hover': { backgroundColor: '#00330A' },
                 }}
                 startIcon={<PersonAdd />}
+                onClick={handleAddSchool}
               >
-                <Link to={"/admin/colegiado/agregar-colegiado"}>
-                  <span className="font-nunito-sans font-extrabold">Agregar Capitulo</span>
-                </Link>
+                <span className="font-nunito-sans font-extrabold">Agregar Capitulo</span>
               </Button>
             </Grid>
           </Grid>
@@ -72,6 +91,7 @@ export function Escuelas() {
                       <FaTrashAlt />
                     </button>
                   </div>
+                  <img src={contabilidad} alt="Contabilidad" className="mx-auto mb-4 w-20 h-20" />
                   <h5 className="text-xl font-bold font-nunito-sans text-[#00330A]">{escuela.nombre_escuela}</h5>
                 </div>
               ))
@@ -82,21 +102,20 @@ export function Escuelas() {
 
           <Grid container spacing={2} justifyContent="space-between" alignItems="center">
             <Grid item>
-              <h4 className="text-4xl text-[#5F4102] font-nunito-sans font-bold">Especialidades</h4>
+              <h4 className="text-4xl text-[#3A3A3A] font-nunito-sans font-bold">Especialidades</h4>
             </Grid>
             <Grid item>
               <Button
                 variant="contained"
                 sx={{
-                  backgroundColor: '#00330A',
+                  backgroundColor: '#007336',
                   color: 'white',
-                  '&:hover': { backgroundColor: '#5F4102' },
+                  '&:hover': { backgroundColor: '#00330A' },
                 }}
                 startIcon={<PersonAdd />}
+                onClick={handleAddSpecialty}
               >
-                <Link to={"/admin/colegiado/agregar-especialidad"}>
-                  <span className="font-nunito-sans font-extrabold">Agregar Especialidad</span>
-                </Link>
+                <span className="font-nunito-sans font-extrabold">Agregar Especialidad</span>
               </Button>
             </Grid>
           </Grid>
@@ -106,23 +125,25 @@ export function Escuelas() {
               especialidadesList.map((especialidad, index) => (
                 <div
                   key={index}
-                  className="relative bg-white rounded-lg shadow-lg p-5 text-center transition duration-200 hover:bg-[#458050] hover:text-white group"
+                  className="relative bg-white rounded-lg shadow-lg p-5 flex justify-between items-center"
                   style={{ boxShadow: "0 4px 6px rgba(0, 51, 10, 0.1)" }}
                 >
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-200 bg-[#458050] bg-opacity-75">
-                    <button className="text-xl text-white mx-2">
+                  <div>
+                    <h5 className="text-xl font-bold font-nunito-sans text-[#00330A]">
+                      {especialidad.nombre_especialidad}
+                    </h5>
+                    <p className="text-sm font-semibold font-nunito-sans text-[#00330A]">
+                      Capitulo: {especialidad.id_escuela.nombre_escuela}
+                    </p>
+                  </div>
+                  <div className="flex items-center">
+                    <button className="text-xl text-[#00330A] mx-2">
                       <FaEdit />
                     </button>
-                    <button className="text-xl text-white mx-2">
+                    <button className="text-xl text-[#00330A] mx-2">
                       <FaTrashAlt />
                     </button>
                   </div>
-                  <h5 className="text-xl font-bold font-nunito-sans text-[#00330A]">
-                    {especialidad.nombre_especialidad}
-                  </h5>
-                  <p className="text-sm font-semibold font-nunito-sans text-[#00330A]">
-                    Capitulo: {especialidad.id_escuela.nombre_escuela}
-                  </p>
                 </div>
               ))
             ) : (
@@ -131,6 +152,9 @@ export function Escuelas() {
           </div>
         </div>
       </div>
+
+      <AgregarEscuela isOpen={isEscuelaModalOpen} onClose={handleCloseEscuelaModal} />
+      <AgregarEspecialidad isOpen={isEspecialidadModalOpen} onClose={handleCloseEspecialidadModal} />
     </div>
   );
 }
