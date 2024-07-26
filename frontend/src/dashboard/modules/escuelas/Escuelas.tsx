@@ -5,11 +5,13 @@ import { PersonAdd } from "@mui/icons-material";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { SessionHeader } from "../../shared/SessionHeader";
 import { Sidebar } from "../../shared/Sidebar";
-import { getAllEscuelas, getAllEspecialidades } from "../../../api/escuela.api";
+import { getAllEscuelas, getAllEspecialidades, deleteEscuela, deleteEspecialidad } from "../../../api/escuela.api";
 import { Escuela } from "../../../interfaces/model/Escuela";
 import { Especialidad } from "../../../interfaces/model/Especialidad";
-import { AgregarEscuela } from "./AgregarEscuela"; // Importar el nuevo componente
-import { AgregarEspecialidad } from "./AgregarEspecialidad"; // Importar el nuevo componente
+import { AgregarEscuela } from "./AgregarEscuela";
+import { AgregarEspecialidad } from "./AgregarEspecialidad";
+import { ActualizarEscuela } from "./ActualizarEscuela";
+import { ActualizarEspecialidad } from "./ActualizarEspecialidad";
 import contabilidad from '../../../assets/dashboard/contabilidad.png';
 
 export function Escuelas() {
@@ -17,19 +19,23 @@ export function Escuelas() {
   const [especialidadesList, setEspecialidadesList] = useState<Especialidad[]>([]);
   const [isEscuelaModalOpen, setIsEscuelaModalOpen] = useState(false);
   const [isEspecialidadModalOpen, setIsEspecialidadModalOpen] = useState(false);
+  const [isEscuelaEditModalOpen, setIsEscuelaEditModalOpen] = useState(false);
+  const [isEspecialidadEditModalOpen, setIsEspecialidadEditModalOpen] = useState(false);
+  const [selectedEscuela, setSelectedEscuela] = useState<Escuela | null>(null);
+  const [selectedEspecialidad, setSelectedEspecialidad] = useState<Especialidad | null>(null);
+
+  const cargarDatos = async () => {
+    try {
+      const escuelasRes = await getAllEscuelas();
+      setEscuelasList(escuelasRes.data as Escuela[]);
+      const especialidadesRes = await getAllEspecialidades();
+      setEspecialidadesList(especialidadesRes.data as Especialidad[]);
+    } catch (error) {
+      console.error("Error al cargar los datos:", error);
+    }
+  };
 
   useEffect(() => {
-    async function cargarDatos() {
-      try {
-        const escuelasRes = await getAllEscuelas();
-        setEscuelasList(escuelasRes.data as Escuela[]);
-
-        const especialidadesRes = await getAllEspecialidades();
-        setEspecialidadesList(especialidadesRes.data as Especialidad[]);
-      } catch (error) {
-        console.error("Error al cargar los datos:", error);
-      }
-    }
     cargarDatos();
   }, []);
 
@@ -41,12 +47,52 @@ export function Escuelas() {
     setIsEspecialidadModalOpen(true);
   };
 
+  const handleEditSchool = (escuela: Escuela) => {
+    setSelectedEscuela(escuela);
+    setIsEscuelaEditModalOpen(true);
+  };
+
+  const handleEditSpecialty = (especialidad: Especialidad) => {
+    setSelectedEspecialidad(especialidad);
+    setIsEspecialidadEditModalOpen(true);
+  };
+
   const handleCloseEscuelaModal = () => {
     setIsEscuelaModalOpen(false);
   };
 
   const handleCloseEspecialidadModal = () => {
     setIsEspecialidadModalOpen(false);
+  };
+
+  const handleCloseEscuelaEditModal = () => {
+    setIsEscuelaEditModalOpen(false);
+    setSelectedEscuela(null);
+  };
+
+  const handleCloseEspecialidadEditModal = () => {
+    setIsEspecialidadEditModalOpen(false);
+    setSelectedEspecialidad(null);
+  };
+
+  const handleDeleteSchool = async (id: number) => {
+    try {
+      await deleteEscuela(id);
+      cargarDatos();
+      console.log('Escuela eliminada con éxito');
+    } catch (error) {
+      console.error('Error al eliminar la escuela:', error);
+    }
+  };
+
+  const handleDeleteEspecialidad = async (id: number) => {
+    try {
+      await deleteEspecialidad(id);
+      cargarDatos();
+      console.log('Especialidad eliminada con éxito');
+    } catch (error) {
+      console.error('Error al eliminar la especialidad:', error);
+    }
   };
 
   return (
@@ -84,10 +130,10 @@ export function Escuelas() {
                   style={{ boxShadow: "0 4px 6px rgba(0, 51, 10, 0.1)" }}
                 >
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-200 bg-[#458050] bg-opacity-75">
-                    <button className="text-xl text-white mx-2">
+                    <button className="text-xl text-white mx-2" onClick={() => handleEditSchool(escuela)}>
                       <FaEdit />
                     </button>
-                    <button className="text-xl text-white mx-2">
+                    <button className="text-xl text-white mx-2" onClick={() => handleDeleteSchool(escuela.id)}>
                       <FaTrashAlt />
                     </button>
                   </div>
@@ -137,10 +183,10 @@ export function Escuelas() {
                     </p>
                   </div>
                   <div className="flex items-center">
-                    <button className="text-xl text-[#00330A] mx-2">
+                    <button className="text-xl text-[#00330A] mx-2" onClick={() => handleEditSpecialty(especialidad)}>
                       <FaEdit />
                     </button>
-                    <button className="text-xl text-[#00330A] mx-2">
+                    <button className="text-xl text-[#00330A] mx-2" onClick={() => handleDeleteEspecialidad(especialidad.id)}>
                       <FaTrashAlt />
                     </button>
                   </div>
@@ -153,8 +199,24 @@ export function Escuelas() {
         </div>
       </div>
 
-      <AgregarEscuela isOpen={isEscuelaModalOpen} onClose={handleCloseEscuelaModal} />
-      <AgregarEspecialidad isOpen={isEspecialidadModalOpen} onClose={handleCloseEspecialidadModal} />
+      <AgregarEscuela isOpen={isEscuelaModalOpen} onClose={handleCloseEscuelaModal} onSchoolAdded={cargarDatos} />
+      <AgregarEspecialidad isOpen={isEspecialidadModalOpen} onClose={handleCloseEspecialidadModal} onSpecialtyAdded={cargarDatos} />
+      {selectedEscuela && (
+        <ActualizarEscuela 
+          isOpen={isEscuelaEditModalOpen} 
+          onClose={handleCloseEscuelaEditModal} 
+          onSchoolUpdated={cargarDatos} 
+          escuela={selectedEscuela} 
+        />
+      )}
+      {selectedEspecialidad && (
+        <ActualizarEspecialidad 
+          isOpen={isEspecialidadEditModalOpen} 
+          onClose={handleCloseEspecialidadEditModal} 
+          onSpecialtyUpdated={cargarDatos} 
+          especialidad={selectedEspecialidad} 
+        />
+      )}
     </div>
   );
 }
