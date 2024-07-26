@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import banner_corlad from '../../assets/web/corlad_banner.jpg'
 import { getSlider } from '../../api/slider.api';
 import ImageGallery from 'react-image-gallery';
-import { Slider } from '../../interfaces/Slider';
+import { Slider } from '../../interfaces/model/Slider';
 import { useLocation } from 'react-router-dom';
 
 export function Gallery() {

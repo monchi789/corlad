@@ -43,9 +43,8 @@ export const AgregarEspecialidad: React.FC<AgregarEspecialidadProps> = ({ isOpen
         nombre_especialidad: newEspecialidadName,
         id_escuela: selectedEscuela,
       };
-
+      console.log(newSpecialtyData)
       await createEspecialidad(newSpecialtyData);
-      console.log('Especialidad creada exitosamente');
       onSpecialtyAdded();
       onClose();
     } catch (error) {

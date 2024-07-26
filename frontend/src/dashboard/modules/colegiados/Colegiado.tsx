@@ -10,7 +10,7 @@ const Colegiado = () => {
     <div className="mt-10 pb-5">
       <Grid container spacing={2} justifyContent="space-between" alignItems="center">
         <Grid item>
-          <h4 className="text-4xl text-[#5F4102] font-nunito font-extrabold">Panel de administración - Colegiados</h4>
+          <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold">Panel de administración - Colegiados</h4>
         </Grid>
         <Grid item>
           <Button

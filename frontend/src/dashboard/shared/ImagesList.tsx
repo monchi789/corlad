@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Switch from "react-switch";
 import { getPopUps } from '../../api/popup.api';
-import { PopUp } from '../../interfaces/PopUp';
-import { Slider } from '../../interfaces/Slider';
+import { PopUp } from '../../interfaces/model/PopUp';
+import { Slider } from '../../interfaces/model/Slider';
 import { getSlider } from '../../api/slider.api';
 
 interface ImagesListProps {
@@ -53,8 +53,8 @@ export const ImagesList: React.FC<ImagesListProps> = ({ tipo }) => {
 
   return (
     <div className="flex flex-col mt-10 space-y-5">
-      <h4 className="text-2xl text-[#5F4102] font-nunito font-extrabold">
-        {tipo === "popup" ? "Popups" : "Sliders"}
+      <h4 className="text-2xl text-[#3A3A3A] font-nunito font-extrabold">
+        {tipo === "popup" ? "Pop Ups" : "Sliders"}
       </h4>
       <div className="flex flex-row space-x-3">
         {list.map((element, index) => (

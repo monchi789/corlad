@@ -1,6 +1,6 @@
 import { Dialog } from "primereact/dialog";
 import { useEffect, useState } from "react";
-import { PopUp } from "../../interfaces/PopUp";
+import { PopUp } from "../../interfaces/model/PopUp";
 import { getPopUp } from "../../api/popup.api";
 
 export function PopUps() {

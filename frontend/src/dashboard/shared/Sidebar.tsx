@@ -24,7 +24,7 @@ export function Sidebar() {
   };
 
   return (
-    <div className="w-1/5 h-dvh bg-[#007336] rounded-2xl shadow-2xl m-3 p-3">
+    <div className="w-1/5 h-dvh bg-[#007336] rounded-2xl shadow-black shadow-lg m-3 p-3 mb-10">
       <div className="flex flex-col w-full font-nunito text-2xl">
         <img className="w-3/6 justify-center mx-auto" src={logo_corlad} alt="Logo del corlad cusco" />
         <h1 className="text-center text-[#F1E9D0] font-black m-5">CORLAD - CUSCO</h1>
@@ -51,10 +51,41 @@ export function Sidebar() {
                   <span className="my-auto">Escuelas</span>
                 </li>
               </Link>
+
+              <li className="flex flex-col text-[#ECF6E8] hover:text-[#F1E9D0] transition duration-300 mx-5 mb-5">
+                <div
+                  className="flex flex-row justify-between space-x-4 rounded-lg p-3 cursor-pointer hover:bg-[#CCB23A]"
+                  onClick={toggleDropdown}
+                >
+                  <div className="flex flex-row space-x-4">
+                    <PiNewspaperClippingFill size={"30px"} />
+                    <span className="my-auto">Pagos</span>
+                  </div>
+                  {isDropdownOpen ? (
+                    <IoIosArrowUp className="my-auto" size={"30px"} />
+                  ) : (
+                    <IoIosArrowDown className="my-auto" size={"30px"} />
+                  )}
+                </div>
+                {isDropdownOpen && (
+                  <ul className="flex flex-col space-y-2 pl-12 pt-2">
+                    <Link to={"/admin/pagos"}>
+                      <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] rounded-lg transition duration-300 p-2">
+                        <span className="my-auto">Pagos</span>
+                      </li>
+                    </Link>
+                    <Link to={"/admin/pagos/estado-cuenta"}>
+                      <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] rounded-lg transition duration-300 p-2">
+                        <span className="my-auto">Estados de cuenta</span>
+                      </li>
+                    </Link>
+                  </ul>
+                )}
+              </li>
             </>
           )}
 
-{hasGroup('publicador', 'admin') && (
+          {hasGroup('publicador', 'admin') && (
             <>
               <li className="flex flex-col text-[#ECF6E8] hover:text-[#F1E9D0] transition duration-300 mx-5 mb-5">
                 <div
@@ -90,10 +121,10 @@ export function Sidebar() {
               <Link to={"/admin/anuncios"}>
                 <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-5 p-3">
                   <AiFillNotification size={"30px"} />
-                  <span className="my-auto">PopUps</span>
+                  <span className="my-auto">Pop Ups</span>
                 </li>
               </Link>
-              
+
               <Link to={"/admin/galeria"}>
                 <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-5 p-3">
                   <IoMdImages size={"30px"} />
@@ -102,7 +133,7 @@ export function Sidebar() {
               </Link>
             </>
           )}
-          
+
         </ul>
         <li onClick={handleLogout} className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-5 p-3 cursor-pointer">
           <MdLogout size={"30px"} />
