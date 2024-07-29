@@ -11,12 +11,22 @@ export interface HistorialColegiado {
   titulo_fecha: string
 }
 
+export const defaultHistorialColegiado: HistorialColegiado = {
+  id: 0,
+  id_colegiado: defaultColegiado,
+  id_especialidad: defaultEspecialidad,
+  universidad: "",
+  denominacion_bachiller: "",
+  denominacion_titulo: "",
+  titulo_fecha: ""
+}
+
 export interface HistorialDetalleColegiado {
   id_colegiado: DetalleColegiado,
   id_especialidad: Especialidad
-};
+}
 
 export const defaultHistorialDetalleColegiado = {
   id_colegiado: defaultColegiado,
   id_especialidad: defaultEspecialidad
-};
+}

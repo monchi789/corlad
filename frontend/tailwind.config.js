@@ -10,6 +10,15 @@ export default {
         'nunito': ['Nunito Sans', 'sans-serif'],
         'mukta': ['Mukta', 'sans-serif'],
         'didact': ['Didact Gothic', 'sans-serif']
+      },
+      keyframes: {
+        efecto: {
+          '0%': { boxShadow: '0 0 0 0 rgba(9, 145, 5, 0.85)' },
+          '100%': { boxShadow: '0 0 0 25px rgba(50, 121, 3, 0)' },
+        },
+      },
+      animation: {
+        efecto: 'efecto 1s infinite',
       }
     },
   },

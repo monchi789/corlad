@@ -15,7 +15,7 @@ import { getAllEscuelas } from "../../../api/escuela.api";
 import { getAllEspecialidades } from "../../../api/especialidad.api";
 import toast, { Toaster } from "react-hot-toast";
 
-export function AgregarColegiado() {
+export function EditarColegiado() {
   const [selectedCapitulo, setSelectedCapitulo] = useState<number | null>(null);
   const [selectedEspecialidad, setSelectedEspecialidad] = useState<number | null>(null);
   const [filteredEspecialidadData, setFilteredEspecialidadData] = useState<Especialidad[]>([]);
@@ -180,8 +180,11 @@ export function AgregarColegiado() {
         <form className="flex flex-col w-full space-x-5 mt-10" onSubmit={handleSubmit}>
           <h4 className="text-4xl text-[#5F4102] font-nunito font-extrabold mb-5">Nuevo colegiado</h4>
           <div className="flex flex-row w-full">
-            <div className="flex flex-col w-1/4">
-              <img className="w-5/6 mt-5" src={imageUrl} alt="Perfil colegiado" />
+            <div className="flex flex-col w-1/4 space-y-5">
+              <img className="w-5/6" src={imageUrl} alt="Perfil colegiado" />
+              <span className="text-[#5F4102] font-nunito font-extrabold">Foto actual</span>
+              <span className="text-[#5F4102] font-nunito font-extrabold">{colegiadoData.foto_colegiado ? " " : colegiadoData.foto_colegiado}</span>
+              <span className="text-[#5F4102] font-nunito font-extrabold">Modificar</span>
               <button
                 type="button"
                 className="flex flex-row justify-between bg-[#5F4102] text-start text-[#F1E9D0] font-nunito font-extrabold rounded-md py-2 px-3 mt-10"
@@ -196,7 +199,7 @@ export function AgregarColegiado() {
                 style={{ display: 'none' }}
                 onChange={handleFileChange}
               />
-              <span className="mt-5">{fileName ? fileName : "Ningún archivo seleccionado"}</span>
+              <span>{fileName ? fileName : "Ningún archivo seleccionado"}</span>
             </div>
             <Divider layout="vertical" className="border border-solid mx-10" />
             <div className="flex flex-col w-3/4 me-5">

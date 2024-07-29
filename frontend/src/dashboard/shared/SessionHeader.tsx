@@ -4,7 +4,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 
 export function SessionHeader() {
   return (
-    <div className="flex flex-row w-full justify-between text-[#F1E9D0] font-nunito font-semibold bg-[#00330A] rounded-3xl px-10 py-5">
+    <div className="flex flex-row w-full justify-between text-[#F1E9D0] font-nunito font-semibold bg-[#007336] rounded-3xl px-10 py-5">
       <div className="flex flex-row space-x-5 my-auto">
         <div className="flex flex-row space-x-2">
           <FaRegCalendar className="my-auto" />

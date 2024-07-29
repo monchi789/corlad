@@ -1,4 +1,3 @@
-// AuthContext.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
@@ -18,7 +17,7 @@ interface AuthContextType {
   user: DecodedToken | null;
   login: (token: string) => void;
   logout: () => void;
-  hasGroup: (group: string) => boolean;
+  hasGroup: (...groups: string[]) => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -75,12 +74,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(null);
   };
 
-  const hasGroup = (group: string) => {
-    return user?.groups.includes(group) || false;
+  const hasGroup = (...groups: string[]): boolean => {
+    return user ? groups.some(group => user.groups.includes(group)) : false;
   };
-
+  
   if (loading) {
-    return <div>Loading...</div>; // O cualquier componente de carga que prefieras
+    return <div>Loading...</div>;
   }
 
   return (

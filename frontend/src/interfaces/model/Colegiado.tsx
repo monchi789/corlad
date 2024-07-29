@@ -1,20 +1,20 @@
 export interface Colegiado {
-  id: number,
-  nombre: string,
-  apellido_paterno: string,
-  apellido_materno: string,
-  celular: string,
-  correo: string,
-  estado: boolean,
-  foto_colegiado: string,
-  dni_colegiado: string,
-  numero_colegiatura: string,
-  numero_regulacion: string,
-  fecha_colegiatura: string,
-  sexo_colegiado: string,
-  fecha_nacimiento: string,
-  estado_civil: string,
-  direccion: string
+  id: number;
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  celular: string;
+  correo: string;
+  estado: boolean;
+  foto_colegiado?: File | string | null; // Mantener como string para los datos
+  dni_colegiado: string;
+  numero_colegiatura: string;
+  numero_regulacion: string;
+  fecha_colegiatura: string;
+  sexo_colegiado: string;
+  fecha_nacimiento: string;
+  estado_civil: string;
+  direccion: string;
 }
 
 export const defaultColegiado: Colegiado = {
@@ -25,7 +25,7 @@ export const defaultColegiado: Colegiado = {
   celular: "",
   correo: "",
   estado: false,
-  foto_colegiado: "",
+  foto_colegiado: null,
   dni_colegiado: "",
   numero_colegiatura: "",
   numero_regulacion: "",

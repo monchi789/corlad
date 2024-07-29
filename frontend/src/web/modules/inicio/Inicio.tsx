@@ -23,7 +23,7 @@ export function Inicio() {
 
   useEffect(() => {
     async function cargarNoticias() {
-      const res = await getAllNoticiasByPage(0,3);
+      const res = await getAllNoticiasByPage(0, 3);
       /*
         Mapeo del api 
       */
@@ -61,18 +61,18 @@ export function Inicio() {
       <Header />
 
       <div className='relative mt-24 xl:mt-32'>
-      <div className='container flex flex-col md:flex-row mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-center w-full justify-center items-center'>
-        <img className='w-4/6 md:w-2/4 xl:w-2/6' src={logo_corlad_blanco} alt="Logotipo corlad" />
-        <div className='w-2/4 mt-5 md:my-auto md:me-24 flex flex-col justify-center items-center'>
-          <h1 className="text-white text-2xl md:text-3xl lg:text-5xl xl:text-5xl font-bold font-mukta leading-loose md:leading-loose lg:leading-loose xl:leading-loose">
-            COLEGIO REGIONAL DE LICENCIADOS EN ADMINISTRACIÓN <br />
-            <span className='text-2xl lg:text-4xl'>CORLAD - CUSCO</span>
-          </h1>
+        <div className='container flex flex-col md:flex-row mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-center w-full justify-center items-center'>
+          <img className='w-4/6 md:w-2/4 xl:w-2/6' src={logo_corlad_blanco} alt="Logotipo corlad" />
+          <div className='w-2/4 mt-5 md:my-auto md:me-24 flex flex-col justify-center items-center'>
+            <h1 className="text-white text-2xl md:text-3xl lg:text-5xl xl:text-5xl font-bold font-mukta leading-loose md:leading-loose lg:leading-loose xl:leading-loose">
+              COLEGIO REGIONAL DE LICENCIADOS EN ADMINISTRACIÓN <br />
+              <span className='text-2xl lg:text-4xl'>CORLAD - CUSCO</span>
+            </h1>
+          </div>
         </div>
+        <Gallery />
       </div>
-      <Gallery />
-      </div>
-      
+
       <div className="container mx-auto md:px-10">
         {/*INFORMACION INSTITUCIONAL*/}
         <div className="flex md:flex-col lg:flex-row items-center my-24 mx-auto w-4/5">
@@ -103,15 +103,15 @@ export function Inicio() {
             </div>
           </div>
         </div>
-        </div>
-      
-        {/*Nuestros servicios*/}
-        <div className="flex flex-col my-12 mx-auto w-4/5 lg:w-4/5">
-          <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-32 font-nunito">NUESTROS SERVICIOS</h3>
-          <Servicios />
-        </div>
+      </div>
 
-        <div className="container mx-auto md:px-10">
+      {/*Nuestros servicios*/}
+      <div className="flex flex-col my-12 mx-auto w-4/5 lg:w-4/5">
+        <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-32 font-nunito">NUESTROS SERVICIOS</h3>
+        <Servicios />
+      </div>
+
+      <div className="container mx-auto md:px-10">
         {/*Nuestros aliados*/}
         <div className="flex flex-col items-center mx-auto">
           <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-24 font-nunito">NUESTROS CONVENIOS</h3>
@@ -123,14 +123,13 @@ export function Inicio() {
           <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-24 font-nunito">NOTICIAS</h3>
           <div className="flex flex-col xl:flex-row space-y-10 xl:space-y-0 xl:space-x-14 mb-12">
             {data.slice(0, 3).map((noticia, index) => (
-              <Card key={index} imageSource={import.meta.env.VITE_API_URL_ALTER+noticia.imagen_publicacion} imageAlt="" cardTitle={noticia.titulo} cardText={limitarContenido(noticia.contenido, 30)} noticiaId={noticia.id} />
+              <Card key={index} imageSource={import.meta.env.VITE_API_URL_ALTER + noticia.imagen_publicacion} imageAlt="" cardTitle={noticia.titulo} cardText={limitarContenido(noticia.contenido, 30)} noticiaId={noticia.id} />
             ))}
           </div>
           <Link to={'/noticias'} className="font-extrabold bg-[#a67102] text-white px-8 py-1 rounded-lg font-nunito">Ver Más</Link>
         </div>
 
       </div>
-
       <div className="w-full">
         <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-12 font-nunito">CONTÁCTANOS</h3>
         <div className="mx-auto py-24 bg-cover bg-center" style={{ backgroundImage: `url(${background})` }}>
