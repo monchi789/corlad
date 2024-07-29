@@ -59,7 +59,7 @@ class HistorialEducativoSerializer(serializers.ModelSerializer):
         model = HistorialEducativo
         fields = [
             'id', 'id_colegiado', 'id_especialidad', 'id_colegiado_id', 'id_especialidad_id',
-            'universidad', 'denominacion_bachiller', 'denominacion_titulo', 'titulo_fecha',
+            'universidad', 'denominacion_bachiller', 'denominacion_titulo', 'titulo_fecha', 'fecha_bachiller',
         ]
 
     def update(self, instance, validated_data):
