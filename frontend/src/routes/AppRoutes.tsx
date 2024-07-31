@@ -16,9 +16,10 @@ import { PublicacionesAdmin } from '../dashboard/modules/publicaciones/Publicaci
 import { CategoriasAdmin } from '../dashboard/modules/publicaciones/CategoriasAdmin.tsx';
 import { GroupProtectedRoute } from './GroupProtectedRoute.tsx';
 import { Unauthorized } from '../dashboard/shared/NoAutorizado.tsx';
-import { EstadoCuenta } from '../dashboard/modules/pagos/EstadoCuenta.tsx';
+import { EstadoCuenta } from '../dashboard/modules/estadocuenta/EstadoCuenta.tsx';
 import { Pagos } from '../dashboard/modules/pagos/Pagos.tsx';
 import { EditarColegiado } from '../dashboard/modules/colegiados/EditarColegiado.tsx';
+import { AgregarPagos } from '../dashboard/modules/pagos/AgregarPagos.tsx';
 
 const publicRoutes = [
   { path: "/", element: <Inicio /> },
@@ -34,10 +35,11 @@ const adminRoutes = [
 
   // Permisos para secretaria
   { path: "/admin/colegiado", element: <ColegiadosAdmin />, allowedGroups: ['admin', 'secretaria'] },
-  { path: "/admin/colegiado/agregar-colegiado", element: <AgregarColegiado />, allowedGroups: ['admin', 'secretaria'] },
-  { path: "/admin/colegiado/editar-colegiado", element: <EditarColegiado />, allowedGroups: ['admin', 'secretaria'] },
+  { path: "/admin/colegiado/nuevo-colegiado", element: <AgregarColegiado />, allowedGroups: ['admin', 'secretaria'] },
+  { path: "/admin/colegiado/editar-colegiado/:id1/:id2", element: <EditarColegiado />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/escuelas", element: <Escuelas />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/pagos", element: <Pagos />, allowedGroups: ['admin', 'secretaria'] },
+  { path: "/admin/pagos/nuevo-pago", element: <AgregarPagos />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/pagos/estado-cuenta", element: <EstadoCuenta />, allowedGroups: ['admin', 'secretaria'] },
   
   // Permisos para publicador

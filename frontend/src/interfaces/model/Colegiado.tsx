@@ -46,3 +46,14 @@ export interface DetalleColegiado {
   foto_colegiado: string,
   numero_colegiatura: string
 }
+
+export const defaultDetalleColegiado: DetalleColegiado = {
+  id: 0,
+  nombre:"",
+  apellido_paterno: "",
+  apellido_materno: "",
+  correo: "",
+  estado: false,
+  foto_colegiado: "",
+  numero_colegiatura: ""
+}

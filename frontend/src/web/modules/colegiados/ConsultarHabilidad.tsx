@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Header } from "../../shared/Header";
 import colegiado from "../../../assets/web/person_perfil.webp"
 import { Dropdown } from 'primereact/dropdown';
-import { getColegiadoByFilters } from "../../../api/colegiado.api";
+import { getConsultarHabilidad } from "../../../api/colegiado.api";
 import { defaultHistorialDetalleColegiado, HistorialDetalleColegiado } from "../../../interfaces/model/HistorialColegiado";
 import { Footer } from "../../shared/Footer";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -48,7 +48,7 @@ export function ConsultarHabilidad() {
         setIsLoading(true); // Inicia la carga
         const startTime = Date.now();
   
-        const response = await getColegiadoByFilters(params);
+        const response = await getConsultarHabilidad(params);
         if (response.data.results && response.data.results.length > 0) {
           const element = response.data.results[0];
   

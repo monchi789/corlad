@@ -87,7 +87,7 @@ export function AgregarColegiado() {
     }
   }, [selectedCapitulo, especialidadData]);
 
-  // Renderiza un item de categoría en una lista con estilo
+  // Renderiza cada item del dropdown de categoría
   const itemCategoria = (option: any) => {
     return (
       <div className="flex hover:bg-[#E6F3E6] text-[#00330a] items-center justify-between px-3 py-2">
@@ -178,7 +178,7 @@ export function AgregarColegiado() {
       <div className="w-4/5 m-3 p-3">
         <SessionHeader />
         <form className="flex flex-col w-full space-x-5 mt-10" onSubmit={handleSubmit}>
-          <h4 className="text-4xl text-[#5F4102] font-nunito font-extrabold mb-5">Nuevo colegiado</h4>
+          <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold mb-5">Nuevo colegiado</h4>
           <div className="flex flex-row w-full">
             <div className="flex flex-col w-1/4">
               <img className="w-5/6 mt-5" src={imageUrl} alt="Perfil colegiado" />
@@ -200,7 +200,7 @@ export function AgregarColegiado() {
             </div>
             <Divider layout="vertical" className="border border-solid mx-10" />
             <div className="flex flex-col w-3/4 me-5">
-              <div className="text-[#5F4102] space-y-3">
+              <div className="text-[#3A3A3A] font-nunito font-bold space-y-3">
                 <div className="bg-[#C9D9C6] rounded-2xl space-y-2 px-5 py-4">
                   <div className="flex flex-row space-x-5">
                     <div className="w-1/3">
@@ -211,7 +211,7 @@ export function AgregarColegiado() {
                         name="nombre"
                         value={colegiadoData.nombre}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -223,7 +223,7 @@ export function AgregarColegiado() {
                         name="apellido_paterno"
                         value={colegiadoData.apellido_paterno}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -235,7 +235,7 @@ export function AgregarColegiado() {
                         name="apellido_materno"
                         value={colegiadoData.apellido_materno}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -249,7 +249,7 @@ export function AgregarColegiado() {
                         name="dni_colegiado"
                         value={colegiadoData.dni_colegiado}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -261,7 +261,7 @@ export function AgregarColegiado() {
                         name="fecha_nacimiento"
                         value={colegiadoData.fecha_nacimiento}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -273,7 +273,7 @@ export function AgregarColegiado() {
                         name="sexo_colegiado"
                         value={colegiadoData.sexo_colegiado}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -285,7 +285,7 @@ export function AgregarColegiado() {
                         name="correo"
                         value={colegiadoData.correo}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -300,7 +300,7 @@ export function AgregarColegiado() {
                         name="direccion"
                         value={colegiadoData.direccion}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -312,7 +312,7 @@ export function AgregarColegiado() {
                         name="celular"
                         value={colegiadoData.celular}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -324,7 +324,7 @@ export function AgregarColegiado() {
                         name="estado_civil"
                         value={colegiadoData.estado_civil}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -336,7 +336,7 @@ export function AgregarColegiado() {
                   </div>
                 </div>
 
-                <div className="bg-[#C9D9C6] text-[#5F4102] rounded-2xl px-5 py-4">
+                <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl px-5 py-4">
                   <div className="flex flex-row space-x-5">
                     <div className="w-1/3">
                       <label htmlFor="numero_colegiatura" className="block mb-1">N° Colegiatura</label>
@@ -346,7 +346,7 @@ export function AgregarColegiado() {
                         name="numero_colegiatura"
                         value={colegiadoData.numero_colegiatura}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8]  rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -358,7 +358,7 @@ export function AgregarColegiado() {
                         name="numero_regulacion"
                         value={colegiadoData.numero_regulacion}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -370,14 +370,14 @@ export function AgregarColegiado() {
                         name="fecha_colegiatura"
                         value={colegiadoData.fecha_colegiatura}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-[#C9D9C6] text-[#5F4102] rounded-2xl px-5 py-4">
+                <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl px-5 py-4">
                   <div className="flex flex-row space-x-5">
                     <div className="w-1/3">
                       <label htmlFor="universidad" className="block mb-1">Universidad</label>
@@ -387,14 +387,14 @@ export function AgregarColegiado() {
                         name="universidad"
                         value={historialData.universidad}
                         onChange={handleChangeHistorial}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                       />
                     </div>
                     <div className="w-1/3">
                       <label htmlFor="capitulo" className="block mb-1">Capitulo</label>
                       <Dropdown
                         id="capitulo"
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
                         value={selectedCapitulo}
                         onChange={(e) => setSelectedCapitulo(e.value)}
@@ -408,7 +408,7 @@ export function AgregarColegiado() {
                       <label htmlFor="especialidad" className="block mb-1">Especialidad</label>
                       <Dropdown
                         id="especialidad"
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
                         value={selectedEspecialidad}
                         onChange={(e) => setSelectedEspecialidad(e.value)}
@@ -424,7 +424,7 @@ export function AgregarColegiado() {
                   </div>
                 </div>
 
-                <div className="bg-[#C9D9C6] text-[#5F4102] rounded-2xl space-y-2 px-5 py-4">
+                <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl space-y-2 px-5 py-4">
                   <div className="flex flex-row space-x-5">
                     <div className="w-1/2">
                       <label htmlFor="denominacion_bachiller" className="block mb-1">Denominación Bachiller</label>
@@ -434,19 +434,19 @@ export function AgregarColegiado() {
                         name="denominacion_bachiller"
                         value={historialData.denominacion_bachiller}
                         onChange={handleChangeHistorial}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
                     <div className="w-1/2">
-                      <label htmlFor="titulo_fecha" className="block mb-1">Fecha bachiller</label>
+                      <label htmlFor="fecha_bachiller" className="block mb-1">Fecha bachiller</label>
                       <input
                         type="date"
-                        id="titulo_fecha"
-                        name="titulo_fecha"
-                        value={historialData.titulo_fecha}
+                        id="fecha_bachiller"
+                        name="fecha_bachiller"
+                        value={historialData.fecha_bachiller}
                         onChange={handleChangeHistorial}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -460,7 +460,7 @@ export function AgregarColegiado() {
                         name="denominacion_titulo"
                         value={historialData.denominacion_titulo}
                         onChange={handleChangeHistorial}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -472,7 +472,7 @@ export function AgregarColegiado() {
                         name="titulo_fecha"
                         value={historialData.titulo_fecha}
                         onChange={handleChangeHistorial}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -480,9 +480,9 @@ export function AgregarColegiado() {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-row w-full text-[#5F4102] rounded-2xl space-x-3 mt-5">
+              <div className="flex flex-row w-full text-[#3A3A3A] rounded-2xl space-x-3 mt-5">
                 <button type="submit" className="w-2/3 font-nunito font-black bg-[#007336] text-[#F9ECD9] rounded-2xl p-3">Añadir Colegiado</button>
-                <button className="w-1/3 font-nunito font-black border-solid border-2 border-[#5F4102] rounded-2xl">Cancelar</button>
+                <button className="w-1/3 font-nunito font-black border-solid border-2 border-[#3A3A3A] rounded-2xl">Cancelar</button>
               </div>
               <Toaster
               position="bottom-center"

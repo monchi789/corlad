@@ -19,7 +19,10 @@ export default {
       },
       animation: {
         efecto: 'efecto 1s infinite',
-      }
+      },
+      boxShadow: {
+        'custom': '0 4px 15px 0 rgba(37, 58, 41)',
+      },
     },
   },
   plugins: [],

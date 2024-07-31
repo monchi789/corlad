@@ -1,4 +1,4 @@
-import { Colegiado, defaultColegiado, DetalleColegiado } from "./Colegiado"
+import { Colegiado, defaultColegiado, defaultDetalleColegiado, DetalleColegiado } from "./Colegiado"
 import { defaultEspecialidad, Especialidad } from "./Especialidad"
 
 export interface HistorialColegiado {
@@ -9,6 +9,7 @@ export interface HistorialColegiado {
   denominacion_bachiller: string,
   denominacion_titulo: string,
   titulo_fecha: string
+  fecha_bachiller: string
 }
 
 export const defaultHistorialColegiado: HistorialColegiado = {
@@ -18,7 +19,8 @@ export const defaultHistorialColegiado: HistorialColegiado = {
   universidad: "",
   denominacion_bachiller: "",
   denominacion_titulo: "",
-  titulo_fecha: ""
+  titulo_fecha: "",
+  fecha_bachiller: ""
 }
 
 export interface HistorialDetalleColegiado {
@@ -27,6 +29,6 @@ export interface HistorialDetalleColegiado {
 }
 
 export const defaultHistorialDetalleColegiado = {
-  id_colegiado: defaultColegiado,
+  id_colegiado: defaultDetalleColegiado,
   id_especialidad: defaultEspecialidad
 }

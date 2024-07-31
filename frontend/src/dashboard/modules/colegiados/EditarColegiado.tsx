@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import colegiado_default from "../../../assets/dashboard/person_perfil.webp"
 import { Divider } from "primereact/divider";
 import { Dropdown } from "primereact/dropdown";
@@ -9,13 +10,14 @@ import { Colegiado, defaultColegiado } from "../../../interfaces/model/Colegiado
 import { Especialidad } from "../../../interfaces/model/Especialidad";
 import { Escuela } from "../../../interfaces/model/Escuela";
 import { HistorialColegiado, defaultHistorialColegiado } from "../../../interfaces/model/HistorialColegiado";
-import { createColegiado } from "../../../api/colegiado.api";
-import { createHistorialColegiado } from "../../../api/historial.colegiado.api";
+import { getColegiadoById, updateColegiado } from "../../../api/colegiado.api";
+import { getHistorialColegiadoById, updateHistorialColegiado } from "../../../api/historial.colegiado.api";
 import { getAllEscuelas } from "../../../api/escuela.api";
 import { getAllEspecialidades } from "../../../api/especialidad.api";
 import toast, { Toaster } from "react-hot-toast";
 
 export function EditarColegiado() {
+  const { id1, id2 } = useParams();
   const [selectedCapitulo, setSelectedCapitulo] = useState<number | null>(null);
   const [selectedEspecialidad, setSelectedEspecialidad] = useState<number | null>(null);
   const [filteredEspecialidadData, setFilteredEspecialidadData] = useState<Especialidad[]>([]);
@@ -28,6 +30,29 @@ export function EditarColegiado() {
   const [fileName, setFileName] = useState<string | null>(null);
   const [imageUrl, setImageUrl] = useState<string>(colegiado_default);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    async function cargarDatosColegiado() {
+      if (id1 && id2) {
+        try {
+          const resColegiado = await getColegiadoById(parseInt(id2));
+          setColegiadoData(resColegiado.data);
+          setImageUrl(import.meta.env.VITE_API_URL_ALTER + resColegiado.data.foto_colegiado);
+
+          const resHistorialColegiado = await getHistorialColegiadoById(parseInt(id1));
+          setHistorialData(resHistorialColegiado.data)
+
+          setSelectedCapitulo(resHistorialColegiado.data.id_especialidad.id_escuela.id);
+          setSelectedEspecialidad(resHistorialColegiado.data.id_especialidad.id);
+        } catch (error) {
+          console.error('Error al cargar datos del colegiado:', error);
+          toast.error('Error al cargar datos del colegiado');
+        }
+      }
+    }
+    cargarDatosColegiado();
+  }, [id1, id2]);
+
 
   // Maneja el cambio en los campos del formulario del colegiado
   const handleChangeColegiado = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,7 +112,7 @@ export function EditarColegiado() {
     }
   }, [selectedCapitulo, especialidadData]);
 
-  // Renderiza un item de categoría en una lista con estilo
+  // Renderiza cada item del dropdown de categoría
   const itemCategoria = (option: any) => {
     return (
       <div className="flex hover:bg-[#E6F3E6] text-[#00330a] items-center justify-between px-3 py-2">
@@ -119,17 +144,17 @@ export function EditarColegiado() {
   const convertToFormData = (data: Colegiado) => {
     const formData = new FormData();
     Object.keys(data).forEach(key => {
-      if (key === 'foto_colegiado') {
-        const file = data[key as keyof Colegiado] as File | null;
-        if (file) {
-          formData.append(key, file, file.name);
-        }
-      } else {
-        formData.append(key, String(data[key as keyof Colegiado]));
+      const value = data[key as keyof Colegiado];
+      
+      if (key === 'foto_colegiado' && value instanceof File) {
+        formData.append(key, value, value.name);
+      } else if (key !== 'foto_colegiado') {
+        formData.append(key, String(value));
       }
     });
     return formData;
   };
+  
 
   // Maneja el envío del formulario para crear un colegiado y su historial
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -137,29 +162,17 @@ export function EditarColegiado() {
     const formData = convertToFormData(colegiadoData);
 
     try {
-      const colegiado = await createColegiado(formData);
-
-      historialData.id_colegiado = colegiado.data;
+      await updateColegiado(parseInt(id2!), formData);
 
       const filteredEspecialidad = especialidadData.filter(especialidad => especialidad.id === selectedEspecialidad);
-
       historialData.id_especialidad = filteredEspecialidad[0];
 
-      await createHistorialColegiado(historialData);
+      await updateHistorialColegiado(historialData.id, historialData);
 
-      toast.success('Colegiado creado exitosamente');
-      setColegiadoData(defaultColegiado);
-      setHistorialData(defaultHistorialColegiado);
-
-      setSelectedCapitulo(null);
-      setSelectedEspecialidad(null);
-
-      setFileName(null);
-      setImageUrl(colegiado_default);
-
+      toast.success('Colegiado actualizado exitosamente');
     } catch (error) {
-      console.error('Error al crear colegiado:', error);
-      toast.error('Error al crear colegiado');
+      console.error('Error al actualizar colegiado:', error);
+      toast.error('Error al actualizar colegiado');
     }
   };
 
@@ -178,13 +191,10 @@ export function EditarColegiado() {
       <div className="w-4/5 m-3 p-3">
         <SessionHeader />
         <form className="flex flex-col w-full space-x-5 mt-10" onSubmit={handleSubmit}>
-          <h4 className="text-4xl text-[#5F4102] font-nunito font-extrabold mb-5">Nuevo colegiado</h4>
+          <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold mb-5">Editar colegiado</h4>
           <div className="flex flex-row w-full">
-            <div className="flex flex-col w-1/4 space-y-5">
-              <img className="w-5/6" src={imageUrl} alt="Perfil colegiado" />
-              <span className="text-[#5F4102] font-nunito font-extrabold">Foto actual</span>
-              <span className="text-[#5F4102] font-nunito font-extrabold">{colegiadoData.foto_colegiado ? " " : colegiadoData.foto_colegiado}</span>
-              <span className="text-[#5F4102] font-nunito font-extrabold">Modificar</span>
+            <div className="flex flex-col w-1/4">
+              <img className="w-5/6 mt-5" src={imageUrl} alt="Perfil colegiado" />
               <button
                 type="button"
                 className="flex flex-row justify-between bg-[#5F4102] text-start text-[#F1E9D0] font-nunito font-extrabold rounded-md py-2 px-3 mt-10"
@@ -199,11 +209,11 @@ export function EditarColegiado() {
                 style={{ display: 'none' }}
                 onChange={handleFileChange}
               />
-              <span>{fileName ? fileName : "Ningún archivo seleccionado"}</span>
+              <span className="mt-5">{fileName ? fileName : "Ningún archivo seleccionado"}</span>
             </div>
             <Divider layout="vertical" className="border border-solid mx-10" />
             <div className="flex flex-col w-3/4 me-5">
-              <div className="text-[#5F4102] space-y-3">
+              <div className="text-[#3A3A3A] font-nunito font-bold space-y-3">
                 <div className="bg-[#C9D9C6] rounded-2xl space-y-2 px-5 py-4">
                   <div className="flex flex-row space-x-5">
                     <div className="w-1/3">
@@ -214,7 +224,7 @@ export function EditarColegiado() {
                         name="nombre"
                         value={colegiadoData.nombre}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -226,7 +236,7 @@ export function EditarColegiado() {
                         name="apellido_paterno"
                         value={colegiadoData.apellido_paterno}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -238,7 +248,7 @@ export function EditarColegiado() {
                         name="apellido_materno"
                         value={colegiadoData.apellido_materno}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -252,7 +262,7 @@ export function EditarColegiado() {
                         name="dni_colegiado"
                         value={colegiadoData.dni_colegiado}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -264,7 +274,7 @@ export function EditarColegiado() {
                         name="fecha_nacimiento"
                         value={colegiadoData.fecha_nacimiento}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -276,7 +286,7 @@ export function EditarColegiado() {
                         name="sexo_colegiado"
                         value={colegiadoData.sexo_colegiado}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -288,7 +298,7 @@ export function EditarColegiado() {
                         name="correo"
                         value={colegiadoData.correo}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -303,7 +313,7 @@ export function EditarColegiado() {
                         name="direccion"
                         value={colegiadoData.direccion}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -315,7 +325,7 @@ export function EditarColegiado() {
                         name="celular"
                         value={colegiadoData.celular}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -327,7 +337,7 @@ export function EditarColegiado() {
                         name="estado_civil"
                         value={colegiadoData.estado_civil}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -339,7 +349,7 @@ export function EditarColegiado() {
                   </div>
                 </div>
 
-                <div className="bg-[#C9D9C6] text-[#5F4102] rounded-2xl px-5 py-4">
+                <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl px-5 py-4">
                   <div className="flex flex-row space-x-5">
                     <div className="w-1/3">
                       <label htmlFor="numero_colegiatura" className="block mb-1">N° Colegiatura</label>
@@ -349,7 +359,7 @@ export function EditarColegiado() {
                         name="numero_colegiatura"
                         value={colegiadoData.numero_colegiatura}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8]  rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -361,7 +371,7 @@ export function EditarColegiado() {
                         name="numero_regulacion"
                         value={colegiadoData.numero_regulacion}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -373,14 +383,14 @@ export function EditarColegiado() {
                         name="fecha_colegiatura"
                         value={colegiadoData.fecha_colegiatura}
                         onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-[#C9D9C6] text-[#5F4102] rounded-2xl px-5 py-4">
+                <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl px-5 py-4">
                   <div className="flex flex-row space-x-5">
                     <div className="w-1/3">
                       <label htmlFor="universidad" className="block mb-1">Universidad</label>
@@ -390,14 +400,14 @@ export function EditarColegiado() {
                         name="universidad"
                         value={historialData.universidad}
                         onChange={handleChangeHistorial}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                       />
                     </div>
                     <div className="w-1/3">
                       <label htmlFor="capitulo" className="block mb-1">Capitulo</label>
                       <Dropdown
                         id="capitulo"
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
                         value={selectedCapitulo}
                         onChange={(e) => setSelectedCapitulo(e.value)}
@@ -411,7 +421,7 @@ export function EditarColegiado() {
                       <label htmlFor="especialidad" className="block mb-1">Especialidad</label>
                       <Dropdown
                         id="especialidad"
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
                         value={selectedEspecialidad}
                         onChange={(e) => setSelectedEspecialidad(e.value)}
@@ -427,7 +437,7 @@ export function EditarColegiado() {
                   </div>
                 </div>
 
-                <div className="bg-[#C9D9C6] text-[#5F4102] rounded-2xl space-y-2 px-5 py-4">
+                <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl space-y-2 px-5 py-4">
                   <div className="flex flex-row space-x-5">
                     <div className="w-1/2">
                       <label htmlFor="denominacion_bachiller" className="block mb-1">Denominación Bachiller</label>
@@ -437,19 +447,19 @@ export function EditarColegiado() {
                         name="denominacion_bachiller"
                         value={historialData.denominacion_bachiller}
                         onChange={handleChangeHistorial}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
                     <div className="w-1/2">
-                      <label htmlFor="titulo_fecha" className="block mb-1">Fecha bachiller</label>
+                      <label htmlFor="fecha_bachiller" className="block mb-1">Fecha bachiller</label>
                       <input
                         type="date"
-                        id="titulo_fecha"
-                        name="titulo_fecha"
-                        value={historialData.titulo_fecha}
+                        id="fecha_bachiller"
+                        name="fecha_bachiller"
+                        value={historialData.fecha_bachiller}
                         onChange={handleChangeHistorial}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -463,7 +473,7 @@ export function EditarColegiado() {
                         name="denominacion_titulo"
                         value={historialData.denominacion_titulo}
                         onChange={handleChangeHistorial}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -475,7 +485,7 @@ export function EditarColegiado() {
                         name="titulo_fecha"
                         value={historialData.titulo_fecha}
                         onChange={handleChangeHistorial}
-                        className="w-full bg-[#ECF6E8] text-[#5F4102] rounded-xl focus:outline-none p-1 px-2"
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-1 px-2"
                         required
                       />
                     </div>
@@ -483,13 +493,13 @@ export function EditarColegiado() {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-row w-full text-[#5F4102] rounded-2xl space-x-3 mt-5">
-                <button type="submit" className="w-2/3 font-nunito font-black bg-[#007336] text-[#F9ECD9] rounded-2xl p-3">Añadir Colegiado</button>
-                <button className="w-1/3 font-nunito font-black border-solid border-2 border-[#5F4102] rounded-2xl">Cancelar</button>
+              <div className="flex flex-row w-full text-[#3A3A3A] rounded-2xl space-x-3 mt-5">
+                <button type="submit" className="w-2/3 font-nunito font-black bg-[#007336] text-[#F9ECD9] rounded-2xl p-3">Actualizar Colegiado</button>
+                <button type="button" className="w-1/3 font-nunito font-black border-solid border-2 border-[#3A3A3A] rounded-2xl"><Link to={"/admin/colegiado"}>Cancelar</Link></button>
               </div>
               <Toaster
-              position="bottom-center"
-              reverseOrder={false} />
+                position="bottom-center"
+                reverseOrder={false} />
             </div>
           </div>
         </form>
