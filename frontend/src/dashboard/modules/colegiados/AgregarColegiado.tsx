@@ -14,8 +14,11 @@ import { createHistorialColegiado } from "../../../api/historial.colegiado.api";
 import { getAllEscuelas } from "../../../api/escuela.api";
 import { getAllEspecialidades } from "../../../api/especialidad.api";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export function AgregarColegiado() {
+  const navigate = useNavigate();
+
   const [selectedCapitulo, setSelectedCapitulo] = useState<number | null>(null);
   const [selectedEspecialidad, setSelectedEspecialidad] = useState<number | null>(null);
   const [filteredEspecialidadData, setFilteredEspecialidadData] = useState<Especialidad[]>([]);
@@ -156,7 +159,7 @@ export function AgregarColegiado() {
 
       setFileName(null);
       setImageUrl(colegiado_default);
-
+      navigate("/admin/colegiado")
     } catch (error) {
       console.error('Error al crear colegiado:', error);
       toast.error('Error al crear colegiado');
