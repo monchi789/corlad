@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import 'primereact/resources/primereact.min.css';
 import { useEffect } from 'react';
 import { AuthProvider } from './dashboard/contexts/AuthContext';
+import { DropdownProvider } from './dashboard/contexts/DropdownContext';
 import WhatsAppButton from './web/shared/WhatsAppButton';
 
 function App() {
@@ -18,15 +19,18 @@ function App() {
 
     return null;
   };
+
   return (
     <BrowserRouter>
       <ScrollToTop />
       <AuthProvider>
-        <AppRoutes />
+        <DropdownProvider>
+          <AppRoutes />
+        </DropdownProvider>
       </AuthProvider>
       <WhatsAppButton />
     </BrowserRouter>
   )
 }
 
-export default App
+export default App;

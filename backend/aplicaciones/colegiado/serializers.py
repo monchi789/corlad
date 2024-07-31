@@ -55,6 +55,9 @@ class HistorialEducativoSerializer(serializers.ModelSerializer):
         required=False
     )
 
+    titulo_fecha = serializers.DateField()
+    fecha_bachiller = serializers.DateField()
+
     class Meta:
         model = HistorialEducativo
         fields = [

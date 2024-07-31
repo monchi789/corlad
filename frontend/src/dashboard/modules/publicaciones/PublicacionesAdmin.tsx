@@ -26,7 +26,7 @@ export function PublicacionesAdmin() {
     <div className="flex flex-row w-full">
       <Sidebar />
 
-      <div className="w-4/5 m-3 p-3">
+      <div className="w-full lg:w-4/5 m-3 p-3">
         <SessionHeader />
         <div className="mt-10 pb-5">
           <h4 className="text-4xl text-[#3A3A3A] font-nunito font-extrabold">Publicaciones</h4>

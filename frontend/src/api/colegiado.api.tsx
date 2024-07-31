@@ -1,6 +1,5 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
-import { Colegiado } from "../interfaces/model/Colegiado";
 
 export const getAllColegiados = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -13,10 +12,38 @@ export const getAllColegiados = () => {
   });
 }
 
+export const getColegiadoById = (id: number) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
+
+  return axios.get(`${apiUrl}gestion-colegiados/colegiados/${id}`, {
+    headers: {
+      'Authorization': `Bearer ${token}` // Incluyendo el token en los encabezados
+    }
+  });
+}
+
+export const getColegiadoByFilters = (numero_colegiatura?: string, dni_colegiado?: string, apellido_paterno?: string, estado?: boolean) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
+
+  return axios.get(`${apiUrl}gestion-colegiados/colegiados/`, {
+    params: {
+      numero_colegiatura,
+      dni_colegiado,
+      apellido_paterno,
+      estado
+    },
+    headers: {
+      'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados
+    },
+  });
+};
+
 export const createColegiado = async (formData: FormData) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
-  
+
   return axios.post(`${apiUrl}gestion-colegiados/colegiados/`, formData, {
     headers: {
       'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados
@@ -24,9 +51,32 @@ export const createColegiado = async (formData: FormData) => {
   });
 };
 
-// Para la parte pública
-export const getColegiadoByFilters = (params:any) => {
+export const updateColegiado = async (id: number, formData: any) => {
   const apiUrl = import.meta.env.VITE_API_URL;
+  const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
+
+  return axios.put(`${apiUrl}gestion-colegiados/colegiados/${id}/`, formData, {
+    headers: {
+      'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados
+    },
+  });
+};
+
+export const deleteColegiadoById = async (id: number) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
+
+  return axios.delete(`${apiUrl}gestion-colegiados/colegiados/${id}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    }
+  });
+};
+
+// Para la parte pública
+export const getConsultarHabilidad = (params: any) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   return axios.get(`${apiUrl}gestion-colegiados/consultar-habilidad/${params}`)
 }
 

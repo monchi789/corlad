@@ -1,5 +1,4 @@
 import { FaEdit } from "react-icons/fa";
-import { FaTrashAlt } from "react-icons/fa";
 import { Avatar } from "primereact/avatar";
 import { useEffect, useState } from "react";
 import { TableCards } from "../../shared/TableCards";
@@ -43,7 +42,6 @@ export function PagosTable() {
       <div className="w-1/6 my-auto">{pago.observacion}</div>
       <div className="flex flex-row w-1/6 text-[#8F650C] text-2xl space-x-3 justify-center my-auto">
         <button><FaEdit size={"25px"} /></button>
-        <button><FaTrashAlt size={"25px"} className="text-[#B50C0C]" /></button>
       </div>
     </>
   );

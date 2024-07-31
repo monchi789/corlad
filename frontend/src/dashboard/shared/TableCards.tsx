@@ -14,7 +14,7 @@ interface GenericTableProps<T> {
 export function TableCards<T>({ columns, data, renderRow }: GenericTableProps<T>) {
   return (
     <>
-      <div className="flex flex-row w-full justify-between text-[#F9ECD9] font-nunito font-extrabold bg-[#007336] rounded-lg space-x-2 mt-5 py-3 px-3">
+      <div className="flex flex-row w-full justify-between text-[#FFFFFF] font-nunito font-extrabold bg-[#007336] rounded-lg space-x-2 py-3 px-5">
         {columns.map((col, index) => (
           <button
             key={index}
@@ -28,7 +28,7 @@ export function TableCards<T>({ columns, data, renderRow }: GenericTableProps<T>
         {data.map((item, index) => (
           <div
             key={index}
-            className="flex flex-row w-full justify-between text-base font-nunito font-semibold border-solid border-2 border-[#5F4102] rounded-2xl hover:bg-[#C9D9C6] transition duration-200 space-x-2 mt-5 p-3"
+            className="flex flex-row w-full justify-between text-base font-nunito font-semibold border-solid border-2 border-[#5F4102] rounded-2xl hover:bg-[#C9D9C6] transition duration-200 space-x-2 mt-3 p-3"
           >
             {renderRow(item)}
           </div>

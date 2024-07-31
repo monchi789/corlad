@@ -10,7 +10,7 @@ function WhatsAppButton() {
 
   return (
     <a 
-      className="fixed bottom-5 right-6 p-4 bg-[#2e6329] rounded-full z-[999] transition-transform duration-500 ease-in-out hover:scale-110 animate-efecto" 
+      className="fixed bottom-5 right-6 p-4 bg-[#2e6329] rounded-full z-10 transition-transform duration-500 ease-in-out hover:scale-110 animate-efecto" 
       href="https://wa.me/+51946899196?text=Hola Jayo, quiero realizar una consulta!!!" 
       target="_blank" 
       rel="noopener noreferrer"
