@@ -38,7 +38,6 @@ class Colegiado(models.Model):
     apellido_materno = models.CharField(max_length=100, blank=False, null=False, validators=[validar_espacio], default='')
     celular = models.CharField(max_length=9, blank=False, null=False, validators=[validar_numero, validar_espacio], default='')
     correo = models.EmailField(blank=False, null=False, validators=[EmailValidator], default='')
-    estado = models.BooleanField(blank=False, null=False, default=False)
     foto_colegiado = models.ImageField(upload_to='foto_colegiados/', null=False, blank=True, default='')
     dni_colegiado = models.CharField(max_length=8, blank=False, null=False, unique=True, validators=[validar_numero, validar_espacio], default='')
     numero_colegiatura = models.CharField(max_length=250, blank=False, null=False, unique=True, validators=[validar_numero, validar_espacio], default='')
@@ -53,6 +52,12 @@ class Colegiado(models.Model):
         return f'{self.nombre} - {self.apellido_paterno} - {self.numero_colegiatura} - {self.numero_regulacion} - {self.dni_colegiado}'
 
 
+class EstadoColegiatura(models.Model):
+    fecha_inicio = models.DateField(null=False, blank=False, default=timezone.now)
+    fecha_final = models.DateField(null=False, blank=False, default=timezone.now)
+    estado_colegiatura = models.BooleanField(null=False, blank=False, default=False)
+
+
 class HistorialEducativo(models.Model):
     universidad = models.CharField(max_length=250, blank=False, null=False, validators=[validar_espacio], default='')
     denominacion_bachiller = models.CharField(max_length=250, null=False, validators=[validar_espacio], default='')
@@ -60,6 +65,7 @@ class HistorialEducativo(models.Model):
     denominacion_titulo = models.CharField(max_length=250, null=False, blank=False, validators=[validar_espacio], default='')
     titulo_fecha = models.DateField(null=False, blank=False, default=timezone.now)
     id_colegiado = models.ForeignKey(Colegiado, on_delete=models.CASCADE, default=0)
+    id_estado_colegiatura = models.OneToOneField(EstadoColegiatura, on_delete=models.CASCADE, blank=True, null=True)
     id_especialidad = models.ForeignKey(Especialidad, on_delete=models.CASCADE, default=0)
 
     def __str__(self) -> str:
