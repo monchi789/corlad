@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import { PersonAdd } from "@mui/icons-material";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { SessionHeader } from "../../shared/SessionHeader";
@@ -23,6 +24,8 @@ export function Escuelas() {
   const [isEspecialidadEditModalOpen, setIsEspecialidadEditModalOpen] = useState(false);
   const [selectedEscuela, setSelectedEscuela] = useState<Escuela | null>(null);
   const [selectedEspecialidad, setSelectedEspecialidad] = useState<Especialidad | null>(null);
+  const [searchTermEscuela, setSearchTermEscuela] = useState("");
+  const [searchTermEspecialidad, setSearchTermEspecialidad] = useState("");
 
   const cargarDatos = async () => {
     try {
@@ -95,8 +98,24 @@ export function Escuelas() {
     }
   };
 
+  const handleSearchChangeEscuela = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTermEscuela(event.target.value);
+  };
+
+  const handleSearchChangeEspecialidad = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTermEspecialidad(event.target.value);
+  };
+
+  const filteredEscuelas = escuelasList.filter((escuela) =>
+    escuela.nombre_escuela.toLowerCase().includes(searchTermEscuela.toLowerCase())
+  );
+
+  const filteredEspecialidades = especialidadesList.filter((especialidad) =>
+    especialidad.nombre_especialidad.toLowerCase().includes(searchTermEspecialidad.toLowerCase())
+  );
+
   return (
-    <div className="flex flex-row w-full">
+    <div className="flex flex-row w-full bg-[#ECF6E8]">
       <Sidebar />
       <div className="w-4/5 m-3 p-3">
         <SessionHeader />
@@ -104,6 +123,14 @@ export function Escuelas() {
           <Grid container spacing={2} justifyContent="space-between" alignItems="center">
             <Grid item>
               <h4 className="text-4xl text-[#3A3A3A] font-nunito-sans font-bold">Capitulos</h4>
+            </Grid>
+            <Grid item>
+              <TextField
+                label="Buscar Capitulo"
+                variant="outlined"
+                value={searchTermEscuela}
+                onChange={handleSearchChangeEscuela}
+              />
             </Grid>
             <Grid item>
               <Button
@@ -122,8 +149,8 @@ export function Escuelas() {
           </Grid>
 
           <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-6">
-            {escuelasList.length > 0 ? (
-              escuelasList.map((escuela, index) => (
+            {filteredEscuelas.length > 0 ? (
+              filteredEscuelas.map((escuela, index) => (
                 <div
                   key={index}
                   className="relative bg-white rounded-lg shadow-lg p-5 text-center transition duration-200 hover:bg-[#458050] hover:text-white group"
@@ -151,6 +178,14 @@ export function Escuelas() {
               <h4 className="text-4xl text-[#3A3A3A] font-nunito-sans font-bold">Especialidades</h4>
             </Grid>
             <Grid item>
+              <TextField
+                label="Buscar Especialidad"
+                variant="outlined"
+                value={searchTermEspecialidad}
+                onChange={handleSearchChangeEspecialidad}
+              />
+            </Grid>
+            <Grid item>
               <Button
                 variant="contained"
                 sx={{
@@ -167,8 +202,8 @@ export function Escuelas() {
           </Grid>
 
           <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-6">
-            {especialidadesList.length > 0 ? (
-              especialidadesList.map((especialidad, index) => (
+            {filteredEspecialidades.length > 0 ? (
+              filteredEspecialidades.map((especialidad, index) => (
                 <div
                   key={index}
                   className="relative bg-white rounded-lg shadow-lg p-5 flex justify-between items-center"
