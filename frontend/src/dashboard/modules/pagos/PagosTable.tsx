@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { TableCards } from "../../shared/TableCards";
 import { Pago } from "../../../interfaces/model/Pago";
 import { getAllPagos } from "../../../api/pagos.api";
+import { Link } from "react-router-dom";
 
 export function PagosTable() {
   const [pagosList, setPagos] = useState<Pago[]>([]);
@@ -41,7 +42,7 @@ export function PagosTable() {
       <div className="w-1/6 my-auto">{pago.monto_pago}</div>
       <div className="w-1/6 my-auto">{pago.observacion}</div>
       <div className="flex flex-row w-1/6 text-[#8F650C] text-2xl space-x-3 justify-center my-auto">
-        <button><FaEdit size={"25px"} /></button>
+        <button><Link to={`/admin/pagos/editar-pago/${pago.id}`}><FaEdit size={"25px"} /></Link></button>
       </div>
     </>
   );

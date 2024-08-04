@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import { EditePopUps, getPopUps, deletePopUps, createPopUps } from '../../../api/popup.api';
 import { PopUp } from '../../../interfaces/model/PopUp';
 import { IoAdd, IoCloseSharp, IoPencil, IoTrash, IoExpand } from "react-icons/io5";
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 Modal.setAppElement('#root');
 
@@ -37,7 +37,7 @@ const Image: React.FC<ImageProps> = ({ id, imagen, estado_popup, onStatusChange,
   return (
     <>
       <div
-        className={`w-1/6 relative border-solid border-2 shadow-custom border-[#2A8B3D] rounded-xl overflow-hidden ${!checked ? 'bg-[#4E5E51]' : ''}`}
+        className={`w-1/6 relative border-solid border-2 border-[#2A8B3D] shadow-custom rounded-xl overflow-hidden ${!checked ? 'bg-[#4E5E51]' : ''}`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -361,6 +361,10 @@ export const PopUpsList = () => {
         onClose={() => setDeleteModalIsOpen(false)}
         onConfirm={confirmDelete}
       />
+
+      <Toaster
+        position="bottom-center"
+        reverseOrder={false} />
     </div>
   );
 };

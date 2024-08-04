@@ -20,6 +20,7 @@ import { EstadoCuenta } from '../dashboard/modules/estadocuenta/EstadoCuenta.tsx
 import { Pagos } from '../dashboard/modules/pagos/Pagos.tsx';
 import { EditarColegiado } from '../dashboard/modules/colegiados/EditarColegiado.tsx';
 import { AgregarPagos } from '../dashboard/modules/pagos/AgregarPagos.tsx';
+import { EditarPagos } from '../dashboard/modules/pagos/EditarPagos.tsx';
 
 const publicRoutes = [
   { path: "/", element: <Inicio /> },
@@ -40,6 +41,7 @@ const adminRoutes = [
   { path: "/admin/escuelas", element: <Escuelas />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/pagos", element: <Pagos />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/pagos/nuevo-pago", element: <AgregarPagos />, allowedGroups: ['admin', 'secretaria'] },
+  { path: "/admin/pagos/editar-pago/:id", element: <EditarPagos />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/pagos/estado-cuenta", element: <EstadoCuenta />, allowedGroups: ['admin', 'secretaria'] },
   
   // Permisos para publicador
