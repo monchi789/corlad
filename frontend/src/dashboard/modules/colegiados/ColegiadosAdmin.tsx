@@ -11,7 +11,7 @@ export function ColegiadosAdmin() {
 
       <Sidebar />
 
-      <div className="w-full lg:w-4/5 m-3 p-3">
+      <div className="w-full xl:w-4/5 m-3 p-3">
 
         <SessionHeader />
         

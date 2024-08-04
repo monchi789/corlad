@@ -117,12 +117,12 @@ export function Escuelas() {
   return (
     <div className="flex flex-row w-full bg-[#ECF6E8]">
       <Sidebar />
-      <div className="w-full lg:w-4/5 m-3 p-3">
+      <div className="w-full xl:w-4/5 m-3 p-3">
         <SessionHeader />
         <div className="mt-10 space-y-5">
           <Grid container spacing={2} justifyContent="space-between" alignItems="center">
             <Grid item>
-              <h4 className="text-4xl text-[#3A3A3A] font-nunito-sans font-bold">Capitulos</h4>
+              <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold">Capitulos</h4>
             </Grid>
             <Grid item>
               <TextField
@@ -175,7 +175,7 @@ export function Escuelas() {
 
           <Grid container spacing={2} justifyContent="space-between" alignItems="center">
             <Grid item>
-              <h4 className="text-4xl text-[#3A3A3A] font-nunito-sans font-bold">Especialidades</h4>
+              <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold">Especialidades</h4>
             </Grid>
             <Grid item>
               <TextField

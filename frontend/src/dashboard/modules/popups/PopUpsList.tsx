@@ -42,7 +42,7 @@ const Image: React.FC<ImageProps> = ({ id, imagen, estado_popup, onStatusChange,
         onMouseLeave={() => setIsHovered(false)}
       >
         <img className={`w-full h-48 object-cover rounded-lg ${!checked ? 'opacity-50' : ''}`} src={imagen} alt="imagen" />
-        <div className='absolute top-0 right-0 m-3 z-50' onClick={(e) => e.stopPropagation()}>
+        <div className='absolute top-0 right-0 m-3 z-30' onClick={(e) => e.stopPropagation()}>
           <Switch onChange={handleChange} checked={checked} />
         </div>
         {isHovered && (
@@ -316,7 +316,7 @@ export const PopUpsList = () => {
 
   return (
     <div className="flex flex-col mt-10 space-y-5">
-      <h4 className="text-2xl text-[#3A3A3A] font-nunito font-extrabold">Pop Ups</h4>
+      <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold">Anuncios</h4>
       <div className="flex flex-row space-x-5">
         {list.map((element, index) => (
           <Image
