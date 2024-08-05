@@ -35,13 +35,13 @@ export const createCategoria = (newCategoriaData: Omit<Categoria, 'id'>) => {
 }
 
 export const updateCategoria = (id: number, updatedData: Partial<Categoria>) => {
-  return axios.put<Categoria>(`${apiUrl}gestion-publicaciones/categorias/${id}`, updatedData, {
+  return axios.put<Categoria>(`${apiUrl}gestion-publicaciones/categorias/${id}/`, updatedData, {
     headers: {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     }
   });
-}
+};
 
 export const deleteCategoria = (id: number) => {
   return axios.delete<void>(`${apiUrl}gestion-publicaciones/categorias/${id}`, {
