@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SessionHeader } from "../../shared/SessionHeader";
 import { Sidebar } from "../../shared/Sidebar";
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { Nullable } from "primereact/ts-helpers";
+import { CardPublicacion } from "../../shared/CardPublicacion";
+import { getAllPublicaciones } from "../../../api/noticia.api";
+import { Publicacion } from "../../../interfaces/model/Publicacion";
 
 export function PublicacionesAdmin() {
   const [selectedOption, setSelectedOption] = useState(null);
+  const [publicaciones, setPublicaciones] = useState<Publicacion[]>([])
   const [date, setDate] = useState<Nullable<Date>>(null);
 
   const options = [
@@ -22,14 +26,27 @@ export function PublicacionesAdmin() {
     );
   };
 
+  const fetchPublicaciones = async () => {
+    try {
+      const res = await getAllPublicaciones();
+      setPublicaciones(res.data.results)
+    } catch {
+
+    }
+  }
+
+  useEffect(() => {
+    fetchPublicaciones() 
+  })
+
   return (
     <div className="flex flex-row w-full">
       <Sidebar />
 
-      <div className="w-full lg:w-4/5 m-3 p-3">
+      <div className="w-full xl:w-4/5 m-3 p-3">
         <SessionHeader />
         <div className="mt-10 pb-5">
-          <h4 className="text-4xl text-[#3A3A3A] font-nunito font-extrabold">Publicaciones</h4>
+          <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold">Publicaciones</h4>
           <div className="w-full bg-[#EAF1E8] rounded-lg p-5 mt-5">
             <div className="flex flex-row justify-between mx-10">
               <div className="flex flex-col space-y-3">
@@ -56,6 +73,11 @@ export function PublicacionesAdmin() {
               </div>
             </div>
           </div>
+        </div>
+        <div className="flex flex-grow gap-x-4">
+        {publicaciones.map((element, index) => (
+          <CardPublicacion title={element.titulo} imagen={`${import.meta.env.VITE_API_URL_ALTER}${element.imagen_publicacion}`} contenido={element.contenido} tipo={element.id_categoria.nombre_categoria} date={element.fecha_publicacion}/>
+        ))}
         </div>
       </div>
     </div>

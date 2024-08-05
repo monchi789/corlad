@@ -188,7 +188,7 @@ export function EditarColegiado() {
   return (
     <div className="flex flex-row w-full">
       <Sidebar />
-      <div className="w-4/5 m-3 p-3">
+      <div className="w-full lg:w-4/5 m-3 p-3">
         <SessionHeader />
         <form className="flex flex-col w-full space-x-5 mt-10" onSubmit={handleSubmit}>
           <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold mb-5">Editar colegiado</h4>

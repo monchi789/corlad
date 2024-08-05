@@ -6,3 +6,12 @@ export interface Slider {
   imagen_4: string,
   estado_slider: boolean
 }
+
+export const sliderDefault: Slider = {
+  id: 0,
+  imagen_1: "",
+  imagen_2: "",
+  imagen_3: "",
+  imagen_4: "",
+  estado_slider: false
+}
