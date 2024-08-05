@@ -41,7 +41,6 @@ class Colegiado(models.Model):
     foto_colegiado = models.ImageField(upload_to='foto_colegiados/', null=False, blank=True, default='')
     dni_colegiado = models.CharField(max_length=8, blank=False, null=False, unique=True, validators=[validar_numero, validar_espacio], default='')
     numero_colegiatura = models.CharField(max_length=250, blank=False, null=False, unique=True, validators=[validar_numero, validar_espacio], default='')
-    numero_regulacion = models.CharField(max_length=250, blank=False, null=False, unique=True, validators=[validar_numero, validar_espacio], default='')
     fecha_colegiatura = models.DateField(null=False, blank=False, default=timezone.now)
     sexo_colegiado = models.CharField(max_length=9, choices=SEXO, null=False, blank=False, default='O')
     fecha_nacimiento = models.DateField(null=False, blank=False, default=timezone.now)
@@ -49,7 +48,7 @@ class Colegiado(models.Model):
     direccion = models.CharField(max_length=300, blank=False, null=False, default='')
 
     def __str__(self) -> str:
-        return f'{self.nombre} - {self.apellido_paterno} - {self.numero_colegiatura} - {self.numero_regulacion} - {self.dni_colegiado}'
+        return f'{self.nombre} - {self.apellido_paterno} - {self.numero_colegiatura} - {self.dni_colegiado}'
 
 
 class EstadoColegiatura(models.Model):
