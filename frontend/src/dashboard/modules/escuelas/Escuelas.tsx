@@ -115,7 +115,7 @@ export function Escuelas() {
   );
 
   return (
-    <div className="flex flex-row w-full bg-[#ECF6E8]">
+    <div className="flex flex-row w-full bg-white">
       <Sidebar />
       <div className="w-full xl:w-4/5 m-3 p-3">
         <SessionHeader />
