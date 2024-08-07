@@ -16,15 +16,6 @@ export const getAllCategoriasAdmin = () => {
   });
 }
 
-// Para la parte pública
-export const getAllCategorias = () => {
-  return axios.get<Categoria[]>(`${apiUrl}gestion-publicaciones/categorias/`, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  });
-}
-
 export const createCategoria = (newCategoriaData: Omit<Categoria, 'id'>) => {
   return axios.post<Categoria>(`${apiUrl}gestion-publicaciones/categorias/`, newCategoriaData, {
     headers: {
@@ -50,3 +41,14 @@ export const deleteCategoria = (id: number) => {
     }
   });
 }
+
+// Para la parte pública
+export const getAllCategorias = () => {
+  return axios.get<Categoria[]>(`${apiUrl}gestion-publicaciones/categorias/`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+}
+
+

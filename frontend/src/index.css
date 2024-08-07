@@ -8,6 +8,15 @@
     --text-color: #363636;
 }
 
+@layer base {
+  .no-tailwind-base h1,
+  .no-tailwind-base h2,
+  .no-tailwind-base h3 {
+    /* Restablecer los estilos a los valores por defecto del navegador */
+    all: revert;
+  }
+}
+
 /* Eliminar las flechas de los campos de entrada de tipo número en navegadores webkit */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {

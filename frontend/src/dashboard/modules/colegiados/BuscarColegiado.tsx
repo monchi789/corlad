@@ -76,7 +76,7 @@ export const BuscarColegiado = () => {
         </div>
       </div>
 
-      <div className="mt-5 bg-[#E1EBDE] rounded-2xl">
+      <div className="mt-5 bg-[#E1EBDE] shadow-custom-input rounded-2xl">
         <div className="flex flex-row space-x-5 p-5">
           <div className="w-2/6 flex flex-col">
             <label htmlFor="dni_colegiado" className="block font-nunito font-bold mb-1">DNI</label>

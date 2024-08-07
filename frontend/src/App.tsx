@@ -1,10 +1,9 @@
+import { useEffect } from 'react';
 import { BrowserRouter, useLocation } from 'react-router-dom'
 import './App.css'
-import AppRoutes from './routes/AppRoutes'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import 'primereact/resources/primereact.min.css';
-import { useEffect } from 'react';
+import AppRoutes from './routes/AppRoutes'
 import { AuthProvider } from './dashboard/contexts/AuthContext';
 import { DropdownProvider } from './dashboard/contexts/DropdownContext';
 import WhatsAppButton from './web/shared/WhatsAppButton';

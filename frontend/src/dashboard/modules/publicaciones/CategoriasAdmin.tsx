@@ -6,7 +6,7 @@ import { PersonAdd } from "@mui/icons-material";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { SessionHeader } from "../../shared/SessionHeader";
 import { Sidebar } from "../../shared/Sidebar";
-import { getAllCategorias, deleteCategoria } from "../../../api/categoria.api";
+import { deleteCategoria, getAllCategoriasAdmin } from "../../../api/categoria.api";
 import { Categoria } from "../../../interfaces/model/Categoria";
 import { AgregarCategoria } from "./AgregarCategoria";
 import { ActualizarCategoria } from "./ActualizarCategoria";
@@ -20,7 +20,7 @@ export function CategoriasAdmin() {
 
   const cargarDatos = async () => {
     try {
-      const categoriasRes = await getAllCategorias();
+      const categoriasRes = await getAllCategoriasAdmin();
       setCategoriasList(categoriasRes.data as Categoria[]);
     } catch (error) {
       console.error("Error al cargar los datos:", error);
@@ -68,7 +68,7 @@ export function CategoriasAdmin() {
   );
 
   return (
-    <div className="flex flex-row w-full bg-[#ECF6E8]">
+    <div className="flex flex-row w-full bg-white">
       <Sidebar />
       <div className="w-full xl:w-4/5 m-3 p-3">
         <SessionHeader />
@@ -106,7 +106,7 @@ export function CategoriasAdmin() {
               filteredCategorias.map((categoria, index) => (
                 <div
                   key={index}
-                  className="relative bg-white rounded-lg shadow-lg p-5 flex justify-between items-center"
+                  className="relative bg-[#ECF6E8] rounded-lg shadow-lg p-5 flex justify-between items-center"
                   style={{ boxShadow: "0 4px 6px rgba(0, 51, 10, 0.1)" }}
                 >
                   <div>

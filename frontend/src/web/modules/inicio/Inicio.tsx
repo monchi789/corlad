@@ -6,7 +6,7 @@ import Carrousel from "../../shared/Carousel";
 import { Footer } from "../../shared/Footer";
 import { Contacto } from "../contactanos/contacto/Contacto";
 import { Publicacion } from "../../../interfaces/model/Publicacion";
-import { getAllNoticiasByPage } from "../../../api/noticia.api";
+import { getAllNoticiasByPage } from "../../../api/publicacion.api";
 import { Servicios } from "./servicios/Servicios";
 import { PopUps } from "../../shared/PopUps";
 import { Gallery } from "../../shared/Gallery";

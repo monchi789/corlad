@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Footer } from '../../../shared/Footer'
 import { Header } from '../../../shared/Header'
 import { defaultPublicacion, Publicacion } from '../../../../interfaces/model/Publicacion';
-import { getAllNoticiasByPage, getNoticiasById } from '../../../../api/noticia.api';
+import { getAllNoticiasByPage, getNoticiasById } from '../../../../api/publicacion.api';
 import { Card } from '../../../shared/Cards';
 
 export function Noticia() {

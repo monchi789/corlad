@@ -13,6 +13,27 @@ export const getAllPublicaciones = () => {
   });
 }
 
+export const createPublicacion = (formData: FormData) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
+
+  return axios.post(`${apiUrl}gestion-publicaciones/publicaciones/`, formData, {
+    headers: {
+      'Authorization': `Bearer ${token}` // Incluyendo el token en los encabezados
+    }
+  });
+}
+
+export const editPublicacion = (id: number, formData: FormData) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
+
+  return axios.put(`${apiUrl}gestion-publicaciones/publicaciones/${id}/`, formData, {
+    headers: {
+      'Authorization': `Bearer ${token}` // Incluyendo el token en los encabezados
+    }
+  });
+}
 
 // Para la parte pública
 export const getAllNoticiasByPage = (page = 0, pageSize = 5) => {

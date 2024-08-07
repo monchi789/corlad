@@ -1,4 +1,4 @@
-import { defaultCategoria } from "./Categoria";
+import { Categoria, defaultCategoria } from "./Categoria";
 
 export interface Publicacion {
   id: number;
@@ -6,11 +6,8 @@ export interface Publicacion {
   contenido: string;
   fecha_publicacion: string;
   imagen_publicacion: string;
-  documento: string;
-  id_categoria: {
-    id: number;
-    nombre_categoria: string;
-  };
+  documento?: string;
+  id_categoria: Categoria
 }
 
 export const defaultPublicacion = {

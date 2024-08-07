@@ -23,7 +23,7 @@ export default {
       boxShadow: {
         'custom': '0 4px 15px 0 rgba(37, 58, 41)',
         'custom-input': '0px 4px 5px 0px rgba(0, 0, 0, 0.25)', // X, Y, Blur, Spread, Color
-      },
+      }
     },
   },
   plugins: [],
