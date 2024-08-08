@@ -13,6 +13,17 @@ export const getAllPublicaciones = () => {
   });
 }
 
+export const getPublicacionesById = (id: number) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
+
+  return axios.get(`${apiUrl}gestion-publicaciones/publicaciones/${id}`, {
+    headers: {
+      'Authorization': `Bearer ${token}` // Incluyendo el token en los encabezados
+    }
+  });
+}
+
 export const createPublicacion = (formData: FormData) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
@@ -29,6 +40,17 @@ export const editPublicacion = (id: number, formData: FormData) => {
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
   return axios.put(`${apiUrl}gestion-publicaciones/publicaciones/${id}/`, formData, {
+    headers: {
+      'Authorization': `Bearer ${token}` // Incluyendo el token en los encabezados
+    }
+  });
+}
+
+export const deletePublicacion = (id: number) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
+
+  return axios.delete(`${apiUrl}gestion-publicaciones/publicaciones/${id}/`, {
     headers: {
       'Authorization': `Bearer ${token}` // Incluyendo el token en los encabezados
     }

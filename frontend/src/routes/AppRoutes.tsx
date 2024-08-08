@@ -22,6 +22,7 @@ import { EditarColegiado } from '../dashboard/modules/colegiados/EditarColegiado
 import { AgregarPagos } from '../dashboard/modules/pagos/AgregarPagos.tsx';
 import { EditarPagos } from '../dashboard/modules/pagos/EditarPagos.tsx';
 import { NuevaPublicacion } from '../dashboard/modules/publicaciones/NuevaPublicacion.tsx';
+import { EditarPublicacion } from '../dashboard/modules/publicaciones/EditarPublicacion.tsx';
 
 const publicRoutes = [
   { path: "/", element: <Inicio /> },
@@ -48,6 +49,7 @@ const adminRoutes = [
   // Permisos para publicador
   { path: "/admin/publicaciones", element: <PublicacionesAdmin />, allowedGroups: ['admin', 'publicador'] },
   { path: "/admin/publicaciones/nueva-publicacion", element: <NuevaPublicacion />, allowedGroups: ['admin', 'publicador'] },
+  { path: "/admin/publicaciones/editar-publicacion/:id", element: <EditarPublicacion />, allowedGroups: ['admin', 'publicador'] },
   { path: "/admin/publicaciones/categorias", element: <CategoriasAdmin />, allowedGroups: ['admin', 'publicador'] },
   { path: "/admin/anuncios", element: <PopUpsAdmin />, allowedGroups: ['admin', 'publicador'] },
   { path: "/admin/galeria", element: <SlidersAdmin />, allowedGroups: ['admin', 'publicador'] },

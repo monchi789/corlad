@@ -44,11 +44,7 @@ export const deleteCategoria = (id: number) => {
 
 // Para la parte pública
 export const getAllCategorias = () => {
-  return axios.get<Categoria[]>(`${apiUrl}gestion-publicaciones/categorias/`, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  });
+  return axios.get<Categoria[]>(`${apiUrl}gestion-publicaciones/list-categoria/`)
 }
 
 

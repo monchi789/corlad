@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { SessionHeader } from "../../shared/SessionHeader";
 import { Sidebar } from "../../shared/Sidebar";
 import { Dropdown } from "primereact/dropdown";
@@ -8,11 +8,13 @@ import { getAllCategoriasAdmin } from "../../../api/categoria.api";
 import JoditEditor from 'jodit-react';
 import imagen_default from "../../../assets/dashboard/default_image.jpg";
 import { defaultPublicacion, Publicacion } from "../../../interfaces/model/Publicacion";
-import { createPublicacion } from "../../../api/publicacion.api";
+import { editPublicacion, getPublicacionesById } from "../../../api/publicacion.api";
+import toast from "react-hot-toast";
 
-export function NuevaPublicacion() {
+export function EditarPublicacion() {
   const navigate = useNavigate();
 
+  const { id } = useParams();
   const editor = useRef(null);
   const [content, setContent] = useState<string>('');
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -44,6 +46,23 @@ export function NuevaPublicacion() {
 
   };
 
+  const fetchPagoData = async () => {
+    if (id) {
+      try {
+        const response = await getPublicacionesById(parseInt(id));
+        const publicacion: Publicacion = response.data;
+
+        setPublicacion(publicacion);
+        setSelectedOption(publicacion.id_categoria.id); 
+        setContent(publicacion.contenido)
+        setImagePreview(`${import.meta.env.VITE_API_URL_ALTER}${publicacion.imagen_publicacion}`)
+
+      } catch (error) {
+        toast.error('Error al cargar los datos del pago');
+      }
+    }
+  };
+
   const fetchCategoria = async () => {
     try {
       const res = await getAllCategoriasAdmin();
@@ -55,6 +74,7 @@ export function NuevaPublicacion() {
 
   useEffect(() => {
     fetchCategoria();
+    fetchPagoData();
   }, []);
 
   useEffect(() => {
@@ -107,8 +127,7 @@ export function NuevaPublicacion() {
       formData.append('documento', documentFile);
     }
 
-    // Uncomment the following line when ready to send the form data
-    await createPublicacion(formData);
+    await editPublicacion(parseInt(id as string),formData);
 
     navigate("/admin/publicaciones/")
   };
@@ -137,7 +156,7 @@ export function NuevaPublicacion() {
         <SessionHeader />
         <div className="flex flex-col space-y-5 my-10">
           <div className="flex flex-row justify-between">
-            <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Nueva publicación</h4>
+            <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Editar publicación</h4>
           </div>
         </div>
         <form className="flex flex-col" onSubmit={handleSubmit}>
@@ -206,6 +225,7 @@ export function NuevaPublicacion() {
               <div className="flex flex-col w-full bg-[#EAF1E8] rounded-lg p-5">
                 <div className="flex flex-col space-y-2">
                   <span className="text-lg text-[#00330A] font-nunito font-extrabold">Documento adjunto</span>
+                  <span>{publicacion.documento}</span>
                   <input type="file" onChange={handleFileChange} />
                 </div>
               </div>
@@ -218,5 +238,5 @@ export function NuevaPublicacion() {
         </form>
       </div>
     </div>
-  );
+  )
 }

@@ -35,7 +35,7 @@ export function EstadoCuentaTable() {
       <div className="w-1/6 my-auto">{estado.id_colegiado.dni_colegiado}</div>
       <div className="w-1/6 my-auto">{estado.id_colegiado.numero_colegiatura}</div>
       <div className="w-1/6 my-auto">{estado.fecha_actualizacion}</div>
-      <div className="w-1/6 my-auto">{estado.saldo}</div>
+      <div className="w-1/6 my-auto">S/. {estado.saldo}</div>
     </>
   );
 

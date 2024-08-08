@@ -84,7 +84,7 @@ export function Nosotros() {
         <img src={corlad_logo} alt="Logo corlad cusco" className="absolute inset-0 lg:w-1/3 mx-auto my-auto object-cover z-0 opacity-20" />
         <div className="relative z-10bg-opacity-80 p-10">
           <h4 className="text-center text-3xl md:text-4xl font-nunito font-extrabold text-[#a67102] mb-12">HIMNO INSTITUCIONAL</h4>
-          <p className="text-center text-[#363636] text-lg lg:text-xl font-didact font-semibold">
+          <p className="text-center text-[#363636] text-lg lg:text-xl  font-semibold">
             UN LEGADO CULTURAL Y DE CONDUCTA <br />
             PARA NUESTRA JUVENTUD <br />
             LA TECNOLOGÍA Y CIENCIA, LA EXPERIENCIA DETERMINAN LA VISIÓN <br />

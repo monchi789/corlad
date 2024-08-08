@@ -140,6 +140,7 @@ export function EditarPagos() {
       }
     };
   }
+  
   // Datepicker custom
   const StyledDatePicker = styled(DatePicker)(() => ({
     '& .MuiInputBase-root': {

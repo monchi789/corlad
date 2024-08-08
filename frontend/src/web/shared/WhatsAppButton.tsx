@@ -15,7 +15,7 @@ function WhatsAppButton() {
       target="_blank" 
       rel="noopener noreferrer"
     >
-      <img className="w-12 transition-all duration-1000 ease-in-out" src={logo_wpp} alt="WhatsApp Logo"/>
+      <img className="w-10 transition-all duration-1000 ease-in-out" src={logo_wpp} alt="WhatsApp Logo"/>
     </a>
   );
 }
