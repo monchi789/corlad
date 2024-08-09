@@ -11,7 +11,7 @@ import { Categoria } from "../../../interfaces/model/Categoria";
 import { AgregarCategoria } from "./AgregarCategoria";
 import { ActualizarCategoria } from "./ActualizarCategoria";
 
-export function CategoriasAdmin() {
+export default function CategoriasAdmin() {
   const [categoriasList, setCategoriasList] = useState<Categoria[]>([]);
   const [isCategoriaModalOpen, setIsCategoriaModalOpen] = useState(false);
   const [isCategoriaEditModalOpen, setIsCategoriaEditModalOpen] = useState(false);

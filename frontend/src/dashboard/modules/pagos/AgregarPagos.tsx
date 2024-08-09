@@ -16,7 +16,7 @@ import dayjs from "dayjs";
 import { createPago, getMetodoPagoByFilter, getTipoPagoByFilter } from "../../../api/pagos.api";
 import toast, { Toaster } from "react-hot-toast";
 
-export function AgregarPagos() {
+export default function AgregarPagos() {
   const [dniColegiado, setDniColegiado] = useState('');
   const [numeroColegiatura, setNumeroColegiatura] = useState('');
   const [loading, setLoading] = useState(false);

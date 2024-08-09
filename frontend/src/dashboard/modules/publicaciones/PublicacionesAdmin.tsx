@@ -22,7 +22,7 @@ interface PublicacionResponse {
   results: Publicacion[];
 }
 
-export function PublicacionesAdmin() {
+export default function PublicacionesAdmin() {
   const [selectedOption, setSelectedOption] = useState<number | null>(null); // Por defecto es null
   const [publicaciones, setPublicaciones] = useState<Publicacion[]>([]);
   const [filteredPublicaciones, setFilteredPublicaciones] = useState<Publicacion[]>([]);

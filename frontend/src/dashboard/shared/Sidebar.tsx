@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { AiFillHome } from "react-icons/ai";
-import { FaUsers } from "react-icons/fa";
-import { IoSchoolSharp } from "react-icons/io5";
-import { IoMdImages } from "react-icons/io";
-import { AiFillNotification } from "react-icons/ai";
-import { MdLogout, MdMenu } from "react-icons/md";
-import { PiNewspaperClippingFill } from "react-icons/pi";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { useAuth } from "../contexts/AuthContext";
 import { useDropdown } from "../contexts/DropdownContext";
+import { AiFillHome, AiFillNotification } from "react-icons/ai";
+import { FaUsers, FaMoneyCheck } from "react-icons/fa";
+import { IoSchoolSharp, IoImages } from "react-icons/io5";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { MdLogout, MdMenu } from "react-icons/md";
+import { PiNewspaperClippingFill } from "react-icons/pi";
 import logo_corlad from "../../assets/web/corlad_logo_blanco.png";
+
 
 interface MenuItemProps {
   to: string;
@@ -57,7 +55,7 @@ export function Sidebar() {
               {hasGroup('secretaria', 'admin') && (
                 <>
                   <MenuItem to="/admin/colegiado" icon={<FaUsers size={25} />} text="Colegiados" />
-                  <MenuItem to="/admin/escuelas" icon={<IoSchoolSharp size={25} />} text="Escuelas" />
+                  <MenuItem to="/admin/capitulos" icon={<IoSchoolSharp size={25} />} text="Capítulos" />
 
                   <li className="flex flex-col text-[#ECF6E8] hover:text-[#F1E9D0] transition duration-300 mx-5 mb-2">
                     <div
@@ -65,7 +63,7 @@ export function Sidebar() {
                       onClick={() => toggleDropdown("pagos")}
                     >
                       <div className="flex flex-row space-x-4">
-                        <FaMoneyCheckDollar size={25} />
+                        <FaMoneyCheck size={25} />
                         <span className="my-auto">Pagos</span>
                       </div>
                       {dropdownStates.pagos ? (
@@ -126,7 +124,7 @@ export function Sidebar() {
                   </li>
 
                   <MenuItem to="/admin/anuncios" icon={<AiFillNotification size={25} />} text="Anuncios" />
-                  <MenuItem to="/admin/galeria" icon={<IoMdImages size={25} />} text="Galerias" />
+                  <MenuItem to="/admin/galeria" icon={<IoImages size={25} />} text="Galerías" />
                 </>
               )}
             </ul>

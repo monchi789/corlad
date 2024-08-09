@@ -1,28 +1,42 @@
+// routes/AppRoutes.tsx
+import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Inicio } from '../web/modules/inicio/Inicio.tsx';
-import { Nosotros } from '../web/modules/nosotros/Nosotros.tsx';
-import { Noticias } from '../web/modules/noticias/Noticias.tsx';
-import { Contactanos } from '../web/modules/contactanos/Contactanos.tsx';
-import { ConsultarHabilidad } from '../web/modules/colegiados/ConsultarHabilidad.tsx';
-import { Noticia } from '../web/modules/noticias/noticia/Noticia.tsx';
-import { InicioAdmin } from '../dashboard/modules/inicio/InicioAdmin.tsx';
-import { ColegiadosAdmin } from '../dashboard/modules/colegiados/ColegiadosAdmin.tsx';
-import { AgregarColegiado } from '../dashboard/modules/colegiados/AgregarColegiado.tsx';
-import { Login } from '../dashboard/modules/login/Login.tsx';
-import { Escuelas } from '../dashboard/modules/escuelas/Escuelas.tsx';
-import { PopUpsAdmin } from '../dashboard/modules/popups/PopUpsAdmin.tsx';
-import { SlidersAdmin } from '../dashboard/modules/sliders/SlidersAdmin.tsx';
-import { PublicacionesAdmin } from '../dashboard/modules/publicaciones/PublicacionesAdmin.tsx';
-import { CategoriasAdmin } from '../dashboard/modules/publicaciones/CategoriasAdmin.tsx';
 import { GroupProtectedRoute } from './GroupProtectedRoute.tsx';
 import { Unauthorized } from '../dashboard/shared/NoAutorizado.tsx';
-import { EstadoCuenta } from '../dashboard/modules/estadocuenta/EstadoCuenta.tsx';
-import { Pagos } from '../dashboard/modules/pagos/Pagos.tsx';
-import { EditarColegiado } from '../dashboard/modules/colegiados/EditarColegiado.tsx';
-import { AgregarPagos } from '../dashboard/modules/pagos/AgregarPagos.tsx';
-import { EditarPagos } from '../dashboard/modules/pagos/EditarPagos.tsx';
-import { NuevaPublicacion } from '../dashboard/modules/publicaciones/NuevaPublicacion.tsx';
-import { EditarPublicacion } from '../dashboard/modules/publicaciones/EditarPublicacion.tsx';
+
+// Rutas públicas con Lazy Loading
+const Inicio = lazy(() => import('../web/modules/inicio/Inicio.tsx'));
+const Nosotros = lazy(() => import('../web/modules/nosotros/Nosotros.tsx'));
+const Noticias = lazy(() => import('../web/modules/noticias/Noticias.tsx'));
+const Contactanos = lazy(() => import('../web/modules/contactanos/Contactanos.tsx'));
+const ConsultarHabilidad = lazy(() => import('../web/modules/colegiados/ConsultarHabilidad.tsx'));
+const Noticia = lazy(() => import('../web/modules/noticias/noticia/Noticia.tsx'));
+
+// Rutas protegidas con Lazy Loading
+const InicioAdmin = lazy(() => import('../dashboard/modules/inicio/InicioAdmin.tsx'));
+const ColegiadosAdmin = lazy(() => import('../dashboard/modules/colegiados/ColegiadosAdmin.tsx'));
+const AgregarColegiado = lazy(() => import('../dashboard/modules/colegiados/AgregarColegiado.tsx'));
+const Login = lazy(() => import('../dashboard/modules/login/Login.tsx'));
+const Escuelas = lazy(() => import('../dashboard/modules/escuelas/Escuelas.tsx'));
+const PopUpsAdmin = lazy(() => import('../dashboard/modules/popups/PopUpsAdmin.tsx'));
+const SlidersAdmin = lazy(() => import('../dashboard/modules/sliders/SlidersAdmin.tsx'));
+const PublicacionesAdmin = lazy(() => import('../dashboard/modules/publicaciones/PublicacionesAdmin.tsx'));
+const CategoriasAdmin = lazy(() => import('../dashboard/modules/publicaciones/CategoriasAdmin.tsx'));
+const EstadoCuenta = lazy(() => import('../dashboard/modules/estadocuenta/EstadoCuenta.tsx'));
+const Pagos = lazy(() => import('../dashboard/modules/pagos/Pagos.tsx'));
+const EditarColegiado = lazy(() => import('../dashboard/modules/colegiados/EditarColegiado.tsx'));
+const AgregarPagos = lazy(() => import('../dashboard/modules/pagos/AgregarPagos.tsx'));
+const EditarPagos = lazy(() => import('../dashboard/modules/pagos/EditarPagos.tsx'));
+const NuevaPublicacion = lazy(() => import('../dashboard/modules/publicaciones/NuevaPublicacion.tsx'));
+const EditarPublicacion = lazy(() => import('../dashboard/modules/publicaciones/EditarPublicacion.tsx'));
+
+// Componente de carga personalizada
+const LoadingSpinner = () => (
+  <div className="flex justify-center items-center h-screen">
+    <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
+    </div>
+  </div>
+);
 
 const publicRoutes = [
   { path: "/", element: <Inicio /> },
@@ -40,7 +54,7 @@ const adminRoutes = [
   { path: "/admin/colegiado", element: <ColegiadosAdmin />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/colegiado/nuevo-colegiado", element: <AgregarColegiado />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/colegiado/editar-colegiado/:id1/:id2", element: <EditarColegiado />, allowedGroups: ['admin', 'secretaria'] },
-  { path: "/admin/escuelas", element: <Escuelas />, allowedGroups: ['admin', 'secretaria'] },
+  { path: "/admin/capitulos", element: <Escuelas />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/pagos", element: <Pagos />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/pagos/nuevo-pago", element: <AgregarPagos />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/pagos/editar-pago/:id", element: <EditarPagos />, allowedGroups: ['admin', 'secretaria'] },
@@ -57,31 +71,33 @@ const adminRoutes = [
 
 const AppRoutes = () => {
   return (
-    <Routes>
-      {/* Rutas públicas */}
-      {publicRoutes.map(({ path, element }) => (
-        <Route key={path} path={path} element={element} />
-      ))}
+    <Suspense fallback={<LoadingSpinner />}>
+      <Routes>
+        {/* Rutas públicas */}
+        {publicRoutes.map(({ path, element }) => (
+          <Route key={path} path={path} element={element} />
+        ))}
 
-      {/* Ruta de login */}
-      <Route path="/admin/login" element={<Login />} />
+        {/* Ruta de login */}
+        <Route path="/admin/login" element={<Login />} />
 
-      {/* Rutas protegidas */}
-      {adminRoutes.map(({ path, element, allowedGroups }) => (
-        <Route
-          key={path}
-          path={path}
-          element={
-            <GroupProtectedRoute allowedGroups={allowedGroups}>
-              {element}
-            </GroupProtectedRoute>
-          }
-        />
-      ))}
+        {/* Rutas protegidas */}
+        {adminRoutes.map(({ path, element, allowedGroups }) => (
+          <Route
+            key={path}
+            path={path}
+            element={
+              <GroupProtectedRoute allowedGroups={allowedGroups}>
+                {element}
+              </GroupProtectedRoute>
+            }
+          />
+        ))}
 
-      {/* Ruta para usuarios no autorizados */}
-      <Route path="/unauthorized" element={<Unauthorized />} />
-    </Routes>
+        {/* Ruta para usuarios no autorizados */}
+        <Route path="/unauthorized" element={<Unauthorized />} />
+      </Routes>
+    </Suspense>
   );
 };
 

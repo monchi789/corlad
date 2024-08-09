@@ -17,7 +17,7 @@ import { getPagoById, updatePago, getMetodoPagoByFilter, getTipoPagoByFilter } f
 import toast, { Toaster } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
-export function EditarPagos() {
+export default function EditarPagos() {
   const { id } = useParams();
   const [dniColegiado, setDniColegiado] = useState('');
   const [numeroColegiatura, setNumeroColegiatura] = useState('');

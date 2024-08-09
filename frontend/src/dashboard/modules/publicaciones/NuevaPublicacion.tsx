@@ -10,7 +10,7 @@ import imagen_default from "../../../assets/dashboard/default_image.jpg";
 import { defaultPublicacion, Publicacion } from "../../../interfaces/model/Publicacion";
 import { createPublicacion } from "../../../api/publicacion.api";
 
-export function NuevaPublicacion() {
+export default function NuevaPublicacion() {
   const navigate = useNavigate();
 
   const editor = useRef(null);
@@ -19,6 +19,7 @@ export function NuevaPublicacion() {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(null);
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [publicacion, setPublicacion] = useState<Publicacion>(defaultPublicacion);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -41,7 +42,6 @@ export function NuevaPublicacion() {
         id_categoria: selectedCategoria,
       }));
     }
-
   };
 
   const fetchCategoria = async () => {
@@ -77,7 +77,7 @@ export function NuevaPublicacion() {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      console.log('Document file selected:', event.target.files[0]);
+      setPdfFile(event.target.files[0]);
     }
   };
 
@@ -85,7 +85,6 @@ export function NuevaPublicacion() {
     event.preventDefault();
 
     if (!selectedOption || !content) {
-      console.error('Please fill in all the required fields.');
       return;
     }
 
@@ -102,15 +101,21 @@ export function NuevaPublicacion() {
       formData.append('id_categoria_id', publicacion.id_categoria.id.toString());
     }
 
-    const documentFile = event.currentTarget.documento?.files[0];
-    if (documentFile) {
-      formData.append('documento', documentFile);
+    if (pdfFile) {
+      formData.append('documento', pdfFile);
     }
 
-    // Uncomment the following line when ready to send the form data
-    await createPublicacion(formData);
+    try {
+      await createPublicacion(formData);
+      // Navegar hacia publicaciones
+      navigate("/admin/publicaciones/");
+    } catch (error) {
+      console.error('Error creating publicación:', error);
+    }
+  };
 
-    navigate("/admin/publicaciones/")
+  const handleCancel = () => {
+    navigate("/admin/publicaciones/");
   };
 
   const config = {
@@ -121,7 +126,6 @@ export function NuevaPublicacion() {
     language: 'es'
   };
 
-
   const itemCategoria = (option: any) => {
     return (
       <div className="flex hover:bg-[#E6F3E6] text-[#00330a] items-center justify-between px-3 py-2">
@@ -129,7 +133,6 @@ export function NuevaPublicacion() {
       </div>
     );
   };
-
   return (
     <div className="flex flex-row w-full">
       <Sidebar />
@@ -213,7 +216,7 @@ export function NuevaPublicacion() {
           </div>
           <div className="flex flex-row w-full justify-end text-lg font-nunito font-extrabold mt-5 space-x-5">
             <button type="submit" className="w-2/6 text-white bg-[#007336] rounded-2xl p-2">Crear nueva publicación</button>
-            <button type="button" className="w-1/6 rounded-2xl text-[#5F4102] border border-[#5F4102] p-2">Cancelar</button>
+            <button type="button" className="w-1/6 rounded-2xl text-[#5F4102] border border-[#5F4102] p-2" onClick={handleCancel}>Cancelar</button>
           </div>
         </form>
       </div>

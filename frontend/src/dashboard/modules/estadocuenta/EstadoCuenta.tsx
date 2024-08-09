@@ -3,7 +3,7 @@ import { Sidebar } from "../../shared/Sidebar";
 import { BuscarEstadoCuenta } from "./BuscarEstadoCuenta";
 import { EstadoCuentaTable } from "./EstadoCuentaTable";
 
-export function EstadoCuenta() {
+export default function EstadoCuenta() {
   return (
     <div className="flex flex-row w-full">
       <Sidebar />

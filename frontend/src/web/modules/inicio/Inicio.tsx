@@ -17,29 +17,15 @@ import 'react-image-gallery/styles/css/image-gallery.css'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-export function Inicio() {
+export default function Inicio() {
 
   const [data, setData] = useState<Publicacion[]>([]);
 
   useEffect(() => {
     async function cargarNoticias() {
       const res = await getAllNoticiasByPage(0, 3);
-      /*
-        Mapeo del api 
-      */
-      const noticias: Publicacion[] = res.data.results.map((noticia: any) => ({
-        id: noticia.id,
-        titulo: noticia.titulo,
-        contenido: noticia.contenido,
-        fecha_publicacion: noticia.fecha_publicacion,
-        imagen_publicacion: noticia.imagen_publicacion,
-        documento: noticia.documento,
-        id_categoria: {
-          id: noticia.id_categoria.id,
-          nombre_categoria: noticia.id_categoria.nombre_categoria
-        }
-      }));
-      setData(noticias);
+
+      setData(res.data.results);
     }
     cargarNoticias();
   }, []);

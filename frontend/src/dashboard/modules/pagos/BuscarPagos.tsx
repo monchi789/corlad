@@ -81,7 +81,7 @@ export const BuscarPagos = () => {
               required
             />
           </div>
-          <button onClick={handleSearch} className="w-1/6  font-nunito font-black bg-[#007336] text-[#F9ECD9] rounded-xl mt-auto py-2"><SearchIcon /> Buscar</button>
+          <button onClick={handleSearch} className="w-1/6  font-nunito font-black bg-[#007336] text-white rounded-xl shadow-custom-input mt-auto py-2"><SearchIcon /> Buscar</button>
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { Sidebar } from "../../shared/Sidebar";
 import { ColegiadoTable } from "./ColegiadoTable";
 import { BuscarColegiado } from "./BuscarColegiado";
 
-export function ColegiadosAdmin() {
+export default function ColegiadosAdmin() {
 
   return (
 

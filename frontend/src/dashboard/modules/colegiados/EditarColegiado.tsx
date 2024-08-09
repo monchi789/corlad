@@ -16,7 +16,7 @@ import { getAllEscuelas } from "../../../api/escuela.api";
 import { getAllEspecialidades } from "../../../api/especialidad.api";
 import toast, { Toaster } from "react-hot-toast";
 
-export function EditarColegiado() {
+export default function EditarColegiado() {
   const { id1, id2 } = useParams();
   const [selectedCapitulo, setSelectedCapitulo] = useState<number | null>(null);
   const [selectedEspecialidad, setSelectedEspecialidad] = useState<number | null>(null);

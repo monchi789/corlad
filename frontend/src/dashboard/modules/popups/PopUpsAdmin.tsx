@@ -2,7 +2,7 @@ import { SessionHeader } from "../../shared/SessionHeader";
 import { Sidebar } from "../../shared/Sidebar";
 import { PopUpsList } from "./PopUpsList";
 
-export function PopUpsAdmin() {
+export default function PopUpsAdmin() {
   return (
     <div className="flex flex-row w-full">
       <Sidebar />  

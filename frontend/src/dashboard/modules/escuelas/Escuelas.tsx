@@ -15,7 +15,7 @@ import { ActualizarEscuela } from "./ActualizarEscuela";
 import { ActualizarEspecialidad } from "./ActualizarEspecialidad";
 import contabilidad from '../../../assets/dashboard/contabilidad.png';
 
-export function Escuelas() {
+export default function Escuelas() {
   const [escuelasList, setEscuelasList] = useState<Escuela[]>([]);
   const [especialidadesList, setEspecialidadesList] = useState<Especialidad[]>([]);
   const [isEscuelaModalOpen, setIsEscuelaModalOpen] = useState(false);
@@ -122,7 +122,7 @@ export function Escuelas() {
         <div className="mt-10 space-y-5">
           <Grid container spacing={2} justifyContent="space-between" alignItems="center">
             <Grid item>
-              <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold">Capitulos</h4>
+              <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold">Capítulos</h4>
             </Grid>
             <Grid item>
               <TextField

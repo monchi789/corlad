@@ -5,7 +5,7 @@ import { PagosTable } from "./PagosTable";
 import { Link } from "react-router-dom";
 import { BuscarPagos } from "./BuscarPagos";
 
-export function Pagos() {
+export default function Pagos() {
   return (
     <div className="flex flex-row w-full">
       <Sidebar />

@@ -7,7 +7,7 @@ import { getAllNoticiasByPage, getNoticiasById } from '../../../../api/publicaci
 import { Card } from '../../../shared/Cards';
 import { FaFilePdf } from 'react-icons/fa6';
 
-export function Noticia() {
+export default function Noticia() {
   const { id } = useParams<{ id: string }>();
   const [noticia, setNoticia] = useState<Publicacion>(defaultPublicacion);
   const [data, setData] = useState<Publicacion[]>([]);
@@ -15,19 +15,7 @@ export function Noticia() {
   useEffect(() => {
     async function cargarNoticias() {
       const res = await getAllNoticiasByPage();
-      const noticias: Publicacion[] = res.data.results.map((noticia: any) => ({
-        id: noticia.id,
-        titulo: noticia.titulo,
-        contenido: noticia.contenido,
-        fecha_publicacion: noticia.fecha_publicacion,
-        imagen_publicacion: noticia.imagen_publicacion,
-        documento: noticia.documento,
-        id_categoria: {
-          id: noticia.id_categoria.id,
-          nombre_categoria: noticia.id_categoria.nombre_categoria
-        }
-      }));
-      setData(noticias);
+      setData(res.data.results);
     }
     cargarNoticias();
   }, []);

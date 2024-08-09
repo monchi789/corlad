@@ -4,7 +4,7 @@ import { Footer } from "../../shared/Footer";
 import Carousel from "../../shared/Carousel";
 import { Gallery } from "../../shared/Gallery";
 
-export function Nosotros() {
+export default function Nosotros() {
 
   const directivos = [
     {

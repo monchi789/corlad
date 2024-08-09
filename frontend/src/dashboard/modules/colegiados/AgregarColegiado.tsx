@@ -16,7 +16,7 @@ import { getAllEspecialidades } from "../../../api/especialidad.api";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-export function AgregarColegiado() {
+export default function AgregarColegiado() {
   const navigate = useNavigate();
 
   const [selectedCapitulo, setSelectedCapitulo] = useState<number | null>(null);

@@ -11,9 +11,8 @@ import { defaultPublicacion, Publicacion } from "../../../interfaces/model/Publi
 import { editPublicacion, getPublicacionesById } from "../../../api/publicacion.api";
 import toast from "react-hot-toast";
 
-export function EditarPublicacion() {
+export default function EditarPublicacion() {
   const navigate = useNavigate();
-
   const { id } = useParams();
   const editor = useRef(null);
   const [content, setContent] = useState<string>('');
@@ -21,6 +20,7 @@ export function EditarPublicacion() {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(null);
+  const [documento, setDocumento] = useState<File | null>(null);
   const [publicacion, setPublicacion] = useState<Publicacion>(defaultPublicacion);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -36,34 +36,33 @@ export function EditarPublicacion() {
     setSelectedOption(e.value);
 
     const selectedCategoria = categorias.find(cat => cat.id === e.value);
-    
+
     if (selectedCategoria) {
       setPublicacion(prevState => ({
         ...prevState,
         id_categoria: selectedCategoria,
       }));
     }
-
   };
 
-  const fetchPagoData = async () => {
+  const fetchPublicacionData = async () => {
     if (id) {
       try {
         const response = await getPublicacionesById(parseInt(id));
         const publicacion: Publicacion = response.data;
 
         setPublicacion(publicacion);
-        setSelectedOption(publicacion.id_categoria.id); 
-        setContent(publicacion.contenido)
-        setImagePreview(`${import.meta.env.VITE_API_URL_ALTER}${publicacion.imagen_publicacion}`)
+        setSelectedOption(publicacion.id_categoria.id);
+        setContent(publicacion.contenido);
+        setImagePreview(publicacion.imagen_publicacion ? `${import.meta.env.VITE_API_URL_ALTER}${publicacion.imagen_publicacion}` : imagen_default);
 
       } catch (error) {
-        toast.error('Error al cargar los datos del pago');
+        toast.error('Error al cargar los datos de la publicación');
       }
     }
   };
 
-  const fetchCategoria = async () => {
+  const fetchCategorias = async () => {
     try {
       const res = await getAllCategoriasAdmin();
       setCategorias(res.data);
@@ -73,9 +72,9 @@ export function EditarPublicacion() {
   };
 
   useEffect(() => {
-    fetchCategoria();
-    fetchPagoData();
-  }, []);
+    fetchCategorias();
+    fetchPublicacionData();
+  }, [id]);
 
   useEffect(() => {
     if (image) {
@@ -97,7 +96,7 @@ export function EditarPublicacion() {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      console.log('Document file selected:', event.target.files[0]);
+      setDocumento(event.target.files[0]);
     }
   };
 
@@ -105,7 +104,7 @@ export function EditarPublicacion() {
     event.preventDefault();
 
     if (!selectedOption || !content) {
-      console.error('Please fill in all the required fields.');
+      toast.error('Por favor, complete todos los campos requeridos.');
       return;
     }
 
@@ -117,19 +116,31 @@ export function EditarPublicacion() {
     if (image) {
       formData.append('imagen_publicacion', image);
     }
-    
+
     if (publicacion.id_categoria.id) {
       formData.append('id_categoria_id', publicacion.id_categoria.id.toString());
     }
 
-    const documentFile = event.currentTarget.documento?.files[0];
-    if (documentFile) {
-      formData.append('documento', documentFile);
+    if (documento) {
+      formData.append('documento', documento);
     }
 
-    await editPublicacion(parseInt(id as string),formData);
+    try {
+      await editPublicacion(parseInt(id as string), formData);
+      toast.success('Publicación editada con éxito.');
+      navigate("/admin/publicaciones/");
+    } catch (error) {
+      toast.error('Error al editar la publicación.');
+    }
+  };
 
-    navigate("/admin/publicaciones/")
+  const handleCancel = () => {
+    navigate("/admin/publicaciones/");
+  };
+
+  const extractFileName = (path: string) => {
+    // Extrae el nombre del archivo del path
+    return path.split('/').pop();
   };
 
   const config = {
@@ -139,7 +150,6 @@ export function EditarPublicacion() {
     placeholder: 'Empieza a publicar...',
     language: 'es'
   };
-
 
   const itemCategoria = (option: any) => {
     return (
@@ -225,15 +235,15 @@ export function EditarPublicacion() {
               <div className="flex flex-col w-full bg-[#EAF1E8] rounded-lg p-5">
                 <div className="flex flex-col space-y-2">
                   <span className="text-lg text-[#00330A] font-nunito font-extrabold">Documento adjunto</span>
-                  <span>{publicacion.documento}</span>
+                  { publicacion.documento ? <span>{extractFileName(publicacion.documento)}</span> : <span></span> }
                   <input type="file" onChange={handleFileChange} />
                 </div>
               </div>
             </div>
           </div>
           <div className="flex flex-row w-full justify-end text-lg font-nunito font-extrabold mt-5 space-x-5">
-            <button type="submit" className="w-2/6 text-white bg-[#007336] rounded-2xl p-2">Crear nueva publicación</button>
-            <button type="button" className="w-1/6 rounded-2xl text-[#5F4102] border border-[#5F4102] p-2">Cancelar</button>
+            <button type="submit" className="w-2/6 text-white bg-[#007336] rounded-2xl p-2">Editar publicación</button>
+            <button type="button" className="w-1/6 rounded-2xl text-[#5F4102] border border-[#5F4102] p-2" onClick={handleCancel}>Cancelar</button>
           </div>
         </form>
       </div>

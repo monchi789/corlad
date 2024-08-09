@@ -511,7 +511,7 @@ export const SlidersList = () => {
 
   return (
     <div className="flex flex-col mt-10 space-y-5">
-      <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold">Galerias de fotos</h4>
+      <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold">Galerías de fotos</h4>
       <div className="flex flex-row space-x-3">
         {list.map((element, index) => {
           // Filtrar imágenes nulas o vacías
