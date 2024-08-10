@@ -23,7 +23,6 @@ class PopUp(models.Model):
     def __str__(self) -> str:
         return 'PopUp Activo' if self.estado_popup else 'PopUp No Activo'
 
-
 # Modelo Slider para gestionar imágenes en un carrusel
 class Slider(models.Model):
     imagen_1 = models.ImageField(upload_to='slider/', blank=True, null=True, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'webp', 'png'])])
