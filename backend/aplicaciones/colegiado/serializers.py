@@ -23,7 +23,6 @@ class EspecialidadSerializer(serializers.ModelSerializer):
         fields = ['id', 'id_escuela', 'nombre_especialidad', 'id_escuela_id']
 
     def update(self, instance, validated_data):
-        '''Actualiza y devuelve una instancia de Especialidad.'''
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
@@ -86,7 +85,7 @@ class HistorialEducativoSerializer(serializers.ModelSerializer):
 class ColegiadoDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Colegiado
-        fields = ['id', 'nombre', 'apellido_paterno', 'apellido_materno', 'correo', 'numero_colegiatura', 'estado', 'foto_colegiado']
+        fields = ['id', 'nombre', 'apellido_paterno', 'apellido_materno', 'correo', 'numero_colegiatura', 'foto_colegiado']
 
 
 # Serializer para consulta de habilidades

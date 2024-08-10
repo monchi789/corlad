@@ -56,6 +56,18 @@ class EstadoColegiatura(models.Model):
     fecha_final = models.DateField(null=False, blank=False, default=timezone.now)
     estado_colegiatura = models.BooleanField(null=False, blank=False, default=False)
 
+    def __str__(self) -> str:
+
+        estado = ''
+
+        if self.estado_colegiatura:
+            estado = 'Activo'
+        else:
+            estado = 'No Activo'
+            
+
+        return f'Fecha Inicio: {self.fecha_inicio} - Fecha Final: {self.fecha_final} - Estado: {estado}'
+
 
 class HistorialEducativo(models.Model):
     universidad = models.CharField(max_length=250, blank=False, null=False, validators=[validar_espacio], default='')
