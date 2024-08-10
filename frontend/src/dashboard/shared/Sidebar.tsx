@@ -1,19 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { AiFillHome } from "react-icons/ai";
-import { FaUsers } from "react-icons/fa";
-import { IoSchoolSharp } from "react-icons/io5";
-import { IoMdImages } from "react-icons/io";
-import { AiFillNotification } from "react-icons/ai";
+import { useAuth } from "../contexts/AuthContext";
+import { useDropdown } from "../contexts/DropdownContext";
+import { AiFillHome, AiFillNotification } from "react-icons/ai";
+import { FaUsers, FaMoneyCheck } from "react-icons/fa";
+import { IoSchoolSharp, IoImages } from "react-icons/io5";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { MdLogout, MdMenu } from "react-icons/md";
 import { PiNewspaperClippingFill } from "react-icons/pi";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { FaMoneyCheckDollar } from "react-icons/fa6";
-import { useAuth } from "../contexts/AuthContext";
-import { useDropdown } from "../contexts/DropdownContext"; // Importar el hook del contexto
 import logo_corlad from "../../assets/web/corlad_logo_blanco.png";
 
-// Definición de tipos
+
 interface MenuItemProps {
   to: string;
   icon: React.ReactNode;
@@ -21,7 +18,7 @@ interface MenuItemProps {
 }
 
 export function Sidebar() {
-  const {isDropdownOpen, toggleDropdown} = useDropdown(); // Obtener el estado y la función de toggle
+  const { dropdownStates, toggleDropdown } = useDropdown();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { hasGroup, logout } = useAuth();
 
@@ -58,24 +55,24 @@ export function Sidebar() {
               {hasGroup('secretaria', 'admin') && (
                 <>
                   <MenuItem to="/admin/colegiado" icon={<FaUsers size={25} />} text="Colegiados" />
-                  <MenuItem to="/admin/escuelas" icon={<IoSchoolSharp size={25} />} text="Escuelas" />
+                  <MenuItem to="/admin/capitulos" icon={<IoSchoolSharp size={25} />} text="Capítulos" />
 
                   <li className="flex flex-col text-[#ECF6E8] hover:text-[#F1E9D0] transition duration-300 mx-5 mb-2">
                     <div
                       className="flex flex-row justify-between space-x-4 rounded-lg p-3 cursor-pointer hover:bg-[#CCB23A]"
-                      onClick={toggleDropdown}
+                      onClick={() => toggleDropdown("pagos")}
                     >
                       <div className="flex flex-row space-x-4">
-                        <FaMoneyCheckDollar size={25} />
+                        <FaMoneyCheck size={25} />
                         <span className="my-auto">Pagos</span>
                       </div>
-                      {isDropdownOpen ? (
+                      {dropdownStates.pagos ? (
                         <IoIosArrowUp className="my-auto" size={25} />
                       ) : (
                         <IoIosArrowDown className="my-auto" size={25} />
                       )}
                     </div>
-                    <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isDropdownOpen ? 'max-h-screen' : 'max-h-0'}`}>
+                    <div className={`overflow-hidden transition-all duration-300 ease-in-out ${dropdownStates.pagos ? 'max-h-screen' : 'max-h-0'}`}>
                       <ul className="flex flex-col text-xl space-y-2 pl-12 pt-2">
                         <Link to={"/admin/pagos"}>
                           <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] rounded-lg transition duration-300 p-2">
@@ -98,19 +95,19 @@ export function Sidebar() {
                   <li className="flex flex-col text-[#ECF6E8] text-xl hover:text-[#F1E9D0] transition duration-300 mx-5 mb-2">
                     <div
                       className="flex flex-row justify-between space-x-4 rounded-lg p-3 cursor-pointer hover:bg-[#CCB23A]"
-                      onClick={toggleDropdown}
+                      onClick={() => toggleDropdown("publicaciones")}
                     >
                       <div className="flex flex-row space-x-4">
                         <PiNewspaperClippingFill size={25} />
                         <span className="my-auto">Publicaciones</span>
                       </div>
-                      {isDropdownOpen ? (
+                      {dropdownStates.publicaciones ? (
                         <IoIosArrowUp className="my-auto" size={25} />
                       ) : (
                         <IoIosArrowDown className="my-auto" size={25} />
                       )}
                     </div>
-                    <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isDropdownOpen ? 'max-h-screen' : 'max-h-0'}`}>
+                    <div className={`overflow-hidden transition-all duration-300 ease-in-out ${dropdownStates.publicaciones ? 'max-h-screen' : 'max-h-0'}`}>
                       <ul className="flex flex-col text-xl space-y-2 pl-12 pt-2">
                         <Link to={"/admin/publicaciones"}>
                           <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] rounded-lg transition duration-300 p-2">
@@ -127,19 +124,19 @@ export function Sidebar() {
                   </li>
 
                   <MenuItem to="/admin/anuncios" icon={<AiFillNotification size={25} />} text="Anuncios" />
-                  <MenuItem to="/admin/galeria" icon={<IoMdImages size={25} />} text="Galerias" />
+                  <MenuItem to="/admin/galeria" icon={<IoImages size={25} />} text="Galerías" />
                 </>
               )}
             </ul>
           </div>
         </div>
         <div className="mt-auto">
-          <li onClick={handleLogout} className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 my-5 p-3 cursor-pointer">
+          <li onClick={handleLogout} className="flex flex-row text-[#ECF6E8] text-xl hover:bg-[#CCB23A] hover:text-[#F1E9D0] space-x-4 rounded-lg transition duration-300 mx-5 mb-2 p-3 cursor-pointer">
             <MdLogout size={25} />
-            <span className="text-xl font-nunito my-auto">Salir</span>
+            <span className="my-auto">Cerrar Sesión</span>
           </li>
         </div>
       </div>
-      </>
-      );
+    </>
+  );
 }

@@ -26,12 +26,12 @@ class PopUp(models.Model):
 
 # Modelo Slider para gestionar imágenes en un carrusel
 class Slider(models.Model):
-    imagen_1 = models.ImageField(upload_to='slider/', blank=True, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'webp', 'png'])])
-    imagen_2 = models.ImageField(upload_to='slider/', blank=True, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'webp', 'png'])])
-    imagen_3 = models.ImageField(upload_to='slider/', blank=True, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'webp', 'png'])])
-    imagen_4 = models.ImageField(upload_to='slider/', blank=True, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'webp', 'png'])])
+    imagen_1 = models.ImageField(upload_to='slider/', blank=True, null=True, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'webp', 'png'])])
+    imagen_2 = models.ImageField(upload_to='slider/', blank=True, null=True, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'webp', 'png'])])
+    imagen_3 = models.ImageField(upload_to='slider/', blank=True, null=True, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'webp', 'png'])])
+    imagen_4 = models.ImageField(upload_to='slider/', blank=True, null=True, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'webp', 'png'])])
     estado_slider = models.BooleanField(blank=True, null=False, default=False)
-
+    
     def clean(self):
         # Validación personalizada: Limitar el número máximo de Sliders a 5
         if not self.pk and Slider.objects.count() >= 5:

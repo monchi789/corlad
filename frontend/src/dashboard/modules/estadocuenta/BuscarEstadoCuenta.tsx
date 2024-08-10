@@ -62,7 +62,7 @@ export const BuscarEstadoCuenta = () => {
 
   return (
     <div className="mt-10 pb-5">
-      <div className="mt-5 bg-[#C9D9C6] rounded-2xl">
+      <div className="mt-5 bg-[#E1EBDE] rounded-2xl">
         <div className="flex flex-row space-x-5 p-5">
           <div className="w-2/6 flex flex-col">
             <label htmlFor="dni_colegiado" className="block font-nunito font-bold mb-1">DNI</label>
@@ -72,7 +72,7 @@ export const BuscarEstadoCuenta = () => {
               name="dni_colegiado"
               onChange={handleChangeParams}
               value={params?.dni_colegiado}
-              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-xl focus:outline-none p-2"
+              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-xl shadow-custom-input focus:outline-none p-2"
               required
             />
           </div>
@@ -84,7 +84,7 @@ export const BuscarEstadoCuenta = () => {
               name="numero_colegiatura"
               onChange={handleChangeParams}
               value={params?.numero_colegiatura}
-              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-xl focus:outline-none p-2"
+              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-xl shadow-custom-input focus:outline-none p-2"
               required
             />
           </div>
@@ -96,7 +96,7 @@ export const BuscarEstadoCuenta = () => {
               name="apellido_paterno"
               onChange={handleChangeParams}
               value={params?.apellido_paterno}
-              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-xl focus:outline-none p-2"
+              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-xl shadow-custom-input focus:outline-none p-2"
               required
             />
           </div>
@@ -105,7 +105,7 @@ export const BuscarEstadoCuenta = () => {
             <Dropdown
               id="estado"
               name="estado"
-              className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none p-2 px-2"
+              className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none shadow-custom-input p-2 px-2"
               panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
               value={selectedEstado}
               onChange={(e) => {

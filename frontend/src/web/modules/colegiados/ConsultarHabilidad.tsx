@@ -7,7 +7,7 @@ import { defaultHistorialDetalleColegiado, HistorialDetalleColegiado } from "../
 import { Footer } from "../../shared/Footer";
 import ClipLoader from "react-spinners/ClipLoader";
 
-export function ConsultarHabilidad() {
+export default function ConsultarHabilidad() {
 
   const [selectedOption, setSelectedOption] = useState(null);
   const [inputValue, setInputValue] = useState("");

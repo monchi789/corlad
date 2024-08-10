@@ -29,7 +29,7 @@ export function getDecodedToken(token: string) {
 }
 
 // Componente de inicio de sesión
-export function Login() {
+export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");

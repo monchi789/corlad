@@ -7,10 +7,10 @@ import { Categoria } from "../../../interfaces/model/Categoria";
 import { getAllCategorias } from "../../../api/categoria.api";
 import { HorizontalCard } from "../../shared/Cards";
 import { Publicacion } from "../../../interfaces/model/Publicacion";
-import { getAllNoticiasByPage, getNoticiasByFilter } from "../../../api/noticia.api";
+import { getAllNoticiasByPage, getNoticiasByFilter } from "../../../api/publicacion.api";
 import { classNames } from "primereact/utils";
 
-export function Noticias() {
+export default function Noticias() {
   const [categoriaData, setCategorias] = useState<Categoria[]>([]);
   const [noticiasList, setNoticiasList] = useState<Publicacion[]>([]);
   const [totalRecords, setTotalRecords] = useState(0);

@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface DropdownContextType {
-  isDropdownOpen: boolean;
-  toggleDropdown: () => void;
+  dropdownStates: Record<string, boolean>;
+  toggleDropdown: (dropdownName: string) => void;
 }
 
 const DropdownContext = createContext<DropdownContextType | undefined>(undefined);
@@ -16,12 +16,17 @@ export const useDropdown = () => {
 };
 
 export const DropdownProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [dropdownStates, setDropdownStates] = useState<Record<string, boolean>>({});
 
-  const toggleDropdown = () => setIsDropdownOpen(prev => !prev);
+  const toggleDropdown = (dropdownName: string) => {
+    setDropdownStates(prev => ({
+      ...prev,
+      [dropdownName]: !prev[dropdownName],
+    }));
+  };
 
   return (
-    <DropdownContext.Provider value={{ isDropdownOpen, toggleDropdown }}>
+    <DropdownContext.Provider value={{ dropdownStates, toggleDropdown }}>
       {children}
     </DropdownContext.Provider>
   );

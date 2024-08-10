@@ -2,7 +2,7 @@ import { Footer } from "../../shared/Footer";
 import { Header } from "../../shared/Header";
 import Contacto from "./contacto/Contacto";
 
-export function Contactanos() {
+export default function Contactanos() {
   return (
     <div>
       <Header />
