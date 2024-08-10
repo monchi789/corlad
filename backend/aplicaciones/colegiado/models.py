@@ -48,7 +48,7 @@ class Colegiado(models.Model):
     direccion = models.CharField(max_length=300, blank=False, null=False, default='')
 
     def __str__(self) -> str:
-        return f'{self.nombre} - {self.apellido_paterno} - {self.numero_colegiatura} - {self.numero_regulacion} - {self.dni_colegiado}'
+        return f'{self.nombre} - {self.apellido_paterno} - {self.numero_colegiatura} - {self.dni_colegiado}'
 
 
 class EstadoColegiatura(models.Model):
