@@ -1,4 +1,4 @@
-from ..colegiado.models import Colegiado
+from ..colegiado.models import Colegiado, EstadoColegiatura, HistorialEducativo, Especialidad
 from functions.validators import validar_numero, validar_espacio
 
 from django.db import models
@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
+from datetime import timedelta
 
 
 # Modelo para el estado de cuenta del colegiado
@@ -82,10 +83,47 @@ class Pago(models.Model):
                     raise ValidationError('El colegiado ya tiene un pago de matrícula registrado.')
 
     def save(self, *args, **kwargs):
-        self.clean()  # Ejecuta las validaciones personalizadas antes de guardar
+        self.clean()
         super(Pago, self).save(*args, **kwargs)
 
-    def __str__(self) -> str:
+        historial = HistorialEducativo.objects.get(id_colegiado=self.id_colegiado)
+        estado = historial.id_estado_colegiatura
+        
+        if estado:
+            # Si ya existe un estado, extendemos la fecha final
+            nueva_fecha_final = max(estado.fecha_final, self.fecha_pago) + timedelta(days=30 * int(self.meses))
+            estado.fecha_final = nueva_fecha_final
+        else:
+            # Si no existe, creamos uno nuevo
+            nueva_fecha_final = self.fecha_pago + timedelta(days=30 * int(self.meses))
+            estado = EstadoColegiatura.objects.create(
+                fecha_inicio=self.fecha_pago,
+                fecha_final=nueva_fecha_final,
+                estado_colegiatura=True
+            )
+        
+        estado.save()
+        
+        historial.id_estado_colegiatura = estado
+        historial.save()
+
+        # Actualizar el estado de colegiatura
+        self.actualizar_estado_colegiatura()
+
+    def actualizar_estado_colegiatura(self):
+        historial = HistorialEducativo.objects.filter(id_colegiado=self.id_colegiado).first()
+        if historial and historial.id_estado_colegiatura:
+            estado = historial.id_estado_colegiatura
+            fecha_actual = timezone.now().date()
+            
+            if estado.fecha_final < fecha_actual:
+                estado.estado_colegiatura = False
+            elif estado.fecha_inicio <= fecha_actual <= estado.fecha_final:
+                estado.estado_colegiatura = True
+            
+            estado.save()
+
+    def __str__(self):
         return f'{self.monto_pago} - {self.id_colegiado.nombre} - {self.id_metodo_pago.nombre_metodo_pago} - {self.id_tipo_pago.nombre_tipo_pago}'
 
 

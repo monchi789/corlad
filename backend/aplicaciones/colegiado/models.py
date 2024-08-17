@@ -2,6 +2,8 @@ from django.db import models
 from django.core.validators import EmailValidator
 from functions.validators import validar_numero, validar_espacio
 from django.utils import timezone
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 
 # Create your models here.
@@ -41,6 +43,7 @@ class Colegiado(models.Model):
     foto_colegiado = models.ImageField(upload_to='foto_colegiados/', null=False, blank=True, default='')
     dni_colegiado = models.CharField(max_length=8, blank=False, null=False, unique=True, validators=[validar_numero, validar_espacio], default='')
     numero_colegiatura = models.CharField(max_length=250, blank=False, null=False, unique=True, validators=[validar_numero, validar_espacio], default='')
+    numero_colegiatura_anterior = models.CharField(max_length=250, blank=True, null=True, unique=True, validators=[validar_numero])
     fecha_colegiatura = models.DateField(null=False, blank=False, default=timezone.now)
     sexo_colegiado = models.CharField(max_length=9, choices=SEXO, null=False, blank=False, default='O')
     fecha_nacimiento = models.DateField(null=False, blank=False, default=timezone.now)
@@ -56,6 +59,23 @@ class EstadoColegiatura(models.Model):
     fecha_final = models.DateField(null=False, blank=False, default=timezone.now)
     estado_colegiatura = models.BooleanField(null=False, blank=False, default=False)
 
+    def save(self, *args, **kwargs):
+        self.verificar_estado()
+        super().save(*args, **kwargs)
+
+    def actualizar_estado(self):
+        self.verificar_estado()
+        self.save()
+
+    def verificar_estado(self):
+        """Verificar si la colegiatura esta activa en base a la fecha actual"""
+        hoy = timezone.now().date()
+        if self.fecha_inicio <= hoy <= self.fecha_final:
+            self.estado_colegiatura = True
+        else:
+            self.estado_colegiatura = False
+        return self.estado_colegiatura
+
     def __str__(self) -> str:
 
         estado = ''
@@ -64,9 +84,13 @@ class EstadoColegiatura(models.Model):
             estado = 'Activo'
         else:
             estado = 'No Activo'
-            
 
         return f'Fecha Inicio: {self.fecha_inicio} - Fecha Final: {self.fecha_final} - Estado: {estado}'
+    
+@receiver(pre_save, sender=EstadoColegiatura)
+def actualizar_estado_colegiatura(sender, instance, **kwargs):
+    if instance.fecha_final < timezone.now().date():
+        instance.estado_colegiatura = False
 
 
 class HistorialEducativo(models.Model):
@@ -79,5 +103,11 @@ class HistorialEducativo(models.Model):
     id_estado_colegiatura = models.OneToOneField(EstadoColegiatura, on_delete=models.CASCADE, blank=True, null=True)
     id_especialidad = models.ForeignKey(Especialidad, on_delete=models.CASCADE, default=0)
 
+    def esta_activo(self):
+        """Verifica si el estado de colegiatura asociado esta activo"""
+        if self.id_estado_colegiatura:
+            return self.id_estado_colegiatura.verificar_estado()
+        return False
+
     def __str__(self) -> str:
-        return f'{self.id_colegiado.nombre} - {self.id_colegiado.numero_colegiatura} - {self.id_colegiado.dni_colegiado} - {self.universidad} - {self.id_especialidad.id_escuela.nombre_escuela} - {self.id_especialidad.nombre_especialidad}'
+        return f'{self.id_colegiado.nombre} - {self.id_colegiado.numero_colegiatura} - {self.id_colegiado.dni_colegiado} - {self.universidad} - {self.id_especialidad.id_escuela.nombre_escuela} - {self.id_especialidad.nombre_especialidad} - {self.id_estado_colegiatura}'
