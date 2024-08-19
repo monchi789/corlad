@@ -473,9 +473,9 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     @swagger_auto_schema(
-        operation_id='Actualizar un Historial',
-        request_body=HistorialEducativoSerializer,
-        responses={200: openapi.Response(description='Historial educativo actualizado')}
+    operation_id='Actualizar un Historial',
+    request_body=HistorialEducativoSerializer,
+    responses={200: openapi.Response(description='Historial educativo actualizado')}
     )
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -483,10 +483,9 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
         data = request.data.copy()
 
         # Manejar los IDs de las relaciones
-        if 'id_colegiado' in data and isinstance(data['id_colegiado'], dict):
-            data['id_colegiado_id'] = data['id_colegiado'].get('id')
-        if 'id_especialidad' in data and isinstance(data['id_especialidad'], dict):
-            data['id_especialidad_id'] = data['id_especialidad'].get('id')
+        for field in ['id_colegiado', 'id_especialidad', 'id_estado_colegiatura']:
+            if field in data and isinstance(data[field], dict):
+                data[f'{field}_id'] = data[field].get('id')
         
         serializer = self.get_serializer(instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
