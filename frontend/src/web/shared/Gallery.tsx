@@ -1,9 +1,14 @@
-import { useEffect, useState } from 'react'
-import banner_corlad from '../../assets/web/corlad_banner.jpg'
+import { useEffect, useState } from 'react';
+import banner_corlad from '../../assets/web/corlad_banner.jpg';
 import { getSlider } from '../../api/slider.api';
 import ImageGallery from 'react-image-gallery';
 import { Slider } from '../../interfaces/model/Slider';
 import { useLocation } from 'react-router-dom';
+
+// Define un tipo para los elementos de la galería de imágenes
+interface GalleryItem {
+  original: string;
+}
 
 export function Gallery() {
   const [data, setData] = useState<Slider[]>([]);
@@ -20,54 +25,45 @@ export function Gallery() {
         imagen_3: element.imagen_3,
         imagen_4: element.imagen_4,
         estado_slider: element.estado_slider
-      }))
-      setData(slider)
+      }));
+      setData(slider);
     }
-    cargarSliders()
+    cargarSliders();
+  }, []);
 
-  }, [])
+  const SliderActivo = data.filter(item => item.estado_slider);
 
-  const SliderActivo = data.filter(item => item.estado_slider)
-
-
-  let dataSlider = SliderActivo.flatMap(element => [
-    {
-      original: import.meta.env.VITE_API_URL_ALTER+element.imagen_1
-    },
-    {
-      original: import.meta.env.VITE_API_URL_ALTER+element.imagen_2
-    },
-    {
-      original: import.meta.env.VITE_API_URL_ALTER+element.imagen_3
-    },
-    {
-      original: import.meta.env.VITE_API_URL_ALTER+element.imagen_4
-    }
+  let dataSlider: GalleryItem[] = SliderActivo.flatMap(element => [
+    { original: import.meta.env.VITE_API_URL_ALTER + element.imagen_1 },
+    { original: import.meta.env.VITE_API_URL_ALTER + element.imagen_2 },
+    { original: import.meta.env.VITE_API_URL_ALTER + element.imagen_3 },
+    { original: import.meta.env.VITE_API_URL_ALTER + element.imagen_4 }
   ]);
 
-  const renderImageInicio = (item: any) => {
+  const renderImageInicio = (item: GalleryItem) => {
     return (
-      <img src={item.original} alt="" className="h-[750px] w-full object-cover brightness-[0.40] cursor-default" />
+      <img src={item.original} alt={item.original} className="h-[750px] w-full object-cover brightness-[0.40] cursor-default" />
     );
   };
 
-  const renderImageNosotros = (item: any) => {
+  const renderImageNosotros = (item: GalleryItem) => {
     return (
-      <img src={item.original} alt="" className="h-[750px] w-full object-cover cursor-default" />
+      <img src={item.original} alt={item.original} className="h-[750px] w-full object-cover cursor-default" />
     );
   };
 
-  if (dataSlider.length == 0) {
+  if (dataSlider.length === 0) {
     dataSlider = [
       { original: banner_corlad }
-    ]
+    ];
   }
 
   const renderItem = currentPath === '/' ? renderImageInicio : renderImageNosotros;
 
   return (
     <>
-      <ImageGallery items={dataSlider}
+      <ImageGallery
+        items={dataSlider}
         renderItem={renderItem}
         showPlayButton={false}
         showNav={false}
@@ -79,5 +75,5 @@ export function Gallery() {
         additionalClass="w-full max-w-[2500px] mx-auto"
       />
     </>
-  )
+  );
 }

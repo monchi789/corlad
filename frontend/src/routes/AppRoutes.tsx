@@ -22,7 +22,7 @@ const PopUpsAdmin = lazy(() => import('../dashboard/modules/popups/PopUpsAdmin.t
 const SlidersAdmin = lazy(() => import('../dashboard/modules/sliders/SlidersAdmin.tsx'));
 const PublicacionesAdmin = lazy(() => import('../dashboard/modules/publicaciones/PublicacionesAdmin.tsx'));
 const CategoriasAdmin = lazy(() => import('../dashboard/modules/publicaciones/CategoriasAdmin.tsx'));
-const EstadoCuenta = lazy(() => import('../dashboard/modules/estadocuenta/EstadoCuenta.tsx'));
+const EstadoCuentas = lazy(() => import('../dashboard/modules/estadocuenta/EstadoCuentas.tsx'));
 const Pagos = lazy(() => import('../dashboard/modules/pagos/Pagos.tsx'));
 const EditarColegiado = lazy(() => import('../dashboard/modules/colegiados/EditarColegiado.tsx'));
 const AgregarPagos = lazy(() => import('../dashboard/modules/pagos/AgregarPagos.tsx'));
@@ -33,7 +33,10 @@ const EditarPublicacion = lazy(() => import('../dashboard/modules/publicaciones/
 // Componente de carga personalizada
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center h-screen">
-    <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
+    <div 
+      className="inline-block w-8 h-8 border-4 border-t-4 border-green-500 border-solid rounded-full animate-spin"
+      role="status"
+    >
     </div>
   </div>
 );
@@ -58,7 +61,7 @@ const adminRoutes = [
   { path: "/admin/pagos", element: <Pagos />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/pagos/nuevo-pago", element: <AgregarPagos />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/pagos/editar-pago/:id", element: <EditarPagos />, allowedGroups: ['admin', 'secretaria'] },
-  { path: "/admin/pagos/estado-cuenta", element: <EstadoCuenta />, allowedGroups: ['admin', 'secretaria'] },
+  { path: "/admin/pagos/estado-cuenta", element: <EstadoCuentas />, allowedGroups: ['admin', 'secretaria'] },
   
   // Permisos para publicador
   { path: "/admin/publicaciones", element: <PublicacionesAdmin />, allowedGroups: ['admin', 'publicador'] },

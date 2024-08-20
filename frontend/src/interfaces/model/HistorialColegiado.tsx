@@ -28,10 +28,12 @@ export const defaultHistorialColegiado: HistorialColegiado = {
 
 export interface HistorialDetalleColegiado {
   id_colegiado: DetalleColegiado,
-  id_especialidad: Especialidad
+  id_especialidad: Especialidad,
+  id_estado_colegiatura: EstadoColegiatura
 }
 
 export const defaultHistorialDetalleColegiado = {
   id_colegiado: defaultDetalleColegiado,
-  id_especialidad: defaultEspecialidad
+  id_especialidad: defaultEspecialidad,
+  id_estado_colegiatura: defaultEstadoColegiatura
 }

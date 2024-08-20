@@ -5,8 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import andina from '../../assets/web/andina.png'
-import unsaac from '../../assets/web/unsaac.png'
-import continental from '../../assets/web/continental.png'
+import grupo_consultor from '../../assets/web/grupo_consultor_innovacion_desarrollo.jpg'
 
 interface ImageSlide {
   src: string;
@@ -15,9 +14,8 @@ interface ImageSlide {
 
 const MyCarousel: React.FC = () => {
   const images: ImageSlide[] = [
-    { src: andina, alt: "Logo Andina" },
-    { src: unsaac, alt: "Logo Unsaac" },
-    { src: continental, alt: "Logo Continental" }
+    { src: andina, alt: "Logo de la Universidad Andina del Cusco" },
+    { src: grupo_consultor, alt: "Logo del Grupo Consultor de Innovacion y Desarrollo" },
   ];
 
   //Configuracion para el carousel

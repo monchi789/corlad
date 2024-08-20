@@ -50,14 +50,6 @@ export default function AgregarColegiado() {
     }));
   };
 
-  // Alterna el estado del colegiado entre hábil y no hábil
-  const toggleEstado = () => {
-    setColegiadoData(prevState => ({
-      ...prevState,
-      estado: !prevState.estado
-    }));
-  };
-
   // Carga la lista de escuelas al cargar el componente
   useEffect(() => {
     async function cargarEscuelas() {
@@ -295,7 +287,7 @@ export default function AgregarColegiado() {
 
                   </div>
                   <div className="flex flex-row space-x-5">
-                    <div className="w-2/5">
+                    <div className="w-2/4">
                       <label htmlFor="direccion" className="block mb-1">Dirección</label>
                       <input
                         type="text"
@@ -307,7 +299,7 @@ export default function AgregarColegiado() {
                         required
                       />
                     </div>
-                    <div className="w-1/5">
+                    <div className="w-1/4">
                       <label htmlFor="celular" className="block mb-1">N° de Celular</label>
                       <input
                         type="text"
@@ -319,7 +311,7 @@ export default function AgregarColegiado() {
                         required
                       />
                     </div>
-                    <div className="w-1/5">
+                    <div className="w-1/4">
                       <label htmlFor="estado_civil" className="block mb-1">Estado Civil</label>
                       <input
                         type="text"
@@ -331,16 +323,22 @@ export default function AgregarColegiado() {
                         required
                       />
                     </div>
-
-                    <div className="w-1/5 flex flex-col my-auto">
-                      <label htmlFor="estado" className="block mb-1">Estado</label>
-                      <input type="button" onClick={toggleEstado} value={colegiadoData.estado ? "Hábil" : "No Hábil"} className={`py-1 px-4 rounded-xl ${colegiadoData.estado ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`} />
-                    </div>
                   </div>
                 </div>
 
                 <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl px-5 py-4">
                   <div className="flex flex-row space-x-5">
+                    <div className="w-1/3">
+                      <label htmlFor="numero_colegiatura_anterior" className="block mb-1">N° de Colegiatura anterior</label>
+                      <input
+                        type="text"
+                        id="numero_colegiatura_anterior"
+                        name="numero_colegiatura_anterior"
+                        value={colegiadoData.numero_colegiatura_anterior}
+                        onChange={handleChangeColegiado}
+                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      />
+                    </div>
                     <div className="w-1/3">
                       <label htmlFor="numero_colegiatura" className="block mb-1">N° Colegiatura</label>
                       <input
@@ -350,18 +348,6 @@ export default function AgregarColegiado() {
                         value={colegiadoData.numero_colegiatura}
                         onChange={handleChangeColegiado}
                         className="w-full bg-[#ECF6E8]  rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        required
-                      />
-                    </div>
-                    <div className="w-1/3">
-                      <label htmlFor="numero_regulacion" className="block mb-1">N° de regulación</label>
-                      <input
-                        type="text"
-                        id="numero_regulacion"
-                        name="numero_regulacion"
-                        value={colegiadoData.numero_regulacion}
-                        onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
                         required
                       />
                     </div>
@@ -422,6 +408,7 @@ export default function AgregarColegiado() {
                         optionLabel="label"
                         placeholder="Elegir especialidad..."
                         disabled={!selectedCapitulo}
+                        itemTemplate={itemCategoria}
                       />
                     </div>
                   </div>
@@ -483,13 +470,13 @@ export default function AgregarColegiado() {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-row w-full text-[#3A3A3A] rounded-2xl space-x-3 mt-5">
-                <button type="submit" className="w-2/3 font-nunito font-black bg-[#007336] text-[#F9ECD9] rounded-2xl p-3">Añadir Colegiado</button>
-                <button className="w-1/3 font-nunito font-black border-solid border-2 border-[#3A3A3A] rounded-2xl">Cancelar</button>
+              <div className="flex flex-row w-full text-[#3A3A3A] font-nunito font-black rounded-2xl space-x-3 mt-5">
+                <button type="submit" className="w-2/3 bg-[#007336] text-white rounded-2xl p-3">Añadir Colegiado</button>
+                <button className="w-1/3 border-solid border-2 border-[#3A3A3A] rounded-2xl">Cancelar</button>
               </div>
               <Toaster
-              position="bottom-center"
-              reverseOrder={false} />
+                position="bottom-center"
+                reverseOrder={false} />
             </div>
           </div>
         </form>

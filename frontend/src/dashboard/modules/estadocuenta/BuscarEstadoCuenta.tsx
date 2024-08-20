@@ -1,45 +1,26 @@
 import { ChangeEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
-import { Colegiado } from '../../../interfaces/model/Colegiado';
-import { Dropdown } from 'primereact/dropdown';
-import { getColegiadoByFilters } from '../../../api/colegiado.api';
+import { getEstadoCuentaByFilters } from '../../../api/estado.cuenta.api';
+import { EstadoCuenta } from '../../../interfaces/model/EstadoCuenta';
 
 interface ParametrosBusqueda {
-  dni_colegiado?: string,
-  numero_colegiatura?: string,
-  apellido_paterno?: string,
-  estado?: boolean | string | null
+  dni_colegiado?: string;
+  numero_colegiatura?: string;
+  apellido_paterno?: string;
 }
 
-export const BuscarEstadoCuenta = () => {
-  const navigate = useNavigate();
+interface BuscarEstadoCuentaProps {
+  onSearchResults: (results: EstadoCuenta[]) => void;
+}
 
-  const [selectedEstado, setSelectedEstado] = useState<boolean | null>(null);
-  const [, setColegiadosListSearch] = useState<Colegiado[]>([])
-
+export const BuscarEstadoCuenta = ({ onSearchResults }: BuscarEstadoCuentaProps) => {
   const [params, setParams] = useState<ParametrosBusqueda>({
     dni_colegiado: "",
     numero_colegiatura: "",
-    apellido_paterno: "",
-    estado: null
-  })
+    apellido_paterno: ""
+  });
 
-  // Renderiza cada item del dropdown de Estado
-  const ItemDropdown = (option: any) => (
-    <div className="flex hover:bg-[#E6F3E6] text-[#00330a] font-nunito font-semibold items-center justify-between px-3 py-2">
-      <span>{option.label}</span>
-    </div>
-  );
-  
-
-  const optionsEstado = [
-    {label: 'Hábil', value: "h" },
-    {label: 'No Hábil', value: "nh" },
-  ];
-
-  // Maneja el cambio en los campos del formulario del busqueda de colegiado
-   const handleChangeParams = (e: ChangeEvent<HTMLInputElement> | { name: string, value: any }) => {
+  const handleChangeParams = (e: ChangeEvent<HTMLInputElement> | { name: string, value: any }) => {
     const { name, value } = 'target' in e ? e.target : e;
     setParams(prevState => ({
       ...prevState,
@@ -49,16 +30,12 @@ export const BuscarEstadoCuenta = () => {
 
   const handleSearch = async () => {
     try {
-      const estado = params.estado === "h" ? true : params.estado === "nh" ? false : null;
-      const res = await getColegiadoByFilters(params.numero_colegiatura, params.dni_colegiado, params.apellido_paterno, estado as boolean);
-      setColegiadosListSearch(res.data.results);
-      navigate('/admin/colegiado/', { state: { colegiadosListSearch: res.data.results } });
+      const res = await getEstadoCuentaByFilters(params.numero_colegiatura, params.dni_colegiado, params.apellido_paterno);
+      onSearchResults(res.data);
     } catch (error) {
       console.error("Error fetching colegiados:", error);
-      // Muestra un mensaje al usuario
     }
-  }
-  
+  };
 
   return (
     <div className="mt-10 pb-5">
@@ -100,25 +77,7 @@ export const BuscarEstadoCuenta = () => {
               required
             />
           </div>
-          <div className="w-1/6 flex flex-col">
-            <label htmlFor="estado" className="block font-nunito font-bold mb-1">Estado</label>
-            <Dropdown
-              id="estado"
-              name="estado"
-              className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none shadow-custom-input p-2 px-2"
-              panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
-              value={selectedEstado}
-              onChange={(e) => {
-                setSelectedEstado(e.value);
-                handleChangeParams({ name: 'estado', value: e.value });
-              }}
-              options={optionsEstado}
-              optionLabel="label"
-              placeholder="Elegir..."
-              itemTemplate={ItemDropdown}
-            />
-          </div>
-          <button onClick={handleSearch} className="w-1/6  font-nunito font-black bg-[#007336] text-[#F9ECD9] rounded-xl mt-auto py-2"><SearchIcon /> Buscar</button>
+          <button onClick={handleSearch} className="w-1/6 font-nunito font-bold bg-[#007336] text-white rounded-xl mt-auto py-2"><SearchIcon /> Buscar</button>
         </div>
       </div>
     </div>

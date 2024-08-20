@@ -7,11 +7,13 @@ import { getAllPagos } from "../../../api/pagos.api";
 import { Link } from "react-router-dom";
 
 export function PagosTable() {
+  
   const [pagosList, setPagos] = useState<Pago[]>([]);
 
   useEffect(() => {
     async function cargarPagos() {
       const res = await getAllPagos();
+      console.log(res)
       setPagos(res.data);
     }
     cargarPagos();

@@ -42,7 +42,7 @@ export default function EditarPagos() {
   
           if (pago.id_colegiado) {
             const colegiado = pago.id_colegiado;
-            setSelectedColegiado(`${colegiado.numero_colegiatura} - ${colegiado.apellido_paterno} - ${colegiado.apellido_materno} - ${colegiado.nombre} - ${colegiado.dni_colegiado} - ${colegiado.numero_regulacion}`);
+            setSelectedColegiado(`${colegiado.numero_colegiatura} - ${colegiado.apellido_paterno} - ${colegiado.apellido_materno} - ${colegiado.nombre} - ${colegiado.dni_colegiado}`);
             setColegiadoData(colegiado);
           }
         } catch (error) {
@@ -74,7 +74,7 @@ export default function EditarPagos() {
 
       if (res.data.results.length > 0) {
         const colegiado: Colegiado = res.data.results[0];
-        setSelectedColegiado(`${colegiado.numero_colegiatura} - ${colegiado.apellido_paterno} - ${colegiado.apellido_materno} - ${colegiado.nombre} - ${colegiado.dni_colegiado} - ${colegiado.numero_regulacion}`);
+        setSelectedColegiado(`${colegiado.numero_colegiatura} - ${colegiado.apellido_paterno} - ${colegiado.apellido_materno} - ${colegiado.nombre} - ${colegiado.dni_colegiado}`);
         setColegiadoData(colegiado);
       } else {
         setSelectedColegiado('No se encontró ningún colegiado con esos parámetros');

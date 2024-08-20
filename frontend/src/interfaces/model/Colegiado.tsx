@@ -9,7 +9,7 @@ export interface Colegiado {
   foto_colegiado?: File | string | null; // Mantener como string para los datos
   dni_colegiado: string;
   numero_colegiatura: string;
-  numero_regulacion: string;
+  numero_colegiatura_anterior?: string;
   fecha_colegiatura: string;
   sexo_colegiado: string;
   fecha_nacimiento: string;
@@ -28,7 +28,7 @@ export const defaultColegiado: Colegiado = {
   foto_colegiado: null,
   dni_colegiado: "",
   numero_colegiatura: "",
-  numero_regulacion: "",
+  numero_colegiatura_anterior: "",
   fecha_colegiatura: "",
   sexo_colegiado: "",
   fecha_nacimiento: "",

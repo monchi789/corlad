@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation } from 'react-router-dom';
+import {  useState } from "react";
+import { Link } from 'react-router-dom';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoIosCloseCircle } from "react-icons/io";
@@ -7,30 +7,22 @@ import { Avatar } from "primereact/avatar";
 import { TableCards } from "../../shared/TableCards";
 import toast from "react-hot-toast";
 import { HistorialColegiado } from "../../../interfaces/model/HistorialColegiado";
-import { deleteHistorialColegiadoById, getAllHistorialColegiado } from "../../../api/historial.colegiado.api";
+import { deleteHistorialColegiadoById } from "../../../api/historial.colegiado.api";
 
-export function ColegiadoTable() {
-  const location = useLocation();
-  const [colegiadosList, setColegiados] = useState<HistorialColegiado[]>([]);
+interface ColegiadoTableProps {
+  colegiadosList: HistorialColegiado[];
+  onDelete: (id: number) => void;
+
+}
+
+export function ColegiadoTable({ colegiadosList, onDelete }: ColegiadoTableProps) {
   const [showModal, setShowModal] = useState(false);
   const [selectedColegiadoId, setSelectedColegiadoId] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (location.state?.colegiadosListSearch) {
-      setColegiados(location.state.colegiadosListSearch);
-    } else {
-      async function cargarHistorialColegiado() {
-        const res = await getAllHistorialColegiado();
-        setColegiados(res.data);
-      }
-      cargarHistorialColegiado();
-    }
-  }, [location.state?.colegiadosListSearch]);
 
   const handleDeleteColegiado = async (id: number): Promise<void> => {
     try {
       await deleteHistorialColegiadoById(id);
-      setColegiados((prevList) => prevList.filter((colegiado) => colegiado.id !== id));
+      onDelete(id); // Notifica al componente padre para actualizar la lista
       toast.success("Colegiado eliminado con éxito");
     } catch (error) {
       console.error("Error deleting colegiado:", error);
@@ -77,8 +69,12 @@ export function ColegiadoTable() {
       <div className="w-1/6 my-auto">{colegiado.id_colegiado.dni_colegiado}</div>
       <div className="w-1/6 my-auto">{colegiado.id_colegiado.numero_colegiatura}</div>
       <div className="w-1/6 my-auto">{colegiado.id_colegiado.celular}</div>
-      <div className="w-1/6 text-[#5F4102] my-auto">
-        {colegiado.id_colegiado.estado ? <FaCircleCheck className="text-[#007336]" size={"25px"} /> : <IoIosCloseCircle className="text-[#B50C0C]" size={"30px"} />}
+      <div className="w-1/6 my-auto">
+        {colegiado.id_estado_colegiatura?.estado_colegiatura ? (
+          <FaCircleCheck className="text-[#007336]" size={"25px"} />
+        ) : (
+          <IoIosCloseCircle className="text-[#B50C0C]" size={"30px"} />
+        )}
       </div>
       <div className="w-1/6 my-auto">{colegiado.id_colegiado.correo}</div>
       <div className="flex flex-row w-1/6 text-[#8F650C] text-2xl space-x-3 justify-center my-auto">

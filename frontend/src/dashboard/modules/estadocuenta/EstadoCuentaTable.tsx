@@ -1,25 +1,17 @@
-import { useEffect, useState } from "react";
 import { Avatar } from "primereact/avatar";
 import { TableCards } from "../../shared/TableCards";
 import { EstadoCuenta } from "../../../interfaces/model/EstadoCuenta";
-import { getAllEstadosCuentas } from "../../../api/estado.cuenta.api";
 
-export function EstadoCuentaTable() {
-  const [estadoCuentaList, setEstadoCuenta] = useState<EstadoCuenta[]>([]);
+interface EstadoCuentaTableProps {
+  estadoCuentaList: EstadoCuenta[];
+}
 
-  useEffect(() => {
-    async function cargarEstadosCuentas() {
-      const res = await getAllEstadosCuentas();
-      setEstadoCuenta(res.data);
-    }
-    cargarEstadosCuentas();
-  }, []);
-
+export function EstadoCuentaTable({ estadoCuentaList }: EstadoCuentaTableProps) {
   const columns = [
     { header: "Apellidos y nombres", accessor: "fullName", className: 'w-2/6 text-start' },
     { header: "Documento de identidad", accessor: "dni", className: 'w-1/6 text-start' },
     { header: "N° colegiatura", accessor: "numero_colegiatura", className: 'w-1/6 text-start' },
-    { header: "Fecha actualización", accessor: "celular", className: 'w-1/6 text-start' },
+    { header: "Fecha actualización", accessor: "fecha_actualizacion", className: 'w-1/6 text-start' },
     { header: "Estado de cuenta", accessor: "estado", className: 'w-1/6 text-start' }
   ];
 

@@ -52,24 +52,7 @@ export default function ConsultarHabilidad() {
         if (response.data.results && response.data.results.length > 0) {
           const element = response.data.results[0];
   
-          const colegiadoFilter: HistorialDetalleColegiado = {
-            id_colegiado: {
-              id: element.id_colegiado.id,
-              nombre: element.id_colegiado.nombre,
-              apellido_paterno: element.id_colegiado.apellido_paterno,
-              apellido_materno: element.id_colegiado.apellido_materno,
-              correo: element.id_colegiado.correo,
-              estado: element.id_colegiado.estado,
-              foto_colegiado: element.id_colegiado.foto_colegiado,
-              numero_colegiatura: element.id_colegiado.numero_colegiatura
-            },
-            id_especialidad: {
-              id: element.id_especialidad.id,
-              id_escuela: element.id_especialidad.id_escuela,
-              nombre_especialidad: element.id_especialidad.nombre_especialidad
-            }
-          };
-          setColegiadoData(colegiadoFilter);
+          setColegiadoData(element);
         } else {
           setColegiadoData(defaultHistorialDetalleColegiado); // No se encontraron datos
         }
@@ -176,8 +159,8 @@ export default function ConsultarHabilidad() {
               </div>
               <div className="flex flex-row space-x-3 items-center w-full my-10 lg:mt-10">
                 <p className="text-[#a67102] font-semibold">Estado:</p>
-                <p className={colegiadoData.id_colegiado.estado ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>
-                  {colegiadoData.id_colegiado.estado ? "Habilitado" : "No Habilitado"}
+                <p className={colegiadoData.id_estado_colegiatura.estado_colegiatura ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>
+                  {colegiadoData.id_estado_colegiatura.estado_colegiatura ? "Habilitado" : "No Habilitado"}
                 </p>
               </div>
             </div>

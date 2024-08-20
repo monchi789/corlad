@@ -49,7 +49,7 @@ export default function AgregarPagos() {
 
       if (res.data.results.length > 0) {
         const colegiado: Colegiado = res.data.results[0];
-        setSelectedColegiado(`${colegiado.numero_colegiatura} - ${colegiado.apellido_paterno} - ${colegiado.apellido_materno} - ${colegiado.nombre} - ${colegiado.dni_colegiado} - ${colegiado.numero_regulacion}`); // Ajusta esto según la estructura de tu dato
+        setSelectedColegiado(`${colegiado.numero_colegiatura} - ${colegiado.apellido_paterno} - ${colegiado.apellido_materno} - ${colegiado.nombre} - ${colegiado.dni_colegiado}`); // Ajusta esto según la estructura de tu dato
         setColegiadoData(colegiado)
       } else {
         setSelectedColegiado('No se encontró ningún colegiado con esos parámetros');

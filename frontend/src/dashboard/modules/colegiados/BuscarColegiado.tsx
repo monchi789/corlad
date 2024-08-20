@@ -1,5 +1,4 @@
 import { ChangeEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { PersonAdd } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom';
@@ -14,11 +13,13 @@ interface ParametrosBusqueda {
   estado?: boolean | string | null
 }
 
-export const BuscarColegiado = () => {
-  const navigate = useNavigate();
+interface BuscarColegiadoProps {
+  onSearchResults: (results: HistorialColegiado[]) => void;
+}
+
+export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
 
   const [selectedEstado, setSelectedEstado] = useState<boolean | null>(null);
-  const [, setColegiadosListSearch] = useState<HistorialColegiado[]>([])
 
   const [params, setParams] = useState<ParametrosBusqueda>({
     dni_colegiado: "",
@@ -53,8 +54,7 @@ export const BuscarColegiado = () => {
     try {
       const estado = params.estado === "h" ? true : params.estado === "nh" ? false : null;
       const res = await getHistorialColegiadoByFilters(params.numero_colegiatura, params.dni_colegiado, params.apellido_paterno, estado as boolean);
-      setColegiadosListSearch(res.data);
-      navigate('/admin/colegiado/', { state: { colegiadosListSearch: res.data } });
+      onSearchResults(res.data);
     } catch (error) {
       console.error("Error al buscar colegiado:", error);
     }
@@ -132,7 +132,7 @@ export const BuscarColegiado = () => {
               itemTemplate={ItemDropdown}
             />
           </div>
-          <button onClick={handleSearch} className="w-1/6  font-nunito font-black bg-[#007336] text-[#F9ECD9] rounded-xl mt-auto py-2"><SearchIcon /> Buscar</button>
+          <button onClick={handleSearch} className="w-1/6  font-nunito font-bold bg-[#007336] text-white rounded-xl mt-auto py-2"><SearchIcon /> Buscar</button>
         </div>
       </div>
     </div>
