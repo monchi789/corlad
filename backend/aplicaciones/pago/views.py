@@ -12,6 +12,7 @@ from .models import EstadoCuenta, Pago, MetodoPago, TipoPago
 from .serializers import PagoSerializer, MetodoPagoSerializer, TipoPagoSerializer, EstadoCuentaSerializer
 from .filters import EstadoCuentaFilter, MetodoPagoFilter, TipoPagoFilter, PagoFilter
 from .permissions import EstadoCuentaPermissions, MetodoPagoPermissions, PagoPermissions, TipoPagoPermissions
+from functions.paginations import CustomPagination
 
 
 
@@ -142,6 +143,7 @@ class TipoPagoViewSet(viewsets.ViewSet):
 class PagoViewSet(viewsets.ViewSet):
     queryset = Pago.objects.all()
     serializer_class = PagoSerializer
+    pagination_class = CustomPagination
 
     # JWT
     permission_classes = [IsAuthenticated, DjangoModelPermissions, PagoPermissions]
@@ -186,6 +188,14 @@ class PagoViewSet(viewsets.ViewSet):
             return self.queryset
         except Exception as e:
             return Response({'detail': f'Error al obtener el queryset: {str(e)}'}, status=status.HTTP_404_NOT_FOUND)
+    
+    def paginate_queryset(self, queryset):
+        paginator = self.pagination_class()
+        return paginator.paginate_queryset(queryset, self.request, view=self)
+    
+    def get_paginated_response(self, data):
+        paginator = self.pagination_class()
+        return paginator.get_paginated_response(data)
 
     @swagger_auto_schema(
         operation_id='Listar los Pagos',
@@ -198,8 +208,14 @@ class PagoViewSet(viewsets.ViewSet):
                 return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
         
         queryset = self.filter_queryset(self.get_queryset())
-        serializer = self.serializer_class(queryset, many=True)
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(queryset, request, self)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
         
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(

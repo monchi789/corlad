@@ -327,7 +327,7 @@ class ColegiadoViewSet(viewsets.ViewSet):
             return paginator.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     # Metodo GET por ID
     @swagger_auto_schema(
@@ -391,6 +391,7 @@ class ColegiadoViewSet(viewsets.ViewSet):
 class HistorialEducativoViewSet(viewsets.ViewSet):
     queryset = HistorialEducativo.objects.all()
     serializer_class = HistorialEducativoSerializer
+    pagination_class = CustomPagination
 
     # JWT
     permission_classes = [IsAuthenticated, DjangoModelPermissions, HistorialEducativoPermissions]
@@ -426,9 +427,17 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
             serializer.save()
         except Exception as e:
             return Response({'detail': f'Error al actualizar: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
-
-    # Métodos GET, UPDATE, CREATE y DELETE
     
+    def paginate_queryset(self, queryset):
+        paginator = self.pagination_class()
+        return paginator.paginate_queryset(queryset, self.request, view=self)
+
+    def get_paginated_response(self, data):
+        paginator = self.pagination_class()
+        return paginator.get_paginated_response(data)
+
+
+    # Métodos GET
     @swagger_auto_schema(
         operation_id='Listar Historial Educativo',
         responses={200: openapi.Response(description='Lista de Historial Educativo')},
@@ -439,8 +448,15 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
                 return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_404_NOT_FOUND)
 
         queryset = self.filter_queryset(self.get_queryset())
-        serializer = self.serializer_class(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(queryset, request, self)
+        
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
     
     def retrieve(self, request, pk=None):
         try:
