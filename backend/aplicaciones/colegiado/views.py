@@ -401,7 +401,7 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
     filter_backends = [DjangoFilterBackend]
 
     allow_query_params = {
-        'estado', 'apellido_paterno', 'apellido_materno', 'nombre_escuela', 'nombre_especialidad', 'dni_colegiado', 'numero_colegiatura'
+        'estado', 'apellido_paterno', 'apellido_materno', 'nombre_escuela', 'nombre_especialidad', 'dni_colegiado', 'numero_colegiatura', 'estado_colegiado'
     }
 
     def filter_queryset(self, queryset):
@@ -517,7 +517,9 @@ class ConsultarHabilidadViewSet(viewsets.ViewSet):
     filterset_class = ConsultarHabilidadFilter
     filter_backends = [DjangoFilterBackend]
 
-    allow_query_params = {'dni_colegiado', 'numero_colegiatura', 'apellido_paterno', 'apellido_materno'}
+    allow_query_params = {
+        'dni_colegiado', 'numero_colegiatura', 'apellido_paterno', 'apellido_materno', 'estado_colegiado'
+    }
     
     # Metodos
     def filter_queryset(self, queryset):
