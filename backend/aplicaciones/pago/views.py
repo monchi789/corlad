@@ -202,20 +202,6 @@ class PagoViewSet(viewsets.ViewSet):
         
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
-        # if request.query_params:
-        #     return Response({'detail': 'No se permiten los parámetros de la solicitud.'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # queryset = self.queryset
-        # serializer = self.serializer_class(queryset, many=True)
-        
-        # return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    # def list(self, request, *args, **kwargs):
-    #     queryset = self.filter_queryset(self.get_queryset())  # Asegura que se aplique cualquier filtro
-    #     serializer = self.get_serializer(queryset, many=True)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
-
     @swagger_auto_schema(
         operation_id='Obtener un Pago',
         responses={200: openapi.Response(description='Detalle de un Pago')}    
