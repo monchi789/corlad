@@ -185,10 +185,3 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
 }
-
-CELERY_BEAT_SCHEDULE = {
-    'actualizar-estados-colegiatura': {
-        'task': 'tu_app.tasks.actualizar_estados_colegiatura',
-        'schedule': crontab(minute=0, hour=0),  # Ejecutar diariamente a medianoche
-    },
-}

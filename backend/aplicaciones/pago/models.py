@@ -64,7 +64,7 @@ class Pago(models.Model):
     fecha_pago = models.DateField(null=False, blank=False, default=timezone.now)
     numero_operacion = models.CharField(null=False, blank=False, default='', validators=[validar_numero])
     meses = models.CharField(max_length=2, null=False, blank=False, default='', validators=[validar_numero])
-    observacion = models.CharField(max_length=255, null=False, blank=False, default='', validators=[validar_espacio])
+    observacion = models.CharField(max_length=255, null=True, blank=True, default='', validators=[validar_espacio])
     id_colegiado = models.ForeignKey(Colegiado, on_delete=models.CASCADE)
     id_tipo_pago = models.ForeignKey(TipoPago, on_delete=models.CASCADE, default=0)
     id_metodo_pago = models.ForeignKey(MetodoPago, on_delete=models.CASCADE, default=0)
@@ -81,35 +81,7 @@ class Pago(models.Model):
                 existing_matricula = Pago.objects.filter(id_colegiado=self.id_colegiado, id_tipo_pago__nombre_tipo_pago='MATRICULA').exclude(pk=self.pk).first()
                 if existing_matricula:
                     raise ValidationError('El colegiado ya tiene un pago de matrícula registrado.')
-
-    def save(self, *args, **kwargs):
-        self.clean()
-        super(Pago, self).save(*args, **kwargs)
-
-        historial = HistorialEducativo.objects.get(id_colegiado=self.id_colegiado)
-        estado = historial.id_estado_colegiatura
-        
-        if estado:
-            # Si ya existe un estado, extendemos la fecha final
-            nueva_fecha_final = max(estado.fecha_final, self.fecha_pago) + timedelta(days=30 * int(self.meses))
-            estado.fecha_final = nueva_fecha_final
-        else:
-            # Si no existe, creamos uno nuevo
-            nueva_fecha_final = self.fecha_pago + timedelta(days=30 * int(self.meses))
-            estado = EstadoColegiatura.objects.create(
-                fecha_inicio=self.fecha_pago,
-                fecha_final=nueva_fecha_final,
-                estado_colegiatura=True
-            )
-        
-        estado.save()
-        
-        historial.id_estado_colegiatura = estado
-        historial.save()
-
-        # Actualizar el estado de colegiatura
-        self.actualizar_estado_colegiatura()
-
+    
     def actualizar_estado_colegiatura(self):
         historial = HistorialEducativo.objects.filter(id_colegiado=self.id_colegiado).first()
         if historial and historial.id_estado_colegiatura:
@@ -118,10 +90,40 @@ class Pago(models.Model):
             
             if estado.fecha_final < fecha_actual:
                 estado.estado_colegiatura = False
+                print(f"Estado de colegiatura cambiado a NO ACTIVO para colegiado {self.id_colegiado.id}")
             elif estado.fecha_inicio <= fecha_actual <= estado.fecha_final:
                 estado.estado_colegiatura = True
+                print(f"Estado de colegiatura actualizado a ACTIVO para colegiado {self.id_colegiado.id}")
             
             estado.save()
+            historial.save()
+        else:
+            print("No se encontró historial o estado de colegiatura para actualizar.")
+
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super(Pago, self).save(*args, **kwargs)
+
+        historial, created = HistorialEducativo.objects.get_or_create(id_colegiado=self.id_colegiado)
+        estado = historial.id_estado_colegiatura
+
+        if estado:
+            nueva_fecha_final = max(estado.fecha_final, self.fecha_pago) + timedelta(days=30 * int(self.meses))
+            estado.fecha_final = nueva_fecha_final
+        else:
+            nueva_fecha_final = self.fecha_pago + timedelta(days=30 * int(self.meses))
+            estado = EstadoColegiatura.objects.create(
+                fecha_inicio=self.fecha_pago,
+                fecha_final=nueva_fecha_final,
+                estado_colegiatura=True
+            )
+
+        estado.save()
+
+        historial.id_estado_colegiatura = estado
+        historial.save()
+
 
     def __str__(self):
         return f'{self.monto_pago} - {self.id_colegiado.nombre} - {self.id_metodo_pago.nombre_metodo_pago} - {self.id_tipo_pago.nombre_tipo_pago}'
