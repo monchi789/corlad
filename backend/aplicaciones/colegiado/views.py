@@ -270,7 +270,7 @@ class ColegiadoViewSet(viewsets.ViewSet):
 
     # Métodos permitidos para filtros en la URL
     allow_query_params = {
-        'numero_colegiatura', 'dni_colegiado', 'apellido_paterno', 'estado', 'page', 'page_size'
+        'numero_colegiatura', 'dni_colegiado', 'apellido_paterno', 'estado'
     }
 
     # Metodos
@@ -402,7 +402,9 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
     filter_backends = [DjangoFilterBackend]
 
     allow_query_params = {
-        'estado', 'apellido_paterno', 'apellido_materno', 'nombre_escuela', 'nombre_especialidad', 'dni_colegiado', 'numero_colegiatura', 'estado_colegiado'
+        'estado', 'apellido_paterno', 'apellido_materno',
+        'nombre_escuela', 'nombre_especialidad', 'dni_colegiado',
+        'numero_colegiatura', 'estado_colegiado', 'page', 'page_size'
     }
 
     def filter_queryset(self, queryset):

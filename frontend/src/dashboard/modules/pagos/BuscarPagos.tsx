@@ -1,8 +1,7 @@
 import { ChangeEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
-import { Colegiado } from '../../../interfaces/model/Colegiado';
-import { getColegiadoByFilters } from '../../../api/colegiado.api';
+import { Pago } from '../../../interfaces/model/Pago';
+import { getPagoByFilters } from '../../../api/pagos.api';
 
 interface ParametrosBusqueda {
   dni_colegiado?: string,
@@ -10,19 +9,18 @@ interface ParametrosBusqueda {
   apellido_paterno?: string
 }
 
-export const BuscarPagos = () => {
-  const navigate = useNavigate();
+interface BuscarPagoProps {
+  onSearchResults: (results: Pago[]) => void;
+}
 
-  const [, setColegiadosListSearch] = useState<Colegiado[]>([])
-
+export const BuscarPagos = ({ onSearchResults }: BuscarPagoProps) => {
   const [params, setParams] = useState<ParametrosBusqueda>({
     dni_colegiado: "",
     numero_colegiatura: "",
     apellido_paterno: ""
   })
 
-  // Maneja el cambio en los campos del formulario del busqueda de colegiado
-   const handleChangeParams = (e: ChangeEvent<HTMLInputElement> | { name: string, value: any }) => {
+  const handleChangeParams = (e: ChangeEvent<HTMLInputElement> | { name: string, value: any }) => {
     const { name, value } = 'target' in e ? e.target : e;
     setParams(prevState => ({
       ...prevState,
@@ -32,21 +30,19 @@ export const BuscarPagos = () => {
 
   const handleSearch = async () => {
     try {
-      const res = await getColegiadoByFilters(params.numero_colegiatura, params.dni_colegiado, params.apellido_paterno);
-      setColegiadosListSearch(res.data.results);
-      navigate('/admin/colegiado/', { state: { colegiadosListSearch: res.data.results } });
+      const res = await getPagoByFilters(params.numero_colegiatura, params.dni_colegiado, params.apellido_paterno);
+      onSearchResults(res.data.results);
     } catch (error) {
       console.error("Error al buscar colegiados:", error);
     }
   }
-  
 
   return (
-    <div className="mt-10 pb-5">
+    <div className="mt-5 pb-5">
       <div className="mt-5 bg-[#E1EBDE] rounded-2xl">
-        <div className="flex flex-row space-x-5 p-5">
-          <div className="w-2/6 flex flex-col">
-            <label htmlFor="dni_colegiado" className="block font-nunito font-bold mb-1">DNI</label>
+        <div className="flex flex-col md:flex-row md:space-x-5 space-y-5 md:space-y-0 p-4">
+          <div className="md:w-2/6 flex flex-col">
+            <label htmlFor="dni_colegiado" className="block font-nunito font-bold mb-1">Documento de identidad</label>
             <input
               type="number"
               id="dni_colegiado"
@@ -57,7 +53,7 @@ export const BuscarPagos = () => {
               required
             />
           </div>
-          <div className="w-2/6 flex flex-col">
+          <div className="md:w-2/6 flex flex-col">
             <label htmlFor="numero_colegiatura" className="block font-nunito font-bold mb-1">N° Colegiatura</label>
             <input
               type="number"
@@ -69,7 +65,7 @@ export const BuscarPagos = () => {
               required
             />
           </div>
-          <div className="w-2/6 flex flex-col">
+          <div className="md:w-2/6 flex flex-col">
             <label htmlFor="apellido_paterno" className="block font-nunito font-bold mb-1">Apellido paterno</label>
             <input
               type="text"
@@ -81,9 +77,18 @@ export const BuscarPagos = () => {
               required
             />
           </div>
-          <button onClick={handleSearch} className="w-1/6  font-nunito font-black bg-[#007336] text-white rounded-xl shadow-custom-input mt-auto py-2"><SearchIcon /> Buscar</button>
+          <div className="md:w-1/6 flex items-end">
+            <button
+              onClick={handleSearch}
+              className="w-full md:max-w-xs font-nunito font-semibold bg-[#007336] text-white hover:bg-[#00330A] shadow-custom-input rounded-xl transition duration-300 mt-auto py-2">
+              <SearchIcon /> Buscar
+            </button>
+          </div>
         </div>
       </div>
     </div>
+
+
   );
 };
+

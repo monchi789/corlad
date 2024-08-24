@@ -10,7 +10,7 @@ interface ParametrosBusqueda {
   dni_colegiado?: string,
   numero_colegiatura?: string,
   apellido_paterno?: string,
-  estado?: boolean | string | null
+  estado_colegiado?: boolean | string | null
 }
 
 interface BuscarColegiadoProps {
@@ -25,7 +25,7 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
     dni_colegiado: "",
     numero_colegiatura: "",
     apellido_paterno: "",
-    estado: null
+    estado_colegiado: null
   })
 
   // Renderiza cada item del dropdown de Estado
@@ -34,15 +34,15 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
       <span>{option.label}</span>
     </div>
   );
-  
+
 
   const optionsEstado = [
-    {label: 'Hábil', value: "h" },
-    {label: 'No Hábil', value: "nh" },
+    { label: 'Hábil', value: "h" },
+    { label: 'No Hábil', value: "nh" },
   ];
 
   // Maneja el cambio en los campos del formulario del busqueda de colegiado
-   const handleChangeParams = (e: ChangeEvent<HTMLInputElement> | { name: string, value: any }) => {
+  const handleChangeParams = (e: ChangeEvent<HTMLInputElement> | { name: string, value: any }) => {
     const { name, value } = 'target' in e ? e.target : e;
     setParams(prevState => ({
       ...prevState,
@@ -52,23 +52,24 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
 
   const handleSearch = async () => {
     try {
-      const estado = params.estado === "h" ? true : params.estado === "nh" ? false : null;
+      const estado = params.estado_colegiado === "h" ? true : params.estado_colegiado === "nh" ? false : null;
       const res = await getHistorialColegiadoByFilters(params.numero_colegiatura, params.dni_colegiado, params.apellido_paterno, estado as boolean);
-      onSearchResults(res.data);
+      console.log(res)
+      onSearchResults(res.data.results);
     } catch (error) {
       console.error("Error al buscar colegiado:", error);
     }
   }
-  
+
   return (
-    <div className="mt-10 pb-5">
-      <div className="flex flex-col space-y-5 my-10">
+    <div className="mt-5 pb-5">
+      <div className="flex flex-col space-y-5 my-5">
         <div className="flex flex-row justify-between">
           <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Colegiados</h4>
           <div className="flex flex-row space-x-3">
             <Link to={"/admin/colegiado/nuevo-colegiado"}>
-              <button className="flex flex-row bg-[#007336] text-xl text-white font-nunito font-semibold hover:bg-[#00330A] shadow-black	shadow-md rounded-2xl transition duration-300 hover:scale-110 ease-in-out delay-150 space-x-4 px-8 py-2">
-                <PersonAdd />
+              <button className="flex flex-row bg-[#007336] text-lg text-white font-nunito font-semibold hover:bg-[#00330A] shadow-black shadow-md rounded-2xl transition duration-300 hover:scale-110 ease-in-out delay-150 space-x-3 px-4 py-1">
+                <PersonAdd className="my-auto"/>
                 <span className="my-auto">Nuevo colegiado</span>
               </button>
             </Link>
@@ -76,10 +77,10 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
         </div>
       </div>
 
-      <div className="mt-5 bg-[#E1EBDE] shadow-custom-input rounded-2xl">
+      <div className="bg-[#E1EBDE] shadow-custom-input rounded-2xl">
         <div className="flex flex-row space-x-5 p-5">
           <div className="w-2/6 flex flex-col">
-            <label htmlFor="dni_colegiado" className="block font-nunito font-bold mb-1">DNI</label>
+            <label htmlFor="dni_colegiado" className="block font-nunito font-bold mb-1">Documento de identidad</label>
             <input
               type="number"
               id="dni_colegiado"
@@ -124,7 +125,7 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
               value={selectedEstado}
               onChange={(e) => {
                 setSelectedEstado(e.value);
-                handleChangeParams({ name: 'estado', value: e.value });
+                handleChangeParams({ name: 'estado_colegiado', value: e.value });
               }}
               options={optionsEstado}
               optionLabel="label"
@@ -132,7 +133,9 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
               itemTemplate={ItemDropdown}
             />
           </div>
-          <button onClick={handleSearch} className="w-1/6  font-nunito font-bold bg-[#007336] text-white rounded-xl mt-auto py-2"><SearchIcon /> Buscar</button>
+          <button onClick={handleSearch} className="w-1/6  font-nunito font-bold bg-[#007336] text-white hover:bg-[#00330A] shadow-custom-input rounded-xl transition duration-300 mt-auto py-2">
+            <SearchIcon /> Buscar
+          </button>
         </div>
       </div>
     </div>

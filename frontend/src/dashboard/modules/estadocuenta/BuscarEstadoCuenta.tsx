@@ -38,11 +38,11 @@ export const BuscarEstadoCuenta = ({ onSearchResults }: BuscarEstadoCuentaProps)
   };
 
   return (
-    <div className="mt-10 pb-5">
+    <div className="my-5">
       <div className="mt-5 bg-[#E1EBDE] rounded-2xl">
         <div className="flex flex-row space-x-5 p-5">
           <div className="w-2/6 flex flex-col">
-            <label htmlFor="dni_colegiado" className="block font-nunito font-bold mb-1">DNI</label>
+            <label htmlFor="dni_colegiado" className="block font-nunito font-bold mb-1">Documento de identidad</label>
             <input
               type="number"
               id="dni_colegiado"
@@ -77,7 +77,9 @@ export const BuscarEstadoCuenta = ({ onSearchResults }: BuscarEstadoCuentaProps)
               required
             />
           </div>
-          <button onClick={handleSearch} className="w-1/6 font-nunito font-bold bg-[#007336] text-white rounded-xl mt-auto py-2"><SearchIcon /> Buscar</button>
+          <button onClick={handleSearch} className="w-1/6  font-nunito font-bold bg-[#007336] text-white hover:bg-[#00330A] shadow-custom-input rounded-xl transition duration-300 mt-auto py-2">
+            <SearchIcon /> Buscar
+          </button>
         </div>
       </div>
     </div>

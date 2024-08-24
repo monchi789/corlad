@@ -21,9 +21,7 @@ export default function InicioAdmin() {
               alt="imagen"
             />
           </div>
-          <div className="w-1/3 text-white font-nunito font-bold bg-[#007336] rounded-xl p-5">
-            <span>Proximamente...</span>
-          </div>
+          
         </div>
         <AccesoRapido />
       </div>

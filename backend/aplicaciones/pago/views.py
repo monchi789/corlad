@@ -156,7 +156,7 @@ class PagoViewSet(viewsets.ViewSet):
     allow_query_params = {
         'apellido_paterno', 'dni_colegiado',
         'numero_colegiatura', 'metodo_pago',
-        'tipo_pago', 'fecha_pago'
+        'tipo_pago', 'fecha_pago', 'page', 'page_size'
     }
 
     # Metodos

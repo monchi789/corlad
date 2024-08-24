@@ -37,22 +37,22 @@ const Image: React.FC<ImageProps> = ({ id, imagen, estado_popup, onStatusChange,
   return (
     <>
       <div
-        className={`w-1/6 relative border-solid border-2 border-[#2A8B3D] shadow-custom rounded-xl overflow-hidden ${!checked ? 'bg-[#4E5E51]' : ''}`}
+        className={`w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 relative border-solid border-2 border-[#2A8B3D] shadow-custom rounded-xl overflow-hidden ${!checked ? 'bg-[#4E5E51]' : ''}`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <img className={`w-full h-48 object-cover rounded-lg ${!checked ? 'opacity-50' : ''}`} src={imagen} alt="imagen" />
-        <div className='absolute top-0 right-0 m-3 z-30' onClick={(e) => e.stopPropagation()}>
+        <div className="absolute top-0 right-0 m-3 z-30" onClick={(e) => e.stopPropagation()}>
           <Switch onChange={handleChange} checked={checked} />
         </div>
         {isHovered && (
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center space-x-2">
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 openModal();
               }}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold transition duration-200 rounded py-2 px-4 mr-2"
+              className="bg-green-500 hover:bg-green-700 text-white font-bold transition duration-200 rounded py-2 px-4"
             >
               <IoExpand />
             </button>
@@ -61,7 +61,7 @@ const Image: React.FC<ImageProps> = ({ id, imagen, estado_popup, onStatusChange,
                 e.stopPropagation();
                 onEdit(id);
               }}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold transition duration-200 rounded py-2 px-4 mr-2"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold transition duration-200 rounded py-2 px-4"
             >
               <IoPencil />
             </button>
@@ -85,8 +85,8 @@ const Image: React.FC<ImageProps> = ({ id, imagen, estado_popup, onStatusChange,
         className="fixed inset-0 flex items-center justify-center z-[1000]"
         overlayClassName="fixed inset-0 bg-black bg-opacity-75 z-[1000]"
       >
-        <div className="relative z-50">
-          <img src={imagen} alt="Full size image" className="max-h-[90vh] max-w-[90vw]" />
+        <div className="relative z-50 p-4 bg-white rounded-lg shadow-lg">
+          <img src={imagen} alt="Full size image" className="max-h-[80vh] max-w-[90vw] object-contain" />
           <button
             onClick={closeModal}
             className="absolute top-2 right-2 bg-white rounded-full w-8 h-8 text-xl cursor-pointer flex items-center justify-center"
@@ -317,7 +317,7 @@ export const PopUpsList = () => {
   return (
     <div className="flex flex-col mt-10 space-y-5">
       <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold">Anuncios</h4>
-      <div className="flex flex-row space-x-5">
+      <div className="flex flex-wrap justify-center md:justify-start gap-5">
         {list.map((element, index) => (
           <Image
             key={index}
@@ -331,11 +331,11 @@ export const PopUpsList = () => {
         ))}
         <button
           onClick={() => setAddModalIsOpen(true)}
-          className="flex w-1/6 bg-[#FCFFDB] items-center border-solid border-2 shadow-custom border-[#2A8B3D] rounded-xl"
+          className="flex w-full sm:w-1/2 md:w-1/4 lg:w-1/6 h-48 bg-[#FCFFDB] items-center border-solid border-2 shadow-custom border-[#2A8B3D] rounded-xl"
         >
-          <div className="mx-auto my-auto">
+          <div className="mx-auto my-auto text-center">
             <IoAdd className="mx-auto mb-3" size={45} />
-            <span className="text-2xl text-[#5F4102] font-nunito font-extrabold mx-auto">Nuevo PopUp</span>
+            <span className="text-2xl text-[#5F4102] font-nunito font-extrabold">Nuevo PopUp</span>
           </div>
         </button>
       </div>
@@ -362,9 +362,8 @@ export const PopUpsList = () => {
         onConfirm={confirmDelete}
       />
 
-      <Toaster
-        position="bottom-center"
-        reverseOrder={false} />
+      <Toaster position="bottom-center" reverseOrder={false} />
     </div>
+
   );
 };

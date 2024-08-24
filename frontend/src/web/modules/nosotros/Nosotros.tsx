@@ -8,7 +8,6 @@ import direccion_05 from "../../../assets/web/directivos/director_informacion_ci
 
 import { Footer } from "../../shared/Footer";
 import Carousel from "../../shared/Carousel";
-import { Gallery } from "../../shared/Gallery";
 
 export default function Nosotros() {
 
@@ -31,12 +30,12 @@ export default function Nosotros() {
     {
       imgDirectivo: direccion_04,
       nombreDirectivo: "Ruth Josefina Salazar Herrera",
-      cargoDirectivo: "Directora De Habilidad Profesional"
+      cargoDirectivo: "Directora de Desarrollo y Habilitación Profesional"
     },
     {
       imgDirectivo: direccion_05,
       nombreDirectivo: "Wilfredo Loayza Palma",
-      cargoDirectivo: "Director De Información Científica"
+      cargoDirectivo: "Director de Información Científica y Tecnológica"
     },
     {
       imgDirectivo: corlad_logo,
@@ -83,8 +82,6 @@ export default function Nosotros() {
           <p className="font-semibold text-lg text-[#a67102]">Años sirviendo</p>
         </div>
       </div>
-      
-      <Gallery />
 
       <div className="relative flex flex-col bg-[#FBFFFC] mx-auto my-12 py-12 items-center justify-center">
         <img src={corlad_logo} alt="Logo corlad cusco" className="absolute inset-0 lg:w-1/3 mx-auto my-auto object-cover z-0 opacity-20" />

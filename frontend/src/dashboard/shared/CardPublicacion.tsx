@@ -14,10 +14,10 @@ interface CardProps {
 
 export const CardPublicacion: React.FC<CardProps> = ({ id, title, imagen, tipo, date, onDelete }) => {
   return (
-    <div className="flex flex-col min-w-[300px] max-w-[300px] font-nunito shadow-black shadow-md rounded-lg overflow-hidden">
-      <img className="w-full h-48 object-cover" src={imagen} alt="" />
-      <div className="flex flex-col flex-grow m-4">
-        <h2 className="text-lg font-semibold text-gray-800 mb-2">{title}</h2>
+    <div className="flex flex-col min-w-[300px] max-w-[200px] font-nunito shadow-black shadow-md rounded-lg overflow-hidden">
+      <img className="w-full h-36 object-cover" src={imagen} alt="" />
+      <div className="flex flex-col flex-grow m-3">
+        <h2 className="text-lg font-semibold text-gray-800 mb-1">{title}</h2>
         <div className="flex justify-between items-center mt-auto">
           <span className="text-xs text-gray-500">{tipo}</span>
           <span className="text-xs text-gray-500">{date}</span>
