@@ -296,7 +296,7 @@ class EstadoCuentaViewSet(viewsets.ViewSet):
     filter_backends = [DjangoFilterBackend]
 
     allow_query_params = {
-        'apellido_paterno', 'dni_colegiado', 'numero_colegiatura', 'page_size'
+        'apellido_paterno', 'dni_colegiado', 'numero_colegiatura', 'page_size', 'page'
     }
 
     # Metodos

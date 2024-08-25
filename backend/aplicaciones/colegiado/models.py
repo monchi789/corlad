@@ -43,7 +43,7 @@ class Colegiado(models.Model):
     foto_colegiado = models.ImageField(upload_to='foto_colegiados/', null=False, blank=True, default='')
     dni_colegiado = models.CharField(max_length=8, blank=False, null=False, unique=True, validators=[validar_numero, validar_espacio], default='')
     numero_colegiatura = models.CharField(max_length=250, blank=False, null=False, unique=True, validators=[validar_numero, validar_espacio], default='')
-    numero_colegiatura_anterior = models.CharField(max_length=250, blank=True, null=True, unique=True, validators=[validar_numero])
+    numero_colegiatura_anterior = models.CharField(max_length=250, blank=True, null=True, validators=[validar_numero])
     fecha_colegiatura = models.DateField(null=False, blank=False, default=timezone.now)
     sexo_colegiado = models.CharField(max_length=9, choices=SEXO, null=False, blank=False, default='O')
     fecha_nacimiento = models.DateField(null=False, blank=False, default=timezone.now)
