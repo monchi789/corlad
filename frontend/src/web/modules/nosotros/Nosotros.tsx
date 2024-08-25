@@ -123,8 +123,9 @@ export default function Nosotros() {
           <h3 className="font-extrabold text-center text-3xl lg:text-4xl md:text-4xl text-[#a67102] mb-24 font-nunito">NUESTROS CONVENIOS</h3>
           <Carousel />
         </div>
-        <div>
-          <h3 className="font-extrabold text-center text-3xl lg:text-4xl md:text-4xl text-[#a67102] mb-24 font-nunito">CONSEJO DIRECTIVO</h3>
+        <div className="text-center font-nunito">
+          <h3 className="font-extrabold text-center text-3xl lg:text-4xl md:text-4xl text-[#a67102] mb-5 ">CONSEJO DIRECTIVO</h3>
+          <span className="font-semibold">Gestión 2024-2025</span>
           <div className="flex flex-col lg:flex-row lg:flex-wrap justify-center mb-24 items-center">
             {directivos.map((directivo, index) => (
               <div className="flex flex-col lg:w-1/5 rounded text-center mb-10 mx-10 py-5 px-5" key={index}>

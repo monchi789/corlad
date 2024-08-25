@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Header } from "../../shared/Header";
-import colegiado from "../../../assets/web/person_perfil.webp"
+import colegiadoDefault from "../../../assets/web/person_perfil.webp";
 import { Dropdown } from 'primereact/dropdown';
 import { getConsultarHabilidad } from "../../../api/colegiado.api";
 import { defaultHistorialDetalleColegiado, HistorialDetalleColegiado } from "../../../interfaces/model/HistorialColegiado";
@@ -13,6 +13,7 @@ export default function ConsultarHabilidad() {
   const [inputValue, setInputValue] = useState("");
   const [colegiadoData, setColegiadoData] = useState<HistorialDetalleColegiado>(defaultHistorialDetalleColegiado);
   const [isLoading, setIsLoading] = useState(false);
+  const [isNotFound, setIsNotFound] = useState(false);
 
   const options = [
     { label: 'Dni', value: 'dni' },
@@ -45,7 +46,9 @@ export default function ConsultarHabilidad() {
   
     try {
       if (selectedOption && inputValue) {
-        setIsLoading(true); // Inicia la carga
+        setIsLoading(true);
+        setIsNotFound(false);
+  
         const startTime = Date.now();
   
         const response = await getConsultarHabilidad(params);
@@ -54,7 +57,8 @@ export default function ConsultarHabilidad() {
   
           setColegiadoData(element);
         } else {
-          setColegiadoData(defaultHistorialDetalleColegiado); // No se encontraron datos
+          setColegiadoData(defaultHistorialDetalleColegiado);
+          setIsNotFound(true); // Indicar que no se encontró el colegiado
         }
         const elapsedTime = Date.now() - startTime;
         if (elapsedTime < 1000) {
@@ -62,16 +66,18 @@ export default function ConsultarHabilidad() {
         }
       } else {
         console.error('No se encontraron datos');
-        setColegiadoData(defaultHistorialDetalleColegiado); // Restablecer datos
+        setColegiadoData(defaultHistorialDetalleColegiado);
+        setIsNotFound(true); // Indicar que no se encontró el colegiado
       }
     } catch (error) {
       console.error('Error al obtener los datos:', error);
-      setColegiadoData(defaultHistorialDetalleColegiado); // Restablecer datos en caso de error
+      setColegiadoData(defaultHistorialDetalleColegiado);
+      setIsNotFound(true); // Indicar que no se encontró el colegiado
     } finally {
       setIsLoading(false);
     }
   };
-  
+
   return (
     <div>
       <Header />
@@ -115,14 +121,13 @@ export default function ConsultarHabilidad() {
               size={250}
               aria-label="Loading Spinner"
               data-testid="loader"
-              className=""
             />
           </div>
         ) : colegiadoData.id_colegiado.id ? (
           <div className="flex flex-col lg:flex-row mx-auto mb-12 lg:py-16 lg:my-24 w-4/5 rounded-lg shadow-xl">
             <img
-              className="w-1/2 min-w-max lg:w-[500px] lg:h-[350px] mx-auto my-10 lg:my-0 lg:mx-24 rounded object-cover"
-              src={import.meta.env.VITE_API_URL_ALTER + colegiadoData.id_colegiado.foto_colegiado || colegiado}
+              className="w-1/2 lg:w-[500px] lg:h-[350px] mx-auto my-10 lg:my-0 lg:mx-24 rounded object-cover"
+              src={colegiadoData.id_colegiado.foto_colegiado ? import.meta.env.VITE_API_URL_ALTER + colegiadoData.id_colegiado.foto_colegiado : colegiadoDefault}
               alt="Foto del colegiado"
             />
             <div className="w-full flex flex-col justify-center space-x-5 items-start me-24">
@@ -140,7 +145,6 @@ export default function ConsultarHabilidad() {
                     <p className="text-[#a67102] font-semibold">N° de colegiatura</p>
                     <p>{colegiadoData.id_colegiado.numero_colegiatura}</p>
                   </div>
-
                 </div>
                 <div className="w-full flex flex-col space-y-5 lg:space-y-10 pb-5 lg:pb-0">
                   <div className="space-y-2">
@@ -166,12 +170,12 @@ export default function ConsultarHabilidad() {
             </div>
           </div>
         ) : (
-          <div className="flex flex-col lg:flex-row mx-auto mb-12 lg:py-16 lg:mb-24 w-4/5 rounded-lg">
-            <img
-              className="w-5/6 md:w-4/6 xl:w-1/4 mx-auto my-10 lg:my-0 rounded object-cover"
-              src={colegiado}
-              alt="Foto del colegiado"
-            />
+          <div className="flex flex-col lg:flex-row mx-auto mb-12 lg:py-16 lg:my-24 w-4/5 rounded-lg justify-center items-center">
+            {isNotFound && (
+              <div className="text-center py-8 text-red-500 font-semibold">
+                No se encontraron resultados.
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -179,4 +183,3 @@ export default function ConsultarHabilidad() {
     </div>
   );
 }
-

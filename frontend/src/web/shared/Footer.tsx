@@ -5,7 +5,7 @@ import { FaTiktok } from "react-icons/fa";
 
 export function Footer() {
   return (
-    <div className="w-full bg-[#363636] py-10 font-didact">
+    <div className="w-full bg-[#363636] pt-10 font-didact">
       <div className="container flex flex-col md:flex-row md:space-x-5 w-4/6 mx-auto">
         <div className="flex flex-col md:w-2/5">
           <img className='w-3/6 md:w-5/6 lg:w-1/2' src={logo_corlad_blanco} alt="" />
@@ -49,6 +49,9 @@ export function Footer() {
             <span>+51 940033003</span>
           </div>
         </div>
+      </div>
+      <div className="text-center text-white font-nunito py-5">
+        <span className="text-sm"><a href="https://www.wonderclouds.dev">By @WonderClouds</a></span>
       </div>
     </div>
   )
