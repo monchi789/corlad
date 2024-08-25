@@ -30,11 +30,11 @@ export const getMetodoPagoByFilter = (nombre_metodo_pago?: string) => {
   });
 }
 
-export const getAllPagos = () => {
+export const getAllPagos = (page = 0, pageSize = 10) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.get(`${apiUrl}gestion-pagos/pagos/`, {
+  return axios.get(`${apiUrl}gestion-pagos/pagos/?page=${page + 1}&page_size=${pageSize}`, {
     headers: {
       'Authorization': `Bearer ${token}` // Incluyendo el token en los encabezados
     }
@@ -51,6 +51,22 @@ export const getPagoById = (id:number) => {
     }
   });
 }
+
+export const getPagoByFilters = (numero_colegiatura?: string, dni_colegiado?: string, apellido_paterno?: string) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
+
+  return axios.get(`${apiUrl}gestion-pagos/pagos/`, {
+    params: {
+      numero_colegiatura,
+      dni_colegiado,
+      apellido_paterno
+    },
+    headers: {
+      'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados
+    },
+  });
+};
 
 export const createPago = (pago: Pago) => {
   const apiUrl = import.meta.env.VITE_API_URL;

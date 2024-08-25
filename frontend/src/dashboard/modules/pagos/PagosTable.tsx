@@ -1,24 +1,14 @@
+import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { Avatar } from "primereact/avatar";
-import { useEffect, useState } from "react";
 import { TableCards } from "../../shared/TableCards";
 import { Pago } from "../../../interfaces/model/Pago";
-import { getAllPagos } from "../../../api/pagos.api";
-import { Link } from "react-router-dom";
 
-export function PagosTable() {
-  
-  const [pagosList, setPagos] = useState<Pago[]>([]);
+interface PagosProps {
+  pagosList: Pago[];
+}
 
-  useEffect(() => {
-    async function cargarPagos() {
-      const res = await getAllPagos();
-      console.log(res)
-      setPagos(res.data);
-    }
-    cargarPagos();
-  }, []);
-
+export function PagosTable({ pagosList }: PagosProps) {
   const columns = [
     { header: "Apellidos y nombres", accessor: "fullName", className: 'w-2/6 text-start' },
     { header: "Documento de identidad", accessor: "dni", className: 'w-1/6 text-start' },
@@ -43,7 +33,7 @@ export function PagosTable() {
       <div className="w-1/6 my-auto">{pago.id_tipo_pago.nombre_tipo_pago}</div>
       <div className="w-1/6 my-auto">{pago.monto_pago}</div>
       <div className="w-1/6 my-auto">{pago.observacion}</div>
-      <div className="flex flex-row w-1/6 text-[#8F650C] text-2xl space-x-3 justify-center my-auto">
+      <div className="flex flex-row w-1/6 text-[#8F650C] justify-center my-auto">
         <button><Link to={`/admin/pagos/editar-pago/${pago.id}`}><FaEdit size={"25px"} /></Link></button>
       </div>
     </>

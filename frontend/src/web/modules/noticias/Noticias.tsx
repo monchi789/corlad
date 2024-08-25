@@ -35,19 +35,7 @@ export default function Noticias() {
   const cargarNoticias = async (page = 0, pageSize = rows) => {
     try {
       const res = await getAllNoticiasByPage(page, pageSize);
-      const noticias: Publicacion[] = res.data.results.map((noticia: any) => ({
-        id: noticia.id,
-        titulo: noticia.titulo,
-        contenido: noticia.contenido,
-        fecha_publicacion: noticia.fecha_publicacion,
-        imagen_publicacion: noticia.imagen_publicacion,
-        documento: noticia.documento,
-        id_categoria: {
-          id: noticia.id_categoria.id,
-          nombre_categoria: noticia.id_categoria.nombre_categoria
-        }
-      }));
-      setNoticiasList(noticias);
+      setNoticiasList(res.data.results);
       setTotalRecords(res.data.count);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -75,19 +63,7 @@ export default function Noticias() {
   
     try {
       const res = await getNoticiasByFilter(params);
-      const noticias: Publicacion[] = res.data.results.map((noticia: any) => ({
-        id: noticia.id,
-        titulo: noticia.titulo,
-        contenido: noticia.contenido,
-        fecha_publicacion: noticia.fecha_publicacion,
-        imagen_publicacion: noticia.imagen_publicacion,
-        documento: noticia.documento,
-        id_categoria: {
-          id: noticia.id_categoria.id,
-          nombre_categoria: noticia.id_categoria.nombre_categoria
-        }
-      }));
-      setNoticiasList(noticias);
+      setNoticiasList(res.data.results);
       setTotalRecords(res.data.count);
       setFirst(0); // Reinicia a la primera página
     } catch (error) {
@@ -103,6 +79,7 @@ export default function Noticias() {
     window.scrollTo(0, 0);
   };
 
+  // Template para el paginador
   const template = {
     layout: 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink',
     PageLinks: (options: any) => {

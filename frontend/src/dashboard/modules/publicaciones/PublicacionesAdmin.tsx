@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { SessionHeader } from "../../shared/SessionHeader";
 import { Sidebar } from "../../shared/Sidebar";
 import { Dropdown } from 'primereact/dropdown';
@@ -7,9 +8,9 @@ import { deletePublicacion, getAllPublicaciones } from "../../../api/publicacion
 import { getAllCategoriasAdmin } from '../../../api/categoria.api';
 import { Publicacion } from "../../../interfaces/model/Publicacion";
 import { Categoria } from '../../../interfaces/model/Categoria';
-import { FaThLarge, FaList } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import { IoMdAddCircleOutline } from "react-icons/io";
+import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
+import { classNames } from "primereact/utils";
 import toast from "react-hot-toast";
 import Modal from 'react-modal';
 
@@ -28,25 +29,27 @@ export default function PublicacionesAdmin() {
   const [filteredPublicaciones, setFilteredPublicaciones] = useState<Publicacion[]>([]);
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [categorias, setCategorias] = useState<{ label: string; value: number }[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [publicationToDelete, setPublicationToDelete] = useState<number | null>(null);
 
-  const fetchPublicaciones = async () => {
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(6); // Número de noticias por página
+
+  const fetchPublicaciones = async (page = 0, pageSize = rows) => {
     try {
-      const response = await getAllPublicaciones();
+      const response = await getAllPublicaciones(page, pageSize);
       const data: PublicacionResponse = response.data;
       if (data && Array.isArray(data.results)) {
         setPublicaciones(data.results);
         setFilteredPublicaciones(data.results); // Inicialmente mostramos todas las publicaciones
+        setTotalRecords(response.data.count);
       } else {
-        console.error("Publicaciones response is not an array:", data);
         setPublicaciones([]);
         setFilteredPublicaciones([]);
       }
     } catch (error) {
-      console.error('Error fetching publicaciones:', error);
       setPublicaciones([]);
       setFilteredPublicaciones([]);
     }
@@ -83,14 +86,34 @@ export default function PublicacionesAdmin() {
     setFilteredPublicaciones(filtered);
   }, [selectedOption, startDate, endDate, publicaciones]);
 
-  useEffect(() => {
-    fetchPublicaciones();
-    fetchCategorias();
-  }, []);
+  // Función para manejar el cambio de página
+  const onPageChange = (event: PaginatorPageChangeEvent) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    fetchPublicaciones(event.page, event.rows);
+    window.scrollTo(0, 0);
+  };
 
-  useEffect(() => {
-    filterPublicaciones();
-  }, [selectedOption, startDate, endDate, publicaciones, filterPublicaciones]);
+  // Template para el paginador
+  const template = {
+    layout: 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink',
+    PageLinks: (options: any) => {
+
+      const isActive = options.page === options.currentPage;
+
+      return (
+        <button
+          className={classNames('px-3 py-1 mx-1 rounded-lg transition duration-300', {
+            'bg-[#007336] text-white': isActive,
+            'bg-white text-black': !isActive
+          })}
+          onClick={options.onClick}
+        >
+          {options.page + 1}
+        </button>
+      )
+    }
+  };
 
   const handleCategoryChange = (value: number | null) => {
     setSelectedOption(value);
@@ -125,7 +148,7 @@ export default function PublicacionesAdmin() {
       try {
         await deletePublicacion(publicationToDelete);
         toast.success("Publicación eliminada exitosamente.");
-        fetchPublicaciones(); 
+        fetchPublicaciones();
       } catch (error) {
         toast.error("Error al eliminar la publicación.");
         console.error("Error deleting publicacion:", error);
@@ -134,6 +157,15 @@ export default function PublicacionesAdmin() {
       }
     }
   };
+
+  useEffect(() => {
+    fetchPublicaciones();
+    fetchCategorias();
+  }, []);
+
+  useEffect(() => {
+    filterPublicaciones();
+  }, [selectedOption, startDate, endDate, publicaciones, filterPublicaciones]);
 
   return (
     <div className="flex flex-row w-full">
@@ -145,19 +177,19 @@ export default function PublicacionesAdmin() {
             <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Publicaciones</h4>
             <div className="flex flex-row space-x-3">
               <Link to={"/admin/publicaciones/nueva-publicacion"}>
-                <button className="flex flex-row bg-[#007336] text-xl text-white font-nunito font-semibold hover:bg-[#00330A] shadow-black	shadow-md rounded-2xl transition duration-300 hover:scale-110 ease-in-out delay-150 space-x-4 px-8 py-2">
-                  <IoMdAddCircleOutline size={"30px"} />
-                  <span className="my-auto">Nueva publicacion</span>
+                <button className="flex flex-row bg-[#007336] text-lg text-white font-nunito font-semibold hover:bg-[#00330A] shadow-black shadow-md rounded-2xl transition duration-300 hover:scale-110 ease-in-out delay-150 space-x-3 px-4 py-1">
+                  <IoMdAddCircleOutline className="my-auto" size={"25px"} />
+                  <span className="my-auto">Nueva publicación</span>
                 </button>
               </Link>
             </div>
           </div>
           <div className="w-full bg-[#EAF1E8] rounded-lg p-5 mt-5">
-            <div className="flex flex-row justify-between space-x-10 mx-5">
-              <div className="flex flex-col w-full space-y-3">
+            <div className="flex flex-row justify-between space-x-10">
+              <div className="flex flex-col w-full space-y-2">
                 <span className="text-xl text-[#00330A] font-nunito font-bold">Categoría</span>
                 <Dropdown
-                  className="w-full text-[#5F4102] font-bold font-nunito border-solid border-2 border-[#5F4102] rounded-xl items-center py-2 px-3"
+                  className="w-full text-[#5F4102] font-bold font-nunito border-solid border-2 border-[#5F4102] rounded-xl items-center py-1 px-2"
                   panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
                   value={selectedOption}
                   onChange={(e) => handleCategoryChange(e.value)}
@@ -167,20 +199,20 @@ export default function PublicacionesAdmin() {
                   itemTemplate={itemCategoria}
                 />
               </div>
-              <div className="flex flex-col w-full space-y-3">
+              <div className="flex flex-col w-full space-y-2">
                 <span className="text-xl text-[#00330A] font-nunito font-bold">Fecha de inicio</span>
                 <input
                   type="date"
-                  className="text-[#5F4102] font-bold font-nunito bg-transparent border-solid border-2 border-[#00330A] rounded-xl py-2 px-3"
+                  className="text-[#5F4102] font-bold font-nunito bg-transparent border-solid border-2 border-[#00330A] rounded-xl py-1 px-2"
                   value={startDate || ''}
                   onChange={(e) => setStartDate(e.target.value)}
                 />
               </div>
-              <div className="flex flex-col w-full space-y-3">
-                <span className="text-xl text-[#00330A] font-nunito font-bold">Fecha de fin</span>
+              <div className="flex flex-col w-full space-y-2">
+                <span className="text-xl text-[#00330A] font-nunito font-bold">Fecha fin</span>
                 <input
                   type="date"
-                  className="text-[#5F4102] font-bold font-nunito bg-transparent border-solid border-2 border-[#00330A] rounded-xl py-2 px-3"
+                  className="text-[#5F4102] font-bold font-nunito bg-transparent border-solid border-2 border-[#00330A] rounded-xl py-1 px-2"
                   value={endDate || ''}
                   onChange={(e) => setEndDate(e.target.value)}
                 />
@@ -188,55 +220,25 @@ export default function PublicacionesAdmin() {
             </div>
           </div>
         </div>
-        <div className="flex justify-end space-x-3 mt-3">
-          <button
-            className={`px-4 py-2 rounded-lg ${viewMode === 'grid' ? 'bg-[#007336] text-white' : 'bg-[#EAF1E8] text-[#00330A]'}`}
-            onClick={() => setViewMode('grid')}
-          >
-            <FaThLarge />
-          </button>
-          <button
-            className={`px-4 py-2 rounded-lg ${viewMode === 'list' ? 'bg-[#007336] text-white' : 'bg-[#EAF1E8] text-[#00330A]'}`}
-            onClick={() => setViewMode('list')}
-          >
-            <FaList />
-          </button>
-        </div>
-        <div className="mt-5 mx-10">
-          {viewMode === 'grid' ? (
-            <div className="flex flex-wrap gap-5">
-              {filteredPublicaciones.length > 0 ? (
-                filteredPublicaciones.map(publicacion => (
-                  <CardPublicacion
-                    key={publicacion.id}
-                    id={publicacion.id}
-                    title={publicacion.titulo}
-                    imagen={`${import.meta.env.VITE_API_URL_ALTER}${publicacion.imagen_publicacion}`}
-                    contenido={publicacion.contenido}
-                    tipo={publicacion.id_categoria.nombre_categoria}
-                    date={publicacion.fecha_publicacion}
-                    onDelete={openModal}
-                  />
-                ))
-              ) : (
-                <p>No se encontraron publicaciones.</p>
-              )}
-            </div>
-          ) : (
-            <ul className="list-disc pl-5">
-              {filteredPublicaciones.length > 0 ? (
-                filteredPublicaciones.map(publicacion => (
-                  <li key={publicacion.id} className="mb-3">
-                    <h5 className="text-[#00330A] font-nunito font-bold">{publicacion.titulo}</h5>
-                    <p className="text-[#007336] font-nunito">{publicacion.id_categoria.nombre_categoria}</p>
-                    <p className="text-[#00330A] font-nunito">{publicacion.fecha_publicacion}</p>
-                  </li>
-                ))
-              ) : (
-                <p>No se encontraron publicaciones.</p>
-              )}
-            </ul>
-          )}
+        <div className="mt-5">
+          <div className="flex flex-wrap gap-5">
+            {filteredPublicaciones.length > 0 ? (
+              filteredPublicaciones.map(publicacion => (
+                <CardPublicacion
+                  key={publicacion.id}
+                  id={publicacion.id}
+                  title={publicacion.titulo}
+                  imagen={`${import.meta.env.VITE_API_URL_ALTER}${publicacion.imagen_publicacion}`}
+                  contenido={publicacion.contenido}
+                  tipo={publicacion.id_categoria.nombre_categoria}
+                  date={publicacion.fecha_publicacion}
+                  onDelete={openModal}
+                />
+              ))
+            ) : (
+              <p>No se encontraron publicaciones.</p>
+            )}
+          </div>
         </div>
         <Modal
           isOpen={isModalOpen}
@@ -252,6 +254,14 @@ export default function PublicacionesAdmin() {
             <button onClick={handleDeleteConfirmation} className="bg-red-600 text-white px-4 py-2 rounded">Eliminar</button>
           </div>
         </Modal>
+        <Paginator
+          first={first}
+          rows={rows}
+          totalRecords={totalRecords}
+          onPageChange={onPageChange}
+          className="space-x-5 mt-10"
+          template={template}
+        />
       </div>
     </div>
   );

@@ -52,8 +52,8 @@ export default function EditarColegiado() {
 
 
   // Maneja el cambio en los campos del formulario del colegiado
-  const handleChangeColegiado = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleChangeColegiado = (e: React.ChangeEvent<HTMLInputElement> | { name: string, value: any }) => {
+    const { name, value } = 'target' in e ? e.target : e;
     setColegiadoData(prevState => ({
       ...prevState,
       [name]: value
@@ -68,6 +68,19 @@ export default function EditarColegiado() {
       [name]: value
     }));
   };
+
+  // Opciones de los dropdowns
+  const optionsSexo = [
+    { label: 'Masculino', value: "M" },
+    { label: 'Femenino', value: "F" },
+    { label: 'Otro', value: "O" }
+  ];
+
+  const optionsEstadoCivil = [
+    { label: 'Soltero', value: "SOLTERO" },
+    { label: 'Casado', value: "CASADO" },
+    { label: 'Otro', value: "OTRO" }
+  ];
 
   // Carga la lista de escuelas al cargar el componente
   useEffect(() => {
@@ -102,7 +115,7 @@ export default function EditarColegiado() {
   }, [selectedCapitulo, especialidadData]);
 
   // Renderiza cada item del dropdown de categoría
-  const itemCategoria = (option: any) => {
+  const itemDropdown = (option: any) => {
     return (
       <div className="flex hover:bg-[#E6F3E6] text-[#00330a] items-center justify-between px-3 py-2">
         <span>{option.label}</span>
@@ -270,13 +283,18 @@ export default function EditarColegiado() {
                     </div>
                     <div className="w-1/4">
                       <label htmlFor="sexo_colegiado" className="block mb-1">Sexo</label>
-                      <input
-                        type="text"
+                      <Dropdown
                         id="sexo_colegiado"
                         name="sexo_colegiado"
-                        value={colegiadoData.sexo_colegiado}
-                        onChange={handleChangeColegiado}
                         className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                        panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
+                        value={colegiadoData.sexo_colegiado}
+                        onChange={(e) => {
+                          handleChangeColegiado({ name: 'sexo_colegiado', value: e.value });
+                        }}
+                        options={optionsSexo}
+                        placeholder="Elegir..."
+                        itemTemplate={itemDropdown}
                         required
                       />
                     </div>
@@ -321,13 +339,18 @@ export default function EditarColegiado() {
                     </div>
                     <div className="w-1/4">
                       <label htmlFor="estado_civil" className="block mb-1">Estado Civil</label>
-                      <input
-                        type="text"
+                      <Dropdown
                         id="estado_civil"
                         name="estado_civil"
-                        value={colegiadoData.estado_civil}
-                        onChange={handleChangeColegiado}
                         className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                        panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
+                        value={colegiadoData.estado_civil}
+                        onChange={(e) => {
+                          handleChangeColegiado({ name: 'estado_civil', value: e.value });
+                        }}
+                        options={optionsEstadoCivil}
+                        placeholder="Elegir..."
+                        itemTemplate={itemDropdown}
                         required
                       />
                     </div>
@@ -398,7 +421,7 @@ export default function EditarColegiado() {
                         options={escuelaData}
                         optionLabel="label"
                         placeholder="Elegir capitulo..."
-                        itemTemplate={itemCategoria}
+                        itemTemplate={itemDropdown}
                       />
                     </div>
                     <div className="w-1/3">
@@ -416,6 +439,7 @@ export default function EditarColegiado() {
                         optionLabel="label"
                         placeholder="Elegir especialidad..."
                         disabled={!selectedCapitulo}
+                        itemTemplate={itemDropdown}
                       />
                     </div>
                   </div>
@@ -479,7 +503,7 @@ export default function EditarColegiado() {
               </div>
               <div className="flex flex-row w-full text-[#3A3A3A] font-nunito font-black rounded-2xl space-x-3 mt-5">
                 <button type="submit" className="w-2/3 bg-[#007336] text-white rounded-2xl p-3">
-                  Actualizar Colegiado
+                  Actualizar colegiado
                 </button>
                 <Link to={"/admin/colegiado"} className="w-1/3">
                   <button type="button" className="w-full border-solid border-2 border-[#3A3A3A] rounded-2xl py-3">

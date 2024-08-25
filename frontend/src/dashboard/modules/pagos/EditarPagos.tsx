@@ -1,23 +1,20 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { SessionHeader } from "../../shared/SessionHeader";
 import { Sidebar } from "../../shared/Sidebar";
-import cash_illustration from "../../../assets/dashboard/money_illustration.png"
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { styled } from "@mui/material";
 import { getColegiadoByFilters } from "../../../api/colegiado.api";
 import { Colegiado, defaultColegiado } from "../../../interfaces/model/Colegiado";
 import { defaultPago, MetodoPago, Pago, TipoPago } from "../../../interfaces/model/Pago";
-import dayjs from "dayjs";
 import { getPagoById, updatePago, getMetodoPagoByFilter, getTipoPagoByFilter } from "../../../api/pagos.api";
 import toast, { Toaster } from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import cash_illustration from "../../../assets/dashboard/money_illustration.png"
 
 export default function EditarPagos() {
+  const navigate = useNavigate();
+
   const { id } = useParams();
   const [dniColegiado, setDniColegiado] = useState('');
   const [numeroColegiatura, setNumeroColegiatura] = useState('');
@@ -27,7 +24,11 @@ export default function EditarPagos() {
   const [selectedMetodoPago, setSelectedMetodoPago] = useState<string | number>('');
 
   const [colegiadoData, setColegiadoData] = useState<Colegiado>(defaultColegiado);
-  const [pagoData, setPagoData] = useState<Pago>(defaultPago);
+  const [pagoData, setPagoData] = useState<Pago & { monto_pago_entero: string, monto_pago_decimal: string }>({
+    ...defaultPago,
+    monto_pago_entero: '',
+    monto_pago_decimal: ''
+  });
 
   useEffect(() => {
     const fetchPagoData = async () => {
@@ -36,10 +37,16 @@ export default function EditarPagos() {
           const response = await getPagoById(parseInt(id));
           const pago: Pago = response.data;
 
-          setPagoData(pago);
+          const [entero, decimal] = pago.monto_pago.toFixed(2).split('.');
+
+          setPagoData({
+            ...pago,
+            monto_pago_entero: entero,
+            monto_pago_decimal: decimal
+          });
           setSelectedTipoPago(pago.id_tipo_pago.nombre_tipo_pago); // Ensure this matches the RadioGroup values
           setSelectedMetodoPago(pago.id_metodo_pago.nombre_metodo_pago); // Ensure this matches the RadioGroup values
-  
+
           if (pago.id_colegiado) {
             const colegiado = pago.id_colegiado;
             setSelectedColegiado(`${colegiado.numero_colegiatura} - ${colegiado.apellido_paterno} - ${colegiado.apellido_materno} - ${colegiado.nombre} - ${colegiado.dni_colegiado}`);
@@ -56,7 +63,7 @@ export default function EditarPagos() {
   const handleChangeTipoPago = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedTipoPago(event.target.value);
   };
-  
+
   const handleChangeMetodoPago = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedMetodoPago(event.target.value);
   };
@@ -89,28 +96,25 @@ export default function EditarPagos() {
   const handleChangePago = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
 
-    if (name === 'monto_pago') {
-      const numericValue = parseFloat(value);
+    if (name === 'monto_pago_entero' || name === 'monto_pago_decimal') {
+      const entero = name === 'monto_pago_entero' ? value : pagoData.monto_pago_entero;
+      const decimal = name === 'monto_pago_decimal' ? value : pagoData.monto_pago_decimal;
+      const monto_pago = parseFloat(`${entero}.${decimal}`) || 0;
+  
       setPagoData(prevState => ({
         ...prevState,
-        monto_pago: isNaN(numericValue) ? 0 : numericValue
-      }));
-    } else if (name === 'numero_operacion') {
-      const numericValue = parseInt(value, 10);
-      setPagoData(prevState => ({
-        ...prevState,
-        numero_operacion: isNaN(numericValue) ? 0 : numericValue
-      }));
-    } else if (name === 'meses') {
-      const numericValue = parseInt(value, 10);
-      setPagoData(prevState => ({
-        ...prevState,
-        meses: isNaN(numericValue) ? 0 : numericValue
+        [name]: value,
+        monto_pago
       }));
     } else if (name === 'observacion') {
       setPagoData(prevState => ({
         ...prevState,
         observacion: value
+      }));
+    } else {
+      setPagoData(prevState => ({
+        ...prevState,
+        [name]: value
       }));
     }
   };
@@ -125,47 +129,25 @@ export default function EditarPagos() {
         const tipoPago: TipoPago = resTipoPago.data[0];
         const metodoPago: MetodoPago = resMetodoPago.data[0];
 
+        const monto_pago = parseFloat(`${pagoData.monto_pago_entero}.${pagoData.monto_pago_decimal}`) || 0;
+
         const updatedPagoData = {
           ...pagoData,
           id_colegiado: colegiadoData,
           id_tipo_pago: tipoPago,
           id_metodo_pago: metodoPago,
+          monto_pago: monto_pago
         };
 
-        await updatePago(parseInt(id), updatedPagoData); // Actualizar el pago
+        await updatePago(parseInt(id), updatedPagoData);
 
         toast.success('Pago actualizado exitosamente');
+        navigate("/admin/pagos")
       } catch (error) {
         toast.error('Error al actualizar el pago');
       }
     };
   }
-  
-  // Datepicker custom
-  const StyledDatePicker = styled(DatePicker)(() => ({
-    '& .MuiInputBase-root': {
-      backgroundColor: '#ECF6E8',
-      borderRadius: '0.75rem',
-      boxShadow: `0 4px 6px rgba(184, 177, 149, 0.5)`,
-      padding: '0.5rem 0.75rem',
-      '& .MuiInputBase-input': {
-        padding: '0',
-        color: '#5F4102',
-      }
-    },
-    '& .MuiOutlinedInput-root': {
-      border: 'none',
-      '&:hover fieldset': {
-        border: 'none',
-      },
-      '&.Mui-focused fieldset': {
-        border: 'none',
-      },
-    },
-    '& .MuiFormLabel-root': {
-      color: '#5F4102',
-    },
-  }));
 
   return (
     <div className="flex flex-row w-full">
@@ -229,7 +211,7 @@ export default function EditarPagos() {
                       onChange={handleChangePago}
                       className="w-full bg-[#ECF6E8] focus:outline-none shadow-[#B8B195] shadow-md rounded-xl py-2 px-3"
                       placeholder="0000"
-                      required
+                      min={0}
                     />
                   </div>
                   <div className="w-1/2 space-y-2">
@@ -242,7 +224,7 @@ export default function EditarPagos() {
                       onChange={handleChangePago}
                       className="w-full bg-[#ECF6E8] focus:outline-none shadow-[#B8B195] shadow-md rounded-xl py-2 px-3"
                       placeholder="0000"
-                      required
+                      min={0}
                     />
                   </div>
                 </div>
@@ -319,37 +301,40 @@ export default function EditarPagos() {
                 <span className="text-xl my-auto">S/.</span>
                 <input
                   type="number"
-                  id="monto_pago"
-                  name="monto_pago"
-                  value={pagoData.monto_pago}
+                  id="monto_pago_entero"
+                  name="monto_pago_entero"
+                  value={pagoData.monto_pago_entero}
                   onChange={handleChangePago}
                   className="w-full bg-[#ECF6E8] focus:outline-none shadow-[#B8B195] shadow-md rounded-xl py-2 px-3"
                   placeholder="0000"
+                  min={0}
                   required
                 />
+                <span className="text-xl my-auto">.</span>
                 <input
                   type="number"
-                  id="monto_pago"
-                  name="monto_pago"
-                  className="w-full bg-[#ECF6E8] focus:outline-none shadow-[#B8B195] shadow-md rounded-xl py-2 px-3"
+                  id="monto_pago_decimal"
+                  name="monto_pago_decimal"
+                  value={pagoData.monto_pago_decimal}
+                  onChange={handleChangePago}
+                  className="w-1/2 bg-[#ECF6E8] focus:outline-none shadow-[#B8B195] shadow-md rounded-xl py-2 px-3"
                   placeholder="00"
+                  min={0}
+                  max={99}
                   required
                 />
               </div>
               <div className="flex flex-row space-x-5">
-                <label htmlFor="monto_pago" className="w-full text-xl font-nunito font-extrabold block my-auto">Fecha de pago:</label>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <StyledDatePicker
-                    value={pagoData.fecha_pago ? dayjs(pagoData.fecha_pago) : null}
-                    onChange={(newValue) => {
-                      setPagoData(prevState => ({
-                        ...prevState,
-                        fecha_pago: newValue ? newValue.toISOString().split('T')[0] : ''
-                      }));
-                    }}
-                    className="bg-[#ECF6E8] w-full focus:outline-none shadow-[#B8B195] shadow-md rounded-xl p-2"
-                  />
-                </LocalizationProvider>
+                <label htmlFor="fecha_pago" className="w-full text-xl font-nunito font-extrabold block my-auto">Fecha de pago:</label>
+                <input
+                  type="date"
+                  id="fecha_pago"
+                  name="fecha_pago"
+                  value={pagoData.fecha_pago}
+                  onChange={handleChangePago}
+                  className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input py-2 px-3"
+                  required
+                />
               </div>
             </div>
             <div className="w-full bg-[#C9D9C6] text-[#00330A] rounded-2xl px-5 py-5">

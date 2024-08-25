@@ -53,88 +53,89 @@ const Image: React.FC<ImageProps> = ({ id, imagenes, estado_slider, onStatusChan
 
   return (
     <>
-      <div className={`w-1/6 relative border-solid border-2 border-[#2A8B3D] shadow-custom rounded-xl overflow-hidden ${!checked ? 'bg-[#4E5E51]' : ''}`}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+      <div
+  className={`w-full sm:w-1/2 md:w-1/3 lg:w-1/6 relative border-solid border-2 border-[#2A8B3D] shadow-custom rounded-xl overflow-hidden ${!checked ? 'bg-[#4E5E51]' : ''}`}
+  onMouseEnter={() => setIsHovered(true)}
+  onMouseLeave={() => setIsHovered(false)}
+>
+  {renderImageContent()}
+  <div className="absolute top-0 right-0 m-3 z-30" onClick={(e) => e.stopPropagation()}>
+    <Switch onChange={handleChange} checked={checked} />
+  </div>
+  {isHovered && (
+    <div className="absolute inset-0 flex items-center justify-center">
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          openModal();
+        }}
+        className="bg-green-500 hover:bg-green-700 text-white font-bold transition duration-200 rounded py-2 px-4 mr-2"
       >
-        {renderImageContent()}
-        <div className='absolute top-0 right-0 m-3 z-30' onClick={(e) => e.stopPropagation()}>
-          <Switch onChange={handleChange} checked={checked} />
-        </div>
-        {isHovered && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                openModal();
-              }}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold transition duration-200 rounded py-2 px-4 mr-2"
-            >
-              <IoExpand />
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onEdit(id);
-              }}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold transition duration-200 rounded py-2 px-4 mr-2"
-            >
-              <IoPencil />
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onDelete(id);
-              }}
-              className="bg-red-500 hover:bg-red-700 text-white font-bold transition duration-200 rounded py-2 px-4"
-            >
-              <IoTrash />
-            </button>
-          </div>
-        )}
+        <IoExpand />
+      </button>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onEdit(id);
+        }}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold transition duration-200 rounded py-2 px-4 mr-2"
+      >
+        <IoPencil />
+      </button>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete(id);
+        }}
+        className="bg-red-500 hover:bg-red-700 text-white font-bold transition duration-200 rounded py-2 px-4"
+      >
+        <IoTrash />
+      </button>
+    </div>
+  )}
+</div>
 
+<Modal
+  isOpen={modalIsOpen}
+  onRequestClose={closeModal}
+  contentLabel="Image Gallery"
+  className="fixed inset-0 flex items-center justify-center z-[1000]"
+  overlayClassName="fixed inset-0 bg-black bg-opacity-75 z-[1000]"
+>
+  <div className="relative z-50 bg-white p-5 rounded-lg max-w-[90vw] max-h-[90vh]">
+    {imagenes.length > 0 ? (
+      <>
+        <img src={imagenes[currentImageIndex]} alt={`Image ${currentImageIndex + 1}`} className="max-h-[80vh] max-w-[80vw]" />
+        <button
+          onClick={closeModal}
+          className="absolute top-2 right-2 bg-white rounded-full w-8 h-8 text-xl cursor-pointer flex items-center justify-center"
+        >
+          <IoCloseSharp />
+        </button>
+        <button
+          onClick={prevImage}
+          className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full w-10 h-10 text-xl cursor-pointer flex items-center justify-center"
+        >
+          <IoArrowBack />
+        </button>
+        <button
+          onClick={nextImage}
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full w-10 h-10 text-xl cursor-pointer flex items-center justify-center"
+        >
+          <IoArrowForward />
+        </button>
+        <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-white px-3 py-1 rounded-full">
+          {currentImageIndex + 1} / {imagenes.length}
+        </div>
+      </>
+    ) : (
+      <div className="flex items-center justify-center h-full w-full bg-gray-100">
+        <span>No hay imágenes</span>
       </div>
+    )}
+  </div>
+</Modal>
 
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Image Gallery"
-        className="fixed inset-0 flex items-center justify-center z-[1000]"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-75 z-[1000]"
-      >
-        <div className="relative z-50 bg-white p-5 rounded-lg">
-          {imagenes.length > 0 ? (
-            <>
-              <img src={imagenes[currentImageIndex]} alt={`Image ${currentImageIndex + 1}`} className="max-h-[80vh] max-w-[80vw]" />
-              <button
-                onClick={closeModal}
-                className="absolute top-2 right-2 bg-white rounded-full w-8 h-8 text-xl cursor-pointer flex items-center justify-center"
-              >
-                <IoCloseSharp />
-              </button>
-              <button
-                onClick={prevImage}
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full w-10 h-10 text-xl cursor-pointer flex items-center justify-center"
-              >
-                <IoArrowBack />
-              </button>
-              <button
-                onClick={nextImage}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full w-10 h-10 text-xl cursor-pointer flex items-center justify-center"
-              >
-                <IoArrowForward />
-              </button>
-              <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-white px-3 py-1 rounded-full">
-                {currentImageIndex + 1} / {imagenes.length}
-              </div>
-            </>
-          ) : (
-            <div className="flex items-center justify-center h-full w-full bg-gray-100">
-              <span>No hay imágenes</span>
-            </div>
-          )}
-        </div>
-      </Modal>
     </>
   );
 };
@@ -511,64 +512,63 @@ export const SlidersList = () => {
 
   return (
     <div className="flex flex-col mt-10 space-y-5">
-      <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold">Galerías de fotos</h4>
-      <div className="flex flex-row space-x-3">
-        {list.map((element, index) => {
-          // Filtrar imágenes nulas o vacías
-          const filteredImages = [
-            element.imagen_1,
-            element.imagen_2,
-            element.imagen_3,
-            element.imagen_4
-          ].filter(image => image !== null && image.trim() !== '');
+  <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold">Galerías de fotos</h4>
+  <div className="flex flex-wrap gap-3">
+    {list.map((element, index) => {
+      // Filtrar imágenes nulas o vacías
+      const filteredImages = [
+        element.imagen_1,
+        element.imagen_2,
+        element.imagen_3,
+        element.imagen_4
+      ].filter(image => image !== null && image.trim() !== '');
 
-          return (
-            <Image
-              key={index}
-              id={element.id}
-              imagenes={filteredImages.map(img => `${import.meta.env.VITE_API_URL_ALTER}${img}`)}
-              estado_slider={element.estado_slider}
-              onStatusChange={handleStatusChange}
-              onEdit={handleEdit}
-              onDelete={handleConfirmDelete}
-            />
-          );
-        })}
-        <button
-          onClick={() => setAddModalIsOpen(true)}
-          className="flex w-1/6 bg-[#FCFFDB] items-center border-solid border-2 shadow-custom border-[#2A8B3D] rounded-xl">
-          <div className="mx-auto my-auto">
-            <IoAdd className="mx-auto mb-3" size={45} />
-            <span className="text-2xl text-[#5F4102] font-nunito font-extrabold mx-auto">Nuevo slider</span>
-          </div>
-        </button>
-      </div>
-
-      {selectedSlider && (
-        <EditModal
-          isOpen={isEditModalOpen}
-          onClose={() => setIsEditModalOpen(false)}
-          slider={selectedSlider}
-          onSave={handleSaveEdit}
+      return (
+        <Image
+          key={index}
+          id={element.id}
+          imagenes={filteredImages.map(img => `${import.meta.env.VITE_API_URL_ALTER}${img}`)}
+          estado_slider={element.estado_slider}
+          onStatusChange={handleStatusChange}
+          onEdit={handleEdit}
+          onDelete={handleConfirmDelete}
         />
-      )}
+      );
+    })}
+    <button
+      onClick={() => setAddModalIsOpen(true)}
+      className="flex w-full sm:w-1/3 md:w-1/4 lg:w-1/6 h-48 bg-[#FCFFDB] items-center border-solid border-2 shadow-custom border-[#2A8B3D] rounded-xl p-4"
+    >
+      <div className="mx-auto my-auto text-center">
+        <IoAdd className="mx-auto mb-3" size={45} />
+        <span className="text-2xl text-[#5F4102] font-nunito font-extrabold mx-auto">Nuevo slider</span>
+      </div>
+    </button>
+  </div>
 
-      <AddModal
-        isOpen={addModalIsOpen}
-        onClose={() => setAddModalIsOpen(false)}
-        onSave={handleAdd}
-      />
+  {selectedSlider && (
+    <EditModal
+      isOpen={isEditModalOpen}
+      onClose={() => setIsEditModalOpen(false)}
+      slider={selectedSlider}
+      onSave={handleSaveEdit}
+    />
+  )}
 
-      <ConfirmDeleteModal
-        isOpen={deleteModalIsOpen}
-        onClose={() => setDeleteModalIsOpen(false)}
-        onConfirm={confirmDelete}
-      />
+  <AddModal
+    isOpen={addModalIsOpen}
+    onClose={() => setAddModalIsOpen(false)}
+    onSave={handleAdd}
+  />
 
-      <Toaster
-        position="bottom-center"
-        reverseOrder={false} />
+  <ConfirmDeleteModal
+    isOpen={deleteModalIsOpen}
+    onClose={() => setDeleteModalIsOpen(false)}
+    onConfirm={confirmDelete}
+  />
 
-    </div>
+  <Toaster position="bottom-center" reverseOrder={false} />
+</div>
+
   );
 };

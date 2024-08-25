@@ -16,16 +16,15 @@ export function SessionHeader() {
   }, []);
 
   return (
-    <div className="flex flex-row w-full justify-between text-white font-nunito font-semibold bg-[#007336] shadow-custom rounded-3xl px-10 py-5">
+    <div className="flex flex-row w-full justify-between text-white font-nunito font-semibold bg-[#007336] shadow-custom-input rounded-2xl px-7 py-2">
       <div className="flex flex-row space-x-5 my-auto">
         <div className="flex flex-row space-x-2">
           <FaRegCalendar className="my-auto" />
           <span>{currentDate}</span>
         </div>
       </div>
-      <div className="flex flex-row space-x-5">
-        <img className="size-10" src={persona} alt="Vacio persona" />
-        <p className="text-[#ECF6E8] font-nunito font-bold my-auto">Usuario</p>
+      <div className="flex flex-row">
+        <img className="size-10" src={persona} alt="Persona default" />
       </div>
     </div>
   );

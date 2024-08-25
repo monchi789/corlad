@@ -47,7 +47,7 @@ export const HorizontalCard: React.FC<horizontalCardProps> = ({ imageSource, ima
   const formattedTitle = formatTitle(cardTitle);
   return (
     <div className="flex flex-col lg:flex-row rounded-3xl mt-10 lg:mt-0">
-      <img className="lg:w-1/3 max-h-[200px] object-cover" src={imageSource} alt={imageAlt} />
+      <img className="lg:w-1/3 max-h-[300px] object-cover" src={imageSource} alt={imageAlt} />
       <div className="flex flex-col lg:mx-12 space-y-3">
         <h3 className="text-[#09853C] font-nunito font-extrabold text-2xl mt-5 lg:mt-0">{cardTitle}</h3>
         <p className="text-[#363636]" dangerouslySetInnerHTML={{ __html: cardText }}/>
