@@ -32,11 +32,11 @@ class EstadoCuentaFilter(filters.FilterSet):
 
 # Filtro para el modelo Pago
 class PagoFilter(filters.FilterSet):
-    apellido_paterno = filters.CharFilter(field_name='id_colegiado_apellido_paterno', lookup_expr='istartswith')
-    dni_colegiado = filters.CharFilter(field_name='id_colegiado_dni_colegiado', lookup_expr='iexact')
-    numero_colegiatura = filters.CharFilter(field_name='id_colegiado_numero_colegiatura', lookup_expr='iexact')
-    metodo_pago = filters.CharFilter(field_name='id_metodo_pago_nombre_metodo_pago')
-    tipo_pago = filters.CharFilter(field_name='id_tipo_pago_nombre_tipo_pago')
+    apellido_paterno = filters.CharFilter(field_name='id_colegiado__apellido_paterno', lookup_expr='istartswith')
+    dni_colegiado = filters.CharFilter(field_name='id_colegiado__dni_colegiado', lookup_expr='iexact')
+    numero_colegiatura = filters.CharFilter(field_name='id_colegiado__numero_colegiatura', lookup_expr='iexact')
+    metodo_pago = filters.CharFilter(field_name='id_metodo_pago__nombre_metodo_pago')
+    tipo_pago = filters.CharFilter(field_name='id_tipo_pago__nombre_tipo_pago')
     fecha_pago = filters.CharFilter(field_name='fecha_pago', lookup_expr='iexact')
 
     class Meta:

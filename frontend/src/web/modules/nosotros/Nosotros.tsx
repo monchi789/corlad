@@ -1,36 +1,41 @@
 import { Header } from "../../shared/Header";
 import corlad_logo from "../../../assets/web/corlad_logo.png"
+import direccion_01 from "../../../assets/web/directivos/decano_regional.jpg"
+import direccion_02 from "../../../assets/web/directivos/vice_decano_regional.jpg"
+import direccion_03 from "../../../assets/web/directivos/director_economia_finanzas.jpg"
+import direccion_04 from "../../../assets/web/directivos/director_desarrollo_habilitacion.jpg"
+import direccion_05 from "../../../assets/web/directivos/director_informacion_cientifica_tecnologica.jpg"
+
 import { Footer } from "../../shared/Footer";
 import Carousel from "../../shared/Carousel";
-import { Gallery } from "../../shared/Gallery";
 
-export function Nosotros() {
+export default function Nosotros() {
 
   const directivos = [
     {
-      imgDirectivo: corlad_logo,
+      imgDirectivo: direccion_01,
       nombreDirectivo: "Willy Bravo Aparicio",
       cargoDirectivo: "Decano Regional"
     },
     {
-      imgDirectivo: corlad_logo,
+      imgDirectivo: direccion_02,
       nombreDirectivo: "Gabriel Suyo Cruz",
       cargoDirectivo: "Vicedecano Regional"
     },
     {
-      imgDirectivo: corlad_logo,
+      imgDirectivo: direccion_03,
       nombreDirectivo: "Edgar Quispe Reyes",
       cargoDirectivo: "Director De Economía Y Finanzas"
     },
     {
-      imgDirectivo: corlad_logo,
+      imgDirectivo: direccion_04,
       nombreDirectivo: "Ruth Josefina Salazar Herrera",
-      cargoDirectivo: "Directora De Habilidad Profesional"
+      cargoDirectivo: "Directora de Desarrollo y Habilitación Profesional"
     },
     {
-      imgDirectivo: corlad_logo,
+      imgDirectivo: direccion_05,
       nombreDirectivo: "Wilfredo Loayza Palma",
-      cargoDirectivo: "Director De Información Científica"
+      cargoDirectivo: "Director de Información Científica y Tecnológica"
     },
     {
       imgDirectivo: corlad_logo,
@@ -77,14 +82,12 @@ export function Nosotros() {
           <p className="font-semibold text-lg text-[#a67102]">Años sirviendo</p>
         </div>
       </div>
-      
-      <Gallery />
 
       <div className="relative flex flex-col bg-[#FBFFFC] mx-auto my-12 py-12 items-center justify-center">
         <img src={corlad_logo} alt="Logo corlad cusco" className="absolute inset-0 lg:w-1/3 mx-auto my-auto object-cover z-0 opacity-20" />
         <div className="relative z-10bg-opacity-80 p-10">
           <h4 className="text-center text-3xl md:text-4xl font-nunito font-extrabold text-[#a67102] mb-12">HIMNO INSTITUCIONAL</h4>
-          <p className="text-center text-[#363636] text-lg lg:text-xl font-didact font-semibold">
+          <p className="text-center text-[#363636] text-lg lg:text-xl  font-semibold">
             UN LEGADO CULTURAL Y DE CONDUCTA <br />
             PARA NUESTRA JUVENTUD <br />
             LA TECNOLOGÍA Y CIENCIA, LA EXPERIENCIA DETERMINAN LA VISIÓN <br />

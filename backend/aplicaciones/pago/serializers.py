@@ -40,7 +40,7 @@ class PagoSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'id_colegiado', 'id_metodo_pago', 'id_tipo_pago',
             'id_colegiado_id', 'id_metodo_pago_id', 'id_tipo_pago_id',
-            'monto_pago', 'fecha_pago'
+            'monto_pago', 'fecha_pago', 'numero_operacion', 'meses', 'observacion'
         ]
 
     def validate(self, data):

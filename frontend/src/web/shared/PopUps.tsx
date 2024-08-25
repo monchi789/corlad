@@ -1,6 +1,6 @@
 import { Dialog } from "primereact/dialog";
 import { useEffect, useState } from "react";
-import { PopUp } from "../../interfaces/PopUp";
+import { PopUp } from "../../interfaces/model/PopUp";
 import { getPopUp } from "../../api/popup.api";
 
 export function PopUps() {
@@ -55,7 +55,7 @@ export function PopUps() {
       <div className="w-5/6 lg:w-1/2">
         <Dialog className="w-5/6 lg:w-1/2 bg-white rounded items-center lg:px-10" header={headerContent} visible={visible} draggable={false} closable={false} closeOnEscape onHide={() => { if (!visible) return; setVisible(false); }}>
           {popUpsActivo.map(element => (
-            <img key={element.id} className="w-full" src={import.meta.env.VITE_API_URL_ALTER+element.imagen} alt="" />
+            <img key={element.id} className="w-full" src={import.meta.env.VITE_API_URL_ALTER + element.imagen} alt="" />
           ))}
         </Dialog>
       </div>

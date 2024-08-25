@@ -1,6 +1,11 @@
 mediafiles
 data
 servers.json
+<<<<<<< HEAD
 .env
 .env.prod
 .env.local
+=======
+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
+.env
+>>>>>>> development

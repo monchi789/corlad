@@ -270,7 +270,7 @@ class ColegiadoViewSet(viewsets.ViewSet):
 
     # Métodos permitidos para filtros en la URL
     allow_query_params = {
-        'numero_colegiatura', 'dni_colegiado', 'apellido_paterno', 'estado', 'page', 'page_size'
+        'numero_colegiatura', 'dni_colegiado', 'apellido_paterno', 'estado'
     }
 
     # Metodos
@@ -327,7 +327,7 @@ class ColegiadoViewSet(viewsets.ViewSet):
             return paginator.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     # Metodo GET por ID
     @swagger_auto_schema(
@@ -391,6 +391,7 @@ class ColegiadoViewSet(viewsets.ViewSet):
 class HistorialEducativoViewSet(viewsets.ViewSet):
     queryset = HistorialEducativo.objects.all()
     serializer_class = HistorialEducativoSerializer
+    pagination_class = CustomPagination
 
     # JWT
     permission_classes = [IsAuthenticated, DjangoModelPermissions, HistorialEducativoPermissions]
@@ -401,7 +402,8 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
     filter_backends = [DjangoFilterBackend]
 
     allow_query_params = {
-        'estado', 'apellido_paterno', 'apellido_materno', 'nombre_escuela', 'nombre_especialidad', 'dni_colegiado', 'numero_colegiatura'
+        'estado_colegiado', 'apellido_paterno', 'apellido_materno', 'nombre_escuela', 'nombre_especialidad', 'dni_colegiado', 'numero_colegiatura', 'estado_colegiado', 
+        'page', 'page_size'
     }
 
     def filter_queryset(self, queryset):
@@ -426,9 +428,17 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
             serializer.save()
         except Exception as e:
             return Response({'detail': f'Error al actualizar: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
-
-    # Métodos GET, UPDATE, CREATE y DELETE
     
+    def paginate_queryset(self, queryset):
+        paginator = self.pagination_class()
+        return paginator.paginate_queryset(queryset, self.request, view=self)
+
+    def get_paginated_response(self, data):
+        paginator = self.pagination_class()
+        return paginator.get_paginated_response(data)
+
+
+    # Métodos GET
     @swagger_auto_schema(
         operation_id='Listar Historial Educativo',
         responses={200: openapi.Response(description='Lista de Historial Educativo')},
@@ -439,8 +449,15 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
                 return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_404_NOT_FOUND)
 
         queryset = self.filter_queryset(self.get_queryset())
-        serializer = self.serializer_class(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(queryset, request, self)
+        
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
     
     def retrieve(self, request, pk=None):
         try:
@@ -473,9 +490,9 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     @swagger_auto_schema(
-        operation_id='Actualizar un Historial',
-        request_body=HistorialEducativoSerializer,
-        responses={200: openapi.Response(description='Historial educativo actualizado')}
+    operation_id='Actualizar un Historial',
+    request_body=HistorialEducativoSerializer,
+    responses={200: openapi.Response(description='Historial educativo actualizado')}
     )
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -483,10 +500,9 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
         data = request.data.copy()
 
         # Manejar los IDs de las relaciones
-        if 'id_colegiado' in data and isinstance(data['id_colegiado'], dict):
-            data['id_colegiado_id'] = data['id_colegiado'].get('id')
-        if 'id_especialidad' in data and isinstance(data['id_especialidad'], dict):
-            data['id_especialidad_id'] = data['id_especialidad'].get('id')
+        for field in ['id_colegiado', 'id_especialidad', 'id_estado_colegiatura']:
+            if field in data and isinstance(data[field], dict):
+                data[f'{field}_id'] = data[field].get('id')
         
         serializer = self.get_serializer(instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
@@ -518,7 +534,9 @@ class ConsultarHabilidadViewSet(viewsets.ViewSet):
     filterset_class = ConsultarHabilidadFilter
     filter_backends = [DjangoFilterBackend]
 
-    allow_query_params = {'dni_colegiado', 'numero_colegiatura', 'apellido_paterno', 'apellido_materno'}
+    allow_query_params = {
+        'dni_colegiado', 'numero_colegiatura', 'apellido_paterno', 'apellido_materno', 'estado_colegiado'
+    }
     
     # Metodos
     def filter_queryset(self, queryset):

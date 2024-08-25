@@ -1,24 +1,31 @@
-import persona from "../../assets/web/person_perfil.webp"
+import { useEffect, useState } from "react";
+import persona from "../../assets/web/person_perfil.webp";
 import { FaRegCalendar } from "react-icons/fa6";
-import { FaMapMarkerAlt } from "react-icons/fa";
 
 export function SessionHeader() {
+  const [currentDate, setCurrentDate] = useState<string>("");
+
+  useEffect(() => {
+    const now = new Date();
+    const formattedDate = now.toLocaleDateString("es-ES", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+    });
+    setCurrentDate(formattedDate);
+  }, []);
+
   return (
-    <div className="flex flex-row w-full justify-between text-[#F1E9D0] font-nunito font-semibold bg-[#00330A] rounded-3xl px-10 py-5">
+    <div className="flex flex-row w-full justify-between text-white font-nunito font-semibold bg-[#007336] shadow-custom-input rounded-2xl px-7 py-2">
       <div className="flex flex-row space-x-5 my-auto">
         <div className="flex flex-row space-x-2">
           <FaRegCalendar className="my-auto" />
-          <span>Martes, 9 Julio</span>
-        </div>
-        <div className="flex flex-row space-x-2">
-          <FaMapMarkerAlt className="my-auto" />
-          <span>Cusco Perú</span>
+          <span>{currentDate}</span>
         </div>
       </div>
-      <div className="flex flex-row space-x-5">
-        <img className="size-10" src={persona} alt="Vacio persona" />
-        <p className="text-[#ECF6E8] font-nunito font-bold my-auto">Usuario</p>
+      <div className="flex flex-row">
+        <img className="size-10" src={persona} alt="Persona default" />
       </div>
     </div>
-  )
+  );
 }
