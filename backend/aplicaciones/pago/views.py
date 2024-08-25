@@ -285,6 +285,7 @@ class PagoViewSet(viewsets.ViewSet):
 class EstadoCuentaViewSet(viewsets.ViewSet):
     queryset = EstadoCuenta.objects.all()
     serializer_class = EstadoCuentaSerializer
+    pagination_class = CustomPagination
 
     # JWT
     permission_classes = [IsAuthenticated, DjangoModelPermissions, EstadoCuentaPermissions]
@@ -295,7 +296,7 @@ class EstadoCuentaViewSet(viewsets.ViewSet):
     filter_backends = [DjangoFilterBackend]
 
     allow_query_params = {
-        'apellido_paterno', 'dni_colegiado', 'numero_colegiatura'
+        'apellido_paterno', 'dni_colegiado', 'numero_colegiatura', 'page_size'
     }
 
     # Metodos
@@ -321,6 +322,14 @@ class EstadoCuentaViewSet(viewsets.ViewSet):
             serializer.save()
         except Exception as e:
             return Response({'detail': f'Error al actualizar: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def paginate_queryset(self, queryset):
+        paginator = self.pagination_class()
+        return paginator.paginate_queryset(queryset, self.request, view=self)
+    
+    def get_paginated_response(self, data):
+        paginator = self.pagination_class()
+        return paginator.get_paginated_response(data)
 
     # Metodos GET, UPDATE, CREATE y DELETE
     # Metodo GET
@@ -332,9 +341,16 @@ class EstadoCuentaViewSet(viewsets.ViewSet):
         # Validar los parametros permitidos
         for param in request.query_params:
             if param not in self.allow_query_params:
-                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_400_BAD_REQUEST)
         
         queryset = self.filter_queryset(self.get_queryset())
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(queryset, request, self)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+        
         serializer =  self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
