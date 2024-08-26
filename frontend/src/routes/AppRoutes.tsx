@@ -11,6 +11,8 @@ const Noticias = lazy(() => import('../web/modules/noticias/Noticias.tsx'));
 const Contactanos = lazy(() => import('../web/modules/contactanos/Contactanos.tsx'));
 const ConsultarHabilidad = lazy(() => import('../web/modules/colegiados/ConsultarHabilidad.tsx'));
 const Noticia = lazy(() => import('../web/modules/noticias/noticia/Noticia.tsx'));
+const Colegiatura = lazy(() => import('../web/modules/colegiarse/colegiatura.tsx'));
+const MisionVision = lazy(() => import('../web/modules/mision-vision/misionVision.tsx'));
 
 // Rutas protegidas con Lazy Loading
 const InicioAdmin = lazy(() => import('../dashboard/modules/inicio/InicioAdmin.tsx'));
@@ -48,6 +50,8 @@ const publicRoutes = [
   { path: "/noticias/:id/:titulo", element: <Noticia /> },
   { path: "/contactanos", element: <Contactanos /> },
   { path: "/consultar-habilidad", element: <ConsultarHabilidad /> },
+  { path: "/colegiatura",  element: <Colegiatura/> },
+  { path: "/mision-vision", element: <MisionVision/>}
 ];
 
 const adminRoutes = [
