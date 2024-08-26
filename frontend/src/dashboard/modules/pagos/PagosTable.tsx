@@ -11,7 +11,7 @@ interface PagosProps {
 export function PagosTable({ pagosList }: PagosProps) {
   const columns = [
     { header: "Apellidos y nombres", accessor: "fullName", className: 'w-2/6 text-start' },
-    { header: "Documento de identidad", accessor: "dni", className: 'w-1/6 text-start' },
+    { header: "DNI", accessor: "dni", className: 'w-1/6 text-start' },
     { header: "Metodo de pago", accessor: "numero_colegiatura", className: 'w-1/6 text-start' },
     { header: "Tipo de pago", accessor: "celular", className: 'w-1/6 text-start' },
     { header: "Cantidad pagada", accessor: "estado", className: 'w-1/6 text-start' },

@@ -34,7 +34,6 @@ export default function Escuelas() {
       const especialidadesRes = await getAllEspecialidades();
       setEspecialidadesList(especialidadesRes.data as Especialidad[]);
     } catch (error) {
-      console.error("Error al cargar los datos:", error);
     }
   };
 
@@ -82,9 +81,7 @@ export default function Escuelas() {
     try {
       await deleteEscuela(id);
       cargarDatos();
-      console.log('Escuela eliminada con éxito');
     } catch (error) {
-      console.error('Error al eliminar la escuela:', error);
     }
   };
 
@@ -92,9 +89,7 @@ export default function Escuelas() {
     try {
       await deleteEspecialidad(id);
       cargarDatos();
-      console.log('Especialidad eliminada con éxito');
     } catch (error) {
-      console.error('Error al eliminar la especialidad:', error);
     }
   };
 

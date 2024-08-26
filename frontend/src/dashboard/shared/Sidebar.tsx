@@ -47,7 +47,7 @@ export function Sidebar() {
         <div className="flex-grow overflow-y-auto">
           <div className="flex flex-col w-full font-nunito text-xl">
             <img className="w-3/6 justify-center mx-auto" src={logo_corlad} alt="Logo del corlad cusco" />
-            <h1 className="text-xl text-center text-[#F1E9D0] font-black m-5">CORLAD - CUSCO</h1>
+            <h2 className="text-xl text-center text-[#F1E9D0] font-black m-5">CORLAD CUSCO</h2>
             <ul className="flex flex-col w-full justify-between">
 
               <MenuItem to="/admin" icon={<AiFillHome size={25} />} text="Inicio" />

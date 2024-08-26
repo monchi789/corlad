@@ -20,15 +20,13 @@ export const AgregarEspecialidad: React.FC<AgregarEspecialidadProps> = ({ isOpen
         const escuelasRes = await getAllEscuelas();
         setEscuelasList(escuelasRes.data as Escuela[]);
       } catch (error) {
-        console.error("Error al cargar las escuelas:", error);
       }
     }
     fetchEscuelas();
-  }, []);
+  }, [escuelasList]);
 
   const handleSubmit = async () => {
     if (selectedEscuelaId === null) {
-      console.error("Debe seleccionar una escuela");
       return;
     }
 
@@ -43,12 +41,10 @@ export const AgregarEspecialidad: React.FC<AgregarEspecialidadProps> = ({ isOpen
         nombre_especialidad: newEspecialidadName,
         id_escuela: selectedEscuela,
       };
-      console.log(newSpecialtyData)
       await createEspecialidad(newSpecialtyData);
       onSpecialtyAdded();
       onClose();
     } catch (error) {
-      console.error("Error al crear la especialidad:", error);
     }
   };
 

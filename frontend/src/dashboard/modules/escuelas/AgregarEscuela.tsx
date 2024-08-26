@@ -18,12 +18,11 @@ export const AgregarEscuela: React.FC<AgregarEscuelaProps> = ({ isOpen, onClose,
       };
 
       await createEscuela(newSchoolData);
-      console.log('Escuela creada exitosamente');
 
       onSchoolAdded();
       onClose();
     } catch (error) {
-      console.error('Error al crear la escuela:', error);
+      
     }
   };
 

@@ -25,12 +25,10 @@ export const ActualizarEscuela: React.FC<ActualizarEscuelaProps> = ({ isOpen, on
       };
 
       await updateEscuela(escuela.id, updatedSchoolData);
-      console.log('Escuela actualizada exitosamente');
 
       onSchoolUpdated();
       onClose();
     } catch (error) {
-      console.error('Error al actualizar la escuela:', error);
     }
   };
 

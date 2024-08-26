@@ -78,7 +78,7 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
       </div>
 
       <div className="bg-[#E1EBDE] shadow-custom-input rounded-2xl">
-        <div className="flex flex-row space-x-5 p-5">
+        <div className="flex flex-row space-x-5 p-4">
           <div className="w-2/6 flex flex-col">
             <label htmlFor="dni_colegiado" className="block font-nunito font-bold mb-1">Documento de identidad</label>
             <input

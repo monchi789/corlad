@@ -49,7 +49,7 @@ export function ColegiadoTable({ colegiadosList, onDelete }: ColegiadoTableProps
 
   const columns = [
     { header: "Apellidos y nombres", accessor: "fullName", className: 'w-2/6 text-start' },
-    { header: "Documento de identidad", accessor: "dni", className: 'w-1/6 text-start' },
+    { header: "DNI", accessor: "dni", className: 'w-1/6 text-start' },
     { header: "N° colegiatura", accessor: "numero_colegiatura", className: 'w-1/6 text-start' },
     { header: "N° celular", accessor: "celular", className: 'w-1/6 text-start' },
     { header: "Estado", accessor: "estado", className: 'w-1/6 text-start' },
