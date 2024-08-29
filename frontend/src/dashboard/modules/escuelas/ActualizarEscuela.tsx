@@ -44,7 +44,7 @@ export const ActualizarEscuela: React.FC<ActualizarEscuelaProps> = ({ isOpen, on
         >
           ✕
         </button>
-        <h2 className="text-2xl mb-4">Editar escuela</h2>
+        <h2 className="text-2xl mb-4">Editar capítulo</h2>
         <input
           type="text"
           placeholder="Nombre de la Escuela"

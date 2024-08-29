@@ -75,7 +75,7 @@ export const AgregarEspecialidad: React.FC<AgregarEspecialidadProps> = ({ isOpen
             value={selectedEscuelaId ?? ''}
             onChange={(e) => setSelectedEscuelaId(parseInt(e.target.value))}
           >
-            <option value="" disabled>Selecciona una escuela</option>
+            <option value="" disabled>Selecciona un capítulo</option>
             {escuelasList.map((escuela) => (
               <option key={escuela.id} value={escuela.id}>{escuela.nombre_escuela}</option>
             ))}

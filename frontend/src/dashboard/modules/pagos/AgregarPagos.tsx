@@ -110,7 +110,7 @@ export default function AgregarPagos() {
 
       toast.success('Pago registrado exitosamente');
       navigate("/admin/pagos")
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response) {
         // Si el servidor respondió con un código de estado que no es 2xx
         const serverErrors = error.response.data;
@@ -118,15 +118,15 @@ export default function AgregarPagos() {
         // Extrae los errores específicos y muéstralos
         if (serverErrors.id_colegiado_id) {
           setErrorColegiado(true)
-        } 
+        }
         if (serverErrors.meses) {
-          toast.error(`Error en el número de colegiatura: ${serverErrors.numero_colegiatura[0]}`);
+          toast.error(`Error en el número de meses: ${serverErrors.meses[0]}`);
         }
         else {
           // Muestra otros errores generales
           toast.error(`Error del servidor: ${serverErrors.message || 'Error desconocido'}`);
         }
-  
+
       } else if (error.request) {
         // Si no se recibió respuesta
         toast.error('No se pudo conectar con el servidor. Verifique su conexión.');

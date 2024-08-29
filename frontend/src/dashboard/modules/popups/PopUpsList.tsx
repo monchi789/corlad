@@ -200,7 +200,7 @@ const ConfirmDeleteModal: React.FC<{
       overlayClassName="fixed inset-0 bg-black bg-opacity-75 z-[1000]"
     >
       <div className="relative z-50 bg-white p-5 rounded-lg text-center">
-        <h2 className="text-xl mb-4">¿Estás seguro de que deseas eliminar este pop-up?</h2>
+        <h2 className="text-xl mb-4">¿Estás seguro de que deseas eliminar este anuncio?</h2>
         <div className="flex justify-center">
           <button onClick={onClose} className="mr-2 px-4 py-2 bg-gray-500 text-white rounded">
             Cancelar
@@ -329,15 +329,17 @@ export const PopUpsList = () => {
             onDelete={handleConfirmDelete}
           />
         ))}
-        <button
-          onClick={() => setAddModalIsOpen(true)}
-          className="flex w-full sm:w-1/2 md:w-1/4 lg:w-1/6 h-48 bg-[#FCFFDB] items-center border-solid border-2 shadow-custom border-[#2A8B3D] rounded-xl"
-        >
-          <div className="mx-auto my-auto text-center">
-            <IoAdd className="mx-auto mb-3" size={45} />
-            <span className="text-2xl text-[#5F4102] font-nunito font-extrabold">Nuevo PopUp</span>
-          </div>
-        </button>
+        {list.length < 5 &&
+          <button
+            onClick={() => setAddModalIsOpen(true)}
+            className="flex w-full sm:w-1/2 md:w-1/4 lg:w-1/6 h-48 bg-[#FCFFDB] items-center border-solid border-2 shadow-custom border-[#2A8B3D] rounded-xl"
+          >
+            <div className="mx-auto my-auto text-center">
+              <IoAdd className="mx-auto mb-3" size={45} />
+              <span className="text-2xl text-[#5F4102] font-nunito font-extrabold">Nuevo anuncio</span>
+            </div>
+          </button>
+        }
       </div>
 
       {selectedPopUp && (

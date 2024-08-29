@@ -169,13 +169,16 @@ export default function AgregarColegiado() {
       if (error.response) {
         // Si el servidor respondió con un código de estado que no es 2xx
         const serverErrors = error.response.data;
-
+        console.log(error)
         // Extrae los errores específicos y muéstralos
         if (serverErrors.dni_colegiado) {
           toast.error(`Error en DNI: ${serverErrors.dni_colegiado[0]}`);
         } 
         if (serverErrors.numero_colegiatura) {
           toast.error(`Error en el número de colegiatura: ${serverErrors.numero_colegiatura[0]}`);
+        }
+        if (serverErrors.celular) {
+          toast.error(`Error en el número de celular: ${serverErrors.celular[0]}`);
         }
         else {
           // Muestra otros errores generales

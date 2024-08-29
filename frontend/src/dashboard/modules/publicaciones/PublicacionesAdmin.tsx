@@ -200,7 +200,7 @@ export default function PublicacionesAdmin() {
                 />
               </div>
               <div className="flex flex-col w-full space-y-2">
-                <span className="text-xl text-[#00330A] font-nunito font-bold">Fecha de inicio</span>
+                <span className="text-xl text-[#00330A] font-nunito font-bold">Desde</span>
                 <input
                   type="date"
                   className="text-[#5F4102] font-bold font-nunito bg-transparent border-solid border-2 border-[#00330A] rounded-xl py-1 px-2"
@@ -209,7 +209,7 @@ export default function PublicacionesAdmin() {
                 />
               </div>
               <div className="flex flex-col w-full space-y-2">
-                <span className="text-xl text-[#00330A] font-nunito font-bold">Fecha fin</span>
+                <span className="text-xl text-[#00330A] font-nunito font-bold">Hasta</span>
                 <input
                   type="date"
                   className="text-[#5F4102] font-bold font-nunito bg-transparent border-solid border-2 border-[#00330A] rounded-xl py-1 px-2"

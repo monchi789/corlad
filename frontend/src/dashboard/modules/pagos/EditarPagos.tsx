@@ -143,9 +143,27 @@ export default function EditarPagos() {
 
         toast.success('Pago actualizado exitosamente');
         navigate("/admin/pagos")
-      } catch (error) {
-        toast.error('Error al actualizar el pago');
-      }
+      } catch (error:any) {
+        if (error.response) {
+          // Si el servidor respondió con un código de estado que no es 2xx
+          const serverErrors = error.response.data;
+          console.log(error)
+          // Extrae los errores específicos y muéstralos
+          if (serverErrors.meses) {
+            toast.error(`Error en el número de meses: ${serverErrors.meses[0]}`);
+          }
+          else {
+            // Muestra otros errores generales
+            toast.error(`Error del servidor: ${serverErrors.message || 'Error desconocido'}`);
+          }
+  
+        } else if (error.request) {
+          // Si no se recibió respuesta
+          toast.error('No se pudo conectar con el servidor. Verifique su conexión.');
+        } else {
+          // Otros errores
+          toast.error(`Error al crear colegiado: ${error.message}`);
+        }      }
     };
   }
 

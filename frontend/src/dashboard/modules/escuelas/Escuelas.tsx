@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { PersonAdd } from "@mui/icons-material";
+import Modal from 'react-modal';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { SessionHeader } from "../../shared/SessionHeader";
 import { Sidebar } from "../../shared/Sidebar";
@@ -26,6 +27,9 @@ export default function Escuelas() {
   const [selectedEspecialidad, setSelectedEspecialidad] = useState<Especialidad | null>(null);
   const [searchTermEscuela, setSearchTermEscuela] = useState("");
   const [searchTermEspecialidad, setSearchTermEspecialidad] = useState("");
+  const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
+  const [deleteEntityName, setDeleteEntityName] = useState(""); // Guarda el nombre de la entidad
+  const [entityToDelete, setEntityToDelete] = useState<{ type: 'escuela' | 'especialidad'; id: number } | null>(null);
 
   const cargarDatos = async () => {
     try {
@@ -77,19 +81,30 @@ export default function Escuelas() {
     setSelectedEspecialidad(null);
   };
 
-  const handleDeleteSchool = async (id: number) => {
-    try {
-      await deleteEscuela(id);
-      cargarDatos();
-    } catch (error) {
-    }
+  const handleOpenConfirmDeleteModal = (type: 'escuela' | 'especialidad', id: number, name: string) => {
+    setEntityToDelete({ type, id });
+    setDeleteEntityName(name);
+    setIsConfirmDeleteModalOpen(true);
   };
 
-  const handleDeleteEspecialidad = async (id: number) => {
-    try {
-      await deleteEspecialidad(id);
-      cargarDatos();
-    } catch (error) {
+  const handleCloseConfirmDeleteModal = () => {
+    setIsConfirmDeleteModalOpen(false);
+    setEntityToDelete(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (entityToDelete) {
+      try {
+        if (entityToDelete.type === 'escuela') {
+          await deleteEscuela(entityToDelete.id);
+        } else if (entityToDelete.type === 'especialidad') {
+          await deleteEspecialidad(entityToDelete.id);
+        }
+        cargarDatos();
+        handleCloseConfirmDeleteModal();
+      } catch (error) {
+        // Manejo de errores
+      }
     }
   };
 
@@ -138,7 +153,7 @@ export default function Escuelas() {
                 startIcon={<PersonAdd />}
                 onClick={handleAddSchool}
               >
-                <span className="font-nunito-sans font-extrabold">Agregar Capitulo</span>
+                <span className="font-nunito-sans font-extrabold">Agregar Captulo</span>
               </Button>
             </Grid>
           </Grid>
@@ -155,7 +170,7 @@ export default function Escuelas() {
                     <button className="text-xl text-white mx-2" onClick={() => handleEditSchool(escuela)}>
                       <FaEdit />
                     </button>
-                    <button className="text-xl text-white mx-2" onClick={() => handleDeleteSchool(escuela.id)}>
+                    <button className="text-xl text-white mx-2" onClick={() => handleOpenConfirmDeleteModal('escuela', escuela.id, escuela.nombre_escuela)}>
                       <FaTrashAlt />
                     </button>
                   </div>
@@ -216,7 +231,7 @@ export default function Escuelas() {
                     <button className="text-xl text-[#00330A] mx-2" onClick={() => handleEditSpecialty(especialidad)}>
                       <FaEdit />
                     </button>
-                    <button className="text-xl text-[#00330A] mx-2" onClick={() => handleDeleteEspecialidad(especialidad.id)}>
+                    <button className="text-xl text-[#00330A] mx-2" onClick={() => handleOpenConfirmDeleteModal('especialidad', especialidad.id, especialidad.nombre_especialidad)}>
                       <FaTrashAlt />
                     </button>
                   </div>
@@ -229,22 +244,49 @@ export default function Escuelas() {
         </div>
       </div>
 
+      {/* Modal de confirmación */}
+      <Modal
+        isOpen={isConfirmDeleteModalOpen}
+        onRequestClose={handleCloseConfirmDeleteModal}
+        className="flex justify-center items-center z-50"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+      >
+        <div className="bg-white p-6 rounded-lg shadow-lg text-center relative">
+          <h2 className="text-xl font-bold mb-4">Confirmar Eliminación</h2>
+          <p>¿Estás seguro de que quieres eliminar {deleteEntityName}?</p>
+          <div className="mt-4 flex justify-center space-x-4">
+            <button
+              onClick={handleConfirmDelete}
+              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+            >
+              Eliminar
+            </button>
+            <button
+              onClick={handleCloseConfirmDeleteModal}
+              className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </Modal>
+
       <AgregarEscuela isOpen={isEscuelaModalOpen} onClose={handleCloseEscuelaModal} onSchoolAdded={cargarDatos} />
       <AgregarEspecialidad isOpen={isEspecialidadModalOpen} onClose={handleCloseEspecialidadModal} onSpecialtyAdded={cargarDatos} />
       {selectedEscuela && (
-        <ActualizarEscuela 
-          isOpen={isEscuelaEditModalOpen} 
-          onClose={handleCloseEscuelaEditModal} 
-          onSchoolUpdated={cargarDatos} 
-          escuela={selectedEscuela} 
+        <ActualizarEscuela
+          isOpen={isEscuelaEditModalOpen}
+          onClose={handleCloseEscuelaEditModal}
+          onSchoolUpdated={cargarDatos}
+          escuela={selectedEscuela}
         />
       )}
       {selectedEspecialidad && (
-        <ActualizarEspecialidad 
-          isOpen={isEspecialidadEditModalOpen} 
-          onClose={handleCloseEspecialidadEditModal} 
-          onSpecialtyUpdated={cargarDatos} 
-          especialidad={selectedEspecialidad} 
+        <ActualizarEspecialidad
+          isOpen={isEspecialidadEditModalOpen}
+          onClose={handleCloseEspecialidadEditModal}
+          onSpecialtyUpdated={cargarDatos}
+          especialidad={selectedEspecialidad}
         />
       )}
     </div>
