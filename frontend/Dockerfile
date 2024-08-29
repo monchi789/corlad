@@ -13,9 +13,13 @@ RUN npm install
 # Copia los archivos del proyecto al contenedor
 COPY . .
 
+RUN npm run build
+
 # Expone el puerto 5173 (puerto por defecto de Vite)
 EXPOSE 5173
 
+RUN npm run preview
+
 # Comando para ejecutar la aplicación en modo de desarrollo
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+# CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
 
