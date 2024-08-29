@@ -36,7 +36,7 @@ export const Header = React.memo(function Header() {
         <li className="my-4 py-4 border-b">
           <NavLink
             to="/"
-            className={({ isActive }) => isActive || activeLink === 'inicio' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}
+            className={({ isActive }) => isActive || activeLink === 'inicio' ? 'underline decoration-4 decoration-[#00330a]' : 'bg-white'}
             onClick={() => handleLinkClick('inicio')}
           >
             Inicio
@@ -45,7 +45,7 @@ export const Header = React.memo(function Header() {
         <li className="my-4 py-4 border-b">
           <NavLink
             to="/nosotros"
-            className={({ isActive }) => isActive || activeLink === 'nosotros' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}
+            className={({ isActive }) => isActive || activeLink === 'nosotros' ? 'underline decoration-4 decoration-[#00330a]' : 'bg-white'}
             onClick={() => handleLinkClick('nosotros')}
           >
             Nosotros
@@ -54,7 +54,7 @@ export const Header = React.memo(function Header() {
         <li className="my-4 py-4 border-b">
           <NavLink
             to="/noticias"
-            className={({ isActive }) => isActive || activeLink === 'noticias' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}
+            className={({ isActive }) => isActive || activeLink === 'noticias' ? 'underline decoration-4 decoration-[#00330a]' : 'bg-white'}
             onClick={() => handleLinkClick('noticias')}
           >
             Noticias
@@ -63,7 +63,7 @@ export const Header = React.memo(function Header() {
         <li className="my-4 py-4 border-b">
           <NavLink
             to="/contactanos"
-            className={({ isActive }) => isActive || activeLink === 'contactanos' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}
+            className={({ isActive }) => isActive || activeLink === 'contactanos' ? 'underline decoration-4 decoration-[#00330a]' : 'bg-white'}
             onClick={() => handleLinkClick('contactanos')}
           >
             Contáctanos
@@ -71,7 +71,7 @@ export const Header = React.memo(function Header() {
         </li>
         <NavLink
           to="/consultar-habilidad"
-          className={({ isActive }) => isActive || activeLink === 'consultar-habilidad' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}
+          className={({ isActive }) => isActive || activeLink === 'consultar-habilidad' ? 'underline decoration-4 decoration-[#00330a]' : 'bg-white'}
           onClick={() => handleLinkClick('consultar-habilidad')}
         >
           <button className="mt-4 px-5 py-1 rounded-lg bg-[#00330a] text-[#ffffff] font-nunito font-semibold">
@@ -93,37 +93,37 @@ export const Header = React.memo(function Header() {
         </div>
         <div className="hidden lg:flex lg:flex-1 my-auto items-center justify-end me-10">
           <ul className="flex gap-8 font-nunito text-lg font-semibold items-center">
-            <li className="hover:text-[#a67102] transition duration-300 p-1">
+            <li className="hover:text-[#008634] transition duration-300 p-1">
               <NavLink
                 to="/"
-                className={({ isActive }) => isActive || activeLink === 'inicio' ? 'text-[#a67102] underline decoration-4 decoration-[#a67102]' : 'bg-white'}
+                className={({ isActive }) => isActive || activeLink === 'inicio' ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' : 'bg-white'}
                 onClick={() => handleLinkClick('inicio')}
               >
                 Inicio
               </NavLink>
             </li>
-            <li className="hover:text-[#a67102] transition duration-300 p-1">
+            <li className="hover:text-[#008634] transition duration-300 p-1">
               <NavLink
                 to="/nosotros"
-                className={({ isActive }) => isActive || activeLink === 'nosotros' ? 'text-[#a67102] underline decoration-4 decoration-[#a67102]' : 'bg-white'}
+                className={({ isActive }) => isActive || activeLink === 'nosotros' ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' : 'bg-white'}
                 onClick={() => handleLinkClick('nosotros')}
               >
                 Nosotros
               </NavLink>
             </li>
-            <li className="hover:text-[#a67102] transition duration-300 p-1">
+            <li className="hover:text-[#008634] transition duration-300 p-1">
               <NavLink
                 to="/noticias"
-                className={({ isActive }) => isActive || activeLink === 'noticias' ? 'text-[#a67102] underline decoration-4 decoration-[#a67102]' : 'bg-white'}
+                className={({ isActive }) => isActive || activeLink === 'noticias' ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' : 'bg-white'}
                 onClick={() => handleLinkClick('noticias')}
               >
                 Noticias
               </NavLink>
             </li>
-            <li className="hover:text-[#a67102] transition duration-300 p-1">
+            <li className="hover:text-[#008634] transition duration-300 p-1">
               <NavLink
                 to="/contactanos"
-                className={({ isActive }) => isActive || activeLink === 'contactanos' ? 'text-[#a67102] underline decoration-4 decoration-[#a67102]' : 'bg-white'}
+                className={({ isActive }) => isActive || activeLink === 'contactanos' ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' : 'bg-white'}
                 onClick={() => handleLinkClick('contactanos')}
               >
                 Contáctanos
@@ -135,7 +135,7 @@ export const Header = React.memo(function Header() {
             className={({ isActive }) => isActive || activeLink === 'consultar-habilidad' ? 'underline decoration-4 decoration-[#a67102]' : 'bg-white'}
             onClick={() => handleLinkClick('consultar-habilidad')}
           >
-            <button className="ms-10 py-1 px-3 rounded-lg bg-[#00330a] text-lg text-[#ffffff] font-nunito font-semibold hover:bg-green-800 transition duration-300">
+            <button className="ms-10 py-1 px-3 rounded-lg bg-[#00330a] text-lg text-[#ffffff] font-nunito font-semibold hover:bg-[#008634] transition duration-300">
               Consultar habilidad
             </button>
           </NavLink>

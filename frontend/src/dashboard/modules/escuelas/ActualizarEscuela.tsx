@@ -25,12 +25,10 @@ export const ActualizarEscuela: React.FC<ActualizarEscuelaProps> = ({ isOpen, on
       };
 
       await updateEscuela(escuela.id, updatedSchoolData);
-      console.log('Escuela actualizada exitosamente');
 
       onSchoolUpdated();
       onClose();
     } catch (error) {
-      console.error('Error al actualizar la escuela:', error);
     }
   };
 
@@ -46,7 +44,7 @@ export const ActualizarEscuela: React.FC<ActualizarEscuelaProps> = ({ isOpen, on
         >
           ✕
         </button>
-        <h2 className="text-2xl mb-4">Editar escuela</h2>
+        <h2 className="text-2xl mb-4">Editar capítulo</h2>
         <input
           type="text"
           placeholder="Nombre de la Escuela"

@@ -39,7 +39,7 @@ export const BuscarPagos = ({ onSearchResults }: BuscarPagoProps) => {
 
   return (
     <div className="mt-5 pb-5">
-      <div className="mt-5 bg-[#E1EBDE] rounded-2xl">
+      <div className="mt-5 bg-[#E1EBDE] shadow-custom-input rounded-2xl">
         <div className="flex flex-col md:flex-row md:space-x-5 space-y-5 md:space-y-0 p-4">
           <div className="md:w-2/6 flex flex-col">
             <label htmlFor="dni_colegiado" className="block font-nunito font-bold mb-1">Documento de identidad</label>

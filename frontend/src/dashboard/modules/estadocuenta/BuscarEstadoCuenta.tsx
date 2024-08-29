@@ -31,7 +31,7 @@ export const BuscarEstadoCuenta = ({ onSearchResults }: BuscarEstadoCuentaProps)
   const handleSearch = async () => {
     try {
       const res = await getEstadoCuentaByFilters(params.numero_colegiatura, params.dni_colegiado, params.apellido_paterno);
-      onSearchResults(res.data);
+      onSearchResults(res.data.results);
     } catch (error) {
       console.error("Error fetching colegiados:", error);
     }

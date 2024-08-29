@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { SessionHeader } from "../../shared/SessionHeader";
 import { Sidebar } from "../../shared/Sidebar";
 import Radio from '@mui/material/Radio';
@@ -100,7 +100,7 @@ export default function EditarPagos() {
       const entero = name === 'monto_pago_entero' ? value : pagoData.monto_pago_entero;
       const decimal = name === 'monto_pago_decimal' ? value : pagoData.monto_pago_decimal;
       const monto_pago = parseFloat(`${entero}.${decimal}`) || 0;
-  
+
       setPagoData(prevState => ({
         ...prevState,
         [name]: value,
@@ -143,20 +143,38 @@ export default function EditarPagos() {
 
         toast.success('Pago actualizado exitosamente');
         navigate("/admin/pagos")
-      } catch (error) {
-        toast.error('Error al actualizar el pago');
-      }
+      } catch (error:any) {
+        if (error.response) {
+          // Si el servidor respondió con un código de estado que no es 2xx
+          const serverErrors = error.response.data;
+          console.log(error)
+          // Extrae los errores específicos y muéstralos
+          if (serverErrors.meses) {
+            toast.error(`Error en el número de meses: ${serverErrors.meses[0]}`);
+          }
+          else {
+            // Muestra otros errores generales
+            toast.error(`Error del servidor: ${serverErrors.message || 'Error desconocido'}`);
+          }
+  
+        } else if (error.request) {
+          // Si no se recibió respuesta
+          toast.error('No se pudo conectar con el servidor. Verifique su conexión.');
+        } else {
+          // Otros errores
+          toast.error(`Error al crear colegiado: ${error.message}`);
+        }      }
     };
   }
 
   return (
     <div className="flex flex-row w-full">
       <Sidebar />
-      <div className="w-4/5 m-3 p-3">
+      <div className="w-full xl:w-4/5 mx-3 p-3">
         <SessionHeader />
         <form className="flex flex-col w-full mt-10" onSubmit={handleSubmit}>
           <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold mb-5">Editar pago</h4>
-          <div className="flex flex-row ms-5 mb-5">
+          <div className="flex flex-row mb-5">
             <div className="flex flex-col w-full lg:w-2/3">
               <div className="bg-[#C9D9C6] text-[#00330A] rounded-2xl px-5 py-5 mb-5">
                 <div className="flex flex-col space-y-3">
@@ -189,7 +207,7 @@ export default function EditarPagos() {
                         <span className="my-auto">Buscar</span>
                       </button>
                     </div>
-                    {loading && <p>Loading...</p>}
+                    {loading && <p>Cargando...</p>}
                     <input
                       value={loading ? "" : selectedColegiado}
                       className="bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-bold shadow-[#B8B195] shadow-md rounded-lg p-2"
@@ -202,7 +220,7 @@ export default function EditarPagos() {
               <div className="text-[#00330A] rounded-2xl px-5 py-2">
                 <div className="flex flex-row w-full space-x-10 mb-5">
                   <div className="w-1/2 space-y-2">
-                    <label htmlFor="numero_operacion" className="w-full text-xl font-nunito font-extrabold block my-auto">Numero de operacion:</label>
+                    <label htmlFor="numero_operacion" className="w-full text-xl font-nunito font-extrabold block my-auto">Numero de operación:</label>
                     <input
                       type="number"
                       id="numero_operacion"
@@ -353,7 +371,11 @@ export default function EditarPagos() {
           </div>
           <div className="flex flex-row justify-end text-md font-nunito font-bold space-x-5 mt-5 me-5">
             <button type="submit" className="w-2/6 bg-[#007336] text-white hover:bg-[#00330A] shadow-md rounded-2xl transition duration-300 space-x-4 px-8 py-2">Guardar pago</button>
-            <button type="button" className="w-1/6 bg-[#ECF6E8] text-[#3A3A3A] border-2 border-[#3A3A3A] rounded-2xl">Cancelar</button>
+            <Link to={"/admin/pagos"} className="w-1/6">
+              <button type="button" className="w-full border-solid border-2 border-[#3A3A3A] rounded-2xl py-3">
+                Cancelar
+              </button>
+            </Link>
           </div>
         </form>
         <Toaster

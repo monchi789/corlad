@@ -47,7 +47,7 @@ export function Sidebar() {
         <div className="flex-grow overflow-y-auto">
           <div className="flex flex-col w-full font-nunito text-xl">
             <img className="w-3/6 justify-center mx-auto" src={logo_corlad} alt="Logo del corlad cusco" />
-            <h1 className="text-xl text-center text-[#F1E9D0] font-black m-5">CORLAD - CUSCO</h1>
+            <h2 className="text-xl text-center text-[#F1E9D0] font-black m-5">CORLAD CUSCO</h2>
             <ul className="flex flex-col w-full justify-between">
 
               <MenuItem to="/admin" icon={<AiFillHome size={25} />} text="Inicio" />
@@ -116,7 +116,7 @@ export function Sidebar() {
                         </Link>
                         <Link to={"/admin/publicaciones/categorias"}>
                           <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] rounded-lg transition duration-300 p-2">
-                            <span className="my-auto">Categorias</span>
+                            <span className="my-auto">Categorías</span>
                           </li>
                         </Link>
                       </ul>

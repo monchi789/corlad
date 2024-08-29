@@ -62,8 +62,8 @@ class TipoPago(models.Model):
 class Pago(models.Model):
     monto_pago = models.FloatField(default=0.00, validators=[MinValueValidator(0)])
     fecha_pago = models.DateField(null=False, blank=False, default=timezone.now)
-    numero_operacion = models.CharField(null=False, blank=False, default='', validators=[validar_numero])
-    meses = models.CharField(max_length=2, null=False, blank=False, default='', validators=[validar_numero])
+    numero_operacion = models.CharField(null=True, blank=True, default='', validators=[validar_numero])
+    meses = models.CharField(max_length=3, null=False, blank=False, default='', validators=[validar_numero])
     observacion = models.CharField(max_length=255, null=True, blank=True, default='', validators=[validar_espacio])
     id_colegiado = models.ForeignKey(Colegiado, on_delete=models.CASCADE)
     id_tipo_pago = models.ForeignKey(TipoPago, on_delete=models.CASCADE, default=0)

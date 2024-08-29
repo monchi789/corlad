@@ -18,12 +18,11 @@ export const AgregarEscuela: React.FC<AgregarEscuelaProps> = ({ isOpen, onClose,
       };
 
       await createEscuela(newSchoolData);
-      console.log('Escuela creada exitosamente');
 
       onSchoolAdded();
       onClose();
     } catch (error) {
-      console.error('Error al crear la escuela:', error);
+      
     }
   };
 
@@ -39,7 +38,7 @@ export const AgregarEscuela: React.FC<AgregarEscuelaProps> = ({ isOpen, onClose,
         >
           ✕
         </button>
-        <h2 className="text-2xl mb-4">Registrar nueva escuela</h2>
+        <h2 className="text-2xl mb-4">Registrar nuevo capítulo</h2>
         <input
           type="text"
           placeholder="Nombre de la Escuela"
@@ -47,7 +46,7 @@ export const AgregarEscuela: React.FC<AgregarEscuelaProps> = ({ isOpen, onClose,
           value={newEscuelaName}
           onChange={(e) => setNewEscuelaName(e.target.value)}
         />
-        <button className="bg-[#007336] text-white py-2 px-4 rounded" onClick={handleSubmit}>Añadir escuela</button>
+        <button className="bg-[#007336] text-white py-2 px-4 rounded" onClick={handleSubmit}>Añadir capítulo</button>
       </div>
     </div>
   );

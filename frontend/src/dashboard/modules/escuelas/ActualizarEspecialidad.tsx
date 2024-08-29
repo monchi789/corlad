@@ -21,7 +21,6 @@ export const ActualizarEspecialidad: React.FC<ActualizarEspecialidadProps> = ({ 
         const escuelasRes = await getAllEscuelas();
         setEscuelasList(escuelasRes.data as Escuela[]);
       } catch (error) {
-        console.error("Error al cargar las escuelas:", error);
       }
     }
     fetchEscuelas();
