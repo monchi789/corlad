@@ -170,7 +170,7 @@ export default function PublicacionesAdmin() {
   return (
     <div className="flex flex-row w-full">
       <Sidebar />
-      <div className="w-full xl:w-4/5 m-3 p-3">
+      <div className="w-full xl:w-4/5 mx-3 p-3">
         <SessionHeader />
         <div className="flex flex-col space-y-5 mt-10">
           <div className="flex flex-row justify-between">

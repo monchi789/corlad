@@ -112,7 +112,7 @@ export default function Escuelas() {
   return (
     <div className="flex flex-row w-full bg-white">
       <Sidebar />
-      <div className="w-full xl:w-4/5 m-3 p-3">
+      <div className="w-full xl:w-4/5 mx-3 p-3">
         <SessionHeader />
         <div className="mt-10 space-y-5">
           <Grid container spacing={2} justifyContent="space-between" alignItems="center">

@@ -133,10 +133,10 @@ const EditModal: React.FC<{
         <input type="file" onChange={handleImageChange} />
         <div className="flex justify-end mt-4">
           <button onClick={onClose} className="mr-2 px-4 py-2 bg-gray-500 text-white rounded">
-            Cancel
+            Cancelar
           </button>
           <button onClick={handleSave} className="px-4 py-2 bg-green-500 text-white rounded">
-            Save
+            Guardar
           </button>
         </div>
       </div>
@@ -175,10 +175,10 @@ const AddModal: React.FC<{
         <input type="file" onChange={handleImageChange} />
         <div className="flex justify-end mt-4">
           <button onClick={onClose} className="mr-2 px-4 py-2 bg-gray-500 text-white rounded">
-            Cancel
+            Cancelar
           </button>
           <button onClick={handleSave} className="px-4 py-2 bg-green-500 text-white rounded">
-            Save
+            Guardar
           </button>
         </div>
       </div>

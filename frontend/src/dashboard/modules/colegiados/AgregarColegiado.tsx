@@ -165,9 +165,30 @@ export default function AgregarColegiado() {
       setFileName(null);
       setImageUrl(colegiado_default);
       navigate("/admin/colegiado")
-    } catch (error) {
-      console.error('Error al crear colegiado:', error);
-      toast.error('Error al crear colegiado');
+    } catch (error: any) {
+      if (error.response) {
+        // Si el servidor respondió con un código de estado que no es 2xx
+        const serverErrors = error.response.data;
+
+        // Extrae los errores específicos y muéstralos
+        if (serverErrors.dni_colegiado) {
+          toast.error(`Error en DNI: ${serverErrors.dni_colegiado[0]}`);
+        } 
+        if (serverErrors.numero_colegiatura) {
+          toast.error(`Error en el número de colegiatura: ${serverErrors.numero_colegiatura[0]}`);
+        }
+        else {
+          // Muestra otros errores generales
+          toast.error(`Error del servidor: ${serverErrors.message || 'Error desconocido'}`);
+        }
+  
+      } else if (error.request) {
+        // Si no se recibió respuesta
+        toast.error('No se pudo conectar con el servidor. Verifique su conexión.');
+      } else {
+        // Otros errores
+        toast.error(`Error al crear colegiado: ${error.message}`);
+      }
     }
   };
 
@@ -183,7 +204,7 @@ export default function AgregarColegiado() {
   return (
     <div className="flex flex-row w-full">
       <Sidebar />
-      <div className="w-4/5 m-3 p-3">
+      <div className="w-4/5 mx-3 p-3">
         <SessionHeader />
         <form className="flex flex-col w-full space-x-5 mt-10" onSubmit={handleSubmit}>
           <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold mb-5">Nuevo colegiado</h4>

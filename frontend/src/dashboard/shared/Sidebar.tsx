@@ -116,7 +116,7 @@ export function Sidebar() {
                         </Link>
                         <Link to={"/admin/publicaciones/categorias"}>
                           <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] rounded-lg transition duration-300 p-2">
-                            <span className="my-auto">Categorias</span>
+                            <span className="my-auto">Categorías</span>
                           </li>
                         </Link>
                       </ul>
