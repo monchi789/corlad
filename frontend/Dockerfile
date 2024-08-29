@@ -16,6 +16,8 @@ COPY . .
 # Expone el puerto 5173 (puerto por defecto de Vite)
 EXPOSE 5173
 
+RUN npm run build
+
 # Comando para ejecutar la aplicación en modo de desarrollo
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0"]
 
