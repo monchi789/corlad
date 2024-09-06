@@ -142,9 +142,10 @@ const Image: React.FC<ImageProps> = ({ id, imagenes, estado_slider, onStatusChan
 
 const AddModal: React.FC<{
   isOpen: boolean;
+  isLoading: boolean;
   onClose: () => void;
   onSave: (newImages: File[]) => void;
-}> = ({ isOpen, onClose, onSave }) => {
+}> = ({ isOpen, isLoading, onClose, onSave }) => {
   const [newImages, setNewImages] = useState<File[]>([]);
   const [previewImages, setPreviewImages] = useState<string[]>([]);
 
@@ -237,7 +238,7 @@ const AddModal: React.FC<{
             Cancelar
           </button>
           <button onClick={handleSave} className="px-4 py-2 bg-green-500 text-white rounded">
-            Guardar
+            {isLoading ? 'Guardando...' : 'Guardar'}
           </button>
         </div>
       </div>
@@ -412,13 +413,14 @@ export const SlidersList = () => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [selectedSlider, setSelectedSlider] = useState<Slider | null>(null);
+  const [isLoading, setIsLoading] = useState(false); // Estado para controlar la carga
 
   const fetchSlider = async () => {
     try {
       const res = await getSlider();
       setList(res.data);
     } catch (error) {
-      console.error('Error al obtener la lista de sliders:', error);
+      console.error('Error al obtener la lista de galerías:', error);
     }
   };
 
@@ -438,7 +440,7 @@ export const SlidersList = () => {
       );
 
     } catch (error) {
-      console.error('Error al actualizar el estado de los sliders:', error);
+      console.error('Error al actualizar el estado de las galerías:', error);
     }
   };
 
@@ -449,7 +451,7 @@ export const SlidersList = () => {
       setSelectedSlider(slider);
       setIsEditModalOpen(true);
     } else {
-      console.log("Slider not found for id:", id); // Esto significa que no se encontró el slider
+      toast.error('Error al encontrar la galería');
     }
   };
 
@@ -458,10 +460,9 @@ export const SlidersList = () => {
       await editSlider(id, formData);
       fetchSlider();
       setIsEditModalOpen(false);
-      toast.success('Slider actualizado con éxito');
+      toast.success('Galería actualizada con éxito');
     } catch (error) {
-      console.error('Error updating slider:', error);
-      toast.error('Error actualizando el slider');
+      toast.error('Error actualizando la galería');
     }
   };
 
@@ -471,12 +472,16 @@ export const SlidersList = () => {
       formData.append(`imagen_${index + 1}`, image);
     });
 
+    setIsLoading(true); // Comienza la carga antes de la solicitud
+
     try {
       await createSlider(formData);
       fetchSlider(); // Refresh the list
       setAddModalIsOpen(false);
     } catch (error) {
-      console.error('Error al añadir el slider:', error);
+      toast.error('Error al agregar la galería');
+    }finally {
+      setIsLoading(false); // Termina la carga después de la solicitud (tanto si es exitosa como si falla)
     }
   };
 
@@ -559,6 +564,7 @@ export const SlidersList = () => {
 
   <AddModal
     isOpen={addModalIsOpen}
+    isLoading={isLoading}
     onClose={() => setAddModalIsOpen(false)}
     onSave={handleAdd}
   />

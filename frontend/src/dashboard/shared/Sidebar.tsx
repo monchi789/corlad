@@ -38,15 +38,15 @@ export function Sidebar() {
   return (
     <>
       <button
-        className="fixed top-4 left-4 z-50 text-white bg-[#007336] p-2 rounded-md xl:hidden"
+        className="fixed top-4 left-4 z-50 text-white bg-[#007336] rounded-md xl:hidden p-2"
         onClick={toggleSidebar}
       >
         <MdMenu size={24} />
       </button>
-      <div className={`fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} xl:relative xl:translate-x-0 transition duration-200 ease-in-out xl:w-1/5 w-64 h-svh bg-[#007336] rounded-2xl shadow-custom m-3 p-3 mb-10 overflow-y-auto z-40 flex flex-col`}>
+      <div className={`flex flex-col fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} xl:relative xl:translate-x-0 transition duration-200 ease-in-out w-3/4 md:w-2/4 lg:w-1/4 xl:w-1/4 min-h-svh  bg-[#007336] rounded-2xl shadow-custom m-3 p-3 mb-5 overflow-y-auto z-40`}>
         <div className="flex-grow overflow-y-auto">
           <div className="flex flex-col w-full font-nunito text-xl">
-            <img className="w-3/6 justify-center mx-auto" src={logo_corlad} alt="Logo del corlad cusco" />
+            <img className="w-3/6 lg:w-2/6 justify-center mx-auto" src={logo_corlad} alt="Logo del corlad cusco" />
             <h2 className="text-xl text-center text-[#F1E9D0] font-black m-5">CORLAD CUSCO</h2>
             <ul className="flex flex-col w-full justify-between">
 

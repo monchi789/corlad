@@ -6,13 +6,14 @@ import { Unauthorized } from '../dashboard/shared/NoAutorizado.tsx';
 
 // Rutas públicas con Lazy Loading
 const Inicio = lazy(() => import('../web/modules/inicio/Inicio.tsx'));
-const Nosotros = lazy(() => import('../web/modules/nosotros/Nosotros.tsx'));
+const Nosotros = lazy(() => import('../web/modules/institucional/Nosotros.tsx'));
+const Normativas = lazy(() => import('../web/modules/institucional/Normativas.tsx'))
 const Noticias = lazy(() => import('../web/modules/noticias/Noticias.tsx'));
 const Contactanos = lazy(() => import('../web/modules/contactanos/Contactanos.tsx'));
 const ConsultarHabilidad = lazy(() => import('../web/modules/colegiados/ConsultarHabilidad.tsx'));
 const Noticia = lazy(() => import('../web/modules/noticias/noticia/Noticia.tsx'));
 const Colegiatura = lazy(() => import('../web/modules/colegiarse/colegiatura.tsx'));
-const MisionVision = lazy(() => import('../web/modules/mision-vision/misionVision.tsx'));
+const MisionVision = lazy(() => import('../web/modules/institucional/MisionVision.tsx'));
 
 // Rutas protegidas con Lazy Loading
 const InicioAdmin = lazy(() => import('../dashboard/modules/inicio/InicioAdmin.tsx'));
@@ -46,6 +47,7 @@ const LoadingSpinner = () => (
 const publicRoutes = [
   { path: "/", element: <Inicio /> },
   { path: "/nosotros", element: <Nosotros /> },
+  { path: "/normativas", element: <Normativas /> },
   { path: "/noticias", element: <Noticias /> },
   { path: "/noticias/:id/:titulo", element: <Noticia /> },
   { path: "/contactanos", element: <Contactanos /> },

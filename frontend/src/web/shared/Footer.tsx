@@ -5,10 +5,10 @@ import { FaTiktok } from "react-icons/fa";
 
 export function Footer() {
   return (
-    <div className="w-full bg-[#363636] pt-10 font-didact">
+    <div className="w-full bg-[#363636] pt-5 font-didact">
       <div className="container flex flex-col md:flex-row md:space-x-5 w-4/6 mx-auto">
         <div className="flex flex-col md:w-2/5">
-          <img className='w-3/6 md:w-5/6 lg:w-1/2' src={logo_corlad_blanco} alt="" />
+          <Link to={"/"}><img className='w-3/6 md:w-5/6 lg:w-1/2' src={logo_corlad_blanco} alt="Logo del corlad" /></Link>
           <h3 className='font-extrabold text-xl text-[#a67102] mt-6 mb-3 font-nunito'>HORARIO</h3>
           <div className='text-white text-lg font-didact'>
             <p>Lunes a viernes 09:00 h. - 18:00 h.</p>
@@ -22,7 +22,7 @@ export function Footer() {
               <p className='py-0.5'>Inicio</p>
             </Link>
             <Link to={'/nosotros'}>
-              <p className='py-0.5'>Nosotros</p>
+              <p className='py-0.5'>Institucional</p>
             </Link>
             <Link to={'/noticias'}>
               <p className='py-0.5'>Noticias</p>

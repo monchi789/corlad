@@ -62,7 +62,7 @@ export default function Nosotros() {
         <div className="flex flex-col lg:flex-row items-center w-4/5 my-6 lg:my-12">
           <img className="lg:w-1/3 mx-16" src={corlad_logo} alt="Logo corlad cusco" />
           <p className="text-xl text-[#363636] lg:my-0 xl:mx-24 font-didact my-6">
-            El colegio regional de licenciados en administración Cusco CORLAD con 40 años de ser fundado, creado en el año 1984, agrupa a las carreras de administración,
+            El Colegio Regional de Licenciados en Administración Cusco con 40 años de ser fundado, creado en el año 1984, agrupa a las carreras de administración,
             negocios internacionales, marketing y finanzas dirigido por el decano Willy Bravo Aparicio en su gestión 2024 - 2025 con el lema <b>“integridad y servicio”</b> para sus agremiados.
           </p>
         </div>

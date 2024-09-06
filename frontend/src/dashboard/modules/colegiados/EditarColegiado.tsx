@@ -392,7 +392,7 @@ export default function EditarColegiado() {
                       />
                     </div>
                     <div className="w-1/3">
-                      <label htmlFor="numero_colegiatura" className="block mb-1">N° Colegiatura</label>
+                      <label htmlFor="numero_colegiatura" className="block mb-1">N° Colegiatura / REGUC</label>
                       <input
                         type="text"
                         id="numero_colegiatura"
