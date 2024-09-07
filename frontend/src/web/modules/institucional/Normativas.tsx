@@ -22,8 +22,8 @@ export default function Normativas() {
   return (
     <div>
       <Header />
-      <div className="container mx-auto mt-48 mb-24 items-center">
-        <h1 className="flex flex-col justify-center lg:flex-row font-extrabold text-4xl text-center font-nunito text-[#a67102] mb-12">
+      <div className="container mx-auto mt-40 mb-24 items-center">
+        <h1 className="flex flex-col justify-center lg:flex-row font-extrabold text-3xl md:text-4xl text-center font-nunito text-[#a67102] mb-12">
           DOCUMENTOS&nbsp;<span className="text-[#363636]">INSTITUCIONALES</span>
         </h1>
         <div className="grid md:grid-cols-2 gap-8 mx-10">

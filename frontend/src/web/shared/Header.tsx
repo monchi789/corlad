@@ -9,14 +9,19 @@ export const Header = React.memo(function Header() {
   const location = useLocation();
   const [activeLink, setActiveLink] = useState<string>('');
   const [click, setClick] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState({
+    institucional: false,
+    publicaciones: false
+  });
 
   useEffect(() => {
     const currentPath = location.pathname;
     const pathToLinkName: { [key: string]: string } = {
       '/': 'inicio',
       '/nosotros': 'nosotros',
+      '/normativas': 'normativas',
       '/noticias': 'noticias',
+      '/bolsa-trabajo': 'bolsa-trabajo',
       '/contactanos': 'contactanos',
       '/consultar-habilidad': 'consultar-habilidad'
     };
@@ -30,8 +35,21 @@ export const Header = React.memo(function Header() {
 
   const handleClick = () => setClick(!click);
 
-  const handleMouseEnter = () => setIsDropdownOpen(true);
-  const handleMouseLeave = () => setIsDropdownOpen(false);
+  // Función genérica para manejar la apertura de dropdowns
+  const handleMouseEnter = (dropdown: string) => {
+    setIsDropdownOpen(prevState => ({
+      ...prevState,
+      [dropdown]: true
+    }));
+  };
+
+  // Función genérica para manejar el cierre de dropdowns
+  const handleMouseLeave = (dropdown: string) => {
+    setIsDropdownOpen(prevState => ({
+      ...prevState,
+      [dropdown]: false
+    }));
+  };
 
   // Renderizar el menú móvil solo si está abierto
   const content = click ? (
@@ -53,12 +71,22 @@ export const Header = React.memo(function Header() {
               className={({ isActive }) => isActive || activeLink === 'nosotros' ? 'underline decoration-4 decoration-[#00330a]' : 'bg-white'}
               onClick={() => handleLinkClick('nosotros')}
             >
-              Nosotros
+              Institucional
             </NavLink>
             <div className="mt-2">
-              <a href="#" className="block py-2 hover:bg-gray-100">Subopción 1</a>
-              <a href="#" className="block py-2 hover:bg-gray-100">Subopción 2</a>
-              <a href="#" className="block py-2 hover:bg-gray-100">Subopción 3</a>
+              <NavLink to="/nosotros" className={({ isActive }) =>
+                `${isActive || activeLink === 'nosotros' ? 'underline decoration-4 decoration-[#00330a]' : ''}
+                block hover:bg-gray-100 transition duration-200 px-4 py-2`}
+              >
+                Nosotros
+              </NavLink>
+
+              <NavLink to="/normativas" className={({ isActive }) =>
+                `${isActive || activeLink === 'normativas' ? 'underline decoration-4 decoration-[#00330a]' : ''}
+                block hover:bg-gray-100 transition duration-200 px-4 py-2`}
+              >
+                Normativas
+              </NavLink>
             </div>
           </div>
         </li>
@@ -68,8 +96,23 @@ export const Header = React.memo(function Header() {
             className={({ isActive }) => isActive || activeLink === 'noticias' ? 'underline decoration-4 decoration-[#00330a]' : 'bg-white'}
             onClick={() => handleLinkClick('noticias')}
           >
-            Noticias
+            Publicaciones
           </NavLink>
+          <div className="mt-2">
+            <NavLink to="/noticias" className={({ isActive }) =>
+              `${isActive || activeLink === 'noticias' ? 'underline decoration-4 decoration-[#00330a]' : ''}
+                block hover:bg-gray-100 transition duration-200 px-4 py-2`}
+            >
+              Noticias
+            </NavLink>
+
+            <NavLink to="/bolsa-trabajo" className={({ isActive }) =>
+              `${isActive || activeLink === 'bolsa-trabajo' ? 'underline decoration-4 decoration-[#00330a]' : ''}
+                block hover:bg-gray-100 transition duration-200 px-4 py-2`}
+            >
+              Bolsa de trabajo
+            </NavLink>
+          </div>
         </li>
         <li className="my-4 py-4 border-b">
           <NavLink
@@ -113,16 +156,16 @@ export const Header = React.memo(function Header() {
                 Inicio
               </NavLink>
             </li>
-            <li 
-              className="hover:text-[#008634] transition duration-300 p-1 relative" 
-              onMouseEnter={handleMouseEnter} 
-              onMouseLeave={handleMouseLeave}
+            <li
+              className="hover:text-[#008634] transition duration-300 p-1 relative"
+              onMouseEnter={() => handleMouseEnter('institucional')}
+              onMouseLeave={() => handleMouseLeave('institucional')}
             >
               <NavLink
                 to="/nosotros"
-                className={({ isActive }) => 
-                  `${isActive || activeLink === 'nosotros' 
-                    ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' 
+                className={({ isActive }) =>
+                  `${isActive || activeLink === 'nosotros'
+                    ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]'
                     : 'bg-white'} flex items-center`
                 }
                 onClick={() => handleLinkClick('nosotros')}
@@ -130,29 +173,68 @@ export const Header = React.memo(function Header() {
                 Institucional
                 <FaCaretDown size={15} className="ml-1" />
               </NavLink>
-              <div 
+              <div
                 className={`
-                  absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-gray-700
-                  transition-all duration-300 ease-in-out
-                  ${isDropdownOpen 
-                    ? 'opacity-100 translate-y-0 visible' 
+                absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-gray-700
+                transition-all duration-300 ease-in-out
+                ${isDropdownOpen.institucional
+                    ? 'opacity-100 translate-y-0 visible'
                     : 'opacity-0 -translate-y-2 invisible'}
                 `}
               >
-                <NavLink to="/nosotros" className="block px-4 py-2 hover:bg-gray-100 transition duration-200">Nosotros</NavLink>
-                <NavLink to="/normativas" className="block px-4 py-2 hover:bg-gray-100 transition duration-200">Normativas</NavLink>
-                <a href="#" className="block px-4 py-2 hover:bg-gray-100 transition duration-200">Mision y visión</a>
+                <NavLink to="/nosotros" className={({ isActive }) =>
+                  `${isActive || activeLink === 'nosotros' ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' : 'hover:text-[#008634]'} 
+                  block hover:bg-gray-100 transition duration-200 px-4 py-2`}
+                >
+                  Nosotros
+                </NavLink>
+
+                <NavLink to="/normativas" className={({ isActive }) =>
+                  `${isActive || activeLink === 'normativas' ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' : 'hover:text-[#008634]'}
+                  block hover:bg-gray-100 transition duration-200 px-4 py-2`}
+                >
+                  Normativas
+                </NavLink>
               </div>
             </li>
-            <li className="hover:text-[#008634] transition duration-300 p-1">
+            <li
+              className="hover:text-[#008634] transition duration-300 p-1 relative"
+              onMouseEnter={() => handleMouseEnter('publicaciones')}
+              onMouseLeave={() => handleMouseLeave('publicaciones')}
+            >
               <NavLink
                 to="/noticias"
-                className={({ isActive }) => isActive || activeLink === 'noticias' ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' : 'bg-white'}
+                className={({ isActive }) => `${isActive || activeLink === 'noticias' ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' : 'bg-white'} flex items-center`}
                 onClick={() => handleLinkClick('noticias')}
               >
                 Publicaciones
+                <FaCaretDown size={15} className="ml-1" />
               </NavLink>
+              <div
+                className={`
+                absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-gray-700
+                transition-all duration-300 ease-in-out
+                ${isDropdownOpen.publicaciones
+                    ? 'opacity-100 translate-y-0 visible'
+                    : 'opacity-0 -translate-y-2 invisible'}
+                `}
+              >
+                <NavLink to="/noticias" className={({ isActive }) =>
+                  `${isActive || activeLink === 'noticias' ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' : 'hover:text-[#008634]'}
+                  block hover:bg-gray-100 transition duration-200 px-4 py-2`}
+                >
+                  Noticias
+                </NavLink>
+
+                <NavLink to="/bolsa-trabajo" className={({ isActive }) =>
+                  `${isActive || activeLink === 'bolsa-trabajo' ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' : 'hover:text-[#008634]'}
+                  block hover:bg-gray-100 transition duration-200 px-4 py-2`}
+                >
+                  Bolsa de trabajo
+                </NavLink>
+              </div>
             </li>
+
             <li className="hover:text-[#008634] transition duration-300 p-1">
               <NavLink
                 to="/contactanos"

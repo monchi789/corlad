@@ -57,18 +57,18 @@ export default function Nosotros() {
   return (
     <div>
       <Header />
-      <div className="container flex flex-col mx-auto mt-48 items-center">
-        <h1 className="flex flex-col lg:flex-row font-extrabold text-4xl font-nunito text-[#a67102]">INFORMACIÓN&nbsp;<span className="text-[#363636]">INSTITUCIONAL</span></h1>
+      <div className="container flex flex-col mx-auto mt-32 lg:mt-40 items-center">
+        <h1 className="flex flex-col lg:flex-row font-extrabold text-3xl md:text-4xl font-nunito text-[#a67102]">INFORMACIÓN&nbsp;<span className="text-[#363636]">INSTITUCIONAL</span></h1>
         <div className="flex flex-col lg:flex-row items-center w-4/5 my-6 lg:my-12">
-          <img className="lg:w-1/3 mx-16" src={corlad_logo} alt="Logo corlad cusco" />
-          <p className="text-xl text-[#363636] lg:my-0 xl:mx-24 font-didact my-6">
+          <img className="w-full md:w-2/3 lg:w-1/4 lg:ms-20" src={corlad_logo} alt="Logo corlad cusco" />
+          <p className="text-xl text-[#363636] lg:my-0 lg:mx-12 xl:mx-24 font-didact my-6">
             El Colegio Regional de Licenciados en Administración Cusco con 40 años de ser fundado, creado en el año 1984, agrupa a las carreras de administración,
             negocios internacionales, marketing y finanzas dirigido por el decano Willy Bravo Aparicio en su gestión 2024 - 2025 con el lema <b>“integridad y servicio”</b> para sus agremiados.
           </p>
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row mx-auto w-full mb-24 font-nunito items-center space-y-10 lg:space-y-0">
+      <div className="flex flex-col lg:flex-row mx-auto w-full font-nunito items-center space-y-10 lg:space-y-0 mt-5 mb-24">
         <div className="lg:w-1/3 text-center">
           <p className="text-4xl text-[#363636] lg:text-5xl font-extrabold">2000+</p>
           <p className="font-semibold text-lg lg:text-xl text-[#a67102]">Colegiados</p>
@@ -83,7 +83,7 @@ export default function Nosotros() {
         </div>
       </div>
 
-      <div className="relative flex flex-col bg-[#FBFFFC] mx-auto my-12 py-12 items-center justify-center">
+      <div className="relative flex flex-col bg-[#FBFFFC] mx-auto my-12 items-center justify-center">
         <img src={corlad_logo} alt="Logo corlad cusco" className="absolute inset-0 lg:w-1/3 mx-auto my-auto object-cover z-0 opacity-20" />
         <div className="relative z-10bg-opacity-80 p-10">
           <h4 className="text-center text-3xl md:text-4xl font-nunito font-extrabold text-[#a67102] mb-12">HIMNO INSTITUCIONAL</h4>
@@ -114,6 +114,22 @@ export default function Nosotros() {
             POR EL DON QUE NOS HA DADO DIOS <br />
             LICENCIADOS EN ADMINISTRACIÓN <br />
             GRAN PASIÓN POR LA PROFESIÓN (BIS) <br />
+          </p>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-10 mx-12 mb-24">
+        <div className="bg-white shadow-lg rounded-lg p-8">
+          <h2 className="text-3xl font-bold text-[#363636] mb-4">Nuestra Misión</h2>
+          <p className="text-lg text-[#363636]">
+            El Colegio Regional de Licenciados en Administración de Cusco (CORLAD-Cusco) tiene como misión promover el desarrollo profesional y ético de sus miembros, fomentando la excelencia en la práctica de la administración y contribuyendo al progreso socioeconómico de la región Cusco y del Perú.
+          </p>
+        </div>
+
+        <div className="bg-white shadow-lg rounded-lg p-8">
+          <h2 className="text-3xl font-bold text-[#363636] mb-4">Nuestra Visión</h2>
+          <p className="text-lg text-[#363636]">
+            Ser reconocidos como la institución líder en la región Cusco en la formación y representación de profesionales en administración, caracterizados por su alto nivel de competencia, ética y compromiso con el desarrollo sostenible de nuestra sociedad.
           </p>
         </div>
       </div>
