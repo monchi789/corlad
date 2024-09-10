@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Categoria } from "../../../interfaces/model/Categoria";
-import { createCategoria } from "../../../api/categoria.api";
+import { Categoria } from "../../../../interfaces/model/Categoria";
+import { createCategoria } from "../../../../api/categoria.api";
 
 interface AgregarCategoriaProps {
   isOpen: boolean;

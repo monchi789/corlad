@@ -184,7 +184,7 @@ export default function PublicacionesAdmin() {
               </Link>
             </div>
           </div>
-          <div className="w-full bg-[#EAF1E8] rounded-lg p-5 mt-5">
+          <div className="w-full bg-[#EAF1E8] rounded-lg shadow-custom-input p-5 mt-5">
             <div className="flex flex-row justify-between space-x-10">
               <div className="flex flex-col w-full space-y-2">
                 <span className="text-xl text-[#00330A] font-nunito font-bold">Categoría</span>
