@@ -6,13 +6,14 @@ import { Unauthorized } from '../dashboard/shared/NoAutorizado.tsx';
 
 // Rutas públicas con Lazy Loading
 const Inicio = lazy(() => import('../web/modules/inicio/Inicio.tsx'));
-const Nosotros = lazy(() => import('../web/modules/nosotros/Nosotros.tsx'));
+const Nosotros = lazy(() => import('../web/modules/institucional/Nosotros.tsx'));
+const Normativas = lazy(() => import('../web/modules/institucional/Normativas.tsx'))
 const Noticias = lazy(() => import('../web/modules/noticias/Noticias.tsx'));
+const Noticia = lazy(() => import('../web/modules/noticias/noticia/Noticia.tsx'));
+const BolsaTrabajo = lazy(() => import('../web/modules/noticias/bolsa-trabajo/BolsaTrabajo.tsx'));
 const Contactanos = lazy(() => import('../web/modules/contactanos/Contactanos.tsx'));
 const ConsultarHabilidad = lazy(() => import('../web/modules/colegiados/ConsultarHabilidad.tsx'));
-const Noticia = lazy(() => import('../web/modules/noticias/noticia/Noticia.tsx'));
 const Colegiatura = lazy(() => import('../web/modules/colegiarse/colegiatura.tsx'));
-const MisionVision = lazy(() => import('../web/modules/mision-vision/misionVision.tsx'));
 
 // Rutas protegidas con Lazy Loading
 const InicioAdmin = lazy(() => import('../dashboard/modules/inicio/InicioAdmin.tsx'));
@@ -23,7 +24,7 @@ const Escuelas = lazy(() => import('../dashboard/modules/escuelas/Escuelas.tsx')
 const PopUpsAdmin = lazy(() => import('../dashboard/modules/popups/PopUpsAdmin.tsx'));
 const SlidersAdmin = lazy(() => import('../dashboard/modules/sliders/SlidersAdmin.tsx'));
 const PublicacionesAdmin = lazy(() => import('../dashboard/modules/publicaciones/PublicacionesAdmin.tsx'));
-const CategoriasAdmin = lazy(() => import('../dashboard/modules/publicaciones/CategoriasAdmin.tsx'));
+const CategoriasAdmin = lazy(() => import('../dashboard/modules/publicaciones/categorias/CategoriasAdmin.tsx'));
 const EstadoCuentas = lazy(() => import('../dashboard/modules/estadocuenta/EstadoCuentas.tsx'));
 const Pagos = lazy(() => import('../dashboard/modules/pagos/Pagos.tsx'));
 const EditarColegiado = lazy(() => import('../dashboard/modules/colegiados/EditarColegiado.tsx'));
@@ -46,12 +47,13 @@ const LoadingSpinner = () => (
 const publicRoutes = [
   { path: "/", element: <Inicio /> },
   { path: "/nosotros", element: <Nosotros /> },
+  { path: "/normativas", element: <Normativas /> },
   { path: "/noticias", element: <Noticias /> },
   { path: "/noticias/:id/:titulo", element: <Noticia /> },
+  { path: "/bolsa-trabajo", element: <BolsaTrabajo /> },
   { path: "/contactanos", element: <Contactanos /> },
   { path: "/consultar-habilidad", element: <ConsultarHabilidad /> },
   { path: "/colegiatura",  element: <Colegiatura/> },
-  { path: "/mision-vision", element: <MisionVision/>}
 ];
 
 const adminRoutes = [

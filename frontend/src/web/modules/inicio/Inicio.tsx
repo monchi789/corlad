@@ -7,7 +7,7 @@ import { Footer } from "../../shared/Footer";
 import { Contacto } from "../contactanos/contacto/Contacto";
 import { Publicacion } from "../../../interfaces/model/Publicacion";
 import { getAllNoticiasByPage } from "../../../api/publicacion.api";
-import { Servicios } from "./servicios/Servicios";
+import { Servicios } from "./components/Servicios";
 import { PopUps } from "../../shared/PopUps";
 import { Gallery } from "../../shared/Gallery";
 import logo_corlad_blanco from '../../../assets/web/corlad_logo_blanco.png'
@@ -112,7 +112,7 @@ export default function Inicio() {
               <Card key={index} imageSource={import.meta.env.VITE_API_URL_ALTER + noticia.imagen_publicacion} imageAlt="" cardTitle={noticia.titulo} cardText={limitarContenido(noticia.contenido, 30)} noticiaId={noticia.id} />
             ))}
           </div>
-          <Link to={'/noticias'} className="font-extrabold bg-[#a67102] text-white px-8 py-1 rounded-lg font-nunito">Ver Más</Link>
+          <Link to={'/noticias'} className="font-extrabold font-nunito bg-[#a67102] hover:bg-[#8C5D01] text-white rounded-lg px-8 py-1">Ver más</Link>
         </div>
 
       </div>

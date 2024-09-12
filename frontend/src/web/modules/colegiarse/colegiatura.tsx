@@ -6,8 +6,8 @@ export default function Colegiarse() {
   return (
     <div>
       <Header />
-      <div className="container mx-auto px-4 py-12 font-nunito mt-48 items-center">
-      <h1 className="flex flex-col justify-center lg:flex-row font-extrabold text-5xl font-nunito text-[#a67102] mb-12 text-center">PASOS PARA &nbsp;<span className="text-[#363636]">COLEGIARSE</span></h1>
+      <div className="container mx-auto px-4 pb-12 font-nunito mt-48 items-center">
+      <h1 className="flex flex-col justify-center lg:flex-row font-extrabold text-4xl font-nunito text-[#a67102] mb-12 text-center">PASOS PARA&nbsp;<span className="text-[#363636]">COLEGIARSE</span></h1>
 
         <div className="max-w-4xl mx-auto">
           <div className="bg-white shadow-lg rounded-lg p-8 mb-12">

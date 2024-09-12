@@ -15,9 +15,11 @@ import { getAllEscuelas } from "../../../api/escuela.api";
 import { getAllEspecialidades } from "../../../api/especialidad.api";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import Spinner from "../../shared/Spinner";
 
 export default function AgregarColegiado() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false); // Estado para controlar la carga
 
   const [selectedCapitulo, setSelectedCapitulo] = useState<number | null>(null);
   const [selectedEspecialidad, setSelectedEspecialidad] = useState<number | null>(null);
@@ -142,6 +144,8 @@ export default function AgregarColegiado() {
   // Maneja el envío del formulario para crear un colegiado y su historial
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true); // Comienza la carga
+
     const formData = convertToFormData(colegiadoData);
 
     try {
@@ -173,7 +177,7 @@ export default function AgregarColegiado() {
         // Extrae los errores específicos y muéstralos
         if (serverErrors.dni_colegiado) {
           toast.error(`Error en DNI: ${serverErrors.dni_colegiado[0]}`);
-        } 
+        }
         if (serverErrors.numero_colegiatura) {
           toast.error(`Error en el número de colegiatura: ${serverErrors.numero_colegiatura[0]}`);
         }
@@ -184,7 +188,7 @@ export default function AgregarColegiado() {
           // Muestra otros errores generales
           toast.error(`Error del servidor: ${serverErrors.message || 'Error desconocido'}`);
         }
-  
+
       } else if (error.request) {
         // Si no se recibió respuesta
         toast.error('No se pudo conectar con el servidor. Verifique su conexión.');
@@ -387,7 +391,7 @@ export default function AgregarColegiado() {
                       />
                     </div>
                     <div className="w-1/3">
-                      <label htmlFor="numero_colegiatura" className="block mb-1">N° Colegiatura</label>
+                      <label htmlFor="numero_colegiatura" className="block mb-1">N° Colegiatura / REGUC</label>
                       <input
                         type="text"
                         id="numero_colegiatura"
@@ -518,7 +522,9 @@ export default function AgregarColegiado() {
                 </div>
               </div>
               <div className="flex flex-row w-full text-[#3A3A3A] font-nunito font-black rounded-2xl space-x-3 mt-5">
-                <button type="submit" className="w-2/3 bg-[#007336] text-white rounded-2xl p-3">Agregar colegiado</button>
+                <button type="submit" className="w-2/3 bg-[#007336] text-white rounded-2xl p-3" disabled={isLoading}>
+                  {isLoading ? <Spinner /> : 'Agregar colegiado'}
+                </button>
                 <Link to={"/admin/colegiado"} className="w-1/3">
                   <button type="button" className="w-full border-solid border-2 border-[#3A3A3A] rounded-2xl py-3">
                     Cancelar

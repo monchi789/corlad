@@ -56,6 +56,7 @@ export default function Login() {
       // Redirige al inicio
       navigate('/admin');
     } catch (error) {
+      console.log(error)
       setError('Error al iniciar sesión');
     }
   };

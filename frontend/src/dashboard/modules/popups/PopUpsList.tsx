@@ -146,9 +146,10 @@ const EditModal: React.FC<{
 
 const AddModal: React.FC<{
   isOpen: boolean;
+  isLoading: boolean
   onClose: () => void;
   onSave: (newImage: File) => void;
-}> = ({ isOpen, onClose, onSave }) => {
+}> = ({ isOpen, isLoading, onClose, onSave }) => {
   const [newImage, setNewImage] = useState<File | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -178,7 +179,7 @@ const AddModal: React.FC<{
             Cancelar
           </button>
           <button onClick={handleSave} className="px-4 py-2 bg-green-500 text-white rounded">
-            Guardar
+            {isLoading ? 'Guardando...' : 'Guardar'}
           </button>
         </div>
       </div>
@@ -220,13 +221,14 @@ export const PopUpsList = () => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [selectedPopUp, setSelectedPopUp] = useState<PopUp | null>(null);
+  const [isLoading, setIsLoading] = useState(false); // Estado para controlar la carga
 
   const fetchPopUps = async () => {
     try {
       const res = await getPopUps();
       setList(res.data);
     } catch (error) {
-      console.error('Error al obtener la lista de popups:', error);
+      console.error('Error al obtener la lista de anuncios:', error);
     }
   };
 
@@ -246,7 +248,7 @@ export const PopUpsList = () => {
       );
 
     } catch (error) {
-      console.error('Error al actualizar el estado de los popups:', error);
+      console.error('Error al actualizar el estado del anuncio:', error);
     }
   };
 
@@ -267,31 +269,36 @@ export const PopUpsList = () => {
       fetchPopUps(); // Refresh the list
       setEditModalIsOpen(false);
     } catch (error) {
-      console.error('Error al guardar la imagen:', error);
+      toast.error('Error al guardar el anuncio');
     }
   };
 
   const handleAdd = async (newImage: File) => {
     const formData = new FormData();
     formData.append('imagen', newImage);
-
+  
+    setIsLoading(true); // Comienza la carga antes de la solicitud
+  
     try {
       await createPopUps(formData);
       fetchPopUps(); // Refresh the list
       setAddModalIsOpen(false);
     } catch (error) {
-      console.error('Error al añadir el popup:', error);
+      toast.error('Error al agregar el anuncio');
+    } finally {
+      setIsLoading(false); // Termina la carga después de la solicitud (tanto si es exitosa como si falla)
     }
   };
+  
 
   const handleDelete = async (id: number) => {
     try {
       await deletePopUps(id);
       setList(list.filter(popup => popup.id !== id));
-      toast.success('Popup eliminado exitosamente');
+      toast.success('Anuncio eliminado exitosamente');
     } catch (error) {
-      console.error('Error al eliminar el popup:', error);
-      toast.error('Error al eliminar el popup');
+      console.error('Error al eliminar el anuncio:', error);
+      toast.error('Error al eliminar el anuncio');
     }
   };
 
@@ -354,6 +361,7 @@ export const PopUpsList = () => {
 
       <AddModal
         isOpen={addModalIsOpen}
+        isLoading={isLoading}
         onClose={() => setAddModalIsOpen(false)}
         onSave={handleAdd}
       />

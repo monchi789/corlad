@@ -6,7 +6,7 @@ export default function Contactanos() {
   return (
     <div>
       <Header />
-      <h1 className="text-4xl text-[#a67102] font-extrabold font-nunito text-center mt-48 mb-12">CONTÁCTANOS</h1>
+      <h1 className="text-4xl text-[#a67102] font-extrabold font-nunito text-center mt-40 mb-12">CONTÁCTANOS</h1>
       <Contacto />
       <div className="text-center space-y-5 mt-24">
         <h2 className="text-4xl text-[#a67102] font-extrabold font-nunito">ENCUÉNTRANOS</h2>

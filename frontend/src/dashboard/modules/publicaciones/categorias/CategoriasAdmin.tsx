@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import { PersonAdd } from "@mui/icons-material";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { SessionHeader } from "../../shared/SessionHeader";
-import { Sidebar } from "../../shared/Sidebar";
-import { deleteCategoria, getAllCategoriasAdmin } from "../../../api/categoria.api";
-import { Categoria } from "../../../interfaces/model/Categoria";
+import { SessionHeader } from "../../../shared/SessionHeader";
+import { Sidebar } from "../../../shared/Sidebar";
+import { deleteCategoria, getAllCategoriasAdmin } from "../../../../api/categoria.api";
+import { Categoria } from "../../../../interfaces/model/Categoria";
 import { AgregarCategoria } from "./AgregarCategoria";
 import { ActualizarCategoria } from "./ActualizarCategoria";
 
@@ -78,11 +77,15 @@ export default function CategoriasAdmin() {
               <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold">Categorías</h4>
             </Grid>
             <Grid item>
-              <TextField
-                label="Buscar Categoría"
-                variant="outlined"
+              <input
+                type="text"
+                id="apellido_paterno"
+                name="apellido_paterno"
+                placeholder="Buscar categoría"
                 value={searchTermCategoria}
                 onChange={handleSearchChangeCategoria}
+                className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-md shadow-custom-input focus:outline-none px-4 py-2"
+                required
               />
             </Grid>
             <Grid item>

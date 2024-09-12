@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { updateCategoria } from "../../../api/categoria.api";
-import { Categoria } from "../../../interfaces/model/Categoria";
+import { updateCategoria } from "../../../../api/categoria.api";
+import { Categoria } from "../../../../interfaces/model/Categoria";
 
 interface ActualizarCategoriaProps {
   isOpen: boolean;
