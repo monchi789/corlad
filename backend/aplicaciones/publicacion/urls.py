@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import CategoriaViewSet, PublicacionViewSet, CategoriaAPIView, PublicacionAPIView
+from .views import CategoriaViewSet, PublicacionViewSet, CategoriaAPIView, PublicacionAPIView, BolsaTrabajo
 
 # Creación de un enrutador por defecto
 router = DefaultRouter()
@@ -10,6 +10,7 @@ router.register(r'categorias', CategoriaViewSet, basename='categoria')
 router.register(r'publicaciones', PublicacionViewSet, basename='publicacion')
 router.register(r'list-categoria', CategoriaAPIView, basename='list-categoria')
 router.register(r'list-publicacion', PublicacionAPIView, basename='list-publicacion')
+router.register(r'bolsa-trabajos', BolsaTrabajo, basename='bolsa-trabajo')
 
 # Definición de las URLs de la aplicación
 urlpatterns = [
