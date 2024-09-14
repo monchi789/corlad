@@ -1,9 +1,9 @@
 from rest_framework.exceptions import ValidationError
 from rest_framework import serializers
-from metodo_pago.serializers import MetodoPagoSerializer
-from metodo_pago.models import MetodoPago
-from colegiado.models import Colegiado
-from aplicaciones.colegiado.serializers import ColegiadoSerializer
+from ..metodo_pago.serializers import MetodoPagoSerializer
+from ..metodo_pago.models import MetodoPago
+from ..colegiado.models import Colegiado
+from ..colegiado.serializers import ColegiadoSerializer
 from .models import Pago
 
 

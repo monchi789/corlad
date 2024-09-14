@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from colegiado.serializers import ColegiadoSerializer, ColegiadoDetailSerializer
-from especialidad.serializers import EspecialidadSerializer
+from ..colegiado.serializers import ColegiadoSerializer, ColegiadoDetailSerializer
+from ..especialidad.serializers import EspecialidadSerializer
 from .models import HistorialEducativo
-from estado_colegiatura.serializers import EstadoColegiaturaSerializer, EstadoColegiaturaDetailSerializer
-from colegiado.models import Colegiado
-from especialidad.models import Especialidad
-from estado_colegiatura.models import EstadoColegiatura
+from ..estado_colegiatura.serializers import EstadoColegiaturaSerializer, EstadoColegiaturaDetailSerializer
+from ..colegiado.models import Colegiado
+from ..especialidad.models import Especialidad
+from ..estado_colegiatura.models import EstadoColegiatura
 
 
 # Serializer para HistorialEducativo

@@ -1,9 +1,9 @@
 from django.db import models
 from functions.validators import  validar_espacio
 from django.utils import timezone
-from colegiado.models import Colegiado
-from estado_colegiatura.models import EstadoColegiatura
-from especialidad.models import Especialidad
+from ..colegiado.models import Colegiado
+from ..estado_colegiatura.models import EstadoColegiatura
+from ..especialidad.models import Especialidad
 
 
 class HistorialEducativo(models.Model):

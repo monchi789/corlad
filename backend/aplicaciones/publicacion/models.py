@@ -2,7 +2,7 @@ from django.db import models
 from functions.validators import validar_espacio
 from django.core.validators import FileExtensionValidator
 from tinymce.models import HTMLField
-from categoria.models import Categoria
+from ..categoria.models import Categoria
 
 
 # Modelo Publicacion

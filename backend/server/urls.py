@@ -30,10 +30,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="CORLAD API",
         default_version='v1',
-        description="API para gestionar colegiados",
-        terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="contact@colegiados.local"),
-        license=openapi.License(name="BSD License"),
+        description="API para gestionar colegiados"
     ),
     public=True,
     permission_classes=(AllowAny,),
@@ -41,12 +38,18 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('gestion-colegiados/', include('aplicaciones.colegiado.urls')),
-    path('gestion-pagos/', include('aplicaciones.pago.urls')),
-    path('gestion-publicaciones/', include('aplicaciones.publicacion.urls')),
-    path('gestion-contenidos/', include('aplicaciones.contenido.urls')),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('categoria/', include('aplicaciones.categoria.urls')),
+    path('colegiado/', include('aplicaciones.colegiado.urls')),
+    path('escuela/', include('aplicaciones.escuela.urls')),
+    path('especialidad/', include('aplicaciones.especialidad.urls')),
+    path('historial-educativo/', include('aplicaciones.historial_educativo.urls')),
+    path('metodo_pago/', include('aplicaciones.metodo_pago.urls')),
+    path('pago/', include('aplicaciones.pago.urls')),
+    path('pop-up/', include('aplicaciones.pop_up.urls')),
+    path('publicacion/', include('aplicaciones.publicacion.urls')),
+    path('slider/', include('aplicaciones.slider.urls')),
     path('enviar-email/', EmailAPIView.as_view(), name='send-email'),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), 
 ]

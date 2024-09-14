@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from categoria.serializers import CategoriaSerializer
-from categoria.models import Categoria
+from ..categoria.serializers import CategoriaSerializer
+from ..categoria.models import Categoria
 from .models import Publicacion
 
 

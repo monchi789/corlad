@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Especialidad
-from escuela.models import Escuela
-from escuela.serializers import EscuelaSerializer
+from ..escuela.models import Escuela
+from ..escuela.serializers import EscuelaSerializer
 
 class EspecialidadSerializer(serializers.ModelSerializer):
     id_escuela = EscuelaSerializer(read_only=True)

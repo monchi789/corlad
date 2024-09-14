@@ -1,8 +1,8 @@
-from colegiado.models import Colegiado
+from ..colegiado.models import Colegiado
 from functions.validators import validar_numero, validar_espacio
-from metodo_pago.models import MetodoPago
-from historial_educativo.models import HistorialEducativo
-from estado_colegiatura.models import EstadoColegiatura
+from ..metodo_pago.models import MetodoPago
+from ..historial_educativo.models import HistorialEducativo
+from ..estado_colegiatura.models import EstadoColegiatura
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.utils import timezone

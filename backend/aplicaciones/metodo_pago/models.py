@@ -1,4 +1,4 @@
-from colegiado.models import Colegiado
+from ..colegiado.models import Colegiado
 from functions.validators import validar_numero, validar_espacio
 
 from django.db import models

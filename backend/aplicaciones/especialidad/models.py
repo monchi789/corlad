@@ -1,6 +1,6 @@
 from django.db import models
 from functions.validators import validar_numero, validar_espacio
-from escuela.models import Escuela
+from ..escuela.models import Escuela
 
 
 class Especialidad(models.Model):

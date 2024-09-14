@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from .models import MetodoPago, Pago
+from .models import MetodoPago
 
 # Filtro para el modelo MetodoPago
 class MetodoPagoFilter(filters.FilterSet):
