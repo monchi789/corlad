@@ -19,19 +19,6 @@ class Pago(models.Model):
     observacion = models.CharField(max_length=255, null=True, blank=True, default='', validators=[validar_espacio])
     id_colegiado = models.ForeignKey(Colegiado, on_delete=models.CASCADE)
     id_metodo_pago = models.ForeignKey(MetodoPago, on_delete=models.CASCADE, default=0)
-
-    def clean(self):
-        # Validaciones específicas para pagos de matrícula
-        if self.id_tipo_pago.nombre_tipo_pago == 'MATRICULA':
-            if self.pk is None:
-                # Nuevo registro de pago de matrícula
-                if Pago.objects.filter(id_colegiado=self.id_colegiado, id_tipo_pago__nombre_tipo_pago='MATRICULA').exists():
-                    raise ValidationError('El colegiado ya tiene un pago de matrícula registrado.')
-            else:
-                # Actualización de pago de matrícula
-                existing_matricula = Pago.objects.filter(id_colegiado=self.id_colegiado, id_tipo_pago__nombre_tipo_pago='MATRICULA').exclude(pk=self.pk).first()
-                if existing_matricula:
-                    raise ValidationError('El colegiado ya tiene un pago de matrícula registrado.')
     
     def actualizar_estado_colegiatura(self):
         historial = HistorialEducativo.objects.filter(id_colegiado=self.id_colegiado).first()
