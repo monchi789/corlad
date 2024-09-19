@@ -388,3 +388,11 @@ class PublicacionViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Publicacion.DoesNotExist:
             return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+class PublicacionesBolsaDeTrabajoViewSet(viewsets.ViewSet):
+    serializer_class = PublicacionSerializer
+    queryset = Publicacion.objects.all()
+
+    def get_queryset(self):
+        # Filtrar publicaciones por la categoría "bolsas de trabajo"
+        return Publicacion.objects.filter(nombre_categoria="bolsa de trabajo")
