@@ -5,6 +5,7 @@ import direccion_02 from "../../../assets/web/directivos/vice_decano_regional.jp
 import direccion_03 from "../../../assets/web/directivos/director_economia_finanzas.jpg"
 import direccion_04 from "../../../assets/web/directivos/director_desarrollo_habilitacion.jpg"
 import direccion_05 from "../../../assets/web/directivos/director_informacion_cientifica_tecnologica.jpg"
+import direccion_06 from "../../../assets/web/directivos/director_imagen_institucional.jpg"
 
 import { Footer } from "../../shared/Footer";
 import Carousel from "../../shared/Carousel";
@@ -38,7 +39,7 @@ export default function Nosotros() {
       cargoDirectivo: "Director de Información Científica y Tecnológica"
     },
     {
-      imgDirectivo: corlad_logo,
+      imgDirectivo: direccion_06,
       nombreDirectivo: "Manuel Jesus Zvietcovich Alvarez",
       cargoDirectivo: "Director De Imagen Institucional"
     }
@@ -47,7 +48,7 @@ export default function Nosotros() {
   const cardDirectivo = (imgDirectivo: string, nombreDirectivo: string, cargoDirectivo: string) => {
     return (
       <>
-        <img className="lg:w-2/3 mx-auto" src={imgDirectivo} alt="" />
+        <img className="lg:w-full mx-auto" src={imgDirectivo} alt="" />
         <span className="text-2xl text-[#00330A] font-nunito font-bold py-3">{nombreDirectivo}</span>
         <p>{cargoDirectivo}</p>
       </>
@@ -144,7 +145,7 @@ export default function Nosotros() {
           <span className="font-semibold">Gestión 2024-2025</span>
           <div className="flex flex-col lg:flex-row lg:flex-wrap justify-center mb-24 items-center">
             {directivos.map((directivo, index) => (
-              <div className="flex flex-col lg:w-1/5 rounded text-center mb-10 mx-10 py-5 px-5" key={index}>
+              <div className="flex flex-col lg:w-1/5 rounded text-center mx-10 mb-10 py-5 px-5" key={index}>
                 {cardDirectivo(directivo.imgDirectivo, directivo.nombreDirectivo, directivo.cargoDirectivo)}
               </div>
             ))}

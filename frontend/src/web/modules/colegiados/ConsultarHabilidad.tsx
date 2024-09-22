@@ -6,6 +6,8 @@ import { getConsultarHabilidad } from "../../../api/colegiado.api";
 import { HistorialDetalleColegiado } from "../../../interfaces/model/HistorialColegiado";
 import { Footer } from "../../shared/Footer";
 import ClipLoader from "react-spinners/ClipLoader";
+import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
+import { classNames } from "primereact/utils";
 
 export default function ConsultarHabilidad() {
 
@@ -16,9 +18,12 @@ export default function ConsultarHabilidad() {
   const [colegiadoData, setColegiadoData] = useState<HistorialDetalleColegiado[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(10); // Número de colegiados por página
 
   const options = [
-    { label: 'Dni', value: 'dni' },
+    { label: 'Documento de identidad', value: 'dni' },
     { label: 'N° de Colegiatura', value: 'colegiatura' },
     { label: 'Apellidos', value: 'apellidos' },
   ];
@@ -31,7 +36,36 @@ export default function ConsultarHabilidad() {
     );
   };
 
-  const handleSearch = async () => {
+  // Función para manejar el cambio de página
+  const onPageChange = (event: PaginatorPageChangeEvent) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    handleSearch(event.page, event.rows);
+    window.scrollTo(0, 0);
+  };
+
+  // Template para el paginador
+  const template = {
+    layout: 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink',
+    PageLinks: (options: any) => {
+
+      const isActive = options.page === options.currentPage;
+
+      return (
+        <button
+          className={classNames('px-3 py-1 mx-1 rounded-lg transition duration-300', {
+            'bg-[#007336] text-white': isActive,
+            'bg-white text-black': !isActive
+          })}
+          onClick={options.onClick}
+        >
+          {options.page + 1}
+        </button>
+      )
+    }
+  };
+
+  const handleSearch = async (page = 0, pageSize = rows) => {
     let params = "";
 
     if (selectedOption) {
@@ -55,9 +89,10 @@ export default function ConsultarHabilidad() {
         setIsLoading(true);
         setIsNotFound(false);
 
-        const response = await getConsultarHabilidad(params);
-        if (response.data.results && response.data.results.length > 0) {
-          setColegiadoData(response.data.results); // Cambiar a múltiples resultados
+        const res = await getConsultarHabilidad(page, pageSize, params);
+        if (res.data.results && res.data.results.length > 0) {
+          setColegiadoData(res.data.results); // Cambiar a múltiples resultados
+          setTotalRecords(res.data.count);
         } else {
           setColegiadoData([]);
           setIsNotFound(true);
@@ -67,7 +102,6 @@ export default function ConsultarHabilidad() {
         setIsNotFound(true);
       }
     } catch (error) {
-      console.error('Error al obtener los datos:', error);
       setColegiadoData([]);
       setIsNotFound(true);
     } finally {
@@ -127,7 +161,7 @@ export default function ConsultarHabilidad() {
           )}
           <button
             className="w-full md:w-1/5 bg-[#00330a] hover:bg-green-800 transition duration-300 text-[#f0f0f0] md:ms-3 px-5 py-3 rounded"
-            onClick={handleSearch}
+            onClick={() => handleSearch(0, rows)}
           >
             Buscar
           </button>
@@ -176,32 +210,42 @@ export default function ConsultarHabilidad() {
             </div>
           </div>
         ) : colegiadoData.length > 1 ? (
-          <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-            <thead className="bg-[#00330a] text-white">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nombre</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Apellidos</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">N° de Colegiatura</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Estado</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {colegiadoData.map(colegiado => (
-                <tr key={colegiado.id_colegiado.id} className="hover:bg-green-800 transition duration-300">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{colegiado.id_colegiado.nombre}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{colegiado.id_colegiado.apellido_paterno + ' ' + colegiado.id_colegiado.apellido_materno}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{colegiado.id_colegiado.numero_colegiatura}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    {colegiado.id_estado_colegiatura.estado_colegiatura ? (
-                      <span className="text-green-600 font-semibold">Habilitado</span>
-                    ) : (
-                      <span className="text-red-600 font-semibold">No Habilitado</span>
-                    )}
-                  </td>
+          <div className="overflow-x-auto lg:w-3/5 mx-5 lg:mx-auto mb-12">
+            <table className="min-w-full bg-white rounded-lg overflow-hidden">
+              <thead className="bg-[#00330a] text-white">
+                <tr className="font-nunito">
+                  <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">REGUC</th>
+                  <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">Nombre</th>
+                  <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">Apellidos</th>
+                  <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">Estado</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {colegiadoData.map(colegiado => (
+                  <tr key={colegiado.id_colegiado.id} className="hover:bg-[#C9EDC6] transition duration-300">
+                    <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900">{colegiado.id_colegiado.numero_colegiatura}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900">{colegiado.id_colegiado.nombre}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900">{colegiado.id_colegiado.apellido_paterno + ' ' + colegiado.id_colegiado.apellido_materno}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-md">
+                      {colegiado.id_estado_colegiatura.estado_colegiatura ? (
+                        <span className="text-[#00330a] font-semibold">Habilitado</span>
+                      ) : (
+                        <span className="text-red-600 font-semibold">No Habilitado</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Paginator
+              first={first}
+              rows={rows}
+              totalRecords={totalRecords}
+              onPageChange={onPageChange}
+              className="space-x-5 mt-5"
+              template={template}
+            />
+          </div>
         ) : (
           <div className="flex flex-col lg:flex-row mx-auto mb-12 lg:py-12 lg:my-24 w-4/5 rounded-lg justify-center items-center">
             {isNotFound && (

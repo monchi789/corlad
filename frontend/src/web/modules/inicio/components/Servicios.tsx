@@ -51,7 +51,7 @@ export function Servicios() {
         <p className="text-[#363636] font-didact mb-auto">
           Encuentra ofertas de trabajo en tu área de especialidad y accede a recursos para mejorar tus habilidades profesionales.
         </p>
-        <Link to={"/colegiatura"}>
+        <Link to={"/bolsa-trabajo"}>
         <button className="flex items-center justify-center bg-[#a67102] hover:bg-[#8C5D01] text-white rounded-lg mx-auto font-nunito transition duration-300 space-x-2 mt-5 py-2 px-4">
         <span>Más información</span>
             <FaArrowRightLong />
