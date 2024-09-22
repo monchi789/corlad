@@ -13,7 +13,7 @@ const Noticia = lazy(() => import('../web/modules/noticias/noticia/Noticia.tsx')
 const BolsaTrabajo = lazy(() => import('../web/modules/noticias/bolsa-trabajo/BolsaTrabajo.tsx'));
 const Contactanos = lazy(() => import('../web/modules/contactanos/Contactanos.tsx'));
 const ConsultarHabilidad = lazy(() => import('../web/modules/colegiados/ConsultarHabilidad.tsx'));
-const Colegiatura = lazy(() => import('../web/modules/colegiarse/colegiatura.tsx'));
+const Colegiatura = lazy(() => import('../web/modules/colegiados/Colegiatura.tsx'));
 
 // Rutas protegidas con Lazy Loading
 const InicioAdmin = lazy(() => import('../dashboard/modules/inicio/InicioAdmin.tsx'));
