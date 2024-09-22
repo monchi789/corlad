@@ -110,7 +110,7 @@ export const Header = React.memo(function Header() {
         </li>
         <li>
             <NavLink to="/colegiatura" className={({ isActive }) =>
-              `${isActive || activeLink === 'noticias' ? 'underline decoration-4 decoration-[#00330a]' : ''}
+              `${isActive || activeLink === 'colegiatura' ? 'underline decoration-4 decoration-[#00330a]' : ''}
                 block hover:bg-gray-100 transition duration-200 px-4 py-2`}
             >
               ¿Cómo colegiarse?
@@ -174,15 +174,15 @@ export const Header = React.memo(function Header() {
                 `}
               >
                 <NavLink to="/nosotros" className={({ isActive }) =>
-                  `${isActive || activeLink === 'nosotros' ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' : 'hover:text-[#008634]'} 
-                  block hover:bg-gray-100 transition duration-200 px-4 py-2`}
+                  `${isActive || activeLink === 'nosotros' ? 'bg-[#00330a] text-white hover:text-gray-700 transition duration-300' : 'hover:text-[#008634]'}
+                  block hover:bg-gray-100 transition duration-300 rounded-t-md px-4 py-2`}
                 >
                   Nosotros
                 </NavLink>
 
                 <NavLink to="/normativas" className={({ isActive }) =>
-                  `${isActive || activeLink === 'normativas' ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' : 'hover:text-[#008634]'}
-                  block hover:bg-gray-100 transition duration-200 px-4 py-2`}
+                  `${isActive || activeLink === 'normativas' ? 'bg-[#00330a] text-white hover:text-gray-700 transition duration-300' : 'hover:text-[#008634]'}
+                  block hover:bg-gray-100 transition duration-300 rounded-b-md px-4 py-2`}
                 >
                   Normativas
                 </NavLink>
@@ -211,15 +211,15 @@ export const Header = React.memo(function Header() {
                 `}
               >
                 <NavLink to="/noticias" className={({ isActive }) =>
-                  `${isActive || activeLink === 'noticias' ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' : 'hover:text-[#008634]'}
-                  block hover:bg-gray-100 transition duration-200 px-4 py-2`}
+                  `${isActive || activeLink === 'noticias' ? 'bg-[#00330a] text-white hover:text-gray-700 transition duration-300' : 'hover:text-[#008634]'}
+                  block hover:bg-gray-100 transition duration-300 rounded-t-md px-4 py-2`}
                 >
                   Noticias
                 </NavLink>
 
                 <NavLink to="/bolsa-trabajo" className={({ isActive }) =>
-                  `${isActive || activeLink === 'bolsa-trabajo' ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' : 'hover:text-[#008634]'}
-                  block hover:bg-gray-100 transition duration-200 px-4 py-2`}
+                  `${isActive || activeLink === 'bolsa-trabajo' ? 'bg-[#00330a] text-white hover:text-gray-700 transition duration-300' : 'hover:text-[#008634]'}
+                  block hover:bg-gray-100 transition duration-300 rounded-b-md px-4 py-2`}
                 >
                   Bolsa de trabajo
                 </NavLink>
@@ -260,15 +260,15 @@ export const Header = React.memo(function Header() {
                 `}
               >
                 <NavLink to="/colegiatura" className={({ isActive }) =>
-                  `${isActive || activeLink === 'noticias' ? ' bg-[#00330a] text-white hover:text-gray-700' : 'hover:text-[#008634]'}
-                  block hover:bg-gray-100 transition duration-200 rounded-t-md px-4 py-2`}
+                  `${isActive || activeLink === 'colegiatura' ? ' bg-[#00330a] text-white hover:text-gray-700 transition duration-300' : 'hover:text-[#008634]'}
+                  block hover:bg-gray-100 transition duration-300 rounded-t-md px-4 py-2`}
                 >
                   ¿Cómo colegiarse?
                 </NavLink>
 
                 <NavLink to="/consultar-habilidad" className={({ isActive }) =>
-                  `${isActive || activeLink === 'bolsa-trabajo' ? 'bg-[#00330a] text-white hover:text-gray-700' : 'hover:text-[#008634]'}
-                  block hover:bg-gray-100 transition duration-200 rounded-b-md px-4 py-2`}
+                  `${isActive || activeLink === 'bolsa-trabajo' ? 'bg-[#00330a] text-white hover:text-gray-700 transition duration-300' : 'hover:text-[#008634]'}
+                  block hover:bg-gray-100 transition duration-300 rounded-b-md px-4 py-2`}
                 >
                   Consultar habilidad
                 </NavLink>

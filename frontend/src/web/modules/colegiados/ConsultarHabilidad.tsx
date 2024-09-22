@@ -210,33 +210,35 @@ export default function ConsultarHabilidad() {
             </div>
           </div>
         ) : colegiadoData.length > 1 ? (
-          <div className="overflow-x-auto lg:w-3/5 mx-5 lg:mx-auto mb-12">
-            <table className="min-w-full bg-white rounded-lg overflow-hidden">
-              <thead className="bg-[#00330a] text-white">
-                <tr className="font-nunito">
-                  <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">REGUC</th>
-                  <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">Nombre</th>
-                  <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">Apellidos</th>
-                  <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">Estado</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {colegiadoData.map(colegiado => (
-                  <tr key={colegiado.id_colegiado.id} className="hover:bg-[#C9EDC6] transition duration-300">
-                    <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900">{colegiado.id_colegiado.numero_colegiatura}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900">{colegiado.id_colegiado.nombre}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900">{colegiado.id_colegiado.apellido_paterno + ' ' + colegiado.id_colegiado.apellido_materno}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-md">
-                      {colegiado.id_estado_colegiatura.estado_colegiatura ? (
-                        <span className="text-[#00330a] font-semibold">Habilitado</span>
-                      ) : (
-                        <span className="text-red-600 font-semibold">No Habilitado</span>
-                      )}
-                    </td>
+          <div className="mb-12">
+            <div className="overflow-x-auto lg:w-3/5 mx-5 lg:mx-auto mb-5">
+              <table className="min-w-full bg-white rounded-lg overflow-hidden">
+                <thead className="bg-[#00330a] text-white">
+                  <tr className="font-nunito">
+                    <th className="px-6 py-3 text-left text-md uppercase tracking-wider">REGUC</th>
+                    <th className="px-6 py-3 text-left text-md uppercase tracking-wider">Nombres</th>
+                    <th className="px-6 py-3 text-left text-md uppercase tracking-wider">Apellidos</th>
+                    <th className="px-6 py-3 text-left text-md uppercase tracking-wider">Estado</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {colegiadoData.map(colegiado => (
+                    <tr key={colegiado.id_colegiado.id} className="hover:bg-[#C9EDC6] transition duration-300">
+                      <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900">{colegiado.id_colegiado.numero_colegiatura}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900">{colegiado.id_colegiado.nombre}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900">{colegiado.id_colegiado.apellido_paterno + ' ' + colegiado.id_colegiado.apellido_materno}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-md">
+                        {colegiado.id_estado_colegiatura.estado_colegiatura ? (
+                          <span className="text-[#00330a] font-semibold">Habilitado</span>
+                        ) : (
+                          <span className="text-red-600 font-semibold">No Habilitado</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
             <Paginator
               first={first}
               rows={rows}
