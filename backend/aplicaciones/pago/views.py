@@ -1,8 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework import viewsets
-from rest_framework import status
+from rest_framework import viewsets, status
 from functions.paginations import CustomPagination
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -30,10 +29,10 @@ class PagoViewSet(viewsets.ViewSet):
     allow_query_params = {
         'apellido_paterno', 'dni_colegiado',
         'numero_colegiatura', 'metodo_pago',
-        'tipo_pago', 'fecha_pago', 'page', 'page_size'
+        'fecha_pago', 'page', 'page_size'
     }
 
-    # Metodos
+    # Métodos
     def filter_queryset(self, queryset):
         filterset = self.filterset_class(self.request.query_params, queryset=queryset)
         return filterset.qs
@@ -76,10 +75,10 @@ class PagoViewSet(viewsets.ViewSet):
         responses={200: openapi.Response(description='Lista de Pagos de los colegiados')}    
     )
     def list(self, request, *args, **kwargs):
-        # Validar los paremetros permitidos
+        # Validar los parámetros permitidos
         for param in request.query_params:
             if param not in self.allow_query_params:
-                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_404_NOT_FOUND)
         
         queryset = self.filter_queryset(self.get_queryset())
         paginator = self.pagination_class()
@@ -97,13 +96,11 @@ class PagoViewSet(viewsets.ViewSet):
         responses={200: openapi.Response(description='Detalle de un Pago')}    
     )
     def retrieve(self, request, pk=None):
-        try:
-            instance = self.get_queryset().get(pk=pk)
-        except Pago.DoesNotExist:
-            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
-
+        instance = self.get_object()
+        if isinstance(instance, Response):
+            return instance
+        
         serializer = self.get_serializer(instance)
-
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     @swagger_auto_schema(
@@ -119,8 +116,6 @@ class PagoViewSet(viewsets.ViewSet):
             data['id_colegiado_id'] = data['id_colegiado'].get('id')
         if 'id_metodo_pago' in data and isinstance(data['id_metodo_pago'], dict):
             data['id_metodo_pago_id'] = data['id_metodo_pago'].get('id')
-        if 'id_tipo_pago' in data and isinstance(data['id_tipo_pago'], dict):
-            data['id_tipo_pago_id'] = data['id_tipo_pago'].get('id')
 
         serializer = self.get_serializer(data=data)
         if serializer.is_valid():
@@ -137,6 +132,9 @@ class PagoViewSet(viewsets.ViewSet):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
+        if isinstance(instance, Response):
+            return instance
+
         data = request.data.copy()
 
         # Manejar los IDs de las relaciones
@@ -144,11 +142,20 @@ class PagoViewSet(viewsets.ViewSet):
             data['id_colegiado_id'] = data['id_colegiado'].get('id')
         if 'id_metodo_pago' in data and isinstance(data['id_metodo_pago'], dict):
             data['id_metodo_pago_id'] = data['id_metodo_pago'].get('id')
-        if 'id_tipo_pago' in data and isinstance(data['id_tipo_pago'], dict):
-            data['id_tipo_pago_id'] = data['id_tipo_pago'].get('id')
         
         serializer = self.get_serializer(instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @swagger_auto_schema(
+        operation_id='Eliminar un Pago',
+        responses={204: openapi.Response(description='Pago eliminado')}
+    )
+    def destroy(self, request, pk=None):
+        instance = self.get_object()
+        if isinstance(instance, Response):
+            return instance
+        instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -2,11 +2,12 @@ from django.db import models
 from django.core.validators import EmailValidator
 from functions.validators import validar_numero, validar_espacio
 from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 
 
 class Colegiado(models.Model):
 
-    SEXO =[
+    SEXO = [
         ('M', 'Masculino'),
         ('F', 'Femenino'),
         ('O', 'Otro'),
@@ -31,6 +32,7 @@ class Colegiado(models.Model):
     fecha_nacimiento = models.DateField(null=False, blank=False, default=timezone.now)
     estado_civil = models.CharField(max_length=7, null=False, blank=False, choices=ESTADO_CIVIL, default='SOLTERO')
     direccion = models.CharField(max_length=300, blank=False, null=False, default='')
+    estado_activo = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return f'{self.nombre} - {self.apellido_paterno} - {self.numero_colegiatura} - {self.dni_colegiado}'
+        return f'{self.nombre} - {self.apellido_paterno} - {self.numero_colegiatura} - {self.dni_colegiado} - {self.estado_activo}'

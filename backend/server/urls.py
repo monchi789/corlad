@@ -48,6 +48,7 @@ urlpatterns = [
     path('pop-up/', include('aplicaciones.pop_up.urls')),
     path('publicacion/', include('aplicaciones.publicacion.urls')),
     path('slider/', include('aplicaciones.slider.urls')),
+    path('deudas/', include('aplicaciones.deudas.urls')),
     path('enviar-email/', EmailAPIView.as_view(), name='send-email'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),

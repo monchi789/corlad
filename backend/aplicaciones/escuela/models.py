@@ -1,5 +1,5 @@
 from django.db import models
-from functions.validators import validar_numero, validar_espacio
+from functions.validators import validar_espacio
 from django.db import models
 
 # Create your models here.

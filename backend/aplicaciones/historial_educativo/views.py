@@ -125,7 +125,7 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
         data = request.data.copy()
 
         # Manejar los IDs de las relaciones
-        for field in ['id_colegiado', 'id_especialidad', 'id_estado_colegiatura']:
+        for field in ['id_colegiado', 'id_especialidad']:
             if field in data and isinstance(data[field], dict):
                 data[f'{field}_id'] = data[field].get('id')
         

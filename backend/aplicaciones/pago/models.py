@@ -1,67 +1,98 @@
 from ..colegiado.models import Colegiado
 from functions.validators import validar_numero, validar_espacio
+from django.contrib.postgres.fields import ArrayField
+from django.db.models.signals import m2m_changed, post_save
+from django.dispatch import receiver
+from django.db import transaction
 from ..metodo_pago.models import MetodoPago
-from ..historial_educativo.models import HistorialEducativo
-from ..estado_colegiatura.models import EstadoColegiatura
+from ..tarifa.models import Tarifa
 from django.db import models
-from django.core.validators import MinValueValidator
 from django.utils import timezone
-from django.core.exceptions import ValidationError
 from datetime import timedelta
+from ..historial_educativo.models import HistorialEducativo
+from dateutil.relativedelta import relativedelta
 
 
-# Modelo para los pagos realizados por los colegiados
 class Pago(models.Model):
-    monto_pago = models.FloatField(default=0.00, validators=[MinValueValidator(0)])
-    fecha_pago = models.DateField(null=False, blank=False, default=timezone.now)
+    MESES_CHOICES = [
+        ('01', 'Enero'),
+        ('02', 'Febrero'),
+        ('03', 'Marzo'),
+        ('04', 'Abril'),
+        ('05', 'Mayo'),
+        ('06', 'Junio'),
+        ('07', 'Julio'),
+        ('08', 'Agosto'),
+        ('09', 'Septiembre'),
+        ('10', 'Octubre'),
+        ('11', 'Noviembre'),
+        ('12', 'Diciembre'),
+    ]
+
+    fecha_pago = models.DateField(default=timezone.now, editable=False)
     numero_operacion = models.CharField(null=True, blank=True, default='', validators=[validar_numero])
-    meses = models.CharField(max_length=3, null=False, blank=False, default='', validators=[validar_numero])
     observacion = models.CharField(max_length=255, null=True, blank=True, default='', validators=[validar_espacio])
-    id_colegiado = models.ForeignKey(Colegiado, on_delete=models.CASCADE)
     id_metodo_pago = models.ForeignKey(MetodoPago, on_delete=models.CASCADE, default=0)
+    id_colegiado = models.ForeignKey(Colegiado, on_delete=models.CASCADE)
+    tarifas = models.ManyToManyField(Tarifa, blank=True)
     
-    def actualizar_estado_colegiatura(self):
-        historial = HistorialEducativo.objects.filter(id_colegiado=self.id_colegiado).first()
-        if historial and historial.id_estado_colegiatura:
-            estado = historial.id_estado_colegiatura
-            fecha_actual = timezone.now().date()
-            
-            if estado.fecha_final < fecha_actual:
-                estado.estado_colegiatura = False
-                print(f"Estado de colegiatura cambiado a NO ACTIVO para colegiado {self.id_colegiado.id}")
-            elif estado.fecha_inicio <= fecha_actual <= estado.fecha_final:
-                estado.estado_colegiatura = True
-                print(f"Estado de colegiatura actualizado a ACTIVO para colegiado {self.id_colegiado.id}")
-            
-            estado.save()
-            historial.save()
+    monto_total = models.DecimalField(max_digits=10, decimal_places=2, editable=False, default=0)
+    meses_pagados = ArrayField(
+        models.CharField(max_length=2, choices=MESES_CHOICES),
+        blank=True,
+        null=True,
+    )
+
+    def calcular_monto_total(self):
+        monto_tarifas = sum(tarifa.precio_tarifa for tarifa in self.tarifas.all() if not tarifa.es_mensualidad)
+        tarifa_mensual = self.tarifas.filter(es_mensualidad=True).first()
+
+        if tarifa_mensual:
+            monto_mensualidades = tarifa_mensual.precio_tarifa * len(self.meses_pagados or [])
         else:
-            print("No se encontró historial o estado de colegiatura para actualizar.")
+            monto_mensualidades = 0
+
+        return monto_tarifas + monto_mensualidades
+    
+    def es_pago_mensualidad(self):
+        return self.tarifas.filter(es_mensualidad=True).exists()
+
+    def actualizar_estado_colegiado(self):
+        colegiado = self.id_colegiado
+        hoy = timezone.now()  # Obtener la fecha y hora actual como datetime
+
+        if self.es_pago_mensualidad() and self.meses_pagados:
+            ultimo_mes = max(int(mes) for mes in self.meses_pagados)
+            fecha_ultimo_pago = self.fecha_pago.replace(day=1, month=ultimo_mes)
+            fecha_vencimiento = fecha_ultimo_pago + relativedelta(months=1)
+
+            # Realiza la comparación
+            colegiado.estado_activo = hoy < fecha_vencimiento
+        else:
+            colegiado.estado_activo = False
+
+        colegiado.save(update_fields=['estado_activo'])
 
 
     def save(self, *args, **kwargs):
-        self.clean()
-        super(Pago, self).save(*args, **kwargs)
-
-        historial, created = HistorialEducativo.objects.get_or_create(id_colegiado=self.id_colegiado)
-        estado = historial.id_estado_colegiatura
-
-        if estado:
-            nueva_fecha_final = max(estado.fecha_final, self.fecha_pago) + timedelta(days=30 * int(self.meses))
-            estado.fecha_final = nueva_fecha_final
-        else:
-            nueva_fecha_final = self.fecha_pago + timedelta(days=30 * int(self.meses))
-            estado = EstadoColegiatura.objects.create(
-                fecha_inicio=self.fecha_pago,
-                fecha_final=nueva_fecha_final,
-                estado_colegiatura=True
-            )
-
-        estado.save()
-
-        historial.id_estado_colegiatura = estado
-        historial.save()
-
+        is_new = self.pk is None
+        super().save(*args, **kwargs)
+        if self.es_pago_mensualidad():
+            self.actualizar_estado_colegiado()
 
     def __str__(self):
-        return f'{self.monto_pago} - {self.id_colegiado.nombre} - {self.id_metodo_pago.nombre_metodo_pago}'
+        meses = ', '.join(dict(self.MESES_CHOICES)[mes] for mes in (self.meses_pagados or []))
+        return f'Pago de {self.id_colegiado.nombre} - Meses: {meses} - Total: {self.monto_total}'
+
+@receiver(m2m_changed, sender=Pago.tarifas.through)
+def tarifas_changed(sender, instance, action, **kwargs):
+    if action in ['post_add', 'post_remove', 'post_clear']:
+        instance.monto_total = instance.calcular_monto_total()
+        instance.save(update_fields=['monto_total'])
+        if instance.es_pago_mensualidad():
+            instance.actualizar_estado_colegiado()
+
+@receiver(post_save, sender=Pago)
+def actualizar_estado_colegiado_signal(sender, instance, created, **kwargs):
+    if instance.es_pago_mensualidad():
+        instance.actualizar_estado_colegiado()

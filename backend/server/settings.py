@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'aplicaciones.emails',
     'aplicaciones.escuela',
     'aplicaciones.especialidad',
-    'aplicaciones.estado_colegiatura',
+    # 'aplicaciones.estado_colegiatura',
     'aplicaciones.historial_educativo',
     'aplicaciones.metodo_pago',
     'aplicaciones.pago',
