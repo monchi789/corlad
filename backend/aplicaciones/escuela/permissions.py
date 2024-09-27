@@ -4,13 +4,13 @@ from rest_framework.permissions import BasePermission
 class EscuelaPermissions(BasePermission):
     def has_permission(self, request, view):
         if view.action in ['list', 'retrieve']:
-            return request.user.has_perm('colegiado.view_escuela')
+            return request.user.has_perm('escuela.view_escuela')
         if view.action == 'create':
-            return request.user.has_perm('colegiado.add_escuela')
+            return request.user.has_perm('escuela.add_escuela')
         if view.action in ['update', 'partial_update']:
-            return request.user.has_perm('colegiado.change_escuela')
+            return request.user.has_perm('escuela.change_escuela')
         if view.action == 'destroy':
-            return request.user.has_perm('colegiado.delete_escuela')
+            return request.user.has_perm('escuela.delete_escuela')
         return False
 
     def has_object_permission(self, request, view, obj):
