@@ -48,12 +48,21 @@ INSTALLED_APPS = [
     'corsheaders',
 
     # Aplicaciones
+    'aplicaciones.categoria',
     'aplicaciones.colegiado',
-    'aplicaciones.contenido',
-    'aplicaciones.pago',
-    'aplicaciones.publicacion',
+    'aplicaciones.deudas',
     'aplicaciones.emails',
-
+    'aplicaciones.escuela',
+    'aplicaciones.especialidad',
+    # 'aplicaciones.estado_colegiatura',
+    'aplicaciones.historial_educativo',
+    'aplicaciones.metodo_pago',
+    'aplicaciones.pago',
+    'aplicaciones.pop_up',
+    'aplicaciones.publicacion',
+    'aplicaciones.slider',
+    'aplicaciones.tarifa',
+    
     # Aplicaciones de terceros
     'rest_framework',
     'tinymce',

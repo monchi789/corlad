@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import PopUp, Slider
+from .models import Slider
 
 # Register your models here.
-admin.site.register(PopUp)
 admin.site.register(Slider)
