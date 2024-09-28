@@ -28,7 +28,7 @@ class HistorialEducativoSerializer(serializers.ModelSerializer):
         model = HistorialEducativo
         fields = [
             'id', 'id_colegiado', 'id_especialidad', 
-            'id_colegiado_id', 'id_especialidad_id'
+            'id_colegiado_id', 'id_especialidad_id',  # Aquí estaba el problema
             'universidad', 'denominacion_bachiller', 'denominacion_titulo', 'titulo_fecha', 'fecha_bachiller'
         ]
 
@@ -36,7 +36,6 @@ class HistorialEducativoSerializer(serializers.ModelSerializer):
         id_colegiado = validated_data.pop('id_colegiado', None)
         id_especialidad = validated_data.pop('id_especialidad', None)
         
-
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
 
@@ -56,4 +55,4 @@ class ConsultarHabilidadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HistorialEducativo
-        fields = ['id_colegiado', 'id_especialidad',]
+        fields = ['id_colegiado', 'id_especialidad']
