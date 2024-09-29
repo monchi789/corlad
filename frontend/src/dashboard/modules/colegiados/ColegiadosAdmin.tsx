@@ -1,14 +1,17 @@
-import { SessionHeader } from "../../shared/SessionHeader";
-import { Sidebar } from "../../shared/Sidebar";
 import { ColegiadoTable } from "./ColegiadoTable";
 import { BuscarColegiado } from "./BuscarColegiado";
 import { useEffect, useState } from "react";
 import { HistorialColegiado } from "../../../interfaces/model/HistorialColegiado";
 import { getAllHistorialColegiado } from "../../../api/historial.colegiado.api";
 import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
+import { Link, useNavigate } from 'react-router-dom';
+import { PersonAdd } from '@mui/icons-material';
 import { classNames } from "primereact/utils";
+import { FaArrowCircleLeft } from "react-icons/fa";
 
 export default function ColegiadosAdmin() {
+  const navigate = useNavigate();
+
   const [colegiadosList, setColegiadosList] = useState<HistorialColegiado[]>([]);
   const [totalRecords, setTotalRecords] = useState(0);
   const [first, setFirst] = useState(0);
@@ -66,29 +69,39 @@ export default function ColegiadosAdmin() {
   }, []);
 
   return (
-
-    <div className="flex flex-row w-full">
-
-      <Sidebar />
-
-      <div className="w-full xl:w-4/5 mx-3 p-3">
-
-        <SessionHeader />
-
-        <BuscarColegiado onSearchResults={handleSearchResults} />
-
-        <ColegiadoTable colegiadosList={colegiadosList} onDelete={handleDeleteColegiado} />
-
-        <Paginator
-          first={first}
-          rows={rows}
-          totalRecords={totalRecords}
-          onPageChange={onPageChange}
-          className="space-x-5 mt-5"
-          template={template}
-        />
-
+    <>
+      <div className="flex flex-col space-y-5 my-5">
+        <div className="flex flex-row justify-between items-center">
+          <div className="flex flex-row">
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center text-gray-700 hover:text-gray-900 p-2"
+            >
+              <FaArrowCircleLeft className="mr-2" size={"30px"} />
+            </button>
+            <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Colegiados</h4>
+          </div>
+          <Link className="flex flex-row space-x-3" to={"/admin/colegiado/nuevo-colegiado"}>
+            <button className="flex flex-row bg-[#007336] text-lg text-white font-nunito font-semibold hover:bg-[#00330A] shadow-black shadow-md rounded-lg transition duration-300 hover:scale-110 ease-in-out delay-150 space-x-3 px-4 py-2">
+              <PersonAdd className="my-auto" />
+              <span className="my-auto">Nuevo colegiado</span>
+            </button>
+          </Link>
+        </div>
       </div>
-    </div>
+
+      <BuscarColegiado onSearchResults={handleSearchResults} />
+
+      <ColegiadoTable colegiadosList={colegiadosList} onDelete={handleDeleteColegiado} />
+
+      <Paginator
+        first={first}
+        rows={rows}
+        totalRecords={totalRecords}
+        onPageChange={onPageChange}
+        className="space-x-5 mt-5"
+        template={template}
+      />
+    </>
   )
 }

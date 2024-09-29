@@ -15,7 +15,8 @@ class Colegiado(models.Model):
 
     ESTADO_CIVIL = [
         ('CASADO', 'Casado'),
-        ('SOLTERO', 'Soltero')
+        ('SOLTERO', 'Soltero'),
+        ('OTRO', 'Otro')
     ]
 
     nombre = models.CharField(max_length=100, blank=False, null=False, validators=[validar_espacio], default='')

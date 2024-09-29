@@ -43,7 +43,7 @@ urlpatterns = [
     path('escuela/', include('aplicaciones.escuela.urls')),
     path('especialidad/', include('aplicaciones.especialidad.urls')),
     path('historial-educativo/', include('aplicaciones.historial_educativo.urls')),
-    path('metodo_pago/', include('aplicaciones.metodo_pago.urls')),
+    path('metodo-pago/', include('aplicaciones.metodo_pago.urls')),
     path('pago/', include('aplicaciones.pago.urls')),
     path('pop-up/', include('aplicaciones.pop_up.urls')),
     path('publicacion/', include('aplicaciones.publicacion.urls')),

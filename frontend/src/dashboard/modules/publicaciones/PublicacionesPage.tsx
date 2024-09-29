@@ -1,7 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Link } from "react-router-dom";
-import { SessionHeader } from "../../shared/SessionHeader";
-import { Sidebar } from "../../shared/Sidebar";
+import { Link, useNavigate } from "react-router-dom";
 import { Dropdown } from 'primereact/dropdown';
 import { CardPublicacion } from "../../shared/CardPublicacion";
 import { deletePublicacion, getAllPublicaciones } from "../../../api/publicacion.api";
@@ -13,6 +11,7 @@ import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
 import { classNames } from "primereact/utils";
 import toast from "react-hot-toast";
 import Modal from 'react-modal';
+import { FaArrowCircleLeft } from "react-icons/fa";
 
 Modal.setAppElement('#root');
 
@@ -24,6 +23,8 @@ interface PublicacionResponse {
 }
 
 export default function PublicacionesAdmin() {
+  const navigate = useNavigate();
+
   const [selectedOption, setSelectedOption] = useState<number | null>(null); // Por defecto es null
   const [publicaciones, setPublicaciones] = useState<Publicacion[]>([]);
   const [filteredPublicaciones, setFilteredPublicaciones] = useState<Publicacion[]>([]);
@@ -168,101 +169,103 @@ export default function PublicacionesAdmin() {
   }, [selectedOption, startDate, endDate, publicaciones, filterPublicaciones]);
 
   return (
-    <div className="flex flex-row w-full">
-      <Sidebar />
-      <div className="w-full xl:w-4/5 mx-3 p-3">
-        <SessionHeader />
-        <div className="flex flex-col space-y-5 mt-10">
-          <div className="flex flex-row justify-between">
-            <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Publicaciones</h4>
-            <div className="flex flex-row space-x-3">
-              <Link to={"/admin/publicaciones/nueva-publicacion"}>
-                <button className="flex flex-row bg-[#007336] text-lg text-white font-nunito font-semibold hover:bg-[#00330A] shadow-black shadow-md rounded-2xl transition duration-300 hover:scale-110 ease-in-out delay-150 space-x-3 px-4 py-1">
-                  <IoMdAddCircleOutline className="my-auto" size={"25px"} />
-                  <span className="my-auto">Nueva publicación</span>
-                </button>
-              </Link>
-            </div>
+    <>
+      <div className="flex flex-col space-y-5 my-5">
+        <div className="flex flex-row justify-between">
+          <div className="flex flex-row">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center text-gray-700 hover:text-gray-900 p-2"
+          >
+            <FaArrowCircleLeft className="mr-2" size={"30px"} />
+          </button>
+          <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Publicaciones</h4>
           </div>
-          <div className="w-full bg-[#EAF1E8] rounded-lg shadow-custom-input p-5 mt-5">
-            <div className="flex flex-row justify-between space-x-10">
-              <div className="flex flex-col w-full space-y-2">
-                <span className="text-xl text-[#00330A] font-nunito font-bold">Categoría</span>
-                <Dropdown
-                  className="w-full text-[#5F4102] font-bold font-nunito border-solid border-2 border-[#5F4102] rounded-xl items-center py-1 px-2"
-                  panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
-                  value={selectedOption}
-                  onChange={(e) => handleCategoryChange(e.value)}
-                  options={categorias}
-                  optionLabel="label"
-                  placeholder="Selecciona una categoría"
-                  itemTemplate={itemCategoria}
-                />
-              </div>
-              <div className="flex flex-col w-full space-y-2">
-                <span className="text-xl text-[#00330A] font-nunito font-bold">Desde</span>
-                <input
-                  type="date"
-                  className="text-[#5F4102] font-bold font-nunito bg-transparent border-solid border-2 border-[#00330A] rounded-xl py-1 px-2"
-                  value={startDate || ''}
-                  onChange={(e) => setStartDate(e.target.value)}
-                />
-              </div>
-              <div className="flex flex-col w-full space-y-2">
-                <span className="text-xl text-[#00330A] font-nunito font-bold">Hasta</span>
-                <input
-                  type="date"
-                  className="text-[#5F4102] font-bold font-nunito bg-transparent border-solid border-2 border-[#00330A] rounded-xl py-1 px-2"
-                  value={endDate || ''}
-                  onChange={(e) => setEndDate(e.target.value)}
-                />
-              </div>
+          <Link className="flex flex-row space-x-3" to={"/admin/publicaciones/nueva-publicacion"}>
+            <button className="flex flex-row bg-[#007336] text-lg text-white font-nunito font-semibold hover:bg-[#00330A] shadow-black shadow-md rounded-lg transition duration-300 hover:scale-110 ease-in-out delay-150 space-x-3 px-4 py-1">
+              <IoMdAddCircleOutline className="my-auto" size={"25px"} />
+              <span className="my-auto">Nueva publicación</span>
+            </button>
+          </Link>
+        </div>
+        <div className="w-full bg-[#EAF1E8] rounded-lg shadow-custom-input p-5 mt-5">
+          <div className="flex flex-row justify-between space-x-10">
+            <div className="flex flex-col w-full space-y-2">
+              <span className="text-xl text-[#00330A] font-nunito font-bold">Categoría</span>
+              <Dropdown
+                className="w-full text-[#5F4102] font-bold font-nunito border-solid border-2 border-[#5F4102] rounded-xl items-center py-1 px-2"
+                panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
+                value={selectedOption}
+                onChange={(e) => handleCategoryChange(e.value)}
+                options={categorias}
+                optionLabel="label"
+                placeholder="Selecciona una categoría"
+                itemTemplate={itemCategoria}
+              />
+            </div>
+            <div className="flex flex-col w-full space-y-2">
+              <span className="text-xl text-[#00330A] font-nunito font-bold">Desde</span>
+              <input
+                type="date"
+                className="text-[#5F4102] font-bold font-nunito bg-transparent border-solid border-2 border-[#00330A] rounded-xl py-1 px-2"
+                value={startDate || ''}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-col w-full space-y-2">
+              <span className="text-xl text-[#00330A] font-nunito font-bold">Hasta</span>
+              <input
+                type="date"
+                className="text-[#5F4102] font-bold font-nunito bg-transparent border-solid border-2 border-[#00330A] rounded-xl py-1 px-2"
+                value={endDate || ''}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
             </div>
           </div>
         </div>
-        <div className="mt-5">
-          <div className="flex flex-wrap gap-5">
-            {filteredPublicaciones.length > 0 ? (
-              filteredPublicaciones.map(publicacion => (
-                <CardPublicacion
-                  key={publicacion.id}
-                  id={publicacion.id}
-                  title={publicacion.titulo}
-                  imagen={`${import.meta.env.VITE_API_URL_ALTER}${publicacion.imagen_publicacion}`}
-                  contenido={publicacion.contenido}
-                  tipo={publicacion.id_categoria.nombre_categoria}
-                  date={publicacion.fecha_publicacion}
-                  onDelete={openModal}
-                />
-              ))
-            ) : (
-              <p>No se encontraron publicaciones.</p>
-            )}
-          </div>
-        </div>
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={closeModal}
-          contentLabel="Confirm Delete"
-          className="bg-white rounded-lg p-5 shadow-lg w-[300px] mx-auto my-20"
-          overlayClassName="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center"
-        >
-          <h2 className="text-xl font-semibold mb-4">Confirmar Eliminación</h2>
-          <p className="mb-5">¿Estás seguro de que deseas eliminar esta publicación?</p>
-          <div className="flex justify-end space-x-3">
-            <button onClick={closeModal} className="bg-gray-300 px-4 py-2 rounded">Cancelar</button>
-            <button onClick={handleDeleteConfirmation} className="bg-red-600 text-white px-4 py-2 rounded">Eliminar</button>
-          </div>
-        </Modal>
-        <Paginator
-          first={first}
-          rows={rows}
-          totalRecords={totalRecords}
-          onPageChange={onPageChange}
-          className="space-x-5 mt-10"
-          template={template}
-        />
       </div>
-    </div>
+      <div className="mt-5">
+        <div className="flex flex-wrap gap-5">
+          {filteredPublicaciones.length > 0 ? (
+            filteredPublicaciones.map(publicacion => (
+              <CardPublicacion
+                key={publicacion.id}
+                id={publicacion.id}
+                title={publicacion.titulo}
+                imagen={`${import.meta.env.VITE_API_URL_ALTER}${publicacion.imagen_publicacion}`}
+                contenido={publicacion.contenido}
+                tipo={publicacion.id_categoria.nombre_categoria}
+                date={publicacion.fecha_publicacion}
+                onDelete={openModal}
+              />
+            ))
+          ) : (
+            <p className="col-span-full text-center text-lg font-semibold mx-auto">No se encontraron publicaciones.</p>
+          )}
+        </div>
+      </div>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Confirm Delete"
+        className="bg-white rounded-lg p-5 shadow-lg w-[300px] mx-auto my-20"
+        overlayClassName="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center"
+      >
+        <h2 className="text-xl font-semibold mb-4">Confirmar Eliminación</h2>
+        <p className="mb-5">¿Estás seguro de que deseas eliminar esta publicación?</p>
+        <div className="flex justify-end space-x-3">
+          <button onClick={closeModal} className="bg-gray-300 px-4 py-2 rounded">Cancelar</button>
+          <button onClick={handleDeleteConfirmation} className="bg-red-600 text-white px-4 py-2 rounded">Eliminar</button>
+        </div>
+      </Modal>
+      <Paginator
+        first={first}
+        rows={rows}
+        totalRecords={totalRecords}
+        onPageChange={onPageChange}
+        className="space-x-5 mt-10"
+        template={template}
+      />
+    </>
   );
 }

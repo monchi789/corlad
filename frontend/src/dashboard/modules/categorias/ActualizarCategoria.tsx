@@ -1,34 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { updateEscuela } from "../../../api/escuela.api";
-import { Escuela } from "../../../interfaces/model/Escuela";
+import { updateCategoria } from "../../../api/categoria.api";
+import { Categoria } from "../../../interfaces/model/Categoria";
 
-interface ActualizarEscuelaProps {
+interface ActualizarCategoriaProps {
   isOpen: boolean;
   onClose: () => void;
-  onSchoolUpdated: () => void;
-  escuela: Escuela;
+  onCategoryUpdated: () => void;
+  categoria: Categoria;
 }
 
-export const ActualizarEscuela: React.FC<ActualizarEscuelaProps> = ({ isOpen, onClose, onSchoolUpdated, escuela }) => {
-  const [schoolName, setSchoolName] = useState('');
+export const ActualizarCategoria: React.FC<ActualizarCategoriaProps> = ({ isOpen, onClose, onCategoryUpdated, categoria }) => {
+  const [categoryName, setCategoryName] = useState('');
 
   useEffect(() => {
-    if (escuela) {
-      setSchoolName(escuela.nombre_escuela);
+    if (categoria) {
+      setCategoryName(categoria.nombre_categoria);
     }
-  }, [escuela]);
+  }, [categoria]);
 
   const handleSubmit = async () => {
     try {
-      const updatedSchoolData: Partial<Escuela> = {
-        nombre_escuela: schoolName,
+      const updatedCategoryData = {
+        nombre_categoria: categoryName,
       };
 
-      await updateEscuela(escuela.id, updatedSchoolData);
-
-      onSchoolUpdated();
+      await updateCategoria(categoria.id, updatedCategoryData);
+      console.log('Categoría actualizada exitosamente');
+      onCategoryUpdated();
       onClose();
     } catch (error) {
+      console.error("Error al actualizar la categoría:", error);
     }
   };
 
@@ -44,13 +45,13 @@ export const ActualizarEscuela: React.FC<ActualizarEscuelaProps> = ({ isOpen, on
         >
           ✕
         </button>
-        <h2 className="text-2xl mb-4">Editar capítulo</h2>
+        <h2 className="text-2xl mb-4">Editar Categoría</h2>
         <input
           type="text"
-          placeholder="Nombre de la Escuela"
+          placeholder="Nombre de la Categoría"
           className="w-full p-2 border rounded mb-4 shadow-lg border-[#00330A]"
-          value={schoolName}
-          onChange={(e) => setSchoolName(e.target.value)}
+          value={categoryName}
+          onChange={(e) => setCategoryName(e.target.value)}
         />
         <button className="bg-[#007336] text-white py-2 px-4 rounded" onClick={handleSubmit}>Guardar cambios</button>
       </div>

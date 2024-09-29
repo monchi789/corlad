@@ -1,5 +1,3 @@
-import { SessionHeader } from "../../shared/SessionHeader";
-import { Sidebar } from "../../shared/Sidebar";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
 import { PagosTable } from "./PagosTable";
@@ -66,41 +64,31 @@ export default function Pagos() {
 
 
   return (
-    <div className="flex flex-row w-full">
-
-      <Sidebar />
-
-      <div className="w-full xl:w-4/5 mx-3 p-3">
-
-        <SessionHeader />
-
-        <div className="flex flex-col space-y-5 mt-5">
-          <div className="flex flex-row justify-between">
-            <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Pagos</h4>
-            <div className="flex flex-row space-x-3">
-              <Link to={"/admin/pagos/nuevo-pago"}>
-                <button className="flex flex-row bg-[#007336] text-lg text-white font-nunito font-semibold hover:bg-[#00330A] shadow-black shadow-md rounded-2xl transition duration-300 hover:scale-110 ease-in-out delay-150 space-x-3 px-4 py-1">
-                  <IoMdAddCircleOutline className="my-auto" size={"25px"} />
-                  <span className="my-auto">Nuevo pago</span>
-                </button>
-              </Link>
-            </div>
-          </div>
+    <>
+      <div className="flex flex-col md:flex-row justify-between mt-5">
+        <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Pagos</h4>
+        <div className="flex flex-row space-x-3">
+          <Link to={"/admin/pagos/nuevo-pago"}>
+            <button className="flex flex-row bg-[#007336] text-lg text-white font-nunito font-semibold hover:bg-[#00330A] shadow-black shadow-md rounded-lg transition duration-300 hover:scale-110 ease-in-out delay-150 space-x-3 px-4 py-1">
+              <IoMdAddCircleOutline className="my-auto" size={"25px"} />
+              <span className="my-auto">Nuevo pago</span>
+            </button>
+          </Link>
         </div>
-
-        <BuscarPagos onSearchResults={handleSearchResults} />
-
-        <PagosTable pagosList={pagosList} />
-
-        <Paginator
-          first={first}
-          rows={rows}
-          totalRecords={totalRecords}
-          onPageChange={onPageChange}
-          className="space-x-5 mt-5"
-          template={template}
-        />
       </div>
-    </div>
+
+      <BuscarPagos onSearchResults={handleSearchResults} />
+
+      <PagosTable pagosList={pagosList} />
+
+      <Paginator
+        first={first}
+        rows={rows}
+        totalRecords={totalRecords}
+        onPageChange={onPageChange}
+        className="space-x-5 mt-5"
+        template={template}
+      />
+    </>
   )
 }

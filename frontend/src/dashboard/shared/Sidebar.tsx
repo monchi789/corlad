@@ -8,7 +8,8 @@ import { IoSchoolSharp, IoImages } from "react-icons/io5";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { MdLogout, MdMenu } from "react-icons/md";
 import { PiNewspaperClippingFill } from "react-icons/pi";
-import logo_corlad from "../../assets/web/corlad_logo_blanco.png";
+import logo_corlad from "../../assets/dashboard/corlad_logo_blanco.png";
+import { RiPriceTag3Fill } from "react-icons/ri";
 
 
 interface MenuItemProps {
@@ -43,11 +44,13 @@ export function Sidebar() {
       >
         <MdMenu size={24} />
       </button>
-      <div className={`flex flex-col fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} xl:relative xl:translate-x-0 transition duration-200 ease-in-out w-3/4 md:w-2/4 lg:w-1/4 xl:w-1/4 min-h-svh  bg-[#007336] rounded-2xl shadow-custom m-3 p-3 mb-5 overflow-y-auto z-40`}>
+      <div className={`flex flex-col w-3/4 md:w-2/4 lg:w-1/4 xl:w-1/4 fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} xl:relative xl:translate-x-0 transition duration-200 ease-in-out  min-h-svh bg-[#007336] shadow-black shadow-lg overflow-y-auto z-40`}>
         <div className="flex-grow overflow-y-auto">
           <div className="flex flex-col w-full font-nunito text-xl">
-            <img className="w-3/6 lg:w-2/6 justify-center mx-auto" src={logo_corlad} alt="Logo del corlad cusco" />
-            <h2 className="text-xl text-center text-[#F1E9D0] font-black m-5">CORLAD CUSCO</h2>
+            <div className="flex flex-row justify-start space-x-5 mx-7 my-5">
+              <img className="w-1/6" src={logo_corlad} alt="Logo del CORLAD Cusco" />
+              <h2 className="text-xl text-center text-white font-black my-auto">CORLAD CUSCO</h2>
+            </div>
             <ul className="flex flex-col w-full justify-between">
 
               <MenuItem to="/admin" icon={<AiFillHome size={25} />} text="Inicio" />
@@ -76,7 +79,7 @@ export function Sidebar() {
                       <ul className="flex flex-col text-xl space-y-2 pl-12 pt-2">
                         <Link to={"/admin/pagos"}>
                           <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] rounded-lg transition duration-300 p-2">
-                            <span className="my-auto">Pagos</span>
+                            <span className="my-auto">Administrar pagos</span>
                           </li>
                         </Link>
                         <Link to={"/admin/pagos/estado-cuenta"}>
@@ -87,6 +90,7 @@ export function Sidebar() {
                       </ul>
                     </div>
                   </li>
+                  <MenuItem to="/admin/tarifas" icon={<RiPriceTag3Fill size={25} />} text="Tarifas" />
                 </>
               )}
 
@@ -111,7 +115,7 @@ export function Sidebar() {
                       <ul className="flex flex-col text-xl space-y-2 pl-12 pt-2">
                         <Link to={"/admin/publicaciones"}>
                           <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] rounded-lg transition duration-300 p-2">
-                            <span className="my-auto">Publicaciones</span>
+                            <span className="my-auto">Lista de publicaciones</span>
                           </li>
                         </Link>
                         <Link to={"/admin/publicaciones/categorias"}>
