@@ -1,28 +1,34 @@
-import React, { useState } from "react";
-import { createEscuela } from "../../../api/escuela.api";
+import React, { useState, useEffect } from "react";
+import { updateEscuela } from "../../../api/escuela.api";
 import { Escuela } from "../../../interfaces/model/Escuela";
 
-interface AgregarEscuelaProps {
+interface EditarEscuelaProps {
   isOpen: boolean;
   onClose: () => void;
-  onSchoolAdded: () => void;
+  onSchoolUpdated: () => void;
+  escuela: Escuela;
 }
 
-export const AgregarEscuela: React.FC<AgregarEscuelaProps> = ({ isOpen, onClose, onSchoolAdded }) => {
-  const [newEscuelaName, setNewEscuelaName] = useState('');
+export const EditarEscuela: React.FC<EditarEscuelaProps> = ({ isOpen, onClose, onSchoolUpdated, escuela }) => {
+  const [schoolName, setSchoolName] = useState('');
+
+  useEffect(() => {
+    if (escuela) {
+      setSchoolName(escuela.nombre_escuela);
+    }
+  }, [escuela]);
 
   const handleSubmit = async () => {
     try {
-      const newSchoolData: Omit<Escuela, 'id'> = {
-        nombre_escuela: newEscuelaName,
+      const updatedSchoolData: Partial<Escuela> = {
+        nombre_escuela: schoolName,
       };
 
-      await createEscuela(newSchoolData);
+      await updateEscuela(escuela.id, updatedSchoolData);
 
-      onSchoolAdded();
+      onSchoolUpdated();
       onClose();
     } catch (error) {
-      
     }
   };
 
@@ -38,15 +44,15 @@ export const AgregarEscuela: React.FC<AgregarEscuelaProps> = ({ isOpen, onClose,
         >
           ✕
         </button>
-        <h2 className="text-2xl mb-4">Registrar nuevo capítulo</h2>
+        <h2 className="text-2xl mb-4">Editar capítulo</h2>
         <input
           type="text"
           placeholder="Nombre de la Escuela"
           className="w-full p-2 border rounded mb-4 shadow-lg border-[#00330A]"
-          value={newEscuelaName}
-          onChange={(e) => setNewEscuelaName(e.target.value)}
+          value={schoolName}
+          onChange={(e) => setSchoolName(e.target.value)}
         />
-        <button className="bg-[#007336] text-white py-2 px-4 rounded" onClick={handleSubmit}>Añadir capítulo</button>
+        <button className="bg-[#007336] text-white py-2 px-4 rounded" onClick={handleSubmit}>Guardar cambios</button>
       </div>
     </div>
   );

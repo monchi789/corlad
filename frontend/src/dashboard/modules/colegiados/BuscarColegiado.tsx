@@ -1,7 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import { PersonAdd } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
-import { Link } from 'react-router-dom';
 import { Dropdown } from 'primereact/dropdown';
 import { HistorialColegiado } from '../../../interfaces/model/HistorialColegiado';
 import { getHistorialColegiadoByFilters } from '../../../api/historial.colegiado.api';
@@ -63,19 +61,7 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
 
   return (
     <div className="mt-5 pb-5">
-      <div className="flex flex-col space-y-5 my-5">
-        <div className="flex flex-row justify-between">
-          <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Colegiados</h4>
-          <div className="flex flex-row space-x-3">
-            <Link to={"/admin/colegiado/nuevo-colegiado"}>
-              <button className="flex flex-row bg-[#007336] text-lg text-white font-nunito font-semibold hover:bg-[#00330A] shadow-black shadow-md rounded-2xl transition duration-300 hover:scale-110 ease-in-out delay-150 space-x-3 px-4 py-1">
-                <PersonAdd className="my-auto"/>
-                <span className="my-auto">Nuevo colegiado</span>
-              </button>
-            </Link>
-          </div>
-        </div>
-      </div>
+      
 
       <div className="bg-[#E1EBDE] shadow-custom-input rounded-2xl">
         <div className="flex flex-row space-x-5 p-4">

@@ -1,7 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { SessionHeader } from "../../shared/SessionHeader";
-import { Sidebar } from "../../shared/Sidebar";
 import { Dropdown } from "primereact/dropdown";
 import { Categoria } from "../../../interfaces/model/Categoria";
 import { getAllCategoriasAdmin } from "../../../api/categoria.api";
@@ -160,10 +158,7 @@ export default function EditarPublicacion() {
   };
 
   return (
-    <div className="flex flex-row w-full">
-      <Sidebar />
-      <div className="w-full xl:w-4/5 m-3 p-3">
-        <SessionHeader />
+    <>
         <div className="flex flex-col space-y-5 my-10">
           <div className="flex flex-row justify-between">
             <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Editar publicación</h4>
@@ -246,7 +241,6 @@ export default function EditarPublicacion() {
             <button type="button" className="w-1/6 rounded-2xl text-[#5F4102] border border-[#5F4102] p-2" onClick={handleCancel}>Cancelar</button>
           </div>
         </form>
-      </div>
-    </div>
+    </>
   )
 }

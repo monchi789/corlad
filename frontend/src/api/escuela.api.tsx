@@ -23,7 +23,7 @@ export const getAllEscuelas = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.get(`${apiUrl}gestion-colegiados/escuelas/`, {
+  return axios.get(`${apiUrl}escuela/escuelas/`, {
     headers: {
       'Authorization': `Bearer ${token}` // Incluyendo el token en los encabezados
     }
@@ -36,7 +36,7 @@ export const createEscuela = (newSchoolData: NewSchoolData) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.post(`${apiUrl}gestion-colegiados/escuelas/`, newSchoolData, {
+  return axios.post(`${apiUrl}escuela/escuelas/`, newSchoolData, {
     headers: {
       'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados
       'Content-Type': 'application/json' // Indicando que el contenido es JSON
@@ -48,7 +48,7 @@ export const updateEscuela = (id: number, updatedData: Partial<Escuela>) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.put(`${apiUrl}gestion-colegiados/escuelas/${id}/`, updatedData, {
+  return axios.put(`${apiUrl}escuela/escuelas/${id}/`, updatedData, {
     headers: {
       'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados
       'Content-Type': 'application/json' // Indicando que el contenido es JSON
@@ -60,7 +60,7 @@ export const deleteEscuela = (id: number) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); 
 
-  return axios.delete(`${apiUrl}gestion-colegiados/escuelas/${id}`, {
+  return axios.delete(`${apiUrl}escuela/escuelas/${id}`, {
     headers: {
       'Authorization': `Bearer ${token}` 
     }
@@ -71,7 +71,7 @@ export const getAllEspecialidades = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.get(`${apiUrl}gestion-colegiados/especialidades/`, {
+  return axios.get(`${apiUrl}especialidad/especialidades/`, {
     headers: {
       'Authorization': `Bearer ${token}` // Incluyendo el token en los encabezados
     }
@@ -84,7 +84,7 @@ export const createEspecialidad = (newSpecialtyData: NewSpecialtyData) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.post(`${apiUrl}gestion-colegiados/especialidades/`, newSpecialtyData, {
+  return axios.post(`${apiUrl}especialidad/especialidades/`, newSpecialtyData, {
     headers: {
       'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados
       'Content-Type': 'application/json' // Indicando que el contenido es JSON
@@ -96,7 +96,7 @@ export const updateEspecialidad = (id: number, updatedData: Partial<Especialidad
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.put(`${apiUrl}gestion-colegiados/especialidades/${id}/`, updatedData, {
+  return axios.put(`${apiUrl}especialidad/especialidades/${id}/`, updatedData, {
     headers: {
       'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados
       'Content-Type': 'application/json' // Indicando que el contenido es JSON
@@ -108,7 +108,7 @@ export const deleteEspecialidad = (id: number) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken');
 
-  return axios.delete(`${apiUrl}gestion-colegiados/especialidades/${id}`, {
+  return axios.delete(`${apiUrl}especialidad/especialidades/${id}`, {
     headers: {
       'Authorization': `Bearer ${token}` 
     }

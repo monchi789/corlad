@@ -3,8 +3,6 @@ import colegiado_default from "../../../assets/dashboard/person_perfil.webp"
 import { Divider } from "primereact/divider";
 import { Dropdown } from "primereact/dropdown";
 import { RiImageAddFill } from "react-icons/ri";
-import { SessionHeader } from "../../shared/SessionHeader";
-import { Sidebar } from "../../shared/Sidebar";
 import { Colegiado, defaultColegiado } from "../../../interfaces/model/Colegiado";
 import { Especialidad } from "../../../interfaces/model/Especialidad";
 import { Escuela } from "../../../interfaces/model/Escuela";
@@ -16,6 +14,7 @@ import { getAllEspecialidades } from "../../../api/especialidad.api";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import Spinner from "../../shared/Spinner";
+import { FaArrowCircleLeft } from "react-icons/fa";
 
 export default function AgregarColegiado() {
   const navigate = useNavigate();
@@ -209,335 +208,339 @@ export default function AgregarColegiado() {
   }, [imageUrl]);
 
   return (
-    <div className="flex flex-row w-full">
-      <Sidebar />
-      <div className="w-4/5 mx-3 p-3">
-        <SessionHeader />
-        <form className="flex flex-col w-full space-x-5 mt-10" onSubmit={handleSubmit}>
-          <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold mb-5">Nuevo colegiado</h4>
-          <div className="flex flex-row w-full">
-            <div className="flex flex-col w-1/4">
-              <img className="w-5/6 mt-5" src={imageUrl} alt="Perfil colegiado" />
-              <button
-                type="button"
-                className="flex flex-row justify-between bg-[#007336] text-start text-white font-nunito font-extrabold hover:bg-[#00330A] shadow-custom-input rounded-md transition duration-300 py-2 px-3 mt-10"
-                onClick={handleFileButtonClick}
-              >
-                <span>Seleccionar archivo</span>
-                <RiImageAddFill size={"25px"} />
-              </button>
-              <input
-                type="file"
-                ref={fileInputRef}
-                style={{ display: 'none' }}
-                onChange={handleFileChange}
-              />
-              <span className="mt-5">{fileName ? fileName : "Ningún archivo seleccionado"}</span>
-            </div>
-            <Divider layout="vertical" className="border border-solid mx-10" />
-            <div className="flex flex-col w-3/4 me-5">
-              <div className="text-[#3A3A3A] font-nunito font-bold space-y-3">
-                <div className="bg-[#C9D9C6] rounded-2xl space-y-2 px-5 py-4">
-                  <div className="flex flex-row space-x-5">
-                    <div className="w-1/3">
-                      <label htmlFor="nombre" className="block mb-1">Nombres</label>
-                      <input
-                        type="text"
-                        id="nombre"
-                        name="nombre"
-                        value={colegiadoData.nombre}
-                        onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        required
-                      />
-                    </div>
-                    <div className="w-1/3">
-                      <label htmlFor="apellido_paterno" className="block mb-1">Apellido paterno</label>
-                      <input
-                        type="text"
-                        id="apellido_paterno"
-                        name="apellido_paterno"
-                        value={colegiadoData.apellido_paterno}
-                        onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        required
-                      />
-                    </div>
-                    <div className="w-1/3">
-                      <label htmlFor="apellido_materno" className="block mb-1">Apellido materno</label>
-                      <input
-                        type="text"
-                        id="apellido_materno"
-                        name="apellido_materno"
-                        value={colegiadoData.apellido_materno}
-                        onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="flex flex-row space-x-5">
-                    <div className="w-1/4">
-                      <label htmlFor="dni_colegiado" className="block mb-1">DNI</label>
-                      <input
-                        type="text"
-                        id="dni_colegiado"
-                        name="dni_colegiado"
-                        value={colegiadoData.dni_colegiado}
-                        onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        required
-                      />
-                    </div>
-                    <div className="w-1/4">
-                      <label htmlFor="fecha_nacimiento" className="block mb-1">Fecha de Nacimiento</label>
-                      <input
-                        type="date"
-                        id="fecha_nacimiento"
-                        name="fecha_nacimiento"
-                        value={colegiadoData.fecha_nacimiento}
-                        onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        required
-                      />
-                    </div>
-                    <div className="w-1/4">
-                      <label htmlFor="sexo_colegiado" className="block mb-1">Sexo</label>
-                      <Dropdown
-                        id="sexo_colegiado"
-                        name="sexo_colegiado"
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
-                        value={colegiadoData.sexo_colegiado}
-                        onChange={(e) => {
-                          handleChangeColegiado({ name: 'sexo_colegiado', value: e.value });
-                        }}
-                        options={optionsSexo}
-                        placeholder="Elegir..."
-                        itemTemplate={itemDropdown}
-                        required
-                      />
-                    </div>
-                    <div className="w-1/4">
-                      <label htmlFor="correo" className="block mb-1">Correo electrónico</label>
-                      <input
-                        type="text"
-                        id="correo"
-                        name="correo"
-                        value={colegiadoData.correo}
-                        onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        required
-                      />
-                    </div>
-
-                  </div>
-                  <div className="flex flex-row space-x-5">
-                    <div className="w-2/4">
-                      <label htmlFor="direccion" className="block mb-1">Dirección</label>
-                      <input
-                        type="text"
-                        id="direccion"
-                        name="direccion"
-                        value={colegiadoData.direccion}
-                        onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        required
-                      />
-                    </div>
-                    <div className="w-1/4">
-                      <label htmlFor="celular" className="block mb-1">N° de Celular</label>
-                      <input
-                        type="text"
-                        id="celular"
-                        name="celular"
-                        value={colegiadoData.celular}
-                        onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        required
-                      />
-                    </div>
-                    <div className="w-1/4">
-                      <label htmlFor="estado_civil" className="block mb-1">Estado Civil</label>
-                      <Dropdown
-                        id="estado_civil"
-                        name="estado_civil"
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
-                        value={colegiadoData.estado_civil}
-                        onChange={(e) => {
-                          handleChangeColegiado({ name: 'estado_civil', value: e.value });
-                        }}
-                        options={optionsEstadoCivil}
-                        placeholder="Elegir..."
-                        itemTemplate={itemDropdown}
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl px-5 py-4">
-                  <div className="flex flex-row space-x-5">
-                    <div className="w-1/3">
-                      <label htmlFor="numero_colegiatura_anterior" className="block mb-1">N° de Colegiatura anterior</label>
-                      <input
-                        type="text"
-                        id="numero_colegiatura_anterior"
-                        name="numero_colegiatura_anterior"
-                        value={colegiadoData.numero_colegiatura_anterior}
-                        onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                      />
-                    </div>
-                    <div className="w-1/3">
-                      <label htmlFor="numero_colegiatura" className="block mb-1">N° Colegiatura / REGUC</label>
-                      <input
-                        type="text"
-                        id="numero_colegiatura"
-                        name="numero_colegiatura"
-                        value={colegiadoData.numero_colegiatura}
-                        onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8]  rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        required
-                      />
-                    </div>
-                    <div className="w-1/3">
-                      <label htmlFor="fecha_colegiatura" className="block mb-1">Fecha de colegiatura</label>
-                      <input
-                        type="date"
-                        id="fecha_colegiatura"
-                        name="fecha_colegiatura"
-                        value={colegiadoData.fecha_colegiatura}
-                        onChange={handleChangeColegiado}
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl px-5 py-4">
-                  <div className="flex flex-row space-x-5">
-                    <div className="w-1/3">
-                      <label htmlFor="universidad" className="block mb-1">Universidad</label>
-                      <input
-                        type="text"
-                        id="universidad"
-                        name="universidad"
-                        value={historialData.universidad}
-                        onChange={handleChangeHistorial}
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                      />
-                    </div>
-                    <div className="w-1/3">
-                      <label htmlFor="capitulo" className="block mb-1">Capitulo</label>
-                      <Dropdown
-                        id="capitulo"
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
-                        value={selectedCapitulo}
-                        onChange={(e) => setSelectedCapitulo(e.value)}
-                        options={escuelaData}
-                        optionLabel="label"
-                        placeholder="Elegir capitulo..."
-                        itemTemplate={itemDropdown}
-                      />
-                    </div>
-                    <div className="w-1/3">
-                      <label htmlFor="especialidad" className="block mb-1">Especialidad</label>
-                      <Dropdown
-                        id="especialidad"
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
-                        value={selectedEspecialidad}
-                        onChange={(e) => setSelectedEspecialidad(e.value)}
-                        options={filteredEspecialidadData.map(especialidad => ({
-                          label: especialidad.nombre_especialidad,
-                          value: especialidad.id
-                        }))}
-                        optionLabel="label"
-                        placeholder="Elegir especialidad..."
-                        disabled={!selectedCapitulo}
-                        itemTemplate={itemDropdown}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl space-y-2 px-5 py-4">
-                  <div className="flex flex-row space-x-5">
-                    <div className="w-1/2">
-                      <label htmlFor="denominacion_bachiller" className="block mb-1">Denominación Bachiller</label>
-                      <input
-                        type="text"
-                        id="denominacion_bachiller"
-                        name="denominacion_bachiller"
-                        value={historialData.denominacion_bachiller}
-                        onChange={handleChangeHistorial}
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        required
-                      />
-                    </div>
-                    <div className="w-1/2">
-                      <label htmlFor="fecha_bachiller" className="block mb-1">Fecha bachiller</label>
-                      <input
-                        type="date"
-                        id="fecha_bachiller"
-                        name="fecha_bachiller"
-                        value={historialData.fecha_bachiller}
-                        onChange={handleChangeHistorial}
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="flex flex-row space-x-5">
-                    <div className="w-1/2">
-                      <label htmlFor="denominacion_titulo" className="block mb-1">Denominación titulo</label>
-                      <input
-                        type="text"
-                        id="denominacion_titulo"
-                        name="denominacion_titulo"
-                        value={historialData.denominacion_titulo}
-                        onChange={handleChangeHistorial}
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        required
-                      />
-                    </div>
-                    <div className="w-1/2">
-                      <label htmlFor="titulo_fecha" className="block mb-1">Fecha titulo</label>
-                      <input
-                        type="date"
-                        id="titulo_fecha"
-                        name="titulo_fecha"
-                        value={historialData.titulo_fecha}
-                        onChange={handleChangeHistorial}
-                        className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
-                        required
-                      />
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-row w-full text-[#3A3A3A] font-nunito font-black rounded-2xl space-x-3 mt-5">
-                <button type="submit" className="w-2/3 bg-[#007336] text-white rounded-2xl p-3" disabled={isLoading}>
-                  {isLoading ? <Spinner /> : 'Agregar colegiado'}
-                </button>
-                <Link to={"/admin/colegiado"} className="w-1/3">
-                  <button type="button" className="w-full border-solid border-2 border-[#3A3A3A] rounded-2xl py-3">
-                    Cancelar
-                  </button>
-                </Link>
-              </div>
-              <Toaster
-                position="bottom-center"
-                reverseOrder={false} />
-            </div>
+    <>
+      <form className="flex flex-col w-full space-x-5 my-5" onSubmit={handleSubmit}>
+        <div className="flex flex-row mb-5">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center text-gray-700 hover:text-gray-900 p-2"
+          >
+            <FaArrowCircleLeft className="mr-2" size={"30px"} />
+          </button>
+          <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Nuevo colegiado</h4>
+        </div>
+        <div className="flex flex-row w-full">
+          <div className="flex flex-col w-1/4">
+            <img className="w-5/6 mt-5" src={imageUrl} alt="Perfil colegiado" />
+            <button
+              type="button"
+              className="flex flex-row justify-between bg-[#007336] text-start text-white font-nunito font-bold hover:bg-[#00330A] shadow-custom-input rounded-md transition duration-300 py-2 px-3 mt-10"
+              onClick={handleFileButtonClick}
+            >
+              <span>Seleccionar archivo</span>
+              <RiImageAddFill size={"25px"} />
+            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              onChange={handleFileChange}
+            />
+            <span className="mt-5">{fileName ? fileName : "Ningún archivo seleccionado"}</span>
           </div>
-        </form>
-      </div>
-    </div>
+          <Divider layout="vertical" className="border border-solid mx-10" />
+          <div className="flex flex-col w-3/4 me-5">
+            <div className="text-[#3A3A3A] font-nunito font-bold space-y-3">
+              <div className="bg-[#C9D9C6] rounded-2xl space-y-2 px-5 py-4">
+                <div className="flex flex-row space-x-5">
+                  <div className="w-1/3">
+                    <label htmlFor="nombre" className="block mb-1">Nombres</label>
+                    <input
+                      type="text"
+                      id="nombre"
+                      name="nombre"
+                      value={colegiadoData.nombre}
+                      onChange={handleChangeColegiado}
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      required
+                    />
+                  </div>
+                  <div className="w-1/3">
+                    <label htmlFor="apellido_paterno" className="block mb-1">Apellido paterno</label>
+                    <input
+                      type="text"
+                      id="apellido_paterno"
+                      name="apellido_paterno"
+                      value={colegiadoData.apellido_paterno}
+                      onChange={handleChangeColegiado}
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      required
+                    />
+                  </div>
+                  <div className="w-1/3">
+                    <label htmlFor="apellido_materno" className="block mb-1">Apellido materno</label>
+                    <input
+                      type="text"
+                      id="apellido_materno"
+                      name="apellido_materno"
+                      value={colegiadoData.apellido_materno}
+                      onChange={handleChangeColegiado}
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-row space-x-5">
+                  <div className="w-1/4">
+                    <label htmlFor="dni_colegiado" className="block mb-1">DNI</label>
+                    <input
+                      type="text"
+                      id="dni_colegiado"
+                      name="dni_colegiado"
+                      value={colegiadoData.dni_colegiado}
+                      onChange={handleChangeColegiado}
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      required
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <label htmlFor="fecha_nacimiento" className="block mb-1">Fecha de Nacimiento</label>
+                    <input
+                      type="date"
+                      id="fecha_nacimiento"
+                      name="fecha_nacimiento"
+                      value={colegiadoData.fecha_nacimiento}
+                      onChange={handleChangeColegiado}
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      required
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <label htmlFor="sexo_colegiado" className="block mb-1">Sexo</label>
+                    <Dropdown
+                      id="sexo_colegiado"
+                      name="sexo_colegiado"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
+                      value={colegiadoData.sexo_colegiado}
+                      onChange={(e) => {
+                        handleChangeColegiado({ name: 'sexo_colegiado', value: e.value });
+                      }}
+                      options={optionsSexo}
+                      placeholder="Elegir..."
+                      itemTemplate={itemDropdown}
+                      required
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <label htmlFor="correo" className="block mb-1">Correo electrónico</label>
+                    <input
+                      type="text"
+                      id="correo"
+                      name="correo"
+                      value={colegiadoData.correo}
+                      onChange={handleChangeColegiado}
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      required
+                    />
+                  </div>
+
+                </div>
+                <div className="flex flex-row space-x-5">
+                  <div className="w-2/4">
+                    <label htmlFor="direccion" className="block mb-1">Dirección</label>
+                    <input
+                      type="text"
+                      id="direccion"
+                      name="direccion"
+                      value={colegiadoData.direccion}
+                      onChange={handleChangeColegiado}
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      required
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <label htmlFor="celular" className="block mb-1">N° de Celular</label>
+                    <input
+                      type="text"
+                      id="celular"
+                      name="celular"
+                      value={colegiadoData.celular}
+                      onChange={handleChangeColegiado}
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      required
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <label htmlFor="estado_civil" className="block mb-1">Estado Civil</label>
+                    <Dropdown
+                      id="estado_civil"
+                      name="estado_civil"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
+                      value={colegiadoData.estado_civil}
+                      onChange={(e) => {
+                        handleChangeColegiado({ name: 'estado_civil', value: e.value });
+                      }}
+                      options={optionsEstadoCivil}
+                      placeholder="Elegir..."
+                      itemTemplate={itemDropdown}
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl px-5 py-4">
+                <div className="flex flex-row space-x-5">
+                  <div className="w-1/3">
+                    <label htmlFor="numero_colegiatura_anterior" className="block mb-1">N° de Colegiatura anterior</label>
+                    <input
+                      type="text"
+                      id="numero_colegiatura_anterior"
+                      name="numero_colegiatura_anterior"
+                      value={colegiadoData.numero_colegiatura_anterior}
+                      onChange={handleChangeColegiado}
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                    />
+                  </div>
+                  <div className="w-1/3">
+                    <label htmlFor="numero_colegiatura" className="block mb-1">N° Colegiatura / REGUC</label>
+                    <input
+                      type="text"
+                      id="numero_colegiatura"
+                      name="numero_colegiatura"
+                      value={colegiadoData.numero_colegiatura}
+                      onChange={handleChangeColegiado}
+                      className="w-full bg-[#ECF6E8]  rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      required
+                    />
+                  </div>
+                  <div className="w-1/3">
+                    <label htmlFor="fecha_colegiatura" className="block mb-1">Fecha de colegiatura</label>
+                    <input
+                      type="date"
+                      id="fecha_colegiatura"
+                      name="fecha_colegiatura"
+                      value={colegiadoData.fecha_colegiatura}
+                      onChange={handleChangeColegiado}
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl px-5 py-4">
+                <div className="flex flex-row space-x-5">
+                  <div className="w-1/3">
+                    <label htmlFor="universidad" className="block mb-1">Universidad</label>
+                    <input
+                      type="text"
+                      id="universidad"
+                      name="universidad"
+                      value={historialData.universidad}
+                      onChange={handleChangeHistorial}
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                    />
+                  </div>
+                  <div className="w-1/3">
+                    <label htmlFor="capitulo" className="block mb-1">Capitulo</label>
+                    <Dropdown
+                      id="capitulo"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
+                      value={selectedCapitulo}
+                      onChange={(e) => setSelectedCapitulo(e.value)}
+                      options={escuelaData}
+                      optionLabel="label"
+                      placeholder="Elegir capitulo..."
+                      itemTemplate={itemDropdown}
+                    />
+                  </div>
+                  <div className="w-1/3">
+                    <label htmlFor="especialidad" className="block mb-1">Especialidad</label>
+                    <Dropdown
+                      id="especialidad"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
+                      value={selectedEspecialidad}
+                      onChange={(e) => setSelectedEspecialidad(e.value)}
+                      options={filteredEspecialidadData.map(especialidad => ({
+                        label: especialidad.nombre_especialidad,
+                        value: especialidad.id
+                      }))}
+                      optionLabel="label"
+                      placeholder="Elegir especialidad..."
+                      disabled={!selectedCapitulo}
+                      itemTemplate={itemDropdown}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl space-y-2 px-5 py-4">
+                <div className="flex flex-row space-x-5">
+                  <div className="w-1/2">
+                    <label htmlFor="denominacion_bachiller" className="block mb-1">Denominación Bachiller</label>
+                    <input
+                      type="text"
+                      id="denominacion_bachiller"
+                      name="denominacion_bachiller"
+                      value={historialData.denominacion_bachiller}
+                      onChange={handleChangeHistorial}
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      required
+                    />
+                  </div>
+                  <div className="w-1/2">
+                    <label htmlFor="fecha_bachiller" className="block mb-1">Fecha bachiller</label>
+                    <input
+                      type="date"
+                      id="fecha_bachiller"
+                      name="fecha_bachiller"
+                      value={historialData.fecha_bachiller}
+                      onChange={handleChangeHistorial}
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-row space-x-5">
+                  <div className="w-1/2">
+                    <label htmlFor="denominacion_titulo" className="block mb-1">Denominación titulo</label>
+                    <input
+                      type="text"
+                      id="denominacion_titulo"
+                      name="denominacion_titulo"
+                      value={historialData.denominacion_titulo}
+                      onChange={handleChangeHistorial}
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      required
+                    />
+                  </div>
+                  <div className="w-1/2">
+                    <label htmlFor="titulo_fecha" className="block mb-1">Fecha titulo</label>
+                    <input
+                      type="date"
+                      id="titulo_fecha"
+                      name="titulo_fecha"
+                      value={historialData.titulo_fecha}
+                      onChange={handleChangeHistorial}
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      required
+                    />
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-row w-full text-[#3A3A3A] font-nunito font-bold rounded-2xl space-x-3 mt-5">
+              <button type="submit" className="w-2/3 bg-[#007336] text-white rounded-2xl p-3" disabled={isLoading}>
+                {isLoading ? <Spinner /> : 'Agregar colegiado'}
+              </button>
+              <Link to={"/admin/colegiado"} className="w-1/3">
+                <button type="button" className="w-full border-solid border-2 border-[#3A3A3A] rounded-2xl py-3">
+                  Cancelar
+                </button>
+              </Link>
+            </div>
+            <Toaster
+              position="bottom-center"
+              reverseOrder={false} />
+          </div>
+        </div>
+      </form>
+    </>
   )
 } 

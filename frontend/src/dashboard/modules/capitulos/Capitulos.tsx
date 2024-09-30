@@ -1,22 +1,18 @@
 import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import { PersonAdd } from "@mui/icons-material";
 import Modal from 'react-modal';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { SessionHeader } from "../../shared/SessionHeader";
-import { Sidebar } from "../../shared/Sidebar";
 import { getAllEscuelas, getAllEspecialidades, deleteEscuela, deleteEspecialidad } from "../../../api/escuela.api";
 import { Escuela } from "../../../interfaces/model/Escuela";
 import { Especialidad } from "../../../interfaces/model/Especialidad";
 import { AgregarEscuela } from "./AgregarEscuela";
 import { AgregarEspecialidad } from "./AgregarEspecialidad";
-import { ActualizarEscuela } from "./ActualizarEscuela";
-import { ActualizarEspecialidad } from "./ActualizarEspecialidad";
+import { EditarEscuela } from "./EditarEscuela";
+import { EditarEspecialidad } from "./EditarEspecialidad";
 import contabilidad from '../../../assets/dashboard/contabilidad.png';
+import { IoMdAddCircleOutline } from "react-icons/io";
 
-export default function Escuelas() {
+export default function Capitulos() {
   const [escuelasList, setEscuelasList] = useState<Escuela[]>([]);
   const [especialidadesList, setEspecialidadesList] = useState<Especialidad[]>([]);
   const [isEscuelaModalOpen, setIsEscuelaModalOpen] = useState(false);
@@ -35,6 +31,7 @@ export default function Escuelas() {
     try {
       const escuelasRes = await getAllEscuelas();
       setEscuelasList(escuelasRes.data as Escuela[]);
+
       const especialidadesRes = await getAllEspecialidades();
       setEspecialidadesList(especialidadesRes.data as Especialidad[]);
     } catch (error) {
@@ -125,45 +122,40 @@ export default function Escuelas() {
   );
 
   return (
-    <div className="flex flex-row w-full bg-white">
-      <Sidebar />
-      <div className="w-full xl:w-4/5 mx-3 p-3">
-        <SessionHeader />
-        <div className="mt-10 space-y-5">
-          <Grid container spacing={2} justifyContent="space-between" alignItems="center">
-            <Grid item>
-              <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold">Capítulos</h4>
-            </Grid>
-            <Grid item>
-              <TextField
-                label="Buscar Capitulo"
-                variant="outlined"
-                value={searchTermEscuela}
-                onChange={handleSearchChangeEscuela}
-              />
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: '#007336',
-                  color: 'white',
-                  '&:hover': { backgroundColor: '#00330A' },
-                }}
-                startIcon={<PersonAdd />}
-                onClick={handleAddSchool}
-              >
-                <span className="font-nunito-sans font-extrabold">Agregar Captulo</span>
-              </Button>
-            </Grid>
+    <>
+      <div className="space-y-5 my-5">
+        <Grid container spacing={2} justifyContent="space-between" alignItems="center">
+          <Grid item>
+            <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold">Capítulos</h4>
           </Grid>
+          <Grid item>
+            <input
+              type="text"
+              placeholder="Buscar capítulo"
+              value={searchTermEscuela}
+              onChange={handleSearchChangeEscuela}
+              className="bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-md shadow-custom-input focus:outline-none px-4 py-2"
+              required
+            />
+          </Grid>
+          <Grid item>
+            <button
+              className="flex flex-row bg-[#007336] text-lg text-white font-nunito font-semibold hover:bg-[#00330A] shadow-black shadow-md rounded-lg transition duration-300 hover:scale-110 ease-in-out delay-150 space-x-2 px-4 py-1"
+              onClick={handleAddSchool}
+            >
+              <IoMdAddCircleOutline className="my-auto" size={"25px"} />
+              <span className="my-auto">Agregar Capítulo</span>
+            </button>
+          </Grid>
+        </Grid>
 
-          <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="h-[350px] overflow-y-auto pr-2 mt-5"> {/* Contenedor con altura fija y scroll vertical */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
             {filteredEscuelas.length > 0 ? (
               filteredEscuelas.map((escuela, index) => (
                 <div
                   key={index}
-                  className="relative bg-white rounded-lg shadow-lg p-5 text-center transition duration-200 hover:bg-[#458050] hover:text-white group"
+                  className="relative bg-white rounded-lg shadow-lg text-center transition duration-200 hover:bg-[#458050] hover:text-white group p-5"
                   style={{ boxShadow: "0 4px 6px rgba(0, 51, 10, 0.1)" }}
                 >
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-200 bg-[#458050] bg-opacity-75">
@@ -175,43 +167,44 @@ export default function Escuelas() {
                     </button>
                   </div>
                   <img src={contabilidad} alt="Contabilidad" className="mx-auto mb-4 w-20 h-20" />
-                  <h5 className="text-xl font-bold font-nunito-sans text-[#00330A]">{escuela.nombre_escuela}</h5>
+                  <h5 className="text-xl font-bold font-nunito-sans text-[#00330A] group-hover:text-white">
+                    {escuela.nombre_escuela}
+                  </h5>
                 </div>
               ))
             ) : (
-              <p>No hay escuelas disponibles.</p>
+              <p className="col-span-full text-center text-lg font-semibold">No hay escuelas disponibles.</p>
             )}
           </div>
+        </div>
 
-          <Grid container spacing={2} justifyContent="space-between" alignItems="center">
-            <Grid item>
-              <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold">Especialidades</h4>
-            </Grid>
-            <Grid item>
-              <TextField
-                label="Buscar Especialidad"
-                variant="outlined"
-                value={searchTermEspecialidad}
-                onChange={handleSearchChangeEspecialidad}
-              />
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: '#007336',
-                  color: 'white',
-                  '&:hover': { backgroundColor: '#00330A' },
-                }}
-                startIcon={<PersonAdd />}
-                onClick={handleAddSpecialty}
-              >
-                <span className="font-nunito-sans font-extrabold">Agregar Especialidad</span>
-              </Button>
-            </Grid>
+        <Grid container spacing={2} justifyContent="space-between" alignItems="center">
+          <Grid item>
+            <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold">Especialidades</h4>
           </Grid>
+          <Grid item>
+            <input
+              type="text"
+              placeholder="Buscar especialidad"
+              value={searchTermEspecialidad}
+              onChange={handleSearchChangeEspecialidad}
+              className="bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-md shadow-custom-input focus:outline-none px-4 py-2"
+              required
+            />
+          </Grid>
+          <Grid item>
+            <button
+              className="flex flex-row bg-[#007336] text-lg text-white font-nunito font-semibold hover:bg-[#00330A] shadow-black shadow-md rounded-lg transition duration-300 hover:scale-110 ease-in-out delay-150 space-x-2 px-4 py-1"
+              onClick={handleAddSpecialty}
+            >
+              <IoMdAddCircleOutline className="my-auto" size={"25px"} />
+              <span className="my-auto">Agregar Especialidad</span>
+            </button>
+          </Grid>
+        </Grid>
 
-          <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="h-[250px] overflow-y-auto pr-2 mt-5"> {/* Contenedor con altura fija y scroll vertical */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredEspecialidades.length > 0 ? (
               filteredEspecialidades.map((especialidad, index) => (
                 <div
@@ -238,10 +231,11 @@ export default function Escuelas() {
                 </div>
               ))
             ) : (
-              <p>No hay especialidades disponibles.</p>
+              <p className="col-span-full text-center text-lg font-semibold mt-10">No hay especialidades disponibles.</p>
             )}
           </div>
         </div>
+
       </div>
 
       {/* Modal de confirmación */}
@@ -272,9 +266,10 @@ export default function Escuelas() {
       </Modal>
 
       <AgregarEscuela isOpen={isEscuelaModalOpen} onClose={handleCloseEscuelaModal} onSchoolAdded={cargarDatos} />
+
       <AgregarEspecialidad isOpen={isEspecialidadModalOpen} onClose={handleCloseEspecialidadModal} onSpecialtyAdded={cargarDatos} />
       {selectedEscuela && (
-        <ActualizarEscuela
+        <EditarEscuela
           isOpen={isEscuelaEditModalOpen}
           onClose={handleCloseEscuelaEditModal}
           onSchoolUpdated={cargarDatos}
@@ -282,13 +277,13 @@ export default function Escuelas() {
         />
       )}
       {selectedEspecialidad && (
-        <ActualizarEspecialidad
+        <EditarEspecialidad
           isOpen={isEspecialidadEditModalOpen}
           onClose={handleCloseEspecialidadEditModal}
           onSpecialtyUpdated={cargarDatos}
           especialidad={selectedEspecialidad}
         />
       )}
-    </div>
+    </>
   );
 }

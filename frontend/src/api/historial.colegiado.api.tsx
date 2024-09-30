@@ -6,7 +6,7 @@ export const getAllHistorialColegiado = (page = 0, pageSize = 10) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.get(`${apiUrl}gestion-colegiados/historial-educativo/?page=${page + 1}&page_size=${pageSize}`, {
+  return axios.get(`${apiUrl}historial-educativo/historial-educativo/?page=${page + 1}&page_size=${pageSize}`, {
     headers: {
       'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados
       'Content-Type': 'application/json' // Asegurando el tipo de contenido
@@ -18,7 +18,7 @@ export const getHistorialColegiadoById = (id:number) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.get(`${apiUrl}gestion-colegiados/historial-educativo/${id}`, {
+  return axios.get(`${apiUrl}historial-educativo/historial-educativo/${id}`, {
     headers: {
       'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados
       'Content-Type': 'application/json' // Asegurando el tipo de contenido
@@ -30,7 +30,7 @@ export const getHistorialColegiadoByFilters = (numero_colegiatura?: string, dni_
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.get(`${apiUrl}gestion-colegiados/historial-educativo/`, {
+  return axios.get(`${apiUrl}historial-educativo/historial-educativo/`, {
     params: {
       numero_colegiatura,
       dni_colegiado,
@@ -48,7 +48,7 @@ export const createHistorialColegiado = (historialColegiadoData: HistorialColegi
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.post(`${apiUrl}gestion-colegiados/historial-educativo/`, historialColegiadoData, {
+  return axios.post(`${apiUrl}historial-educativo/historial-educativo/`, historialColegiadoData, {
     headers: {
       'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados
       'Content-Type': 'application/json' // Asegurando el tipo de contenido
@@ -60,7 +60,7 @@ export const updateHistorialColegiado = (id:number, historialColegiadoData: Hist
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.put(`${apiUrl}gestion-colegiados/historial-educativo/${id}/`, historialColegiadoData, {
+  return axios.put(`${apiUrl}historial-educativo/historial-educativo/${id}/`, historialColegiadoData, {
     headers: {
       'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados
       'Content-Type': 'application/json' // Asegurando el tipo de contenido
@@ -72,7 +72,7 @@ export const deleteHistorialColegiadoById = (id:number) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.delete(`${apiUrl}gestion-colegiados/historial-educativo/${id}/`, {
+  return axios.delete(`${apiUrl}historial-educativo/historial-educativo/${id}/`, {
     headers: {
       'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados
       'Content-Type': 'application/json' // Asegurando el tipo de contenido

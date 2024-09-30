@@ -181,7 +181,7 @@ export default function Login() {
                 sx={{
                   width: '100%',
                   maxHeight: 300,
-                  objectFit: 'cover',
+                  objectFit: 'contain',
                 }}
                 alt="Login"
                 src={logo_corlad}

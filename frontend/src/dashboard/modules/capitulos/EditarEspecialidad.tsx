@@ -3,14 +3,14 @@ import { updateEspecialidad, getAllEscuelas } from "../../../api/escuela.api";
 import { Escuela } from "../../../interfaces/model/Escuela";
 import { Especialidad } from "../../../interfaces/model/Especialidad";
 
-interface ActualizarEspecialidadProps {
+interface EditarEspecialidadProps {
   isOpen: boolean;
   onClose: () => void;
   onSpecialtyUpdated: () => void;
   especialidad: Especialidad;
 }
 
-export const ActualizarEspecialidad: React.FC<ActualizarEspecialidadProps> = ({ isOpen, onClose, onSpecialtyUpdated, especialidad }) => {
+export const EditarEspecialidad: React.FC<EditarEspecialidadProps> = ({ isOpen, onClose, onSpecialtyUpdated, especialidad }) => {
   const [specialtyName, setSpecialtyName] = useState('');
   const [selectedEscuelaId, setSelectedEscuelaId] = useState<number | null>(null);
   const [escuelasList, setEscuelasList] = useState<Escuela[]>([]);

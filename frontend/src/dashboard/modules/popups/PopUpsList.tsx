@@ -5,6 +5,9 @@ import { EditePopUps, getPopUps, deletePopUps, createPopUps } from '../../../api
 import { PopUp } from '../../../interfaces/model/PopUp';
 import { IoAdd, IoCloseSharp, IoPencil, IoTrash, IoExpand } from "react-icons/io5";
 import toast, { Toaster } from 'react-hot-toast';
+import Spinner from '../../shared/Spinner';
+import { useNavigate } from 'react-router-dom';
+import { FaArrowCircleLeft } from 'react-icons/fa';
 
 Modal.setAppElement('#root');
 
@@ -179,7 +182,7 @@ const AddModal: React.FC<{
             Cancelar
           </button>
           <button onClick={handleSave} className="px-4 py-2 bg-green-500 text-white rounded">
-            {isLoading ? 'Guardando...' : 'Guardar'}
+            {isLoading ? <Spinner /> : 'Guardar'}
           </button>
         </div>
       </div>
@@ -216,9 +219,13 @@ const ConfirmDeleteModal: React.FC<{
 };
 
 export const PopUpsList = () => {
+  const navigate = useNavigate();
+
   const [list, setList] = useState<PopUp[]>([]);
+
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
+
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [selectedPopUp, setSelectedPopUp] = useState<PopUp | null>(null);
   const [isLoading, setIsLoading] = useState(false); // Estado para controlar la carga
@@ -276,20 +283,21 @@ export const PopUpsList = () => {
   const handleAdd = async (newImage: File) => {
     const formData = new FormData();
     formData.append('imagen', newImage);
-  
+
     setIsLoading(true); // Comienza la carga antes de la solicitud
-  
+
     try {
       await createPopUps(formData);
       fetchPopUps(); // Refresh the list
       setAddModalIsOpen(false);
     } catch (error) {
       toast.error('Error al agregar el anuncio');
+      setAddModalIsOpen(false);
     } finally {
       setIsLoading(false); // Termina la carga después de la solicitud (tanto si es exitosa como si falla)
     }
   };
-  
+
 
   const handleDelete = async (id: number) => {
     try {
@@ -322,8 +330,16 @@ export const PopUpsList = () => {
   }, []);
 
   return (
-    <div className="flex flex-col mt-10 space-y-5">
-      <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold">Anuncios</h4>
+    <div className="flex flex-col my-5 space-y-5">
+      <div className="flex flex-row">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center text-gray-700 hover:text-gray-900 p-2"
+        >
+          <FaArrowCircleLeft className="mr-2" size={"30px"} />
+        </button>
+        <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Anuncios importantes</h4>
+      </div>
       <div className="flex flex-wrap justify-center md:justify-start gap-5">
         {list.map((element, index) => (
           <Image
