@@ -25,6 +25,16 @@ export default {
         'custom-input': '0px 4px 5px 0px rgba(0, 0, 0, 0.25)', // X, Y, Blur, Spread, Color
       },
       textColor:{
+        'default': '#3A3A3A',
+        'default-green': '#00330A',
+        'corlad': '#007336',
+        'custom-yellow': '#CCB23A'
+      },
+      backgroundColor: {
+        'corlad': '#007336',
+        'hover-corlad': '#00330A',
+        'custom-light-turquoise': '#ECF6E8',
+        'hover-light-turquoise': '#C9D9C6',
         'custom-yellow': '#CCB23A'
       }
     },

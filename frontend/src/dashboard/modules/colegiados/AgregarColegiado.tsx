@@ -13,7 +13,7 @@ import { getAllEscuelas } from "../../../api/escuela.api";
 import { getAllEspecialidades } from "../../../api/especialidad.api";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import Spinner from "../../shared/Spinner";
+import Spinner from "../../components/ui/Spinner";
 import { FaArrowCircleLeft } from "react-icons/fa";
 
 export default function AgregarColegiado() {

@@ -5,7 +5,7 @@ import { EditePopUps, getPopUps, deletePopUps, createPopUps } from '../../../api
 import { PopUp } from '../../../interfaces/model/PopUp';
 import { IoAdd, IoCloseSharp, IoPencil, IoTrash, IoExpand } from "react-icons/io5";
 import toast, { Toaster } from 'react-hot-toast';
-import Spinner from '../../shared/Spinner';
+import Spinner from '../../components/ui/Spinner';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowCircleLeft } from 'react-icons/fa';
 

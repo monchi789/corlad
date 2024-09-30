@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Dropdown } from 'primereact/dropdown';
-import { CardPublicacion } from "../../shared/CardPublicacion";
+import { CardPublicacion } from "../../components/ui/CardPublicacion";
 import { deletePublicacion, getAllPublicaciones } from "../../../api/publicacion.api";
 import { getAllCategoriasAdmin } from '../../../api/categoria.api';
 import { Publicacion } from "../../../interfaces/model/Publicacion";

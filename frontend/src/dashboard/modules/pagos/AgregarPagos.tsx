@@ -45,7 +45,7 @@ export default function AgregarPagos() {
   useEffect(() => {
     async function cargarTarifas() {
       const res = await getAllTarifas();
-      setTarifaData(res.data);
+      setTarifaData(res.data.results);
     }
     cargarTarifas();
   }, []);
