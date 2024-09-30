@@ -7,4 +7,4 @@ class TarifaFilter(filters.FilterSet):
     nombre_tarifa = filters.CharFilter(field_name='nombre_tarifa', lookup_expr='istartswith')
     class Meta:
         model = Tarifa
-        fields = ['apellido_paterno']
+        fields = ['nombre_tarifa']

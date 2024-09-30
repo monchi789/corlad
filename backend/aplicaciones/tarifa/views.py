@@ -28,9 +28,7 @@ class TarifaViewSet(viewsets.ViewSet):
     filterset_class = TarifaFilter
 
     allow_query_params = {
-        'apellido_paterno', 'dni_colegiado',
-        'numero_colegiatura', 'metodo_Tarifa',
-        'tipo_Tarifa', 'fecha_Tarifa', 'page', 'page_size'
+        'nombre_tarifa'
     }
 
     # Metodos

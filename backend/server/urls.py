@@ -48,6 +48,7 @@ urlpatterns = [
     path('pop-up/', include('aplicaciones.pop_up.urls')),
     path('publicacion/', include('aplicaciones.publicacion.urls')),
     path('slider/', include('aplicaciones.slider.urls')),
+    path('tarifa/', include('aplicaciones.tarifa.urls')),
     path('deudas/', include('aplicaciones.deudas.urls')),
     path('enviar-email/', EmailAPIView.as_view(), name='send-email'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
