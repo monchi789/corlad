@@ -239,7 +239,7 @@ export default function AgregarColegiado() {
             <span className="mt-5">{fileName ? fileName : "Ningún archivo seleccionado"}</span>
           </div>
           <Divider layout="vertical" className="border border-solid mx-10" />
-          <div className="flex flex-col w-3/4 me-5">
+          <div className="flex flex-col w-3/4 overflow-y-auto me-5">
             <div className="text-[#3A3A3A] font-nunito font-bold space-y-3">
               <div className="bg-[#C9D9C6] rounded-2xl space-y-2 px-5 py-4">
                 <div className="flex flex-row space-x-5">
@@ -251,7 +251,7 @@ export default function AgregarColegiado() {
                       name="nombre"
                       value={colegiadoData.nombre}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -263,7 +263,7 @@ export default function AgregarColegiado() {
                       name="apellido_paterno"
                       value={colegiadoData.apellido_paterno}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -275,7 +275,7 @@ export default function AgregarColegiado() {
                       name="apellido_materno"
                       value={colegiadoData.apellido_materno}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -289,7 +289,7 @@ export default function AgregarColegiado() {
                       name="dni_colegiado"
                       value={colegiadoData.dni_colegiado}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -301,7 +301,7 @@ export default function AgregarColegiado() {
                       name="fecha_nacimiento"
                       value={colegiadoData.fecha_nacimiento}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -310,7 +310,7 @@ export default function AgregarColegiado() {
                     <Dropdown
                       id="sexo_colegiado"
                       name="sexo_colegiado"
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
                       value={colegiadoData.sexo_colegiado}
                       onChange={(e) => {
@@ -330,7 +330,7 @@ export default function AgregarColegiado() {
                       name="correo"
                       value={colegiadoData.correo}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -345,7 +345,7 @@ export default function AgregarColegiado() {
                       name="direccion"
                       value={colegiadoData.direccion}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -357,7 +357,7 @@ export default function AgregarColegiado() {
                       name="celular"
                       value={colegiadoData.celular}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -366,7 +366,7 @@ export default function AgregarColegiado() {
                     <Dropdown
                       id="estado_civil"
                       name="estado_civil"
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
                       value={colegiadoData.estado_civil}
                       onChange={(e) => {
@@ -391,7 +391,7 @@ export default function AgregarColegiado() {
                       name="numero_colegiatura_anterior"
                       value={colegiadoData.numero_colegiatura_anterior}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                     />
                   </div>
                   <div className="w-1/3">
@@ -402,7 +402,7 @@ export default function AgregarColegiado() {
                       name="numero_colegiatura"
                       value={colegiadoData.numero_colegiatura}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8]  rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8]  rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -414,7 +414,7 @@ export default function AgregarColegiado() {
                       name="fecha_colegiatura"
                       value={colegiadoData.fecha_colegiatura}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -431,14 +431,14 @@ export default function AgregarColegiado() {
                       name="universidad"
                       value={historialData.universidad}
                       onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                     />
                   </div>
                   <div className="w-1/3">
                     <label htmlFor="capitulo" className="block mb-1">Capitulo</label>
                     <Dropdown
                       id="capitulo"
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
                       value={selectedCapitulo}
                       onChange={(e) => setSelectedCapitulo(e.value)}
@@ -452,7 +452,7 @@ export default function AgregarColegiado() {
                     <label htmlFor="especialidad" className="block mb-1">Especialidad</label>
                     <Dropdown
                       id="especialidad"
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
                       value={selectedEspecialidad}
                       onChange={(e) => setSelectedEspecialidad(e.value)}
@@ -479,7 +479,7 @@ export default function AgregarColegiado() {
                       name="denominacion_bachiller"
                       value={historialData.denominacion_bachiller}
                       onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -491,7 +491,7 @@ export default function AgregarColegiado() {
                       name="fecha_bachiller"
                       value={historialData.fecha_bachiller}
                       onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -505,7 +505,7 @@ export default function AgregarColegiado() {
                       name="denominacion_titulo"
                       value={historialData.denominacion_titulo}
                       onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -517,7 +517,7 @@ export default function AgregarColegiado() {
                       name="titulo_fecha"
                       value={historialData.titulo_fecha}
                       onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -526,11 +526,11 @@ export default function AgregarColegiado() {
               </div>
             </div>
             <div className="flex flex-row w-full text-[#3A3A3A] font-nunito font-bold rounded-2xl space-x-3 mt-5">
-              <button type="submit" className="w-2/3 bg-[#007336] text-white rounded-2xl p-3" disabled={isLoading}>
+              <button type="submit" className="w-2/3 bg-[#007336] hover:bg-[#00330A] transition duration-300 text-white rounded-xl p-3" disabled={isLoading}>
                 {isLoading ? <Spinner /> : 'Agregar colegiado'}
               </button>
               <Link to={"/admin/colegiado"} className="w-1/3">
-                <button type="button" className="w-full border-solid border-2 border-[#3A3A3A] rounded-2xl py-3">
+                <button type="button" className="w-full border-solid border-2 border-[#3A3A3A] hover:bg-[#CCB23A] hover:border-[#CCB23A] transition duration-300 rounded-xl py-3">
                   Cancelar
                 </button>
               </Link>

@@ -252,7 +252,7 @@ export default function EditarColegiado() {
                       name="nombre"
                       value={colegiadoData.nombre}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -264,7 +264,7 @@ export default function EditarColegiado() {
                       name="apellido_paterno"
                       value={colegiadoData.apellido_paterno}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -276,7 +276,7 @@ export default function EditarColegiado() {
                       name="apellido_materno"
                       value={colegiadoData.apellido_materno}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -290,7 +290,7 @@ export default function EditarColegiado() {
                       name="dni_colegiado"
                       value={colegiadoData.dni_colegiado}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -302,7 +302,7 @@ export default function EditarColegiado() {
                       name="fecha_nacimiento"
                       value={colegiadoData.fecha_nacimiento}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -311,7 +311,7 @@ export default function EditarColegiado() {
                     <Dropdown
                       id="sexo_colegiado"
                       name="sexo_colegiado"
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
                       value={colegiadoData.sexo_colegiado}
                       onChange={(e) => {
@@ -331,7 +331,7 @@ export default function EditarColegiado() {
                       name="correo"
                       value={colegiadoData.correo}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -346,7 +346,7 @@ export default function EditarColegiado() {
                       name="direccion"
                       value={colegiadoData.direccion}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -358,7 +358,7 @@ export default function EditarColegiado() {
                       name="celular"
                       value={colegiadoData.celular}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -367,7 +367,7 @@ export default function EditarColegiado() {
                     <Dropdown
                       id="estado_civil"
                       name="estado_civil"
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
                       value={colegiadoData.estado_civil}
                       onChange={(e) => {
@@ -392,7 +392,7 @@ export default function EditarColegiado() {
                       name="numero_colegiatura_anterior"
                       value={colegiadoData.numero_colegiatura_anterior as string}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                     />
                   </div>
                   <div className="w-1/3">
@@ -403,7 +403,7 @@ export default function EditarColegiado() {
                       name="numero_colegiatura"
                       value={colegiadoData.numero_colegiatura}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8]  rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8]  rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -415,7 +415,7 @@ export default function EditarColegiado() {
                       name="fecha_colegiatura"
                       value={colegiadoData.fecha_colegiatura}
                       onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -432,14 +432,14 @@ export default function EditarColegiado() {
                       name="universidad"
                       value={historialData.universidad}
                       onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                     />
                   </div>
                   <div className="w-1/3">
                     <label htmlFor="capitulo" className="block mb-1">Capitulo</label>
                     <Dropdown
                       id="capitulo"
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
                       value={selectedCapitulo}
                       onChange={(e) => setSelectedCapitulo(e.value)}
@@ -453,7 +453,7 @@ export default function EditarColegiado() {
                     <label htmlFor="especialidad" className="block mb-1">Especialidad</label>
                     <Dropdown
                       id="especialidad"
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
                       value={selectedEspecialidad}
                       onChange={(e) => setSelectedEspecialidad(e.value)}
@@ -480,7 +480,7 @@ export default function EditarColegiado() {
                       name="denominacion_bachiller"
                       value={historialData.denominacion_bachiller}
                       onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -492,7 +492,7 @@ export default function EditarColegiado() {
                       name="fecha_bachiller"
                       value={historialData.fecha_bachiller}
                       onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -506,7 +506,7 @@ export default function EditarColegiado() {
                       name="denominacion_titulo"
                       value={historialData.denominacion_titulo}
                       onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -518,7 +518,7 @@ export default function EditarColegiado() {
                       name="titulo_fecha"
                       value={historialData.titulo_fecha}
                       onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-1 px-2"
+                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
