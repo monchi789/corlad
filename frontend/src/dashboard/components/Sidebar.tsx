@@ -39,12 +39,12 @@ export function Sidebar() {
   return (
     <>
       <button
-        className="fixed top-4 left-4 z-50 text-white bg-[#007336] rounded-md xl:hidden p-2"
+        className="fixed top-5 left-1 z-50 text-white bg-[#007336] rounded-md xl:hidden p-2"
         onClick={toggleSidebar}
       >
         <MdMenu size={24} />
       </button>
-      <div className={`flex flex-col w-3/4 md:w-2/4 lg:w-1/4 xl:w-1/4 fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} xl:relative xl:translate-x-0 transition duration-200 ease-in-out  min-h-svh bg-[#007336] shadow-black shadow-lg overflow-y-auto z-40`}>
+      <div className={`flex flex-col w-3/4 md:w-2/4 lg:w-1/4 xl:w-1/4 fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} xl:relative xl:translate-x-0 transition duration-200 ease-in-out min-h-svh bg-[#007336] shadow-black shadow-lg overflow-y-auto z-40`}>
         <div className="flex-grow overflow-y-auto">
           <div className="flex flex-col w-full font-nunito text-xl">
             <div className="flex flex-row justify-start space-x-5 mx-7 my-5">

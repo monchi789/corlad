@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Dropdown } from 'primereact/dropdown';
-import { CardPublicacion } from "../../shared/CardPublicacion";
+import { CardPublicacion } from "../../components/ui/CardPublicacion";
 import { deletePublicacion, getAllPublicaciones } from "../../../api/publicacion.api";
 import { getAllCategoriasAdmin } from '../../../api/categoria.api';
 import { Publicacion } from "../../../interfaces/model/Publicacion";
@@ -188,7 +188,7 @@ export default function PublicacionesAdmin() {
             </button>
           </Link>
         </div>
-        <div className="w-full bg-[#EAF1E8] rounded-lg shadow-custom-input p-5 mt-5">
+        <div className="w-full bg-light rounded-lg shadow-custom-input p-5 mt-5">
           <div className="flex flex-row justify-between space-x-10">
             <div className="flex flex-col w-full space-y-2">
               <span className="text-xl text-[#00330A] font-nunito font-bold">Categoría</span>

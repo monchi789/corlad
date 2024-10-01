@@ -23,7 +23,7 @@ export const createPopUps = (data: any) => {
   });
 }
 
-export const EditePopUps = (id: number, data: any) => {
+export const updatePopUps = (id: number, data: any) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 

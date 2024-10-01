@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createEscuela } from "../../../api/escuela.api";
 import { Escuela } from "../../../interfaces/model/Escuela";
-import Spinner from "../../shared/Spinner";
+import Spinner from "../../components/ui/Spinner";
 
 interface AgregarEscuelaProps {
   isOpen: boolean;

@@ -1,32 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { updateCategoria } from "../../../api/categoria.api";
 import { Categoria } from "../../../interfaces/model/Categoria";
-import { createCategoria } from "../../../api/categoria.api";
 import Spinner from "../../components/ui/Spinner";
 
-interface AgregarCategoriaProps {
+interface EditarCategoriaProps {
   isOpen: boolean;
   onClose: () => void;
-  onCategoryAdded: (success:boolean) => void;
+  onCategoryUpdated: (success:boolean) => void;
+  categoria: Categoria;
 }
 
-export const AgregarCategoria: React.FC<AgregarCategoriaProps> = ({ isOpen, onClose, onCategoryAdded }) => {
-  const [newCategoriaName, setNewCategoriaName] = useState('');
+export const EditarCategoria: React.FC<EditarCategoriaProps> = ({ isOpen, onClose, onCategoryUpdated, categoria }) => {
+  const [categoryName, setCategoryName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async () => {
+  useEffect(() => {
+    if (categoria) {
+      setCategoryName(categoria.nombre_categoria);
+    }
+  }, [categoria]);
 
+  const handleSubmit = async () => {
     setIsSubmitting(true);
 
     try {
-      const newCategoryData: Omit<Categoria, 'id'> = {
-        nombre_categoria: newCategoriaName
+      const CategoryData: Omit<Categoria, 'id'> = {
+        nombre_categoria: categoryName
       };
-      await createCategoria(newCategoryData);
-      onCategoryAdded(true); // Notificación de exito
-      setNewCategoriaName('');
+      await updateCategoria(categoria.id, CategoryData);
+      onCategoryUpdated(true); // Notificación de exito
+      setCategoryName('');
       onClose();
     } catch (error) {
-      onCategoryAdded(false); // Notificación de exito
+      onCategoryUpdated(false); // Notificación de exito
     } finally {
       setIsSubmitting(false);
     }
@@ -51,24 +57,25 @@ export const AgregarCategoria: React.FC<AgregarCategoriaProps> = ({ isOpen, onCl
           ✕
         </button>
         <div className="flex flex-col">
-          <span className="text-2xl font-bold mb-4">Registrar nueva categoría</span>
+          <span className="text-2xl font-bold mb-4">Editar categoria '{categoria.nombre_categoria}'</span>
           <input
             type="text"
             placeholder="Nombre de la Categoría"
-            className="w-full p-2 border rounded mb-2 shadow-lg border-[#00330A] focus:outline-[#007336]"
-            value={newCategoriaName}
-            onChange={(e) => setNewCategoriaName(e.target.value)}
+            className="w-full p-2 border rounded mb-4 shadow-lg border-[#00330A]"
+            value={categoryName}
+            onChange={(e) => setCategoryName(e.target.value)}
           />
           <button
             className={
               `flex justify-center bg-corlad text-white rounded py-2 px-4 mt-2 ms-auto
-            ${isSubmitting || newCategoriaName.trim() === '' ? 'opacity-50' : 'hover:bg-hover-corlad transition duration-300'}`
+            ${isSubmitting || categoryName.trim() === '' ? 'opacity-50' : 'hover:bg-hover-corlad transition duration-300'}`
             }
             onClick={handleSubmit}
-            disabled={isSubmitting || newCategoriaName.trim() === ''}
+            disabled={isSubmitting || categoryName.trim() === ''}
           >
-            {isSubmitting ? <Spinner /> : 'Guardar categoría'}
-          </button>
+            {isSubmitting ? <Spinner /> : 'Guardar cambios'}
+          </button>          
+          <div />
         </div>
       </div>
     </div>

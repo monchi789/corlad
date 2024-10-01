@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Escuela } from "../../../interfaces/model/Escuela";
 import { getAllEscuelas, createEspecialidad } from "../../../api/escuela.api";
 import { Especialidad } from "../../../interfaces/model/Especialidad";
-import Spinner from "../../shared/Spinner";
+import Spinner from "../../components/ui/Spinner";
 
 interface AgregarEspecialidadProps {
   isOpen: boolean;

@@ -2,7 +2,6 @@
 import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { GroupProtectedRoute } from './GroupProtectedRoute.tsx';
-import { Unauthorized } from '../dashboard/shared/NoAutorizado.tsx';
 import AdminLayout from '../dashboard/AdminLayout.tsx';
 
 // Rutas públicas con Lazy Loading
@@ -28,13 +27,14 @@ const SlidersAdmin = lazy(() => import('../dashboard/modules/sliders/SlidersPage
 const PublicacionesAdmin = lazy(() => import('../dashboard/modules/publicaciones/PublicacionesPage.tsx'));
 const NuevaPublicacion = lazy(() => import('../dashboard/modules/publicaciones/NuevaPublicacion.tsx'));
 const EditarPublicacion = lazy(() => import('../dashboard/modules/publicaciones/EditarPublicacion.tsx'));
-const CategoriasAdmin = lazy(() => import('../dashboard/modules/categorias/CategoriasAdmin.tsx'));
+const CategoriasPage = lazy(() => import('../dashboard/modules/categorias/CategoriasPage.tsx'));
 const Pagos = lazy(() => import('../dashboard/modules/pagos/Pagos.tsx'));
 const AgregarPagos = lazy(() => import('../dashboard/modules/pagos/AgregarPagos.tsx'));
 const EditarPagos = lazy(() => import('../dashboard/modules/pagos/EditarPagos.tsx'));
 const EstadoCuentas = lazy(() => import('../dashboard/modules/estadocuenta/EstadoCuentas.tsx'));
 const TarifasPage = lazy(() => import('../dashboard/modules/tarifas/TarifasPage.tsx'));
 
+const Unauthorized = lazy(() => import('../dashboard/components/NoAutorizado.tsx'));
 // Componente de carga personalizada
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center h-screen">
@@ -76,7 +76,7 @@ const adminRoutes = [
   { path: "/admin/publicaciones", element: <PublicacionesAdmin />, allowedGroups: ['admin', 'publicador'] },
   { path: "/admin/publicaciones/nueva-publicacion", element: <NuevaPublicacion />, allowedGroups: ['admin', 'publicador'] },
   { path: "/admin/publicaciones/editar-publicacion/:id", element: <EditarPublicacion />, allowedGroups: ['admin', 'publicador'] },
-  { path: "/admin/publicaciones/categorias", element: <CategoriasAdmin />, allowedGroups: ['admin', 'publicador'] },
+  { path: "/admin/publicaciones/categorias", element: <CategoriasPage />, allowedGroups: ['admin', 'publicador'] },
   { path: "/admin/anuncios", element: <PopUpsAdmin />, allowedGroups: ['admin', 'publicador'] },
   { path: "/admin/galeria", element: <SlidersAdmin />, allowedGroups: ['admin', 'publicador'] },
 ];

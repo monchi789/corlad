@@ -4,7 +4,7 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoIosCloseCircle } from "react-icons/io";
 import { Avatar } from "primereact/avatar";
-import { TableCards } from "../../shared/TableCards";
+import { TableCards } from "../../components/TableCards";
 import toast from "react-hot-toast";
 import { HistorialColegiado } from "../../../interfaces/model/HistorialColegiado";
 import { deleteHistorialColegiadoById } from "../../../api/historial.colegiado.api";

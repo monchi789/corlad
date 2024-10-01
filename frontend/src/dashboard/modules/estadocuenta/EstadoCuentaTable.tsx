@@ -1,5 +1,5 @@
 import { Avatar } from "primereact/avatar";
-import { TableCards } from "../../shared/TableCards";
+import { TableCards } from "../../components/TableCards";
 import { EstadoCuenta } from "../../../interfaces/model/EstadoCuenta";
 
 interface EstadoCuentaTableProps {

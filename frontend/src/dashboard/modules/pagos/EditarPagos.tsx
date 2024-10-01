@@ -8,7 +8,6 @@ import { Colegiado, defaultColegiado } from "../../../interfaces/model/Colegiado
 import { defaultPago, MetodoPago, Pago } from "../../../interfaces/model/Pago";
 import { getPagoById, updatePago, getMetodoPagoByFilter } from "../../../api/pagos.api";
 import toast, { Toaster } from "react-hot-toast";
-import cash_illustration from "../../../assets/dashboard/money_illustration.png"
 
 export default function EditarPagos() {
   const navigate = useNavigate();
@@ -267,7 +266,6 @@ export default function EditarPagos() {
               </div>
             </div>
           </div>
-          <img className="w-1/3 hidden lg:block mx-5" src={cash_illustration} alt="Ilustracion sobre pagos" />
         </div>
         <div className="flex flex-row space-x-12 mx-5">
           <div className="flex flex-col w-full h-full bg-[#C9D9C6] text-[#00330A] rounded-2xl space-y-10 p-7">

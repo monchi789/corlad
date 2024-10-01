@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { Sidebar } from '../dashboard/shared/Sidebar';
-import { SessionHeader } from '../dashboard/shared/SessionHeader';
+import { Sidebar } from './components/Sidebar';
+import { SessionHeader } from './components/SessionHeader';
 
 interface AdminLayoutProps {
   children: ReactNode;

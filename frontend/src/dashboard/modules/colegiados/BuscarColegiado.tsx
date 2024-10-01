@@ -61,9 +61,7 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
 
   return (
     <div className="mt-5 pb-5">
-      
-
-      <div className="bg-[#E1EBDE] shadow-custom-input rounded-2xl">
+      <div className="bg-light shadow-custom-input rounded-2xl">
         <div className="flex flex-row space-x-5 p-4">
           <div className="w-2/6 flex flex-col">
             <label htmlFor="dni_colegiado" className="block font-nunito font-bold mb-1">Documento de identidad</label>
@@ -73,7 +71,7 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
               name="dni_colegiado"
               onChange={handleChangeParams}
               value={params?.dni_colegiado}
-              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-xl shadow-custom-input focus:outline-none p-2"
+              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-lg shadow-custom-input focus:outline-none p-2"
               required
             />
           </div>
@@ -85,7 +83,7 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
               name="numero_colegiatura"
               onChange={handleChangeParams}
               value={params?.numero_colegiatura}
-              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-xl shadow-custom-input focus:outline-none p-2"
+              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-lg shadow-custom-input focus:outline-none p-2"
               required
             />
           </div>
@@ -97,7 +95,7 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
               name="apellido_paterno"
               onChange={handleChangeParams}
               value={params?.apellido_paterno}
-              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-xl shadow-custom-input focus:outline-none p-2"
+              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-lg shadow-custom-input focus:outline-none p-2"
               required
             />
           </div>
@@ -106,7 +104,7 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
             <Dropdown
               id="estado"
               name="estado"
-              className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none shadow-custom-input p-2 px-2"
+              className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none shadow-custom-input p-2 px-2"
               panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
               value={selectedEstado}
               onChange={(e) => {
@@ -119,8 +117,12 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
               itemTemplate={ItemDropdown}
             />
           </div>
-          <button onClick={handleSearch} className="w-1/6  font-nunito font-bold bg-[#007336] text-white hover:bg-[#00330A] shadow-custom-input rounded-xl transition duration-300 mt-auto py-2">
-            <SearchIcon /> Buscar
+          <button
+            className="w-1/6 font-nunito font-bold bg-[#007336] text-white hover:bg-[#00330A] shadow-custom-input rounded-lg transition duration-300 space-x-1 mt-auto py-2"
+            onClick={handleSearch}
+          >
+            <SearchIcon /> 
+            <span>Buscar</span>
           </button>
         </div>
       </div>

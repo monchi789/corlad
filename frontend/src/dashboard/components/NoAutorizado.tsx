@@ -32,3 +32,5 @@ export const Unauthorized: React.FC = () => {
     </div>
   );
 };
+
+export default Unauthorized
