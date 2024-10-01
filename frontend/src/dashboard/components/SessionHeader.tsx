@@ -23,7 +23,7 @@ export function SessionHeader() {
   };
 
   return (
-    <div className="flex flex-row w-full justify-between text-white font-nunito font-semibold bg-[#007336] shadow-custom-input rounded-lg px-7 py-2">
+    <div className="flex flex-row w-full justify-between text-white font-nunito font-semibold bg-[#007336] shadow-custom-input rounded-lg px-5 py-2">
       <div className="flex flex-row space-x-5 my-auto">
         <div className="flex flex-row space-x-2">
           <FaRegCalendar className="my-auto" />

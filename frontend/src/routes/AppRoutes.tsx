@@ -18,7 +18,7 @@ const Colegiatura = lazy(() => import('../web/modules/colegiados/Colegiatura.tsx
 // Rutas protegidas con Lazy Loading
 const Login = lazy(() => import('../dashboard/modules/login/Login.tsx'));
 const InicioAdmin = lazy(() => import('../dashboard/modules/inicio/InicioAdmin.tsx'));
-const ColegiadosAdmin = lazy(() => import('../dashboard/modules/colegiados/ColegiadosAdmin.tsx'));
+const ColegiadosPage = lazy(() => import('../dashboard/modules/colegiados/ColegiadosPage.tsx'));
 const AgregarColegiado = lazy(() => import('../dashboard/modules/colegiados/AgregarColegiado.tsx'));
 const EditarColegiado = lazy(() => import('../dashboard/modules/colegiados/EditarColegiado.tsx'));
 const Capitulos = lazy(() => import('../dashboard/modules/capitulos/Capitulos.tsx'));
@@ -62,7 +62,7 @@ const adminRoutes = [
   { path: "/admin", element: <InicioAdmin />, allowedGroups: ['admin', 'secretaria', 'publicador'] },
 
   // Permisos para secretaria
-  { path: "/admin/colegiado", element: <ColegiadosAdmin />, allowedGroups: ['admin', 'secretaria'] },
+  { path: "/admin/colegiado", element: <ColegiadosPage />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/colegiado/nuevo-colegiado", element: <AgregarColegiado />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/colegiado/editar-colegiado/:id1/:id2", element: <EditarColegiado />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/capitulos", element: <Capitulos />, allowedGroups: ['admin', 'secretaria'] },

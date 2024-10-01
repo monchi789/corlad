@@ -209,7 +209,7 @@ export default function AgregarColegiado() {
 
   return (
     <>
-      <form className="flex flex-col w-full space-x-5 my-5" onSubmit={handleSubmit}>
+      <form className="flex flex-col w-full xl:space-x-5 my-5" onSubmit={handleSubmit}>
         <div className="flex flex-row mb-5">
           <button
             onClick={() => navigate(-1)}
@@ -219,9 +219,9 @@ export default function AgregarColegiado() {
           </button>
           <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Nuevo colegiado</h4>
         </div>
-        <div className="flex flex-row w-full">
-          <div className="flex flex-col w-1/4">
-            <img className="w-5/6 mt-5" src={imageUrl} alt="Perfil colegiado" />
+        <div className="flex flex-col xl:flex-row w-full space-y-5 xl:space-y-0">
+          <div className="flex flex-col w-full xl:w-1/4 xl:space-x-0 px-5">
+            <img className="w-1/2 xl:w-5/6 mt-5 mx-auto" src={imageUrl} alt="Perfil colegiado" />
             <button
               type="button"
               className="flex flex-row justify-between bg-[#007336] text-start text-white font-nunito font-bold hover:bg-[#00330A] shadow-custom-input rounded-md transition duration-300 py-2 px-3 mt-10"
@@ -236,14 +236,17 @@ export default function AgregarColegiado() {
               style={{ display: 'none' }}
               onChange={handleFileChange}
             />
-            <span className="mt-5">{fileName ? fileName : "Ningún archivo seleccionado"}</span>
+            <span className="mt-2">{fileName ? fileName : "Ningún archivo seleccionado"}</span>
           </div>
-          <Divider layout="vertical" className="border border-solid mx-10" />
-          <div className="flex flex-col w-3/4 overflow-y-auto me-5">
+
+          <Divider layout="vertical" className="border border-solid mx-0 lg:mx-10" />
+
+          <div className="flex flex-col w-full xl:w-3/4 h-[700px] overflow-y-auto px-5">
             <div className="text-[#3A3A3A] font-nunito font-bold space-y-3">
-              <div className="bg-[#C9D9C6] rounded-2xl space-y-2 px-5 py-4">
-                <div className="flex flex-row space-x-5">
-                  <div className="w-1/3">
+              <span className="text-2xl">Datos personales</span>
+              <div className="bg-[#C9D9C6] rounded-2xl space-y-4 px-5 py-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  <div>
                     <label htmlFor="nombre" className="block mb-1">Nombres</label>
                     <input
                       type="text"
@@ -255,7 +258,7 @@ export default function AgregarColegiado() {
                       required
                     />
                   </div>
-                  <div className="w-1/3">
+                  <div>
                     <label htmlFor="apellido_paterno" className="block mb-1">Apellido paterno</label>
                     <input
                       type="text"
@@ -267,7 +270,7 @@ export default function AgregarColegiado() {
                       required
                     />
                   </div>
-                  <div className="w-1/3">
+                  <div>
                     <label htmlFor="apellido_materno" className="block mb-1">Apellido materno</label>
                     <input
                       type="text"
@@ -280,8 +283,9 @@ export default function AgregarColegiado() {
                     />
                   </div>
                 </div>
-                <div className="flex flex-row space-x-5">
-                  <div className="w-1/4">
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                  <div>
                     <label htmlFor="dni_colegiado" className="block mb-1">DNI</label>
                     <input
                       type="text"
@@ -293,7 +297,7 @@ export default function AgregarColegiado() {
                       required
                     />
                   </div>
-                  <div className="w-1/4">
+                  <div>
                     <label htmlFor="fecha_nacimiento" className="block mb-1">Fecha de Nacimiento</label>
                     <input
                       type="date"
@@ -305,7 +309,7 @@ export default function AgregarColegiado() {
                       required
                     />
                   </div>
-                  <div className="w-1/4">
+                  <div>
                     <label htmlFor="sexo_colegiado" className="block mb-1">Sexo</label>
                     <Dropdown
                       id="sexo_colegiado"
@@ -322,7 +326,7 @@ export default function AgregarColegiado() {
                       required
                     />
                   </div>
-                  <div className="w-1/4">
+                  <div>
                     <label htmlFor="correo" className="block mb-1">Correo electrónico</label>
                     <input
                       type="text"
@@ -334,10 +338,10 @@ export default function AgregarColegiado() {
                       required
                     />
                   </div>
-
                 </div>
-                <div className="flex flex-row space-x-5">
-                  <div className="w-2/4">
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                  <div className="col-span-2">
                     <label htmlFor="direccion" className="block mb-1">Dirección</label>
                     <input
                       type="text"
@@ -349,7 +353,7 @@ export default function AgregarColegiado() {
                       required
                     />
                   </div>
-                  <div className="w-1/4">
+                  <div>
                     <label htmlFor="celular" className="block mb-1">N° de Celular</label>
                     <input
                       type="text"
@@ -361,7 +365,7 @@ export default function AgregarColegiado() {
                       required
                     />
                   </div>
-                  <div className="w-1/4">
+                  <div>
                     <label htmlFor="estado_civil" className="block mb-1">Estado Civil</label>
                     <Dropdown
                       id="estado_civil"
@@ -380,6 +384,7 @@ export default function AgregarColegiado() {
                   </div>
                 </div>
               </div>
+
 
               <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl px-5 py-4">
                 <div className="flex flex-row space-x-5">
