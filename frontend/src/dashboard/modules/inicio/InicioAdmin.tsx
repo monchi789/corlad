@@ -15,7 +15,7 @@ export default function InicioAdmin() {
         <div className="flex flex-row w-full relative text-white bg-[#007336] rounded-xl px-5 pb-5 pt-10">
           <div className="flex flex-col font-nunito z-10 space-y-3">
             <p className="text-4xl font-bold">Hola {capitalize(user?.username as string) || 'Administrador'}!</p>
-            <p className="text-xl">Nos alegra verte de nuevo</p>
+            <p className="text-xl">Bienvenido al panel de administración del Colegio Regional de Licenciados en Administración - Cusco</p>
           </div>
         </div>
       </div>

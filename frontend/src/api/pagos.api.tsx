@@ -7,7 +7,7 @@ export const getMetodoPagoByFilter = (nombre_metodo_pago?: string) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
   
-  return axios.get(`${apiUrl}gestion-pagos/metodo-pagos/`, {
+  return axios.get(`${apiUrl}metodo-pago/metodo-pagos/`, {
     params: {
       nombre_metodo_pago
     },

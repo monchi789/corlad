@@ -8,8 +8,11 @@ import {
   ColumnDef,
 } from '@tanstack/react-table';
 
-// Definimos un tipo genérico para nuestros datos
 type DataType = Record<string, any>;
+
+type CustomColumnDef<T> = ColumnDef<T> & {
+  isMoney?: boolean;
+};
 
 interface ActionProps<T> {
   row: T;
@@ -17,9 +20,8 @@ interface ActionProps<T> {
   onDelete?: (row: T) => void;
 }
 
-// Definimos los props de nuestro componente
 interface SimpleTableProps<T extends DataType> {
-  columns: ColumnDef<T>[];
+  columns: CustomColumnDef<T>[];
   data: T[];
   includeActions?: boolean;
   onEdit?: (row: T) => void;
@@ -29,16 +31,12 @@ interface SimpleTableProps<T extends DataType> {
 const ActionButtons = <T extends DataType>({ row, onEdit, onDelete }: ActionProps<T>) => (
   <div className="flex space-x-2 justify-center">
     {onEdit && (
-      <button
-        onClick={() => onEdit(row)}
-      >
-        <FaEdit className="text-custom-yellow" size={"20px"}/>
+      <button type="button" onClick={() => onEdit(row)}>
+        <FaEdit className="text-custom-yellow" size={"20px"} />
       </button>
     )}
     {onDelete && (
-      <button
-        onClick={() => onDelete(row)}
-      >
+      <button type="button" onClick={() => onDelete(row)}>
         <FaTrashAlt className="text-red-500" size={"20px"} />
       </button>
     )}
@@ -50,26 +48,39 @@ const SimpleTable = <T extends DataType>({
   data,
   includeActions = false,
   onEdit,
-  onDelete
+  onDelete,
 }: SimpleTableProps<T>) => {
   const tableColumns = React.useMemo(() => {
+    const formattedColumns = columns.map((column) => ({
+      ...column,
+      cell: (info: any) => {
+        const value = info.getValue();
+        if (column.isMoney) {
+          return (
+            <div className="text-right">
+              <span>S/. </span>
+              {typeof value === 'number' ? value.toFixed(2) : value}
+            </div>
+          );
+        }
+        return flexRender(column.cell, info);
+      },
+    }));
+
     if (includeActions) {
       return [
-        ...columns,
+        ...formattedColumns,
         {
           id: 'actions',
           header: 'Acciones',
           cell: ({ row }) => (
-            <ActionButtons
-              row={row.original}
-              onEdit={onEdit}
-              onDelete={onDelete}
-            />
+            <ActionButtons row={row.original} onEdit={onEdit} onDelete={onDelete} />
           ),
         },
-      ] as ColumnDef<T>[];
+      ] as CustomColumnDef<T>[];
     }
-    return columns;
+
+    return formattedColumns;
   }, [columns, includeActions, onEdit, onDelete]);
 
   const table = useReactTable({
@@ -80,39 +91,44 @@ const SimpleTable = <T extends DataType>({
 
   return (
     <div className="overflow-x-auto shadow rounded-lg">
-      <table className="min-w-full divide-y divide-gray-200">
+      <table className="min-w-full divide-y divide-gray-200 font-nunito">
         <thead className="bg-corlad">
-          {table.getHeaderGroups().map(headerGroup => (
+          {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => (
+              {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="text-left text-sm font-bold text-white uppercase tracking-wider px-6 py-3 "
+                  className="text-sm font-bold text-white text-center uppercase tracking-wider px-6 py-3"
                 >
                   {header.isPlaceholder
                     ? null
                     : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
                 </th>
               ))}
             </tr>
           ))}
         </thead>
         <tbody className="divide-y divide-gray-300">
-          {table.getRowModel().rows.map(row => (
-            <tr className="w-full bg-custom-light-turquoise hover:bg-hover-light-turquoise transition duration-300" key={row.id}>
-              {row.getVisibleCells().map(cell => (
-                <td
-                  key={cell.id}
-                  className="text-sm text-black px-6 py-4"
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
+          {data.length === 0 ? (
+            <tr>
+              <td colSpan={columns.length + (includeActions ? 1 : 0)} className="text-center bg-light text-gray-500 p-4">
+                No hay ningún elemento en la lista
+              </td>
             </tr>
-          ))}
+          ) : (
+            table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className="w-full bg-custom-light-turquoise hover:bg-dark-light-turquoise transition duration-300">
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="text-sm text-black px-6 py-4">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

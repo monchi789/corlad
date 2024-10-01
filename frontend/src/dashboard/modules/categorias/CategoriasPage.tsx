@@ -21,7 +21,7 @@ export default function CategoriasAdmin() {
   const [isCategoriaDeleteModalOpen, setIsCategoriaDeleteModalOpen] = useState(false);
 
   const [selectedCategoria, setSelectedCategoria] = useState<Categoria>(defaultCategoria);
-  
+
   const [searchTermCategoria, setSearchTermCategoria] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Estado para controlar la carga de datos
 
@@ -48,7 +48,7 @@ export default function CategoriasAdmin() {
 
   // Funciones para abrir los modals
   const handleAddCategoria = () => setIsCategoriaModalOpen(true);
-  
+
   const handleEditCategoria = (categoria: Categoria) => {
     setSelectedCategoria(categoria);
     setIsCategoriaEditModalOpen(true);
@@ -61,7 +61,7 @@ export default function CategoriasAdmin() {
 
   // Funciones para cerrar los modals
   const handleCloseCategoriaModal = () => setIsCategoriaModalOpen(false);
-  
+
   const handleCloseCategoriaEditModal = () => {
     setIsCategoriaEditModalOpen(false);
     setSelectedCategoria(defaultCategoria);
@@ -73,7 +73,7 @@ export default function CategoriasAdmin() {
   };
 
   const handleSearchChangeCategoria = (event: React.ChangeEvent<HTMLInputElement>) => setSearchTermCategoria(event.target.value);
-  
+
 
   const filteredCategorias = categoriasList.filter((categoria) =>
     categoria.nombre_categoria.toLowerCase().includes(searchTermCategoria.toLowerCase())
@@ -85,7 +85,7 @@ export default function CategoriasAdmin() {
 
   return (
     <>
-      <div className="flex flex-col my-5 space-y-5">
+      <div className="flex flex-col space-y-5 my-5">
         <div className="flex flex-col md:flex-row justify-between space-y-5 md:space-y-0">
           <div className="flex flex-row">
             <button
@@ -98,7 +98,8 @@ export default function CategoriasAdmin() {
           </div>
           <div className="flex flex-row space-x-3 my-auto">
             <button
-              className="flex flex-row w-full justify-center bg-corlad text-lg text-white font-nunito font-semibold hover:bg-hover-corlad shadow-black shadow-md rounded-lg transition duration-300 hover:scale-110 ease-in-out delay-50 space-x-3 my-auto px-4 py-1" onClick={handleAddCategoria}
+              className="flex flex-row w-full justify-center bg-corlad text-lg text-white font-nunito font-semibold hover:bg-hover-corlad shadow-black shadow-md rounded-lg transition duration-300 hover:scale-110 ease-in-out delay-50 space-x-3 my-auto px-4 py-1"
+              onClick={handleAddCategoria}
             >
               <IoMdAddCircleOutline className="my-auto" size={"25px"} />
               <span className="my-auto">Agregar Categoría</span>
@@ -127,7 +128,7 @@ export default function CategoriasAdmin() {
               <Spinner size="w-12 h-12" /> {/* Tu componente Spinner */}
             </div>
           ) : (
-            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[550px] overflow-y-auto pb-5 pt-1 pr-5">
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[800px] overflow-y-auto pb-5 pt-1 pr-5">
               {filteredCategorias.length > 0 ? (
                 filteredCategorias.map((categoria, index) => (
                   <div
@@ -160,13 +161,13 @@ export default function CategoriasAdmin() {
       <AgregarCategoria
         isOpen={isCategoriaModalOpen}
         onClose={handleCloseCategoriaModal}
-        onCategoryAdded={(success: boolean) => handleCategorySuccess(success,"Categoría guardada con éxito","Algo ha ocurrido al guardar la categoría")}
+        onCategoryAdded={(success: boolean) => handleCategorySuccess(success, "Categoría guardada con éxito", "Algo ha ocurrido al guardar la categoría")}
       />
       {selectedCategoria && (
         <EditarCategoria
           isOpen={isCategoriaEditModalOpen}
           onClose={handleCloseCategoriaEditModal}
-          onCategoryUpdated={(success: boolean) => handleCategorySuccess(success,"Categoría actualizada con éxito","Algo ha ocurrido al actualizar la categoría")}
+          onCategoryUpdated={(success: boolean) => handleCategorySuccess(success, "Categoría actualizada con éxito", "Algo ha ocurrido al actualizar la categoría")}
           categoria={selectedCategoria as Categoria}
         />
       )}
@@ -174,7 +175,7 @@ export default function CategoriasAdmin() {
         <EliminarCategoria
           isOpen={isCategoriaDeleteModalOpen}
           onClose={handleCloseCategoriaDeleteModal}
-          onCategoryDeleted={(success: boolean) => handleCategorySuccess(success,"Categoría eliminada con éxito","Algo ha ocurrido al eliminar la categoría")}
+          onCategoryDeleted={(success: boolean) => handleCategorySuccess(success, "Categoría eliminada con éxito", "Algo ha ocurrido al eliminar la categoría")}
           categoria={selectedCategoria}
         />
       )}
