@@ -35,6 +35,7 @@ class Pago(models.Model):
     id_metodo_pago = models.ForeignKey(MetodoPago, on_delete=models.CASCADE, default=0)
     id_colegiado = models.ForeignKey(Colegiado, on_delete=models.CASCADE)
     tarifas = models.ManyToManyField(Tarifa, blank=True)
+    foto_baucher = models.ImageField(upload_to='foto_baucher/', null=False, blank=True, default='')
     
     monto_total = models.DecimalField(max_digits=10, decimal_places=2, editable=False, default=0)
     meses_pagados = ArrayField(
