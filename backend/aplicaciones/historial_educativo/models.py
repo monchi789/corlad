@@ -11,6 +11,8 @@ class HistorialEducativo(models.Model):
     fecha_bachiller = models.DateField(null=False, blank=False, default=timezone.now)
     denominacion_titulo = models.CharField(max_length=250, null=False, blank=False, validators=[validar_espacio], default='')
     titulo_fecha = models.DateField(null=False, blank=False, default=timezone.now)
+    nombre_universidad_titulo = models.CharField(max_length=250, null=True, blank=True, default='')
+    nombre_universidad_bachiller = models.CharField(null=True, blank=True, default='')
     id_colegiado = models.ForeignKey(Colegiado, on_delete=models.CASCADE, default=0)
     id_especialidad = models.ForeignKey(Especialidad, on_delete=models.CASCADE, default=0)
 

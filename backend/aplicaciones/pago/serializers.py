@@ -36,7 +36,7 @@ class PagoSerializer(serializers.ModelSerializer):
             'id_colegiado_id', 'id_metodo_pago_id',
             'tarifas', 'monto_total', 'fecha_pago',
             'numero_operacion', 'observacion',
-            'meses_pagados'
+            'meses_pagados', 'foto_baucher'
         ]
         read_only_fields = ['monto_total', 'fecha_pago']  # Estos campos son calculados
 

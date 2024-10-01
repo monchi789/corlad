@@ -28,7 +28,8 @@ class HistorialEducativoSerializer(serializers.ModelSerializer):
         model = HistorialEducativo
         fields = [
             'id', 'id_colegiado', 'id_especialidad', 
-            'id_colegiado_id', 'id_especialidad_id',  # Aquí estaba el problema
+            'id_colegiado_id', 'id_especialidad_id',
+            'nombre_universidad_titulo', 'nombre_universidad_bachiller',
             'universidad', 'denominacion_bachiller', 'denominacion_titulo', 'titulo_fecha', 'fecha_bachiller'
         ]
 
