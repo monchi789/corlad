@@ -56,6 +56,7 @@ export default function Login() {
       // Redirige al inicio
       navigate('/admin');
     } catch (error) {
+      console.log(error)
       setError('Error al iniciar sesión');
     }
   };
@@ -180,7 +181,7 @@ export default function Login() {
                 sx={{
                   width: '100%',
                   maxHeight: 300,
-                  objectFit: 'cover',
+                  objectFit: 'contain',
                 }}
                 alt="Login"
                 src={logo_corlad}

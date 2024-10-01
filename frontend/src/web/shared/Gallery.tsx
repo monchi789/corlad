@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import banner_corlad from '../../assets/web/corlad_banner.jpg';
+import banner_corlad from '../../assets/web/machupicchu.jpg';
 import { getSlider } from '../../api/slider.api';
 import ImageGallery from 'react-image-gallery';
 import { Slider } from '../../interfaces/model/Slider';

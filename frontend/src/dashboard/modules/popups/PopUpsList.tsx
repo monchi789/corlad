@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import Switch from "react-switch";
 import Modal from 'react-modal';
-import { EditePopUps, getPopUps, deletePopUps, createPopUps } from '../../../api/popup.api';
+import { getPopUps, createPopUps, updatePopUps } from '../../../api/popup.api';
 import { PopUp } from '../../../interfaces/model/PopUp';
 import { IoAdd, IoCloseSharp, IoPencil, IoTrash, IoExpand } from "react-icons/io5";
 import toast, { Toaster } from 'react-hot-toast';
+import Spinner from '../../components/ui/Spinner';
+import { useNavigate } from 'react-router-dom';
+import { FaArrowCircleLeft } from 'react-icons/fa';
+import { EliminarPopUp } from './EliminarPopUp';
+import { EditarPopUps } from './EditarPopUp';
 
 Modal.setAppElement('#root');
 
@@ -12,12 +17,13 @@ interface ImageProps {
   id: number;
   imagen?: string;
   estado_popup?: boolean;
+  popup: PopUp;
   onStatusChange: (id: number, checked: boolean) => void;
   onEdit: (id: number) => void;
-  onDelete: (id: number) => void;
+  onDelete: (popup: PopUp) => void;
 }
 
-const Image: React.FC<ImageProps> = ({ id, imagen, estado_popup, onStatusChange, onEdit, onDelete }) => {
+const Image: React.FC<ImageProps> = ({ id, imagen, estado_popup, popup, onStatusChange, onEdit, onDelete }) => {
   const [checked, setChecked] = useState(estado_popup ?? false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -68,7 +74,7 @@ const Image: React.FC<ImageProps> = ({ id, imagen, estado_popup, onStatusChange,
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                onDelete(id);
+                onDelete(popup);
               }}
               className="bg-red-500 hover:bg-red-700 text-white font-bold transition duration-200 rounded py-2 px-4"
             >
@@ -99,56 +105,12 @@ const Image: React.FC<ImageProps> = ({ id, imagen, estado_popup, onStatusChange,
   );
 };
 
-const EditModal: React.FC<{
-  id: number;
-  imagen: string;
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (id: number, newImage: File) => void;
-}> = ({ id, imagen, isOpen, onClose, onSave }) => {
-  const [newImage, setNewImage] = useState<File | null>(null);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setNewImage(e.target.files[0]);
-    }
-  };
-
-  const handleSave = () => {
-    if (newImage) {
-      onSave(id, newImage);
-    }
-  };
-
-  return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      contentLabel="Edit Image"
-      className="fixed inset-0 flex items-center justify-center z-[1000]"
-      overlayClassName="fixed inset-0 bg-black bg-opacity-75 z-[1000]"
-    >
-      <div className="relative z-50 bg-white p-5 rounded-lg">
-        <img src={imagen} alt="Current image" className="max-h-[50vh] max-w-[50vw] mb-4" />
-        <input type="file" onChange={handleImageChange} />
-        <div className="flex justify-end mt-4">
-          <button onClick={onClose} className="mr-2 px-4 py-2 bg-gray-500 text-white rounded">
-            Cancelar
-          </button>
-          <button onClick={handleSave} className="px-4 py-2 bg-green-500 text-white rounded">
-            Guardar
-          </button>
-        </div>
-      </div>
-    </Modal>
-  );
-};
-
 const AddModal: React.FC<{
   isOpen: boolean;
+  isLoading: boolean
   onClose: () => void;
   onSave: (newImage: File) => void;
-}> = ({ isOpen, onClose, onSave }) => {
+}> = ({ isOpen, isLoading, onClose, onSave }) => {
   const [newImage, setNewImage] = useState<File | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -178,35 +140,7 @@ const AddModal: React.FC<{
             Cancelar
           </button>
           <button onClick={handleSave} className="px-4 py-2 bg-green-500 text-white rounded">
-            Guardar
-          </button>
-        </div>
-      </div>
-    </Modal>
-  );
-};
-
-const ConfirmDeleteModal: React.FC<{
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-}> = ({ isOpen, onClose, onConfirm }) => {
-  return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      contentLabel="Confirm Delete"
-      className="fixed inset-0 flex items-center justify-center z-[1000]"
-      overlayClassName="fixed inset-0 bg-black bg-opacity-75 z-[1000]"
-    >
-      <div className="relative z-50 bg-white p-5 rounded-lg text-center">
-        <h2 className="text-xl mb-4">¿Estás seguro de que deseas eliminar este anuncio?</h2>
-        <div className="flex justify-center">
-          <button onClick={onClose} className="mr-2 px-4 py-2 bg-gray-500 text-white rounded">
-            Cancelar
-          </button>
-          <button onClick={onConfirm} className="px-4 py-2 bg-red-500 text-white rounded">
-            Eliminar
+            {isLoading ? <Spinner /> : 'Guardar'}
           </button>
         </div>
       </div>
@@ -215,59 +149,86 @@ const ConfirmDeleteModal: React.FC<{
 };
 
 export const PopUpsList = () => {
-  const [list, setList] = useState<PopUp[]>([]);
+  const navigate = useNavigate();
+
+  const [listPopUps, setListPopUps] = useState<PopUp[]>([]);
+
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
+
+  const [isPopUpModalOpen, setIsPopUpModalOpen] = useState(false);
+  const [isPopUpUpdateModalOpen, setIsPopUpUpdateModalOpen] = useState(false);
+  const [isPopUpDeleteModalOpen, setIsPopUpDeleteModalOpen] = useState(false);
+
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [selectedPopUp, setSelectedPopUp] = useState<PopUp | null>(null);
+  const [isLoading, setIsLoading] = useState(false); // Estado para controlar la carga
 
   const fetchPopUps = async () => {
+    setIsLoading(true); // Activa el estado de carga
+
     try {
       const res = await getPopUps();
-      setList(res.data);
+      setListPopUps(res.data);
     } catch (error) {
-      console.error('Error al obtener la lista de popups:', error);
+      toast.error('Error al cargar las categorias');
+    } finally {
+      setIsLoading(false); // Desactiva el estado de carga
     }
+  };
+
+  const handlePopUpSuccess = (success: boolean, godMessage: string, badMessage: string) => {
+    if (success) {
+      fetchPopUps();
+      toast.success(godMessage);
+    } else {
+      toast.error(badMessage);
+    }
+  };
+
+  // Funciones para abrir los modals
+  const handleAddPopUp = () => setIsPopUpModalOpen(true);
+  
+  const handleUpdatePopUp = (popup: PopUp) => {
+    setSelectedPopUp(popup);
+    setIsPopUpUpdateModalOpen(true);
+  };
+
+  const handleDeletePopUp = async (popup: PopUp) => {
+    setSelectedPopUp(popup);
+    setIsPopUpDeleteModalOpen(true);
+  };
+
+  // Funciones para cerrar los modals
+  const handleClosePopUpModal = () => setIsPopUpModalOpen(false);
+
+  const handleClosePopUpUpdateModal = () => {
+    setIsPopUpUpdateModalOpen(false);
+    setSelectedPopUp(null);
+  };
+
+  const handleClosePopUpDeleteModal = () => {
+    setIsPopUpDeleteModalOpen(false);
+    setSelectedPopUp(null);
   };
 
   const handleStatusChange = async (id: number, checked: boolean) => {
     try {
-      const updatedList = list.map(popup => ({
+      const updatedList = listPopUps.map(popup => ({
         ...popup,
         estado_popup: checked && popup.id === id,
       }));
 
-      setList(updatedList);
+      setListPopUps(updatedList);
 
       await Promise.all(
         updatedList.map(popup =>
-          EditePopUps(popup.id, { estado_popup: popup.estado_popup })
+          updatePopUps(popup.id, { estado_popup: popup.estado_popup })
         )
       );
 
     } catch (error) {
-      console.error('Error al actualizar el estado de los popups:', error);
-    }
-  };
-
-  const handleEdit = (id: number) => {
-    const popup = list.find(p => p.id === id);
-    if (popup) {
-      setSelectedPopUp(popup);
-      setEditModalIsOpen(true);
-    }
-  };
-
-  const handleSave = async (id: number, newImage: File) => {
-    const formData = new FormData();
-    formData.append('imagen', newImage);
-
-    try {
-      await EditePopUps(id, formData);
-      fetchPopUps(); // Refresh the list
-      setEditModalIsOpen(false);
-    } catch (error) {
-      console.error('Error al guardar la imagen:', error);
+      console.error('Error al actualizar el estado del anuncio:', error);
     }
   };
 
@@ -275,38 +236,17 @@ export const PopUpsList = () => {
     const formData = new FormData();
     formData.append('imagen', newImage);
 
+    setIsLoading(true); // Comienza la carga antes de la solicitud
+
     try {
       await createPopUps(formData);
       fetchPopUps(); // Refresh the list
       setAddModalIsOpen(false);
     } catch (error) {
-      console.error('Error al añadir el popup:', error);
-    }
-  };
-
-  const handleDelete = async (id: number) => {
-    try {
-      await deletePopUps(id);
-      setList(list.filter(popup => popup.id !== id));
-      toast.success('Popup eliminado exitosamente');
-    } catch (error) {
-      console.error('Error al eliminar el popup:', error);
-      toast.error('Error al eliminar el popup');
-    }
-  };
-
-  const handleConfirmDelete = (id: number) => {
-    const popup = list.find(p => p.id === id);
-    if (popup) {
-      setSelectedPopUp(popup);
-      setDeleteModalIsOpen(true);
-    }
-  };
-
-  const confirmDelete = async () => {
-    if (selectedPopUp) {
-      await handleDelete(selectedPopUp.id);
-      setDeleteModalIsOpen(false);
+      toast.error('Error al agregar el anuncio');
+      setAddModalIsOpen(false);
+    } finally {
+      setIsLoading(false); // Termina la carga después de la solicitud (tanto si es exitosa como si falla)
     }
   };
 
@@ -315,21 +255,30 @@ export const PopUpsList = () => {
   }, []);
 
   return (
-    <div className="flex flex-col mt-10 space-y-5">
-      <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold">Anuncios</h4>
+    <div className="flex flex-col my-5 space-y-5">
+      <div className="flex flex-row">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center text-gray-700 hover:text-gray-900 p-2"
+        >
+          <FaArrowCircleLeft className="mr-2" size={"30px"} />
+        </button>
+        <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Anuncios importantes</h4>
+      </div>
       <div className="flex flex-wrap justify-center md:justify-start gap-5">
-        {list.map((element, index) => (
+        {listPopUps.map((popup, index) => (
           <Image
             key={index}
-            id={element.id}
-            imagen={`${import.meta.env.VITE_API_URL_ALTER}${element.imagen}`}
-            estado_popup={element.estado_popup}
+            id={popup.id}
+            imagen={`${import.meta.env.VITE_API_URL_ALTER}${popup.imagen}`}
+            estado_popup={popup.estado_popup}
+            popup={popup}
             onStatusChange={handleStatusChange}
-            onEdit={handleEdit}
-            onDelete={handleConfirmDelete}
+            onEdit={() => handleUpdatePopUp(popup)}
+            onDelete={() => handleDeletePopUp(popup)}
           />
         ))}
-        {list.length < 5 &&
+        {listPopUps.length < 5 &&
           <button
             onClick={() => setAddModalIsOpen(true)}
             className="flex w-full sm:w-1/2 md:w-1/4 lg:w-1/6 h-48 bg-[#FCFFDB] items-center border-solid border-2 shadow-custom border-[#2A8B3D] rounded-xl"
@@ -342,27 +291,30 @@ export const PopUpsList = () => {
         }
       </div>
 
-      {selectedPopUp && (
-        <EditModal
-          id={selectedPopUp.id}
-          imagen={`${import.meta.env.VITE_API_URL_ALTER}${selectedPopUp.imagen}`}
-          isOpen={editModalIsOpen}
-          onClose={() => setEditModalIsOpen(false)}
-          onSave={handleSave}
-        />
-      )}
-
       <AddModal
         isOpen={addModalIsOpen}
+        isLoading={isLoading}
         onClose={() => setAddModalIsOpen(false)}
         onSave={handleAdd}
       />
 
-      <ConfirmDeleteModal
-        isOpen={deleteModalIsOpen}
-        onClose={() => setDeleteModalIsOpen(false)}
-        onConfirm={confirmDelete}
-      />
+      {selectedPopUp && (
+        <EliminarPopUp
+          isOpen={isPopUpDeleteModalOpen}
+          onClose={handleClosePopUpDeleteModal}
+          onPopUpDeleted={(success: boolean) => handlePopUpSuccess(success,"Anuncio eliminado con éxito","Algo ha ocurrido al eliminar el anuncio")}
+          popup={selectedPopUp}
+        />
+      )}
+
+      {selectedPopUp && (
+        <EditarPopUps
+          isOpen={isPopUpUpdateModalOpen}
+          onClose={handleClosePopUpUpdateModal}
+          onPopUpUpdated={(success: boolean) => handlePopUpSuccess(success,"Anuncio actualizado con éxito","Algo ha ocurrido al actualizar el anuncio")}
+          popup={selectedPopUp}
+        />
+      )}
 
       <Toaster position="bottom-center" reverseOrder={false} />
     </div>

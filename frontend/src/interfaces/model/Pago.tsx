@@ -1,14 +1,5 @@
 import { Colegiado, defaultColegiado } from "./Colegiado"
-
-export interface TipoPago {
-  id: number,
-  nombre_tipo_pago: string
-}
-
-export const defaultTipoPago = {
-  id: 0,
-  nombre_tipo_pago: ""
-};
+import { defaultTarifa, Tarifa } from "./Tarifa";
 
 export interface MetodoPago {
   id: number,
@@ -28,8 +19,8 @@ export interface Pago {
   meses: string,
   observacion: string,
   id_colegiado: Colegiado,
-  id_tipo_pago: TipoPago,
-  id_metodo_pago: MetodoPago
+  id_metodo_pago: MetodoPago,
+  id_tarifa: Tarifa
 }
 
 export const defaultPago: Pago = {
@@ -40,8 +31,8 @@ export const defaultPago: Pago = {
   meses: "",
   observacion: "",
   id_colegiado: defaultColegiado,
-  id_tipo_pago: defaultTipoPago,
-  id_metodo_pago: defaultMetodoPago
+  id_metodo_pago: defaultMetodoPago,
+  id_tarifa: defaultTarifa
 };
 
 export default {defaultPago}
