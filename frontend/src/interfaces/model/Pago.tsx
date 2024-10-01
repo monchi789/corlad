@@ -1,5 +1,5 @@
 import { Colegiado, defaultColegiado } from "./Colegiado"
-import { defaultTarifa, Tarifa } from "./Tarifa";
+import { Tarifa } from "./Tarifa";
 
 export interface MetodoPago {
   id: number,
@@ -14,25 +14,25 @@ export const defaultMetodoPago = {
 export interface Pago {
   id: number
   fecha_pago: string,
-  monto_pago: number,
+  monto_total: number,
   numero_operacion: string,
-  meses: string,
+  meses_pagados: string[],
   observacion: string,
   id_colegiado: Colegiado,
   id_metodo_pago: MetodoPago,
-  id_tarifa: Tarifa
+  tarifas: number[]
 }
 
 export const defaultPago: Pago = {
   id: 0,
   fecha_pago: "",
-  monto_pago: 0,
+  monto_total: 0,
   numero_operacion: "",
-  meses: "",
+  meses_pagados: [],
   observacion: "",
   id_colegiado: defaultColegiado,
   id_metodo_pago: defaultMetodoPago,
-  id_tarifa: defaultTarifa
+  tarifas: []
 };
 
 export default {defaultPago}

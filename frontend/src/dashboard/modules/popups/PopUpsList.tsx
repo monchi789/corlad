@@ -265,6 +265,9 @@ export const PopUpsList = () => {
         </button>
         <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Anuncios importantes</h4>
       </div>
+      <div className="text-default font-nunito font-bold ">
+        <span>Bienvenido al panel de administración de anuncios importantes, aqui se pueden crear anuncios importantes (máximo 5) que se quieran mostrar en la página web.</span>
+      </div>
       <div className="flex flex-wrap justify-center md:justify-start gap-5">
         {listPopUps.map((popup, index) => (
           <Image
@@ -281,11 +284,11 @@ export const PopUpsList = () => {
         {listPopUps.length < 5 &&
           <button
             onClick={() => setAddModalIsOpen(true)}
-            className="flex w-full sm:w-1/2 md:w-1/4 lg:w-1/6 h-48 bg-[#FCFFDB] items-center border-solid border-2 shadow-custom border-[#2A8B3D] rounded-xl"
+            className="flex w-full sm:w-1/2 md:w-1/4 lg:w-1/6 h-48 bg-light items-center border-solid border-2 shadow-custom border-[#2A8B3D] rounded-xl"
           >
-            <div className="mx-auto my-auto text-center">
+            <div className="text-center text-default mx-auto my-auto">
               <IoAdd className="mx-auto mb-3" size={45} />
-              <span className="text-2xl text-[#5F4102] font-nunito font-extrabold">Nuevo anuncio</span>
+              <span className="text-2xl font-nunito font-extrabold">Nuevo anuncio</span>
             </div>
           </button>
         }

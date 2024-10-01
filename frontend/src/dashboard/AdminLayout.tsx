@@ -8,11 +8,13 @@ interface AdminLayoutProps {
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   return (
-    <div className="flex flex-row w-full">
+    <div className="flex h-screen">
       <Sidebar />
-      <div className="w-full xl:w-4/5 mx-5 p-3">
+      <div className="w-full h-screen overflow-y-auto p-5 xl:mx-2">
         <SessionHeader />
-        {children}
+        <div className="mt-5">
+          {children}
+        </div>
       </div>
     </div>
   );

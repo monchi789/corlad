@@ -8,20 +8,31 @@ import { Tarifa } from "../../../interfaces/model/Tarifa";
 import { getAllTarifas } from "../../../api/tarifa.api";
 import TarifasForm from "./TarifasForm";
 
-const columns: ColumnDef<Tarifa>[] = [
+type CustomColumnDef<T> = ColumnDef<T> & {
+  isMoney?: boolean;
+};
+
+const columns: CustomColumnDef<Tarifa>[] = [
   {
     header: 'Denominación',
     accessorKey: 'nombre_tarifa',
+    cell: info => info.getValue()
   },
   {
-    header: 'Monto',
+    header: 'Monto S/.',
     accessorKey: 'precio_tarifa',
+    isMoney: true,
+    cell: info => {
+      const value = info.getValue();
+      return typeof value === 'number' ? `S/. ${value.toFixed(2)}` : value;
+    }
   },
   {
     header: 'Descripción',
-    accessorKey: 'descripcion_tarifa'
+    accessorKey: 'descripcion_tarifa',
+    cell: info => info.getValue()
   }
-]
+];
 
 export default function TarifasPage() {
   const navigate = useNavigate();
@@ -35,8 +46,9 @@ export default function TarifasPage() {
 
     try {
       const res = await getAllTarifas();
-      setTarifas(res);
+      setTarifas(res.data.results);
       setIsLoading(false);
+      console.log(res.data.results)
     } catch (error) {
       setIsLoading(false);
       setError(true);

@@ -149,7 +149,7 @@ export default function Capitulos() {
           </Grid>
         </Grid>
 
-        <div className="h-[350px] overflow-y-auto pr-2 mt-5"> {/* Contenedor con altura fija y scroll vertical */}
+        <div className="min-h-[300px] max-h-[400px] overflow-y-auto p-2 mt-5"> {/* Contenedor con altura fija y scroll vertical */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
             {filteredEscuelas.length > 0 ? (
               filteredEscuelas.map((escuela, index) => (
@@ -203,7 +203,7 @@ export default function Capitulos() {
           </Grid>
         </Grid>
 
-        <div className="h-[250px] overflow-y-auto pr-2 mt-5"> {/* Contenedor con altura fija y scroll vertical */}
+        <div className="min-h-[200px] max-h-[400px] overflow-y-auto p-2 mt-5"> {/* Contenedor con altura fija y scroll vertical */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredEspecialidades.length > 0 ? (
               filteredEspecialidades.map((especialidad, index) => (
