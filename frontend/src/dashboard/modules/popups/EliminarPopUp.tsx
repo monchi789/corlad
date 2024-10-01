@@ -1,29 +1,28 @@
-import React, { useState } from "react";
-import { Categoria } from "../../../interfaces/model/Categoria";
-import { deleteCategoria } from "../../../api/categoria.api";
+import { useState } from "react";
+import { deletePopUps } from "../../../api/popup.api";
+import { PopUp } from "../../../interfaces/model/PopUp";
 import Spinner from "../../components/ui/Spinner";
 
-interface EliminarCategoriaProps {
+interface EliminarPopUpProps {
   isOpen: boolean;
   onClose: () => void;
-  onCategoryDeleted: (success: boolean) => void;
-  categoria: Categoria;
+  onPopUpDeleted: (success: boolean) => void;
+  popup: PopUp;
 }
 
-export const EliminarCategoria: React.FC<EliminarCategoriaProps> = ({ isOpen, onClose, onCategoryDeleted, categoria }) => {
+export const EliminarPopUp: React.FC<EliminarPopUpProps> = ({ isOpen, onClose, onPopUpDeleted, popup}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {
-
     setIsLoading(true);
 
     try {
-      await deleteCategoria(categoria.id);
-      onCategoryDeleted(true); // Notificación de exito
-      onClose();
+      await deletePopUps(popup.id);
+      onPopUpDeleted(true); // Notificación de exito
+      onClose()
     } catch (error) {
-      onCategoryDeleted(false); // Notificación de error
-    } finally {
+      onPopUpDeleted(false); // Notificación de error
+    }finally {
       setIsLoading(false);
     }
   };
@@ -47,19 +46,19 @@ export const EliminarCategoria: React.FC<EliminarCategoriaProps> = ({ isOpen, on
           ✕
         </button>
         <div className="flex flex-col">
-          <span className="text-2xl font-bold mb-4">Eliminar categoria '{categoria.nombre_categoria}'</span>
-          <p>¿Está seguro de que desea eliminar esta categoría?</p>
+          <span className="text-2xl font-bold mb-4">Eliminar anuncio</span>
+          <p>¿Está seguro de que desea eliminar este anuncio?</p>
           <div className="mt-6 flex justify-end space-x-4">
             <button
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              className="bg-red-500 hover:bg-red-600 transition duration-300 text-white rounded px-4 py-2"
               onClick={handleDelete}
               disabled={isLoading}
             >
-              {isLoading ? <Spinner color="border-red-800"/> : 'Eliminar categoría'}
+              {isLoading ? <Spinner color="border-red-800" /> : 'Eliminar anuncio'}
             </button>
             <button
               onClick={onClose}
-              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+              className="bg-gray-500 hover:bg-gray-600 transition duration-300 text-white rounded px-4 py-2"
             >
               Cancelar
             </button>
@@ -68,4 +67,4 @@ export const EliminarCategoria: React.FC<EliminarCategoriaProps> = ({ isOpen, on
       </div>
     </div>
   );
-};
+}

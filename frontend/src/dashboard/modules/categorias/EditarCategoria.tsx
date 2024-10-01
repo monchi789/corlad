@@ -3,14 +3,14 @@ import { updateCategoria } from "../../../api/categoria.api";
 import { Categoria } from "../../../interfaces/model/Categoria";
 import Spinner from "../../components/ui/Spinner";
 
-interface ActualizarCategoriaProps {
+interface EditarCategoriaProps {
   isOpen: boolean;
   onClose: () => void;
   onCategoryUpdated: (success:boolean) => void;
   categoria: Categoria;
 }
 
-export const ActualizarCategoria: React.FC<ActualizarCategoriaProps> = ({ isOpen, onClose, onCategoryUpdated, categoria }) => {
+export const EditarCategoria: React.FC<EditarCategoriaProps> = ({ isOpen, onClose, onCategoryUpdated, categoria }) => {
   const [categoryName, setCategoryName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -67,7 +67,7 @@ export const ActualizarCategoria: React.FC<ActualizarCategoriaProps> = ({ isOpen
           />
           <button
             className={
-              `flex justify-center bg-corlad text-white rounded py-2 px-4 mt-2 me-auto
+              `flex justify-center bg-corlad text-white rounded py-2 px-4 mt-2 ms-auto
             ${isSubmitting || categoryName.trim() === '' ? 'opacity-50' : 'hover:bg-hover-corlad transition duration-300'}`
             }
             onClick={handleSubmit}

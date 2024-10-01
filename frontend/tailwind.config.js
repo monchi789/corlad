@@ -35,6 +35,7 @@ export default {
         'hover-corlad': '#00330A',
         'custom-light-turquoise': '#ECF6E8',
         'hover-light-turquoise': '#C9D9C6',
+        'light': '#EAF1E8',
         'custom-yellow': '#CCB23A'
       }
     },

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { FaArrowCircleLeft, FaEdit, FaTrashAlt } from "react-icons/fa";
 import { getAllCategoriasAdmin } from "../../../api/categoria.api";
-import { Categoria } from "../../../interfaces/model/Categoria";
+import { Categoria, defaultCategoria } from "../../../interfaces/model/Categoria";
 import { AgregarCategoria } from "./AgregarCategoria";
-import { ActualizarCategoria } from "./ActualizarCategoria";
+import { EditarCategoria } from "./EditarCategoria";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { Divider } from "primereact/divider";
 import { useNavigate } from "react-router-dom";
@@ -20,40 +20,35 @@ export default function CategoriasAdmin() {
   const [isCategoriaEditModalOpen, setIsCategoriaEditModalOpen] = useState(false);
   const [isCategoriaDeleteModalOpen, setIsCategoriaDeleteModalOpen] = useState(false);
 
-  const [selectedCategoria, setSelectedCategoria] = useState<Categoria | null>(null);
+  const [selectedCategoria, setSelectedCategoria] = useState<Categoria>(defaultCategoria);
   
   const [searchTermCategoria, setSearchTermCategoria] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Estado para controlar la carga de datos
 
-  const cargarDatos = async () => {
-    setIsLoading(true); // Activa el estado de carga
+  const fetchCategorias = async () => {
+    setIsLoading(true);
     try {
-      const categoriasRes = await getAllCategoriasAdmin();
-      setCategoriasList(categoriasRes.data as Categoria[]);
+      const res = await getAllCategoriasAdmin();
+      setCategoriasList(res.data as Categoria[]);
     } catch (error) {
       toast.error('Error al cargar las categorias');
     } finally {
-      setIsLoading(false); // Desactiva el estado de carga
+      setIsLoading(false);
     }
   };
 
-  const handleCategoryAdded = (success: boolean) => {
+  const handleCategorySuccess = (success: boolean, godMessage: string, badMessage: string) => {
     if (success) {
-      cargarDatos();
-      toast.success('Categoría guardada con éxito');
+      fetchCategorias();
+      toast.success(godMessage);
     } else {
-      toast.error('Error al guardar la categoría');
+      toast.error(badMessage);
     }
   };
 
-  useEffect(() => {
-    cargarDatos();
-  }, []);
-
-  const handleAddCategoria = () => {
-    setIsCategoriaModalOpen(true);
-  };
-
+  // Funciones para abrir los modals
+  const handleAddCategoria = () => setIsCategoriaModalOpen(true);
+  
   const handleEditCategoria = (categoria: Categoria) => {
     setSelectedCategoria(categoria);
     setIsCategoriaEditModalOpen(true);
@@ -64,27 +59,29 @@ export default function CategoriasAdmin() {
     setIsCategoriaDeleteModalOpen(true);
   };
 
-  const handleCloseCategoriaModal = () => {
-    setIsCategoriaModalOpen(false);
-  };
-
+  // Funciones para cerrar los modals
+  const handleCloseCategoriaModal = () => setIsCategoriaModalOpen(false);
+  
   const handleCloseCategoriaEditModal = () => {
     setIsCategoriaEditModalOpen(false);
-    setSelectedCategoria(null);
+    setSelectedCategoria(defaultCategoria);
   };
 
   const handleCloseCategoriaDeleteModal = () => {
     setIsCategoriaDeleteModalOpen(false);
-    setSelectedCategoria(null);
+    setSelectedCategoria(defaultCategoria);
   };
 
-  const handleSearchChangeCategoria = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTermCategoria(event.target.value);
-  };
+  const handleSearchChangeCategoria = (event: React.ChangeEvent<HTMLInputElement>) => setSearchTermCategoria(event.target.value);
+  
 
   const filteredCategorias = categoriasList.filter((categoria) =>
     categoria.nombre_categoria.toLowerCase().includes(searchTermCategoria.toLowerCase())
   );
+
+  useEffect(() => {
+    fetchCategorias();
+  }, []);
 
   return (
     <>
@@ -163,13 +160,13 @@ export default function CategoriasAdmin() {
       <AgregarCategoria
         isOpen={isCategoriaModalOpen}
         onClose={handleCloseCategoriaModal}
-        onCategoryAdded={handleCategoryAdded}
+        onCategoryAdded={(success: boolean) => handleCategorySuccess(success,"Categoría guardada con éxito","Algo ha ocurrido al guardar la categoría")}
       />
       {selectedCategoria && (
-        <ActualizarCategoria
+        <EditarCategoria
           isOpen={isCategoriaEditModalOpen}
           onClose={handleCloseCategoriaEditModal}
-          onCategoryUpdated={cargarDatos}
+          onCategoryUpdated={(success: boolean) => handleCategorySuccess(success,"Categoría actualizada con éxito","Algo ha ocurrido al actualizar la categoría")}
           categoria={selectedCategoria as Categoria}
         />
       )}
@@ -177,7 +174,7 @@ export default function CategoriasAdmin() {
         <EliminarCategoria
           isOpen={isCategoriaDeleteModalOpen}
           onClose={handleCloseCategoriaDeleteModal}
-          onCategoryDeleted={cargarDatos}
+          onCategoryDeleted={(success: boolean) => handleCategorySuccess(success,"Categoría eliminada con éxito","Algo ha ocurrido al eliminar la categoría")}
           categoria={selectedCategoria}
         />
       )}

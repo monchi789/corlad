@@ -61,7 +61,7 @@ export const AgregarCategoria: React.FC<AgregarCategoriaProps> = ({ isOpen, onCl
           />
           <button
             className={
-              `flex justify-center bg-corlad text-white rounded py-2 px-4 mt-2 me-auto
+              `flex justify-center bg-corlad text-white rounded py-2 px-4 mt-2 ms-auto
             ${isSubmitting || newCategoriaName.trim() === '' ? 'opacity-50' : 'hover:bg-hover-corlad transition duration-300'}`
             }
             onClick={handleSubmit}
