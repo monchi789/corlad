@@ -431,7 +431,8 @@ export default function AgregarColegiado() {
               </div>
             </div>
 
-
+            <div className="space-y-5">
+            <span className="text-2xl">Historial Educativo</span>
             <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl px-5 py-4">
               <div className="flex flex-row space-x-5">
                 <div className="w-1/3">
@@ -482,6 +483,18 @@ export default function AgregarColegiado() {
 
             <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl space-y-2 px-5 py-4">
               <div className="flex flex-row space-x-5">
+              <div className="w-1/2">
+                  <label htmlFor="denominacion_bachiller" className="block mb-1">Universidad bachiller</label>
+                  <input
+                    type="text"
+                    id="denominacion_bachiller"
+                    name="denominacion_bachiller"
+                    value={historialData.denominacion_bachiller}
+                    onChange={handleChangeHistorial}
+                    className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
+                    required
+                  />
+                </div>
                 <div className="w-1/2">
                   <label htmlFor="denominacion_bachiller" className="block mb-1">Denominación Bachiller</label>
                   <input
@@ -508,6 +521,18 @@ export default function AgregarColegiado() {
                 </div>
               </div>
               <div className="flex flex-row space-x-5">
+              <div className="w-1/2">
+                  <label htmlFor="denominacion_bachiller" className="block mb-1">Universidad Título</label>
+                  <input
+                    type="text"
+                    id="denominacion_bachiller"
+                    name="denominacion_bachiller"
+                    value={historialData.denominacion_bachiller}
+                    onChange={handleChangeHistorial}
+                    className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
+                    required
+                  />
+                </div>
                 <div className="w-1/2">
                   <label htmlFor="denominacion_titulo" className="block mb-1">Denominación titulo</label>
                   <input
@@ -532,6 +557,8 @@ export default function AgregarColegiado() {
                     required
                   />
                 </div>
+                </div>
+
 
               </div>
             </div>

@@ -172,14 +172,16 @@ export default function PublicacionesAdmin() {
     <>
       <div className="flex flex-col space-y-5 my-5">
         <div className="flex flex-row justify-between">
-          <div className="flex flex-row">
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center text-gray-700 hover:text-gray-900 p-2"
-            >
-              <FaArrowCircleLeft className="mr-2" size={"30px"} />
-            </button>
-            <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Publicaciones</h4>
+          <div className="flex flex-col md:flex-row justify-between space-y-5 md:space-y-0">
+            <div className="flex flex-row">
+              <button
+                onClick={() => navigate(-1)}
+                className="flex items-center text-gray-700 hover:text-gray-900 p-2"
+              >
+                <FaArrowCircleLeft className="mr-2" size={"30px"} />
+              </button>
+              <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold my-auto">Publicaciones</h4>
+            </div>
           </div>
           <Link className="flex flex-row space-x-3 my-auto" to={"/admin/publicaciones/nueva-publicacion"}>
             <button className="flex flex-row bg-[#007336] text-lg text-white font-nunito font-semibold hover:bg-[#00330A] shadow-black shadow-md rounded-lg transition duration-300 hover:scale-110 ease-in-out delay-150 space-x-3 px-4 py-1">
@@ -224,7 +226,7 @@ export default function PublicacionesAdmin() {
           </div>
         </div>
       </div>
-      <div className="mt-5">
+      <div className="mt-10">
         <div className="flex flex-wrap gap-5">
           {filteredPublicaciones.length > 0 ? (
             filteredPublicaciones.map(publicacion => (

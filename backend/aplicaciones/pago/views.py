@@ -165,7 +165,6 @@ class PagoViewSet(viewsets.ViewSet):
             return instance
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
 
 class EstadoCuentaViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Colegiado.objects.annotate(
@@ -179,3 +178,4 @@ class EstadoCuentaViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.filter(monto_acumulado__isnull=False)
+

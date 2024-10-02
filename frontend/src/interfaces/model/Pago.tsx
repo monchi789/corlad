@@ -1,5 +1,4 @@
 import { Colegiado, defaultColegiado } from "./Colegiado"
-import { Tarifa } from "./Tarifa";
 
 export interface MetodoPago {
   id: number,

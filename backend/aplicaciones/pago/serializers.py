@@ -12,6 +12,7 @@ class PagoSerializer(serializers.ModelSerializer):
     id_colegiado = ColegiadoSerializer(read_only=True)
     id_metodo_pago = MetodoPagoSerializer(read_only=True)
     fecha_pago = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+
     
     # Campos relacionados para crear o actualizar (Primary Key Related)
     id_colegiado_id = serializers.PrimaryKeyRelatedField(
