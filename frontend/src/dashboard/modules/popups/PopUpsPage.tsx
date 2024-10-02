@@ -153,10 +153,8 @@ export default function PopUpsPage() {
 
   const [listPopUps, setListPopUps] = useState<PopUp[]>([]);
 
-  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
 
-  const [isPopUpModalOpen, setIsPopUpModalOpen] = useState(false);
   const [isPopUpUpdateModalOpen, setIsPopUpUpdateModalOpen] = useState(false);
   const [isPopUpDeleteModalOpen, setIsPopUpDeleteModalOpen] = useState(false);
 
@@ -185,9 +183,6 @@ export default function PopUpsPage() {
     }
   };
 
-  // Funciones para abrir los modals
-  const handleAddPopUp = () => setIsPopUpModalOpen(true);
-
   const handleUpdatePopUp = (popup: PopUp) => {
     setSelectedPopUp(popup);
     setIsPopUpUpdateModalOpen(true);
@@ -197,9 +192,6 @@ export default function PopUpsPage() {
     setSelectedPopUp(popup);
     setIsPopUpDeleteModalOpen(true);
   };
-
-  // Funciones para cerrar los modals
-  const handleClosePopUpModal = () => setIsPopUpModalOpen(false);
 
   const handleClosePopUpUpdateModal = () => {
     setIsPopUpUpdateModalOpen(false);
