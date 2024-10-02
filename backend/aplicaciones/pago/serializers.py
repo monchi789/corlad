@@ -11,6 +11,7 @@ from .models import Pago
 class PagoSerializer(serializers.ModelSerializer):
     id_colegiado = ColegiadoSerializer(read_only=True)
     id_metodo_pago = MetodoPagoSerializer(read_only=True)
+    fecha_pago = serializers.DateTimeField(format="%Y-%m-%d", read_only=True)
     
     # Campos relacionados para crear o actualizar (Primary Key Related)
     id_colegiado_id = serializers.PrimaryKeyRelatedField(
@@ -38,7 +39,7 @@ class PagoSerializer(serializers.ModelSerializer):
             'numero_operacion', 'observacion',
             'meses_pagados', 'foto_baucher'
         ]
-        read_only_fields = ['monto_total', 'fecha_pago']  # Estos campos son calculados
+        read_only_fields = ['monto_total', 'fecha_pago']
 
     def validate(self, data):
         # Validación personalizada si es necesario

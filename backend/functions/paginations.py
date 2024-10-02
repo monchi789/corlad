@@ -19,12 +19,11 @@ class CustomPagination(PageNumberPagination):
             raise NotFound("Página solicitada inválida") from exc
 
         self.request = request
-        self.count = paginator.count
         return list(self.page)
 
     def get_paginated_response(self, data):
         return Response({
-            'count': self.count,
+            'count': self.page.paginator.count,
             'next': self.get_next_link(),
             'previous': self.get_previous_link(),
             'results': data
