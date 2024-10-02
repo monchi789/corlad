@@ -74,6 +74,7 @@ services:
       - ./apache/apache.conf:/usr/local/apache2/conf/httpd.conf
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
+      - ./certbot/options-ssl-apache.conf:/etc/letsencrypt/options-ssl-apache.conf
     depends_on:
       - frontend
       - backend
