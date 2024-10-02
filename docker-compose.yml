@@ -46,6 +46,8 @@ services:
       - db
     networks:
       - backend-network
+    ports:
+      - "8000:8000"
 
   frontend:
     build:
@@ -62,6 +64,8 @@ services:
       - backend
     networks:
       - frontend-network
+    ports:
+      - "80:80"
 
 networks:
   frontend-network:
