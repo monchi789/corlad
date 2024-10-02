@@ -1,16 +1,20 @@
-FROM httpd:2.4
+# Dockerfile para Apache
+FROM ubuntu:20.04
 
-# Copiar Apache configuración
-COPY apache.conf /usr/local/apache2/conf/extra/apache.conf
+# Instalar Apache y Certbot
+RUN apt-get update && \
+    apt-get install -y apache2 certbot python3-certbot-apache && \
+    apt-get clean
 
-# Incluir el archivo de configuración personalizado
-RUN echo "Include conf/extra/apache.conf" >> /usr/local/apache2/conf/httpd.conf
+# Habilitar los módulos necesarios
+RUN a2enmod ssl proxy proxy_http rewrite
 
-# Habilitar mod_ssl, mod_proxy, mod_proxy_http, y mod_rewrite
-RUN sed -i '/LoadModule ssl_module/s/^#//g' /usr/local/apache2/conf/httpd.conf && \
-    sed -i '/LoadModule proxy_module/s/^#//g' /usr/local/apache2/conf/httpd.conf && \
-    sed -i '/LoadModule proxy_http_module/s/^#//g' /usr/local/apache2/conf/httpd.conf && \
-    sed -i '/LoadModule rewrite_module/s/^#//g' /usr/local/apache2/conf/httpd.conf
+# Copiar archivo de configuración de Apache
+COPY apache.conf /etc/apache2/sites-available/000-default.conf
 
+# Exponer puertos
 EXPOSE 80
 EXPOSE 443
+
+# Comando para iniciar Apache en primer plano
+CMD ["apachectl", "-D", "FOREGROUND"]
