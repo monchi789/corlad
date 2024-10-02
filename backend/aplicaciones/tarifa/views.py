@@ -3,7 +3,6 @@ from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import viewsets
 from rest_framework import status
-from functions.paginations import CustomPagination
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django_filters.rest_framework import DjangoFilterBackend
@@ -17,7 +16,6 @@ from .filters import TarifaFilter
 class TarifaViewSet(viewsets.ViewSet):
     queryset = Tarifa.objects.all()
     serializer_class = TarifaSerializer
-    pagination_class = CustomPagination
 
     # JWT
     permission_classes = [IsAuthenticated, DjangoModelPermissions, TarifaPermissions]
@@ -60,14 +58,6 @@ class TarifaViewSet(viewsets.ViewSet):
             return self.queryset
         except Exception as e:
             return Response({'detail': f'Error al obtener el queryset: {str(e)}'}, status=status.HTTP_404_NOT_FOUND)
-    
-    def paginate_queryset(self, queryset):
-        paginator = self.pagination_class()
-        return paginator.paginate_queryset(queryset, self.request, view=self)
-    
-    def get_paginated_response(self, data):
-        paginator = self.pagination_class()
-        return paginator.get_paginated_response(data)
 
     @swagger_auto_schema(
         operation_id='Listar los Tarifas',
@@ -80,13 +70,6 @@ class TarifaViewSet(viewsets.ViewSet):
                 return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
         
         queryset = self.filter_queryset(self.get_queryset())
-        paginator = self.pagination_class()
-        page = paginator.paginate_queryset(queryset, request, self)
-
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return paginator.get_paginated_response(serializer.data)
-        
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -133,7 +116,6 @@ class TarifaViewSet(viewsets.ViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        # Metodo DELETE
     @swagger_auto_schema(
         operation_id='Eliminar un colegiado',
         responses={204: openapi.Response(description='Colegiado eliminado')}
