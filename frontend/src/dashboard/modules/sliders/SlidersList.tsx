@@ -7,6 +7,7 @@ import { IoExpand, IoCloseSharp, IoArrowBack, IoArrowForward, IoAdd, IoPencil, I
 import toast, { Toaster } from 'react-hot-toast';
 import { FaArrowCircleLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../../components/ui/Spinner';
 
 Modal.setAppElement('#root');
 
@@ -239,8 +240,14 @@ const AddModal: React.FC<{
           <button onClick={handleCancel} className="mr-2 px-4 py-2 bg-gray-500 text-white rounded">
             Cancelar
           </button>
-          <button onClick={handleSave} className="px-4 py-2 bg-green-500 text-white rounded">
-            {isLoading ? 'Guardando...' : 'Guardar'}
+          <button
+            className={
+              `bg-corlad text-white rounded px-4 py-2
+            ${isLoading ? 'opacity-50' : 'hover:bg-hover-corlad transition duration-300'}`
+            }
+            onClick={handleSave}
+          >
+            {isLoading ? <Spinner /> : 'Guardar'}
           </button>
         </div>
       </div>
@@ -250,9 +257,10 @@ const AddModal: React.FC<{
 
 const ConfirmDeleteModal: React.FC<{
   isOpen: boolean;
+  isLoading: boolean;
   onClose: () => void;
   onConfirm: () => void;
-}> = ({ isOpen, onClose, onConfirm }) => {
+}> = ({ isOpen, onClose,  isLoading, onConfirm }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -267,8 +275,17 @@ const ConfirmDeleteModal: React.FC<{
           <button onClick={onClose} className="mr-2 px-4 py-2 bg-gray-500 text-white rounded">
             Cancelar
           </button>
-          <button onClick={onConfirm} className="px-4 py-2 bg-red-500 text-white rounded">
+          <button  className="px-4 py-2  text-white rounded">
             Eliminar
+          </button>
+          <button
+            className={
+              `bg-red-500 text-white rounded px-4 py-2
+            ${isLoading ? 'opacity-50' : 'hover:bg-red-600 transition duration-300'}`
+            }
+            onClick={onConfirm}
+          >
+            {isLoading ? <Spinner /> : 'Guardar'}
           </button>
         </div>
       </div>
@@ -278,10 +295,11 @@ const ConfirmDeleteModal: React.FC<{
 
 const EditModal: React.FC<{
   isOpen: boolean;
+  isLoading: boolean;
   onClose: () => void;
   slider: Slider;
   onSave: (id: number, updatedSlider: FormData) => void;
-}> = ({ isOpen, onClose, slider, onSave }) => {
+}> = ({ isOpen, onClose, isLoading, slider, onSave }) => {
   const [images, setImages] = useState<(File | string | null)[]>([null, null, null, null]);
   const [previewImages, setPreviewImages] = useState<(string | null)[]>([null, null, null, null]);
 
@@ -339,7 +357,7 @@ const EditModal: React.FC<{
         formData.append(`imagen_${index + 1}`, ""); // Enviar "null" para eliminar la imagen
       }
     });
-
+    
     onSave(slider.id, formData);
     onClose();
   };
@@ -390,13 +408,17 @@ const EditModal: React.FC<{
             </div>
           ))}
         </div>
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-end space-x-5 mt-4">
           <button
+            className={
+              `bg-corlad text-white rounded px-4 py-2
+            ${isLoading ? 'opacity-50' : 'hover:bg-hover-corlad transition duration-300'}`
+            }
             onClick={handleSave}
-            className="px-4 py-2 bg-green-500 text-white rounded mr-2"
           >
-            Guardar
+            {isLoading ? <Spinner /> : 'Guardar'}
           </button>
+
           <button
             onClick={onClose}
             className="px-4 py-2 bg-gray-500 text-white rounded"
@@ -460,6 +482,8 @@ export const SlidersList = () => {
   };
 
   const handleSaveEdit = async (id: number, formData: FormData) => {
+    setIsLoading(true); // Comienza la carga antes de la solicitud
+
     try {
       await editSlider(id, formData);
       fetchSlider();
@@ -467,6 +491,8 @@ export const SlidersList = () => {
       toast.success('Galería actualizada con éxito');
     } catch (error) {
       toast.error('Error actualizando la galería');
+    } finally {
+      setIsLoading(false); // Termina la carga después de la solicitud (tanto si es exitosa como si falla)
     }
   };
 
@@ -482,6 +508,7 @@ export const SlidersList = () => {
       await createSlider(formData);
       fetchSlider(); // Refresh the list
       setAddModalIsOpen(false);
+      toast.success('Galería guardada con éxito');
     } catch (error) {
       toast.error('Error al agregar la galería');
     } finally {
@@ -495,8 +522,7 @@ export const SlidersList = () => {
       setList(list.filter(slider => slider.id !== id));
       toast.success('Slider eliminado exitosamente');
     } catch (error) {
-      console.error('Error al eliminar el slider:', error);
-      toast.error('Error al eliminar el slider');
+      toast.error('Error al eliminar la galería');
     }
   };
 
@@ -522,16 +548,16 @@ export const SlidersList = () => {
   return (
     <div className="flex flex-col my-5 space-y-5">
       <div className="flex flex-col md:flex-row justify-between space-y-5 md:space-y-0">
-          <div className="flex flex-row">
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center text-gray-700 hover:text-gray-900 p-2"
-            >
-              <FaArrowCircleLeft className="mr-2" size={"30px"} />
-            </button>
-            <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold my-auto">Galerías de fotos</h4>
-          </div>
+        <div className="flex flex-row">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center text-gray-700 hover:text-gray-900 p-2"
+          >
+            <FaArrowCircleLeft className="mr-2" size={"30px"} />
+          </button>
+          <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold my-auto">Galerías de fotos</h4>
         </div>
+      </div>
 
       <div className="text-default font-nunito font-bold ">
         <span>Bienvenido al panel de administración de la galería de fotos, en este apartado se pueden crear hasta cinco galerías que se quieran mostrar en la página web.</span>
@@ -575,6 +601,7 @@ export const SlidersList = () => {
       {selectedSlider && (
         <EditModal
           isOpen={isEditModalOpen}
+          isLoading={isLoading}
           onClose={() => setIsEditModalOpen(false)}
           slider={selectedSlider}
           onSave={handleSaveEdit}
@@ -590,6 +617,7 @@ export const SlidersList = () => {
 
       <ConfirmDeleteModal
         isOpen={deleteModalIsOpen}
+        isLoading={isLoading}
         onClose={() => setDeleteModalIsOpen(false)}
         onConfirm={confirmDelete}
       />

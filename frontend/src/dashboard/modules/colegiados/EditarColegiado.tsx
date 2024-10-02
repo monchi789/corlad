@@ -225,7 +225,7 @@ export default function EditarColegiado() {
             <img className="w-5/6 mt-5" src={imageUrl} alt="Perfil colegiado" />
             <button
               type="button"
-              className="flex flex-row justify-between bg-[#5F4102] text-start text-[#F1E9D0] font-nunito font-extrabold rounded-md py-2 px-3 mt-10"
+              className="flex flex-row justify-between bg-corlad hover:bg-hover-corlad text-start text-white font-nunito font-extrabold rounded-md transition duration-300 py-2 px-3 mt-10"
               onClick={handleFileButtonClick}
             >
               <span>Seleccionar archivo</span>
@@ -473,6 +473,18 @@ export default function EditarColegiado() {
               <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl space-y-2 px-5 py-4">
                 <div className="flex flex-row space-x-5">
                   <div className="w-1/2">
+                    <label htmlFor="nombre_universidad_bachiller" className="block mb-1">Universidad bachiller</label>
+                    <input
+                      type="text"
+                      id="nombre_universidad_bachiller"
+                      name="nombre_universidad_bachiller"
+                      value={historialData.nombre_universidad_bachiller}
+                      onChange={handleChangeHistorial}
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
+                      required
+                    />
+                  </div>
+                  <div className="w-1/2">
                     <label htmlFor="denominacion_bachiller" className="block mb-1">Denominación Bachiller</label>
                     <input
                       type="text"
@@ -480,7 +492,7 @@ export default function EditarColegiado() {
                       name="denominacion_bachiller"
                       value={historialData.denominacion_bachiller}
                       onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -492,12 +504,24 @@ export default function EditarColegiado() {
                       name="fecha_bachiller"
                       value={historialData.fecha_bachiller}
                       onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
                 </div>
                 <div className="flex flex-row space-x-5">
+                  <div className="w-1/2">
+                    <label htmlFor="nombre_universidad_titulo" className="block mb-1">Universidad Título</label>
+                    <input
+                      type="text"
+                      id="nombre_universidad_titulo"
+                      name="nombre_universidad_titulo"
+                      value={historialData.nombre_universidad_titulo}
+                      onChange={handleChangeHistorial}
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
+                      required
+                    />
+                  </div>
                   <div className="w-1/2">
                     <label htmlFor="denominacion_titulo" className="block mb-1">Denominación titulo</label>
                     <input
@@ -506,7 +530,7 @@ export default function EditarColegiado() {
                       name="denominacion_titulo"
                       value={historialData.denominacion_titulo}
                       onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
@@ -518,22 +542,22 @@ export default function EditarColegiado() {
                       name="titulo_fecha"
                       value={historialData.titulo_fecha}
                       onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
                       required
                     />
                   </div>
-
                 </div>
               </div>
+
             </div>
-            <div className="flex flex-row w-full text-[#3A3A3A] font-nunito font-black rounded-2xl space-x-3 mt-5">
-              <button type="submit" className="w-2/3 bg-[#007336] text-white rounded-2xl p-3">
+            <div className="flex flex-row w-full text-[#3A3A3A] font-nunito font-bold rounded-2xl space-x-3 mt-5">
+              <button type="submit" className="w-2/3 bg-corlad hover:bg-hover-corlad transition duration-300 text-white rounded-lg p-3">
                 Actualizar colegiado
               </button>
               <Link to={"/admin/colegiado"} className="w-1/3">
-                <button type="button" className="w-full border-solid border-2 border-[#3A3A3A] rounded-2xl py-3">
-                  Cancelar
-                </button>
+              <button type="button" className="w-full border-solid border-2 border-[#3A3A3A] hover:bg-[#3A3A3A] hover:border-[#3A3A3A] hover:text-white transition duration-300 rounded-xl py-3">
+                Cancelar
+              </button>
               </Link>
             </div>
             <Toaster

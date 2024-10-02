@@ -92,7 +92,7 @@ export default function Noticia() {
             {data.slice(0, 3).map((noticia, index) => (
               <Card
                 key={index}
-                imageSource={import.meta.env.VITE_API_URL_ALTER + noticia.imagen_publicacion}
+                imageSource={noticia.imagen_publicacion ? import.meta.env.VITE_API_URL_ALTER + noticia.imagen_publicacion : null }
                 imageAlt={noticia.titulo}
                 cardTitle={noticia.titulo}
                 cardText={limitarContenido(noticia.contenido, 30)}

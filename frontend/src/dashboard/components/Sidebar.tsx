@@ -44,12 +44,12 @@ export function Sidebar() {
       >
         <MdMenu size={24} />
       </button>
-      <div className={`flex flex-col w-3/4 md:w-2/4 lg:w-1/4 xl:w-1/4 fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} xl:relative xl:translate-x-0 transition duration-200 ease-in-out h-svh bg-[#007336] shadow-black shadow-lg overflow-y-auto z-40`}>
+      <div className={`flex flex-col w-3/4 md:w-2/4 lg:w-2/4 xl:w-1/4 fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} xl:relative xl:translate-x-0 transition duration-200 ease-in-out h-svh bg-[#007336] shadow-black shadow-lg overflow-y-auto z-40`}>
         <div className="flex-grow overflow-y-auto">
           <div className="flex flex-col w-full font-nunito text-xl">
-            <div className="flex flex-row justify-start space-x-5 mx-7 my-5">
-              <img className="w-1/6" src={logo_corlad} alt="Logo del CORLAD Cusco" />
-              <h2 className="text-xl text-center text-white font-black my-auto">CORLAD CUSCO</h2>
+            <div className="flex flex-col md:flex-row justify-start align-middle md:space-x-5 mx-7 my-5">
+              <img className="w-1/3 md:w-1/6 mx-auto md:mx-0" src={logo_corlad} alt="Logo del CORLAD Cusco" />
+              <h2 className="text-xl text-center text-white font-black mt-5 md:my-auto">CORLAD CUSCO</h2>
             </div>
             <ul className="flex flex-col w-full justify-between">
 

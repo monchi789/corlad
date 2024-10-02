@@ -72,3 +72,8 @@ export const getNoticiasByFilter = (params:any) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   return axios.get(`${apiUrl}publicacion/list-publicacion/${params}`)
 }
+
+export const getBolsaTrabajo = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  return axios.get(`${apiUrl}publicacion/bolsa-trabajos/`)
+}

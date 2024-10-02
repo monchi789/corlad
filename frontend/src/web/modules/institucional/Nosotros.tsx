@@ -84,7 +84,7 @@ export default function Nosotros() {
         </div>
       </div>
 
-      <div className="relative flex flex-col bg-[#FBFFFC] mx-auto my-12 items-center justify-center">
+      <div className="relative flex flex-col bg-[#FBFFFC] items-center justify-center mx-auto py-12">
         <img src={corlad_logo} alt="Logo corlad cusco" className="absolute inset-0 lg:w-1/3 mx-auto my-auto object-cover z-0 opacity-20" />
         <div className="relative z-10bg-opacity-80 p-10">
           <h4 className="text-center text-3xl md:text-4xl font-nunito font-extrabold text-[#a67102] mb-12">HIMNO INSTITUCIONAL</h4>
@@ -119,7 +119,7 @@ export default function Nosotros() {
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-10 mx-12 mb-24">
+      <div className="container grid md:grid-cols-2 gap-10 mx-auto my-24">
         <div className="bg-white shadow-lg rounded-lg p-8">
           <h2 className="text-3xl font-bold text-[#363636] mb-4">Nuestra Misión</h2>
           <p className="text-lg text-[#363636]">

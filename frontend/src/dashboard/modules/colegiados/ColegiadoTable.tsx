@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { Link } from 'react-router-dom';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FaCircleCheck } from "react-icons/fa6";
@@ -70,7 +70,7 @@ export function ColegiadoTable({ colegiadosList, onDelete }: ColegiadoTableProps
       <div className="w-1/6 my-auto">{colegiado.id_colegiado.numero_colegiatura}</div>
       <div className="w-1/6 my-auto">{colegiado.id_colegiado.celular}</div>
       <div className="w-1/6 my-auto">
-        {colegiado.id_estado_colegiatura?.estado_colegiatura ? (
+        {colegiado.id_colegiado.estado_activo ? (
           <FaCircleCheck className="text-[#007336]" size={"25px"} />
         ) : (
           <IoIosCloseCircle className="text-[#B50C0C]" size={"30px"} />

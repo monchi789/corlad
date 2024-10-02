@@ -1,46 +1,49 @@
-// BuscarColegiado.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getColegiadoByFilters } from '../../../api/colegiado.api';
 import { Colegiado } from '../../../interfaces/model/Colegiado';
 import Spinner from '../../components/ui/Spinner';
 
 interface BuscarColegiadoProps {
   onColegiadoFound: (colegiado: Colegiado | null) => void;
+  colegiado?: Colegiado;
 }
 
-const BuscarColegiado: React.FC<BuscarColegiadoProps> = ({ onColegiadoFound }) => {
-
-
+const BuscarColegiado: React.FC<BuscarColegiadoProps> = ({ onColegiadoFound, colegiado }) => {
   const [dniColegiado, setDniColegiado] = useState('');
   const [numeroColegiatura, setNumeroColegiatura] = useState('');
-  const [selectedColegiado, setSelectedColegiado] = useState<string>('');
+  const [selectedColegiado, setSelectedColegiado] = useState<Colegiado | null>(null);
   const [loading, setLoading] = useState(false);
   const [errorColegiado, setErrorColegiado] = useState(false);
+
+  useEffect(() => {
+    if (colegiado) setSelectedColegiado(colegiado)
+  }, [colegiado])
 
   // Buscar al colegiado
   const handleSearch = async () => {
     if (dniColegiado.trim() === '' && numeroColegiatura.trim() === '') {
-      setSelectedColegiado('Por favor, llene algún campo.');
-      return; // Detiene la ejecución si los campos están vacios
+      setErrorColegiado(true);
+      return;
     }
 
     setLoading(true);
+    setErrorColegiado(false);
 
     try {
       const res = await getColegiadoByFilters(numeroColegiatura, dniColegiado);
 
       if (res.data.results.length > 0) {
-        const colegiado: Colegiado = res.data.results[0];
-        setSelectedColegiado(`${colegiado.numero_colegiatura} - ${colegiado.apellido_paterno} - ${colegiado.apellido_materno} - ${colegiado.nombre} - ${colegiado.dni_colegiado}`);
-        setErrorColegiado(false);
-        onColegiadoFound(colegiado);
+        const foundColegiado: Colegiado = res.data.results[0];
+        setSelectedColegiado(foundColegiado);
+        onColegiadoFound(foundColegiado);
       } else {
-        setSelectedColegiado('No se encontró ningún colegiado con esos parámetros');
-        setErrorColegiado(false);
+        setSelectedColegiado(null);
         onColegiadoFound(null);
       }
     } catch (error) {
+      setSelectedColegiado(null);
       onColegiadoFound(null);
+      setErrorColegiado(true);
     } finally {
       setLoading(false);
     }
@@ -79,10 +82,15 @@ const BuscarColegiado: React.FC<BuscarColegiadoProps> = ({ onColegiadoFound }) =
           </button>
         </div>
         <div className="mb-3">
-        {loading && <Spinner/>}
+          {loading && <Spinner />}
         </div>
         <input
-          value={loading ? "" : selectedColegiado}
+          value={loading 
+            ? "" 
+            : selectedColegiado 
+              ? `${selectedColegiado.numero_colegiatura} - ${selectedColegiado.apellido_paterno} - ${selectedColegiado.apellido_materno} - ${selectedColegiado.nombre} - ${selectedColegiado.dni_colegiado}`
+              : "No se encontró ningún colegiado con esos parámetros"
+          }
           className="bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-bold shadow-custom-input rounded-lg mb-3 p-2"
           placeholder="Colegiado que realizó el pago"
           disabled

@@ -6,13 +6,15 @@ import { FaTiktok } from "react-icons/fa";
 export function Footer() {
   return (
     <div className="w-full bg-[#363636] pt-5 font-didact">
-      <div className="container flex flex-col md:flex-row md:space-x-5 w-4/6 mx-auto">
-        <div className="flex flex-col md:w-2/5">
-          <Link to={"/"}><img className='w-3/6 md:w-5/6 lg:w-1/2' src={logo_corlad_blanco} alt="Logo del corlad" /></Link>
-          <h3 className='font-extrabold text-xl text-[#a67102] mt-6 mb-3 font-nunito'>HORARIO DE ATENCIÓN</h3>
-          <div className='text-white text-lg font-didact'>
-            <p>Lunes a viernes 09:00 h. - 18:00 h.</p>
-            <p>Sábados 09:00 h. - 13:00 h.</p>
+      <div className="container flex flex-col md:flex-row md:space-x-5 w-5/6 lg:w-4/6 mx-auto">
+        <div className="flex flex-col md:w-2/5 space-y-5 md:space-y-0">
+          <Link to={"/"}><img className='w-full lg:w-5/6 xl:w-1/2' src={logo_corlad_blanco} alt="Logo del corlad" /></Link>
+          <div>
+            <h3 className='font-extrabold text-xl text-[#a67102] mt-6 mb-3 font-nunito'>HORARIO DE ATENCIÓN</h3>
+            <div className='text-white text-lg font-didact'>
+              <p>Lunes a viernes 09:00 h. - 18:00 h.</p>
+              <p>Sábados 09:00 h. - 13:00 h.</p>
+            </div>
           </div>
         </div>
         <div className='flex flex-col md:w-1/5'>
@@ -37,7 +39,7 @@ export function Footer() {
         </div>
         <div className='md:w-1/5'>
           <h3 className='font-extrabold text-xl text-[#a67102] mt-20 mb-10 font-nunito md:text-center lg:text-start'>SÍGUENOS</h3>
-          <div className='flex flex-row md:flex-col lg:flex-row text-white text-3xl md:space-y-0 xl:space-y-0 space-x-5 md:space-x-0 xl:space-x-5 items-center'>
+          <div className='flex flex-row text-white text-3xl space-x-5 items-center'>
             <a href="https://www.facebook.com/cuscocorlad" className="hover:text-[#a67102] transition duration-300" ><CiFacebook size={30} /></a>
             <a href="https://www.tiktok.com/@corladcusco" className="hover:text-[#a67102] transition duration-300" ><FaTiktok size={25} /></a>
           </div>
