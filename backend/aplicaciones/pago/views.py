@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from django.utils import timezone
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.db.models.functions import Coalesce
 from django.db.models import Sum, Count, Max, DecimalField
@@ -8,7 +9,7 @@ from functions.paginations import CustomPagination
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django_filters.rest_framework import DjangoFilterBackend
-from .serializers import PagoSerializer
+from .serializers import PagoSerializer, EstadoCuentaSerializer
 from .permissions import PagoPermissions
 from .models import Pago
 from .filters import PagoFilter
@@ -60,10 +61,12 @@ class PagoViewSet(viewsets.ViewSet):
             return Response({'detail': f'Error al actualizar: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
         
     def get_queryset(self):
-        try:
-            return self.queryset
-        except Exception as e:
-            return Response({'detail': f'Error al obtener el queryset: {str(e)}'}, status=status.HTTP_404_NOT_FOUND)
+        queryset = Pago.objects.all()
+        fecha_pago = self.request.query_params.get('fecha_pago', None)
+        if fecha_pago:
+            date = timezone.datetime.strptime(fecha_pago, "%Y-%m-%d").date()
+            queryset = queryset.filter(fecha_pago__date=date)
+        return queryset
     
     def paginate_queryset(self, queryset):
         paginator = self.pagination_class()
@@ -162,56 +165,17 @@ class PagoViewSet(viewsets.ViewSet):
             return instance
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-class EstadoCuentaViewSet(viewsets.ViewSet):
-    queryset = Colegiado.objects.all()
-    serializer_class = PagoSerializer
-    permission_classes = [IsAuthenticated, PagoPermissions]
+    
+
+class EstadoCuentaViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Colegiado.objects.annotate(
+        monto_acumulado=Sum('pago__monto_total')
+    ).order_by('apellido_paterno', 'apellido_materno')
+    serializer_class = EstadoCuentaSerializer
+    pagination_class = CustomPagination
+    permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = PagoFilter
-
-    allow_query_params = {
-        'apellido_paterno', 'dni_colegiado',
-        'numero_colegiatura', 'metodo_pago',
-        'fecha_pago', 'page', 'page_size'
-    }
-
-    def filter_queryset(self, queryset):
-        filterset = self.filterset_class(self.request.query_params, queryset=queryset)
-        return filterset.qs
 
     def get_queryset(self):
-        return Colegiado.objects.all()
-
-    def list(self, request, *args, **kwargs):
-        for param in request.query_params:
-            if param not in self.allow_query_params:
-                return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_400_BAD_REQUEST)
-
-        queryset = self.filter_queryset(self.get_queryset())
-
-        queryset = queryset.annotate(
-            total_pagado=Coalesce(Sum('pago__monto_total'), 0, output_field=DecimalField()),
-            ultimo_pago=Max('pago__fecha_pago'),
-            cantidad_pagos=Count('pago'),
-            ultimo_mes_pagado=Max('pago__meses_pagados__0')
-        ).values(
-            'id', 'nombre', 'apellido_paterno', 'apellido_materno',
-            'dni_colegiado', 'numero_colegiatura', 'estado_activo',
-            'total_pagado', 'ultimo_pago', 'cantidad_pagos', 'ultimo_mes_pagado'
-        ).order_by('-ultimo_pago', 'apellido_paterno')
-
-        # Paginación manual
-        paginator = get_paginated_response()
-        paginator.page_size = 10
-        page = paginator.paginate_queryset(queryset, request)
-
-        if page is not None:
-            return Response({
-                'count': paginator.page.paginator.count,
-                'next': paginator.get_next_link(),
-                'previous': paginator.get_previous_link(),
-                'results': page
-            })
-
-        return Response(queryset)
+        queryset = super().get_queryset()
+        return queryset.filter(monto_acumulado__isnull=False)

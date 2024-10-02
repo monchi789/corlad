@@ -11,7 +11,7 @@ from .models import Pago
 class PagoSerializer(serializers.ModelSerializer):
     id_colegiado = ColegiadoSerializer(read_only=True)
     id_metodo_pago = MetodoPagoSerializer(read_only=True)
-    fecha_pago = serializers.DateTimeField(format="%Y-%m-%d", read_only=True)
+    fecha_pago = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
     
     # Campos relacionados para crear o actualizar (Primary Key Related)
     id_colegiado_id = serializers.PrimaryKeyRelatedField(
@@ -68,3 +68,11 @@ class PagoSerializer(serializers.ModelSerializer):
         instance.tarifas.set(tarifas)
         instance.save()
         return instance
+
+
+class EstadoCuentaSerializer(serializers.ModelSerializer):
+    monto_acumulado = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+
+    class Meta:
+        model = Colegiado
+        fields = ['nombre', 'apellido_paterno', 'apellido_materno', 'numero_colegiatura', 'monto_acumulado']

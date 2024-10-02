@@ -29,7 +29,7 @@ class Pago(models.Model):
         ('12', 'Diciembre'),
     ]
 
-    fecha_pago = models.DateField(default=timezone.now, editable=False)
+    fecha_pago = models.DateTimeField(default=timezone.now, editable=False)
     numero_operacion = models.CharField(null=True, blank=True, default='', validators=[validar_numero])
     observacion = models.CharField(max_length=255, null=True, blank=True, default='', validators=[validar_espacio])
     id_metodo_pago = models.ForeignKey(MetodoPago, on_delete=models.CASCADE, default=0)
