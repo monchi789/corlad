@@ -1,0 +1,66 @@
+events {
+    worker_connections 1024;
+}
+
+http {
+    server {
+        listen 80;
+        server_name corladcusco.com www.corladcusco.com api.corladcusco.com db.corladcusco.com;
+        
+        location /.well-known/acme-challenge/ {
+            root /var/www/certbot;
+        }
+
+        location / {
+            return 301 https://$host$request_uri;
+        }
+    }
+
+    server {
+        listen 443 ssl;
+        server_name corladcusco.com www.corladcusco.com;
+
+        ssl_certificate /etc/letsencrypt/live/corladcusco.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/corladcusco.com/privkey.pem;
+
+        location / {
+            proxy_pass http://frontend:5173;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+
+    server {
+        listen 443 ssl;
+        server_name api.corladcusco.com;
+
+        ssl_certificate /etc/letsencrypt/live/corladcusco.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/corladcusco.com/privkey.pem;
+
+        location / {
+            proxy_pass http://backend:8000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+
+    server {
+        listen 443 ssl;
+        server_name db.corladcusco.com;
+
+        ssl_certificate /etc/letsencrypt/live/corladcusco.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/corladcusco.com/privkey.pem;
+
+        location / {
+            proxy_pass http://pgadmin:80;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+}

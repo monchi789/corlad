@@ -73,12 +73,14 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx.conf.template:/etc/nginx/nginx.conf.template
+      - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     depends_on:
       - frontend
       - backend
       - pgadmin
+      - certbot
     networks:
       - frontend-network
       - backend-network
@@ -88,9 +90,7 @@ services:
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email ${PGADMIN_DEFAULT_EMAIL} -d corladcusco.com -d www.corladcusco.com -d api.corladcusco.com -d db.corladcusco.com --agree-tos
-    depends_on:
-      - nginx
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email ${PGADMIN_DEFAULT_EMAIL} -d corladcusco.com -d www.corladcusco.com -d api.corladcusco.com -d db.corladcusco.com --agree-tos --non-interactive
 
 networks:
   frontend-network:
