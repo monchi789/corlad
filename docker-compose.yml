@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   db:
     image: postgres:16.2-alpine
@@ -65,22 +63,21 @@ services:
     networks:
       - frontend-network
 
-  nginx:
+  apache:
     build: 
-      context: ./nginx
+      context: ./apache
       dockerfile: Dockerfile
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/nginx.conf.template:/etc/nginx/nginx.conf.template
+      - ./apache/apache.conf:/usr/local/apache2/conf/extra/apache.conf
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     depends_on:
       - frontend
       - backend
       - pgadmin
-      - certbot
     networks:
       - frontend-network
       - backend-network
@@ -91,6 +88,8 @@ services:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     command: certonly --webroot -w /var/www/certbot --force-renewal --email ${PGADMIN_DEFAULT_EMAIL} -d corladcusco.com -d www.corladcusco.com -d api.corladcusco.com -d db.corladcusco.com --agree-tos --non-interactive
+    depends_on:
+      - apache
 
 networks:
   frontend-network:
