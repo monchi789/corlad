@@ -15,5 +15,8 @@ COPY apache.conf /usr/local/apache2/conf/extra/apache.conf
 RUN echo "Include conf/extra/apache.conf" \
     >> /usr/local/apache2/conf/httpd.conf
 
+# Enable mod_rewrite
+RUN sed -i '/LoadModule rewrite_module/s/^#//g' /usr/local/apache2/conf/httpd.conf
+
 EXPOSE 80
 EXPOSE 443
