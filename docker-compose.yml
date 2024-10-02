@@ -63,35 +63,6 @@ services:
     networks:
       - frontend-network
 
-  apache:
-    build: 
-      context: ./apache
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./apache/apache.conf:/usr/local/apache2/conf/httpd.conf
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-      - ./certbot/options-ssl-apache.conf:/etc/letsencrypt/options-ssl-apache.conf
-    depends_on:
-      - frontend
-      - backend
-      - pgadmin
-    networks:
-      - frontend-network
-      - backend-network
-
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email ${PGADMIN_DEFAULT_EMAIL} -d corladcusco.com -d www.corladcusco.com -d api.corladcusco.com -d db.corladcusco.com --agree-tos --non-interactive
-    depends_on:
-      - apache
-
 networks:
   frontend-network:
     driver: bridge
