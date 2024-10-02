@@ -1,18 +1,10 @@
-# Utilizar la imagen oficial de Python para Alpine
-FROM python:3.10-alpine
+FROM python:3.9
 
-# Establecer el directorio de trabajo en el contenedor
 WORKDIR /app
 
-# Instalar herramientas de construcción y dependencias de PostgreSQL
-RUN apk add --no-cache build-base postgresql-dev
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
-# Instalar dependencias de Python
-COPY ./requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
 
-# Copiar el contenido del directorio actual en el contenedor
-COPY . /app
-
-# Comando para migrar la base de datos y luego iniciar el servidor
-CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "server.wsgi:application"]
