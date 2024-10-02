@@ -5,7 +5,7 @@ export interface Colegiado {
   apellido_materno: string;
   celular: string;
   correo: string;
-  estado: boolean;
+  estado_activo: boolean;
   foto_colegiado?: File | string | null; // Mantener como string para los datos
   dni_colegiado: string;
   numero_colegiatura: string;
@@ -24,7 +24,7 @@ export const defaultColegiado: Colegiado = {
   apellido_materno: "",
   celular: "",
   correo: "",
-  estado: false,
+  estado_activo: false,
   foto_colegiado: null,
   dni_colegiado: "",
   numero_colegiatura: "",

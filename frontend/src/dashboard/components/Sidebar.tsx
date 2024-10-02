@@ -9,7 +9,7 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { MdLogout, MdMenu } from "react-icons/md";
 import { PiNewspaperClippingFill } from "react-icons/pi";
 import logo_corlad from "../../assets/dashboard/corlad_logo_blanco.png";
-import { RiPriceTag3Fill } from "react-icons/ri";
+import { RiDiscountPercentFill, RiPriceTag3Fill } from "react-icons/ri";
 
 
 interface MenuItemProps {
@@ -44,7 +44,7 @@ export function Sidebar() {
       >
         <MdMenu size={24} />
       </button>
-      <div className={`flex flex-col w-3/4 md:w-2/4 lg:w-1/4 xl:w-1/4 fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} xl:relative xl:translate-x-0 transition duration-200 ease-in-out min-h-svh bg-[#007336] shadow-black shadow-lg overflow-y-auto z-40`}>
+      <div className={`flex flex-col w-3/4 md:w-2/4 lg:w-1/4 xl:w-1/4 fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} xl:relative xl:translate-x-0 transition duration-200 ease-in-out h-svh bg-[#007336] shadow-black shadow-lg overflow-y-auto z-40`}>
         <div className="flex-grow overflow-y-auto">
           <div className="flex flex-col w-full font-nunito text-xl">
             <div className="flex flex-row justify-start space-x-5 mx-7 my-5">
@@ -59,37 +59,8 @@ export function Sidebar() {
                 <>
                   <MenuItem to="/admin/colegiado" icon={<FaUsers size={25} />} text="Colegiados" />
                   <MenuItem to="/admin/capitulos" icon={<IoSchoolSharp size={25} />} text="Capítulos" />
-
-                  <li className="flex flex-col text-[#ECF6E8] hover:text-[#F1E9D0] transition duration-300 mx-5 mb-2">
-                    <div
-                      className="flex flex-row justify-between space-x-4 rounded-lg p-3 cursor-pointer hover:bg-[#CCB23A]"
-                      onClick={() => toggleDropdown("pagos")}
-                    >
-                      <div className="flex flex-row space-x-4">
-                        <FaMoneyCheck size={25} />
-                        <span className="my-auto">Pagos</span>
-                      </div>
-                      {dropdownStates.pagos ? (
-                        <IoIosArrowUp className="my-auto" size={25} />
-                      ) : (
-                        <IoIosArrowDown className="my-auto" size={25} />
-                      )}
-                    </div>
-                    <div className={`overflow-hidden transition-all duration-300 ease-in-out ${dropdownStates.pagos ? 'max-h-screen' : 'max-h-0'}`}>
-                      <ul className="flex flex-col text-xl space-y-2 pl-12 pt-2">
-                        <Link to={"/admin/pagos"}>
-                          <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] rounded-lg transition duration-300 p-2">
-                            <span className="my-auto">Administrar pagos</span>
-                          </li>
-                        </Link>
-                        <Link to={"/admin/pagos/estado-cuenta"}>
-                          <li className="flex flex-row text-[#ECF6E8] hover:bg-[#CCB23A] hover:text-[#F1E9D0] rounded-lg transition duration-300 p-2">
-                            <span className="my-auto">Estados de cuenta</span>
-                          </li>
-                        </Link>
-                      </ul>
-                    </div>
-                  </li>
+                  <MenuItem to="/admin/pagos" icon={<FaMoneyCheck size={25} />} text="Pagos" />
+                  <MenuItem to="/admin/pagos/estado-cuenta" icon={<RiDiscountPercentFill size={25} />} text="Estados de cuenta" />
                   <MenuItem to="/admin/tarifas" icon={<RiPriceTag3Fill size={25} />} text="Tarifas" />
                 </>
               )}
