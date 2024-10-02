@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { Avatar } from "primereact/avatar";
-import { TableCards } from "../../shared/TableCards";
+import { TableCards } from "../../components/TableCards";
 import { Pago } from "../../../interfaces/model/Pago";
 
 interface PagosProps {
@@ -13,7 +13,6 @@ export function PagosTable({ pagosList }: PagosProps) {
     { header: "Apellidos y nombres", accessor: "fullName", className: 'w-2/6 text-start' },
     { header: "DNI", accessor: "dni", className: 'w-1/6 text-start' },
     { header: "Metodo de pago", accessor: "numero_colegiatura", className: 'w-1/6 text-start' },
-    { header: "Tipo de pago", accessor: "celular", className: 'w-1/6 text-start' },
     { header: "Cantidad pagada", accessor: "estado", className: 'w-1/6 text-start' },
     { header: "Descripción", accessor: "email", className: 'w-1/6 text-start' },
     { header: "Acciones", accessor: "actions", className: 'w-1/6 text-center' }
@@ -30,8 +29,7 @@ export function PagosTable({ pagosList }: PagosProps) {
       </div>
       <div className="w-1/6 my-auto">{pago.id_colegiado.dni_colegiado}</div>
       <div className="w-1/6 my-auto">{pago.id_metodo_pago.nombre_metodo_pago}</div>
-      <div className="w-1/6 my-auto">{pago.id_tipo_pago.nombre_tipo_pago}</div>
-      <div className="w-1/6 my-auto">{pago.monto_pago}</div>
+      <div className="w-1/6 my-auto">S./.{pago.monto_total}</div>
       <div className="w-1/6 my-auto">{pago.observacion}</div>
       <div className="flex flex-row w-1/6 text-[#8F650C] justify-center my-auto">
         <button><Link to={`/admin/pagos/editar-pago/${pago.id}`}><FaEdit size={"25px"} /></Link></button>

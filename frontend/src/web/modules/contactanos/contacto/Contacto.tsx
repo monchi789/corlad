@@ -84,7 +84,7 @@ export function Contacto() {
               name="nombre"
               value={formData.nombre}
               onChange={handleChange}
-              className="w-full p-2 rounded focus:outline-none"
+              className="w-full p-2 rounded focus:outline-green-800"
               required
             />
           </div>
@@ -96,7 +96,7 @@ export function Contacto() {
               name="correo"
               value={formData.correo}
               onChange={handleChange}
-              className="w-full p-2 rounded focus:outline-none"
+              className="w-full focus:outline-green-800 rounded p-2 "
               required
             />
           </div>
@@ -108,7 +108,7 @@ export function Contacto() {
               name="celular"
               value={formData.celular}
               onChange={handleChange}
-              className="w-full p-2 rounded focus:outline-none"
+              className="w-full focus:outline-green-800 rounded p-2"
               required
             />
           </div>
@@ -120,7 +120,7 @@ export function Contacto() {
               rows={4}
               value={formData.mensaje}
               onChange={handleChange}
-              className="w-full p-2 rounded resize-none focus:outline-none"
+              className="w-full resize-none focus:outline-green-800 rounded p-2"
               required
             />
           </div>

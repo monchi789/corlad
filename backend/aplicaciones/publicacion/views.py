@@ -6,165 +6,11 @@ from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions, 
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-
-from .models import Categoria, Publicacion
-from .filters import CategoriaFilter, PublicacionFilter
-from .serializers import CategoriaSerializer, PublicacionSerializer
+from .models import Publicacion
+from .filters import PublicacionFilter
+from .serializers import PublicacionSerializer
 from functions.paginations import CustomPagination
-from .permissions import CategoriaPermissions, PublicacionPermissions
-
-# ViewSet para el modelo Categoria
-class CategoriaAPIView(viewsets.ViewSet):
-    queryset = Categoria.objects.all()
-    serializer_class = CategoriaSerializer  
-
-    # Aplicamos los filtros
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = CategoriaFilter
-
-    # Aplicamos los permisos
-    permission_classes = [AllowAny]
-
-    # Parámetros permitidos para consultas
-    allow_query_params = {
-        'nombre_categoria'
-    }
-
-    # Métodos
-    def filter_queryset(self, queryset):
-        filterset = self.filterset_class(self.request.query_params, queryset=queryset)
-        return filterset.qs
-    
-    def get_queryset(self):
-        return Categoria.objects.all()
-    
-    # Método GET
-    @swagger_auto_schema(
-        operation_id='Listar Categorias',
-        responses={200: openapi.Response(description='Lista de Categorias')}
-    )
-    def list(self, request, *args, **kwargs):
-        """Lista todas las categorías"""
-        # Validar los parámetros permitidos
-        for param in request.query_params:
-            if param not in self.allow_query_params:
-                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
-
-        queryset = self.filter_queryset(self.get_queryset())
-        serializer =  self.serializer_class(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-class CategoriaViewSet(viewsets.ViewSet):
-    queryset = Categoria.objects.all()
-    serializer_class = CategoriaSerializer
-
-    # JWT
-    permission_classes = [IsAuthenticated, DjangoModelPermissions, CategoriaPermissions]
-    authentication_classes = [JWTAuthentication]
-
-    # Aplicamos los filtros
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = CategoriaFilter
-
-    allow_query_params = {
-        'nombre_categoria'
-    }
-
-    # Métodos
-    def filter_queryset(self, queryset):
-        filterset = self.filterset_class(self.request.query_params, queryset=queryset)
-        return filterset.qs
-
-    def get_object(self):
-        pk = self.kwargs.get('pk')
-        try:
-            return Categoria.objects.get(pk=pk)
-        except Categoria.DoesNotExist:
-            return Response({'detail': 'No se encontro el ID'}, status=status.HTTP_404_NOT_FOUND)
-
-    def get_serializer(self, *args, **kwargs):
-        return self.serializer_class(*args, **kwargs)
-    
-    def get_queryset(self):
-        return Categoria.objects.all()
-
-    # Métodos GET, UPDATE, CREATE y DELETE
-    # Método GET
-    @swagger_auto_schema(
-        operation_id='Listar Categorias',
-        responses={200: openapi.Response(description='Lista de Categorias')}
-    )
-    def list(self, request, *args, **kwargs):
-        """Lista todas las categorías"""
-        # Validar los parámetros permitidos
-        for param in request.query_params:
-            if param not in self.allow_query_params:
-                return Response({'detail': 'Parametro no permitido'}, status=status.HTTP_404_NOT_FOUND)
-
-        queryset = self.filter_queryset(self.get_queryset())
-        serializer =  self.serializer_class(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # Método GET por ID
-    @swagger_auto_schema(
-        operation_id='Obtener una Categoria',
-        responses={200: openapi.Response(description='Detalle de una Categoria')}
-    )
-    def retrieve(self, request, pk=None):
-        """Obtiene una categoría por su ID"""
-        try:
-            instance = self.get_queryset().get(pk=pk)
-        except Categoria.DoesNotExist:
-            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = self.get_serializer(instance)
-        
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # Método CREATE
-    @swagger_auto_schema(
-        operation_id='Crear una Categoria',
-        request_body=CategoriaSerializer,
-        responses={201: openapi.Response(description='Categoria creada')}
-    )
-    def create(self, request):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    # Método UPDATE
-    @swagger_auto_schema(
-        operation_id='Actualizar una Categoria',
-        request_body=CategoriaSerializer,
-        responses={200: openapi.Response(description='Categoria actualizada')}
-    )
-    def update(self, request, pk=None):
-        try:
-            instance = self.get_queryset().get(pk=pk)
-        except Categoria.DoesNotExist:
-            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
-        
-        serializer = self.get_serializer(instance, data=request.data, partial=False)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    # Método DELETE
-    @swagger_auto_schema(
-        operation_id='Eliminar una Categoria',
-        responses={204: openapi.Response(description='Categoria eliminada')}
-    )
-    def destroy(self, request, pk=None):
-        try:
-            instance = self.get_queryset().get(pk=pk)
-            instance.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except Categoria.DoesNotExist:
-            return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+from .permissions import PublicacionPermissions
 
 
 class PublicacionAPIView(viewsets.ViewSet):
@@ -242,7 +88,7 @@ class PublicacionAPIView(viewsets.ViewSet):
         serializer = self.get_serializer(instance)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
-
+    
 
 # ViewSet para el modelo Publicacion
 class PublicacionViewSet(viewsets.ViewSet):
@@ -252,6 +98,7 @@ class PublicacionViewSet(viewsets.ViewSet):
     
     # JWT
     permission_classes = [IsAuthenticated, DjangoModelPermissions, PublicacionPermissions]
+    authentication_classes = [JWTAuthentication]
 
     # Aplicamos los filtros
     filter_backends = [DjangoFilterBackend]
@@ -388,3 +235,70 @@ class PublicacionViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Publicacion.DoesNotExist:
             return Response({'detail': 'ID no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+# Vista que lista con filtro de Bolsa de Trabajo
+class BolsaTrabajo(viewsets.ViewSet):
+    queryset = Publicacion.objects.all()
+    serializer_class = PublicacionSerializer
+    pagination_class = CustomPagination
+
+    permission_classes = [AllowAny]
+   
+
+
+    # Aplicamos los filtros
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = PublicacionFilter
+
+
+    # Parámetros permitidos para consultas
+    allow_query_params = {
+        'titulo', 'fecha', 'categoria', 'page', 'page_size'
+    }
+
+    # Métodos
+    def filter_queryset(self, queryset):
+        filterset = self.filterset_class(self.request.query_params, queryset=queryset)
+        return filterset.qs
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        try:
+            return Publicacion.objects.get(pk=pk)
+        except Publicacion.DoesNotExist:
+            return Response({'detail': 'No se encontro el ID'}, status=status.HTTP_404_NOT_FOUND)
+
+    def get_serializer(self, *args, **kwargs):
+        return self.serializer_class(*args, **kwargs)
+    
+    def get_queryset(self):
+        return Publicacion.objects.all()
+    
+    def paginate_queryset(self, queryset):
+        paginator = self.pagination_class()
+        return paginator.paginate_queryset(queryset, self.request, view=self)
+
+    def get_paginated_response(self, data):
+        paginator = self.pagination_class()
+        return paginator.get_paginated_response(data)
+
+    def list(self, request, *args, **kwargs):
+        for param in request.query_params:
+            if param not in self.allow_query_params:
+                return Response({'detail': 'Parámetro no permitido'}, status=status.HTTP_400_BAD_REQUEST)
+            
+        queryset = self.filter_queryset(self.get_queryset())
+
+        # Filtro para que solo liste las publicaciones con el nombre "Bolsa Trabajo"
+        queryset = queryset.filter(id_categoria__nombre_categoria="Bolsa Trabajo")
+
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(queryset, request, self)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+        
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)

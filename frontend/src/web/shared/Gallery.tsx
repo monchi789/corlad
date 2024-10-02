@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import banner_corlad from '../../assets/web/corlad_banner.jpg';
+import banner_corlad from '../../assets/web/machupicchu.jpg';
 import { getSlider } from '../../api/slider.api';
 import ImageGallery from 'react-image-gallery';
 import { Slider } from '../../interfaces/model/Slider';
@@ -13,7 +13,7 @@ interface GalleryItem {
 export function Gallery() {
   const [data, setData] = useState<Slider[]>([]);
   const location = useLocation();
-  const currentPath = location.pathname; 
+  const currentPath = location.pathname;
 
   useEffect(() => {
     async function cargarSliders() {
@@ -33,12 +33,13 @@ export function Gallery() {
 
   const SliderActivo = data.filter(item => item.estado_slider);
 
+  // Filtrar las imágenes que no son null o vacías
   let dataSlider: GalleryItem[] = SliderActivo.flatMap(element => [
-    { original: import.meta.env.VITE_API_URL_ALTER + element.imagen_1 },
-    { original: import.meta.env.VITE_API_URL_ALTER + element.imagen_2 },
-    { original: import.meta.env.VITE_API_URL_ALTER + element.imagen_3 },
-    { original: import.meta.env.VITE_API_URL_ALTER + element.imagen_4 }
-  ]);
+    element.imagen_1 ? { original: import.meta.env.VITE_API_URL_ALTER + element.imagen_1 } : null,
+    element.imagen_2 ? { original: import.meta.env.VITE_API_URL_ALTER + element.imagen_2 } : null,
+    element.imagen_3 ? { original: import.meta.env.VITE_API_URL_ALTER + element.imagen_3 } : null,
+    element.imagen_4 ? { original: import.meta.env.VITE_API_URL_ALTER + element.imagen_4 } : null
+  ]).filter(item => item !== null) as GalleryItem[];
 
   const renderImageInicio = (item: GalleryItem) => {
     return (

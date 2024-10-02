@@ -1,361 +1,407 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { SessionHeader } from "../../shared/SessionHeader";
-import { Sidebar } from "../../shared/Sidebar";
-import cash_illustration from "../../../assets/dashboard/money_illustration.png"
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { getColegiadoByFilters } from "../../../api/colegiado.api";
 import { Colegiado, defaultColegiado } from "../../../interfaces/model/Colegiado";
-import { defaultPago, MetodoPago, Pago, TipoPago } from "../../../interfaces/model/Pago";
-import { createPago, getMetodoPagoByFilter, getTipoPagoByFilter } from "../../../api/pagos.api";
+import { defaultPago, MetodoPago, Pago } from "../../../interfaces/model/Pago";
+import { createPago, getMetodoPagoByFilter } from "../../../api/pagos.api";
 import toast, { Toaster } from "react-hot-toast";
+import { Tarifa } from "../../../interfaces/model/Tarifa";
+import { getAllTarifas } from "../../../api/tarifa.api";
+import AsyncSelect from "react-select/async"
+import makeAnimated from 'react-select/animated';
+import SimpleTable from "../../components/ui/SimpleTable";
+import { ColumnDef } from "@tanstack/react-table";
+import { MultiValue } from 'react-select';
+import { FaArrowCircleLeft } from "react-icons/fa";
+import { SubmitHandler, useForm } from "react-hook-form"
+import ErrorSpan from "../../components/ui/ErrorSpan";
+import BuscarColegiadoPagos from "./BuscarColegiadoPagos";
+import { Checkbox, FormGroup } from "@mui/material";
+import Spinner from "../../components/ui/Spinner";
+
+const animatedComponents = makeAnimated();
+
+interface Option {
+  value: Tarifa;
+  label: string;
+}
+
+interface FormData {
+  numero_operacion: string;
+  observacion: string;
+  monto_pago_decimal: number;
+}
 
 export default function AgregarPagos() {
   const navigate = useNavigate();
 
-  const [dniColegiado, setDniColegiado] = useState('');
-  const [numeroColegiatura, setNumeroColegiatura] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
+
   const [errorColegiado, setErrorColegiado] = useState(false);
-  const [selectedColegiado, setSelectedColegiado] = useState<string>(''); // Estado para mostrar el colegiado
-  const [selectedTipoPago, setSelectedTipoPago] = useState('');
+  const [colegiado, setColegiado] = useState<Colegiado | null>(null);
+  const [allTarifasList, setAllTarifaList] = useState<Tarifa[]>([]);
+  const [selectedTarifaList, setSelectedTarifaList] = useState<Tarifa[]>([]);
   const [selectedMetodoPago, setSelectedMetodoPago] = useState('');
 
+  const [isMensualidad, setIsMensualidad] = useState(false);
+  const [selectedMonths, setSelectedMonths] = useState<string[]>([]);
+
   const [colegiadoData, setColegiadoData] = useState<Colegiado>(defaultColegiado) // Estado para guardar el colegiado buscado
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [pagoData, setPagoData] = useState<Pago & { monto_pago_entero: string, monto_pago_decimal: string }>({
-    ...defaultPago,
-    monto_pago_entero: '',
-    monto_pago_decimal: '00'
-  });
+  useEffect(() => {
+    // Obtener el mes actual (0-11) y calcular el mes posterior (1-12)
+    const currentMonth = new Date().getMonth(); // Devuelve 0 para enero, 11 para diciembre
+    const nextMonth = (currentMonth + 1) % 12; // Obtiene el mes posterior (0-11)
 
-  const handleChangeTipoPago = (event: ChangeEvent<HTMLInputElement>) => {
-    setSelectedTipoPago(event.target.value);
+    // Actualiza el estado para seleccionar el mes posterior como default checked
+    setSelectedMonths([months[nextMonth].value]);
+  }, []);
+
+  // Calcular el monto total
+  const totalMonto = selectedTarifaList.reduce((acc, tarifa) => acc + Number(tarifa.precio_tarifa), 0);
+
+  const cargarTarifas = async () => {
+    try {
+      const res = await getAllTarifas();
+      const tarifas: Tarifa[] = res.data;
+      setAllTarifaList(tarifas)
+
+      // Transforma la data de tarifa como un select
+      return tarifas.map(tarifa => ({
+        value: tarifa,
+        label: `${tarifa.nombre_tarifa} - S/.${tarifa.precio_tarifa}`,
+      }));
+    } catch (error) {
+      return [];
+    }
   };
 
   const handleChangeMetodoPago = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedMetodoPago(event.target.value);
   };
 
-  const handleSearch = async () => {
-    if (dniColegiado.trim() === '' && numeroColegiatura.trim() === '') {
-      setSelectedColegiado('Por favor, llene algún campo.');
-      return; // Detiene la ejecución si los campos están vacios
-    }
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    setIsLoading(true)
 
-    setLoading(true);
+    const resMetodoPago = await getMetodoPagoByFilter(selectedMetodoPago)
 
-    try {
-      const res = await getColegiadoByFilters(numeroColegiatura, dniColegiado);
+    const metodoPago: MetodoPago = resMetodoPago.data[0]
 
-      if (res.data.results.length > 0) {
-        const colegiado: Colegiado = res.data.results[0];
-        setSelectedColegiado(`${colegiado.numero_colegiatura} - ${colegiado.apellido_paterno} - ${colegiado.apellido_materno} - ${colegiado.nombre} - ${colegiado.dni_colegiado}`); // Ajusta esto según la estructura de tu dato
-        setColegiadoData(colegiado)
-        setErrorColegiado(false)
-      } else {
-        setSelectedColegiado('No se encontró ningún colegiado con esos parámetros');
-        setErrorColegiado(false)
+    const tarifasIdList = selectedTarifaList.map((tarifa) => tarifa.id);
+
+    if (isMensualidad) {
+      const pago: Pago = {
+        id: 0,
+        numero_operacion: data.numero_operacion,
+        observacion: data.observacion,
+        id_colegiado: colegiado as Colegiado,
+        id_metodo_pago: metodoPago,
+        tarifas: tarifasIdList,
+        meses_pagados: selectedMonths
+      };
+      try {
+        await createPago(pago);
+        toast.success('Pago registrado exitosamente');
+        navigate("/admin/pagos")
+      } catch (error) {
+        toast.error("Error al registrar el pago");
+      } finally {
+        setIsLoading(false)
       }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Maneja el cambio en los campos del formulario de pago
-  const handleChangePago = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-
-    if (name === 'monto_pago_entero' || name === 'monto_pago_decimal') {
-      const entero = name === 'monto_pago_entero' ? value : pagoData.monto_pago_entero;
-      const decimal = name === 'monto_pago_decimal' ? value : pagoData.monto_pago_decimal;
-      const monto_pago = parseFloat(`${entero}.${decimal}`) || 0;
-
-      setPagoData(prevState => ({
-        ...prevState,
-        [name]: value,
-        monto_pago
-      }));
-    } else if (name === 'observacion') {
-      setPagoData(prevState => ({
-        ...prevState,
-        observacion: value
-      }));
     } else {
-      setPagoData(prevState => ({
-        ...prevState,
-        [name]: value
-      }));
-    }
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const resTipoPago = await getTipoPagoByFilter(selectedTipoPago)
-      const resMetodoPago = await getMetodoPagoByFilter(selectedMetodoPago)
-
-      const tipoPago: TipoPago = resTipoPago.data[0]
-      const metodoPago: MetodoPago = resMetodoPago.data[0]
-
-      pagoData.id_colegiado = colegiadoData
-      pagoData.id_tipo_pago = tipoPago
-      pagoData.id_metodo_pago = metodoPago
-
-      await createPago(pagoData);
-
-      toast.success('Pago registrado exitosamente');
-      navigate("/admin/pagos")
-    } catch (error: any) {
-      if (error.response) {
-        // Si el servidor respondió con un código de estado que no es 2xx
-        const serverErrors = error.response.data;
-        console.log(error)
-        // Extrae los errores específicos y muéstralos
-        if (serverErrors.id_colegiado_id) {
-          setErrorColegiado(true)
-        }
-        if (serverErrors.meses) {
-          toast.error(`Error en el número de meses: ${serverErrors.meses[0]}`);
-        }
-        else {
-          // Muestra otros errores generales
-          toast.error(`Error del servidor: ${serverErrors.message || 'Error desconocido'}`);
-        }
-
-      } else if (error.request) {
-        // Si no se recibió respuesta
-        toast.error('No se pudo conectar con el servidor. Verifique su conexión.');
-      } else {
-        // Otros errores
-        toast.error(`Error al crear colegiado: ${error.message}`);
+      const pago: Pago = {
+        id: 0,
+        numero_operacion: data.numero_operacion,
+        observacion: data.observacion,
+        id_colegiado: colegiado as Colegiado,
+        id_metodo_pago: metodoPago,
+        tarifas: tarifasIdList
+      };
+      console.log(pago)
+      try {
+        await createPago(pago);
+        toast.success('Pago registrado exitosamente');
+        navigate("/admin/pagos")
+      } catch (error) {
+        toast.error("Error al registrar el pago");
+      } finally {
+        setIsLoading(false)
       }
     }
 
   }
 
+  const customStyles = {
+    control: (provided: any, state: any) => ({
+      ...provided,
+      backgroundColor: '#ECF6E8',
+      borderRadius: '0.50rem',
+      border: 'none',
+      boxShadow: state.isFocused ? '0 0 0 2px #A3BFA1' : 'none',
+      padding: '2px 8px',
+      '&:hover': {
+        borderColor: 'none',
+      },
+    }),
+    option: (provided: any, state: any) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? '#D8E9D3' : '#ECF6E8',
+      color: '#3A3A3A',
+      padding: 10,
+    }),
+    menu: (provided: any) => ({
+      ...provided,
+      borderRadius: '0.50rem',
+      backgroundColor: '#ECF6E8',
+    }),
+    singleValue: (provided: any) => ({
+      ...provided,
+      color: '#3A3A3A',
+    }),
+  };
+
+  type CustomColumnDef<T> = ColumnDef<T> & {
+    isMoney?: boolean;
+  };
+
+  const columns: CustomColumnDef<Tarifa>[] = [
+    {
+      header: 'Denominación',
+      accessorKey: 'nombre_tarifa',
+      cell: info => info.getValue()
+    },
+    {
+      header: 'Monto S/.',
+      accessorKey: 'precio_tarifa',
+      isMoney: true,
+      cell: info => {
+        const value = info.getValue();
+        return typeof value === 'number' ? `S/. ${value.toFixed(2)}` : value;
+      }
+    }
+  ];
+
+  const handleSelectChange = (
+    newValue: MultiValue<Option>,
+  ) => {
+    const selectedTarifas = newValue.map(option => option.value);
+    setSelectedTarifaList(prevList => {
+      const mensualidadTarifa = prevList.find(t => t.nombre_tarifa.startsWith('Mensualidad ('));
+      return mensualidadTarifa ? [...selectedTarifas, mensualidadTarifa] : selectedTarifas;
+    });
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsMensualidad(event.target.checked); // Actualiza el estado con el valor del checkbox
+  };
+
+  const handleChangeMeses = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    // Agrega o elimina el mes de la lista de meses seleccionados
+    setSelectedMonths((prev) => {
+      if (prev.includes(value)) {
+        return prev.filter((month) => month !== value); // Eliminar el mes
+      } else {
+        return [...prev, value]; // Agregar el mes
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (isMensualidad) {
+      const tarifaMensualidad = allTarifasList.find(tarifa => tarifa.nombre_tarifa === 'Mensualidad');
+      if (tarifaMensualidad) {
+        const cantidadMeses = selectedMonths.length;
+        const nuevaTarifa = {
+          ...tarifaMensualidad,
+          nombre_tarifa: `Mensualidad (${cantidadMeses} ${cantidadMeses === 1 ? 'mes' : 'meses'})`,
+          precio_tarifa: Number(tarifaMensualidad.precio_tarifa) * cantidadMeses
+        };
+
+        setSelectedTarifaList(prevList => {
+          const filteredList = prevList.filter(t => t.nombre_tarifa !== 'Mensualidad' && !t.nombre_tarifa.startsWith('Mensualidad ('));
+          return cantidadMeses > 0 ? [...filteredList, nuevaTarifa] : filteredList;
+        });
+      }
+    } else {
+      setSelectedTarifaList(prevList => prevList.filter(t => t.nombre_tarifa !== 'Mensualidad' && !t.nombre_tarifa.startsWith('Mensualidad (')));
+    }
+  }, [isMensualidad, selectedMonths, allTarifasList]);
+  // Agrega selectedMonths y allTarifasList como dependencias
+
+  // Array de meses con sus nombres y valores correspondientes
+  const months = [
+    { label: 'Enero', value: '01' },
+    { label: 'Febrero', value: '02' },
+    { label: 'Marzo', value: '03' },
+    { label: 'Abril', value: '04' },
+    { label: 'Mayo', value: '05' },
+    { label: 'Junio', value: '06' },
+    { label: 'Julio', value: '07' },
+    { label: 'Agosto', value: '08' },
+    { label: 'Septiembre', value: '09' },
+    { label: 'Octubre', value: '10' },
+    { label: 'Noviembre', value: '11' },
+    { label: 'Diciembre', value: '12' },
+  ];
+
   return (
-    <div className="flex flex-row w-full">
-      <Sidebar />
-      <div className="w-full xl:w-4/5 mx-3 p-3">
-        <SessionHeader />
-        <form className="flex flex-col w-full mt-10" onSubmit={handleSubmit}>
-          <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold mb-5">Nuevo pago</h4>
-          <div className="flex flex-row mb-5">
-            <div className="flex flex-col w-full lg:w-2/3">
-              <div className="bg-[#C9D9C6] text-[#00330A] rounded-2xl px-5 py-5 mb-5">
-                <div className="flex flex-col space-y-3">
-                  <span className="text-xl font-nunito font-extrabold">Buscar colegiado:</span>
-                  <div className="flex flex-col">
-                    <div className="flex flex-row font-nunito font-bold space-x-7 mb-5">
-                      <input
-                        type="number"
-                        id="dni_colegiado"
-                        name="dni_colegiado"
-                        className="w-full bg-[#ECF6E8] focus:outline-none shadow-[#B8B195] shadow-md rounded-xl p-1 px-2"
-                        placeholder="N° Dni"
-                        value={dniColegiado}
-                        onChange={(e) => setDniColegiado(e.target.value)}
-                      />
-                      <span className="my-auto">y/o</span>
-                      <input
-                        type="number"
-                        id="numero_colegiatura"
-                        name="numero_colegiatura"
-                        className="w-full bg-[#ECF6E8] focus:outline-none shadow-[#B8B195] shadow-md rounded-xl p-1 px-2"
-                        placeholder="N° colegiatura"
-                        value={numeroColegiatura}
-                        onChange={(e) => setNumeroColegiatura(e.target.value)}
-                      />
-                      <button
-                        type="button"
-                        onClick={handleSearch}
-                        className="flex flex-row text-md text-white font-nunito font-semibold shadow-md rounded-2xl bg-[#007336] hover:bg-[#00330A] transition duration-300 space-x-4 px-8 py-2"                    >
-                        <span className="my-auto">Buscar</span>
-                      </button>
-                    </div>
-                    {loading && <p>Cargando...</p>}
-                    <input
-                      value={loading ? "" : selectedColegiado}
-                      className="bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-bold shadow-[#B8B195] shadow-md rounded-lg mb-3 p-2"
-                      placeholder="Colegiado que realizó el pago"
-                      disabled
-                    />
-                    {errorColegiado && <p className="text-red-500 text-center font-nunito font-bold">Por favor buscar al colegiado que ingresó el pago</p>}
-                  </div>
-                </div>
+    <>
+      <div className="flex flex-col space-y-5 my-5">
+        <div className="flex flex-col md:flex-row justify-between space-y-5 md:space-y-0">
+          <div className="flex flex-row">
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center text-gray-700 hover:text-gray-900 p-2"
+            >
+              <FaArrowCircleLeft className="mr-2" size={"30px"} />
+            </button>
+            <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold my-auto">Nuevo pago</h4>
+          </div>
+        </div>
+        <form className="flex flex-col space-y-5 my-5" onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex flex-row space-x-10">
+            <div className="flex flex-col w-full lg:w-2/4">
+              <div className="flex flex-row justify-start space-x-10 mb-3 px-5">
+                <span className="font-nunito font-bold my-auto"> ¿Pago de mensualidad de un colegiado?</span>
+                <Checkbox
+                  checked={isMensualidad}
+                  onChange={handleChange}
+                  sx={{ color: '#00330A', '&.Mui-checked': { color: '#00330A' } }}
+                />
               </div>
-              <div className="text-[#00330A] rounded-2xl px-5 py-2">
-                <div className="flex flex-row w-full space-x-10 mb-5">
-                  <div className="w-1/2 space-y-2">
+              <BuscarColegiadoPagos
+                onColegiadoFound={(foundColegiado) => setColegiado(foundColegiado)}
+              />
+              <div className="text-default-green px-5 py-2">
+                <div className="flex flex-row w-full space-x-10">
+                  <div className="w-full space-y-2">
                     <label htmlFor="numero_operacion" className="w-full text-xl font-nunito font-extrabold block my-auto">Numero de operación:</label>
                     <input
                       type="number"
-                      id="numero_operacion"
-                      name="numero_operacion"
-                      value={pagoData.numero_operacion}
-                      onChange={handleChangePago}
-                      className="w-full bg-[#ECF6E8] focus:outline-none shadow-[#B8B195] shadow-md rounded-xl py-2 px-3"
+                      className="w-full bg-custom-light-turquoise focus:outline-none shadow-custom-input rounded-lg py-2 px-3"
                       placeholder="0000"
                       min={0}
-                    />
-                  </div>
-                  <div className="w-1/2 space-y-2">
-                    <label htmlFor="meses" className="w-full text-xl font-nunito font-extrabold block my-auto">Cantidad de meses:</label>
-                    <input
-                      type="number"
-                      id="meses"
-                      name="meses"
-                      value={pagoData.meses}
-                      onChange={handleChangePago}
-                      className="w-full bg-[#ECF6E8] focus:outline-none shadow-[#B8B195] shadow-md rounded-xl py-2 px-3"
-                      placeholder="0000"
-                      min={0}
-                      max={999}
+                      {...register("numero_operacion")}
                     />
                   </div>
                 </div>
-                <div className="flex flex-col space-y-2">
-                  <span className="text-xl font-nunito font-extrabold">Tipo de pago:</span>
-                  <div className="flex flex-row w-full justify-between">
-                    <RadioGroup
-                      row
-                      aria-labelledby="pagos-row-radio-buttons-group"
-                      name="row-radio-buttons-group"
-                      className="w-full justify-between"
-                      value={selectedTipoPago}
-                      onChange={handleChangeTipoPago}
-                    >
-                      <FormControlLabel className="w-1/5" value="mensualidad" control={<Radio
-                        sx={{ color: '#5F4102', '&.Mui-checked': { color: '#5F4102' } }}
-                      />} label={<span className="text-[#5F4102] font-semibold">Mensualidad</span>} />
+              </div>
 
-                      <FormControlLabel className="w-1/5" value="matricula" control={<Radio
-                        sx={{ color: '#5F4102', '&.Mui-checked': { color: '#5F4102' } }}
-                      />} label={<span className="text-[#5F4102] font-semibold">Matrícula</span>} />
+              <div className="flex flex-col text-[#00330A] space-y-2 px-5 py-4">
+                <span className="text-xl font-nunito font-extrabold">Método de pago:</span>
+                <div className="flex flex-row w-full justify-between">
+                  <RadioGroup
+                    row
+                    aria-labelledby="pagos-row-radio-buttons-group"
+                    name="row-radio-buttons-group"
+                    className="w-full justify-between"
+                    value={selectedMetodoPago}
+                    onChange={handleChangeMetodoPago}
+                  >
+                    <FormControlLabel className="w-1/5" value="efectivo" control={<Radio
+                      sx={{ color: '#00330A', '&.Mui-checked': { color: '#00330A' } }}
+                    />} label={<span className="text-default-green font-semibold">Efectivo</span>} />
 
-                      <FormControlLabel className="w-1/5" value="multa" control={<Radio
-                        sx={{ color: '#5F4102', '&.Mui-checked': { color: '#5F4102' } }}
-                      />} label={<span className="text-[#5F4102] font-semibold">Multa</span>} />
+                    <FormControlLabel className="w-1/5" value="deposito" control={<Radio
+                      sx={{ color: '#00330A', '&.Mui-checked': { color: '#00330A' } }}
+                    />} label={<span className="text-default-green font-semibold">Depósito</span>} />
 
-                      <FormControlLabel className="w-1/5" value="extraordinario" control={<Radio
-                        sx={{ color: '#5F4102', '&.Mui-checked': { color: '#5F4102' } }}
-                      />} label={<span className="text-[#5F4102] font-semibold">Extraordinario</span>} />
+                    <FormControlLabel className="w-1/5" value="yape" control={<Radio
+                      sx={{ color: '#00330A', '&.Mui-checked': { color: '#00330A' } }}
+                    />} label={<span className="text-default-green font-semibold">Yape</span>} />
 
-                    </RadioGroup>
-                  </div>
+                    <FormControlLabel className="w-1/5" value="plin" control={<Radio
+                      sx={{ color: '#00330A', '&.Mui-checked': { color: '#00330A' } }}
+                    />} label={<span className="text-default-green font-semibold">Plin</span>} />
+
+                  </RadioGroup>
                 </div>
               </div>
-              <div className="text-[#00330A] rounded-2xl px-5 py-4">
-                <div className="flex flex-col space-y-2">
-                  <span className="text-xl font-nunito font-extrabold">Método de pago:</span>
-                  <div className="flex flex-row w-full justify-between">
-                    <RadioGroup
-                      row
-                      aria-labelledby="pagos-row-radio-buttons-group"
-                      name="row-radio-buttons-group"
-                      className="w-full justify-between"
-                      value={selectedMetodoPago}
-                      onChange={handleChangeMetodoPago}
-                    >
-                      <FormControlLabel className="w-1/5" value="efectivo" control={<Radio
-                        sx={{ color: '#5F4102', '&.Mui-checked': { color: '#5F4102' } }}
-                      />} label={<span className="text-[#5F4102] font-semibold">Efectivo</span>} />
 
-                      <FormControlLabel className="w-1/5" value="deposito" control={<Radio
-                        sx={{ color: '#5F4102', '&.Mui-checked': { color: '#5F4102' } }}
-                      />} label={<span className="text-[#5F4102] font-semibold">Depósito</span>} />
-
-                      <FormControlLabel className="w-1/5" value="yape" control={<Radio
-                        sx={{ color: '#5F4102', '&.Mui-checked': { color: '#5F4102' } }}
-                      />} label={<span className="text-[#5F4102] font-semibold">Yape</span>} />
-
-                      <FormControlLabel className="w-1/5" value="plin" control={<Radio
-                        sx={{ color: '#5F4102', '&.Mui-checked': { color: '#5F4102' } }}
-                      />} label={<span className="text-[#5F4102] font-semibold">Plin</span>} />
-
-                    </RadioGroup>
+              {isMensualidad && (
+                <div className="flex flex-col text-[#00330A] space-y-2 mb-5 px-5 py-4">
+                  <span className="text-xl font-nunito font-extrabold">Meses pagados:</span>
+                  <div className="flex flex-wrap w-full justify-between">
+                    {months.map(({ label, value }) => (
+                      <FormControlLabel
+                        key={value}
+                        control={
+                          <Checkbox
+                            value={value}
+                            checked={selectedMonths.includes(value)}
+                            onChange={handleChangeMeses}
+                            sx={{ color: '#00330A', '&.Mui-checked': { color: '#00330A' } }}
+                          />
+                        }
+                        label={<span className="text-default-green font-semibold">{label}</span>}
+                      />
+                    ))}
                   </div>
                 </div>
-              </div>
-            </div>
-            <img className="w-1/3 hidden lg:block mx-5" src={cash_illustration} alt="Ilustracion sobre pagos" />
-          </div>
-          <div className="flex flex-row space-x-12 mx-5">
-            <div className="flex flex-col w-full h-full bg-[#C9D9C6] text-[#00330A] rounded-2xl space-y-10 p-7">
-              <div className="flex flex-row space-x-5">
-                <label htmlFor="monto_pago" className="w-full text-xl font-nunito font-extrabold block my-auto">Monto del pago:</label>
-                <span className="text-xl my-auto">S/.</span>
-                <input
-                  type="number"
-                  id="monto_pago_entero"
-                  name="monto_pago_entero"
-                  value={pagoData.monto_pago_entero}
-                  onChange={handleChangePago}
-                  className="w-full bg-[#ECF6E8] focus:outline-none shadow-[#B8B195] shadow-md rounded-xl py-2 px-3"
-                  placeholder="0000"
-                  min={0}
-                  required
-                />
-                <span className="text-xl my-auto">.</span>
-                <input
-                  type="number"
-                  id="monto_pago_decimal"
-                  name="monto_pago_decimal"
-                  value={pagoData.monto_pago_decimal}
-                  onChange={handleChangePago}
-                  className="w-1/2 bg-[#ECF6E8] focus:outline-none shadow-[#B8B195] shadow-md rounded-xl py-2 px-3"
-                  placeholder="00"
-                  min={0}
-                  max={99}
-                  required
-                />
-              </div>
-              <div className="flex flex-row space-x-5">
-                <label htmlFor="fecha_pago" className="w-full text-xl font-nunito font-extrabold block my-auto">Fecha de pago:</label>
-                <input
-                  type="date"
-                  id="fecha_pago"
-                  name="fecha_pago"
-                  value={pagoData.fecha_pago}
-                  onChange={handleChangePago}
-                  className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input py-2 px-3"
-                  required
-                />
-              </div>
-            </div>
-            <div className="w-full bg-[#C9D9C6] text-[#00330A] rounded-2xl px-5 py-5">
-              <div className="flex flex-col space-y-1">
-                <label htmlFor="observacion" className="w-full text-xl font-nunito font-extrabold block mb-1">Observación:</label>
+              )}
+
+              <div className="flex flex-col w-full bg-dark-light-turquoise text-default-green rounded-2xl space-y-2 p-5">
+                <label htmlFor="observacion" className="w-full text-xl font-nunito font-extrabold block">Observación:</label>
                 <textarea
-                  name="observacion"
-                  id="observacion"
                   rows={4}
-                  className="bg-[#ECF6E8] border-solid border border-[#5F4102] resize-none focus:outline-none rounded-lg p-2"
-                  value={pagoData.observacion}
-                  onChange={handleChangePago}
+                  className="bg-[#ECF6E8] border-solid border border-black resize-none focus:outline-none rounded-lg p-2"
+                  {...register("observacion")}
                 />
               </div>
+            </div>
+            <div className="flex flex-col w-2/4 bg-dark-light-turquoise rounded-lg p-5">
+              <div className="flex frex-row justify-between space-x-5">
+                <AsyncSelect<Option, true>
+                  className="mb-5 w-full"
+                  components={animatedComponents}
+                  styles={customStyles}
+                  placeholder="Seleccionar importes..."
+                  isMulti
+                  defaultOptions
+                  loadOptions={cargarTarifas}
+                  onChange={handleSelectChange}
+                  value={selectedTarifaList.filter(t => !t.nombre_tarifa.startsWith('Mensualidad (')).map(t => ({ value: t, label: `${t.nombre_tarifa} - S/.${t.precio_tarifa}` }))}
+                />
+              </div>
+              <SimpleTable<Tarifa>
+                columns={columns}
+                data={selectedTarifaList}
+              />
+              <div className="flex flex-row justify-between text-md text-default font-nunito font-bold bg-custom-light-turquoise rounded-lg mt-5 p-5">
+                <span>Total:</span>
+                <span>S/. {totalMonto.toFixed(2)}</span>
+              </div>
+
             </div>
           </div>
           <div className="flex flex-row justify-end text-md font-nunito font-bold space-x-5 mt-5 me-5">
-            <button type="submit" className="w-2/6 bg-[#007336] text-white hover:bg-[#00330A] shadow-md rounded-2xl transition duration-300 space-x-4 px-8 py-2">Guardar pago</button>
+            <button
+              type="submit"
+              className={
+                `w-2/6 bg-corlad text-white shadow-md rounded-lg space-x-4 px-8 py-2
+            ${isLoading ? 'opacity-50' : 'hover:bg-hover-corlad transition duration-300'}`
+              }
+              disabled={isLoading}
+            >
+              {isLoading ? <Spinner /> : 'Guardar pago'}
+            </button>
             <Link to={"/admin/pagos"} className="w-1/6">
-              <button type="button" className="w-full border-solid border-2 border-[#3A3A3A] rounded-2xl py-3">
+              <button type="button" className="w-full border-solid border-2 border-[#3A3A3A] hover:bg-default-gray hover:text-white transition duration-300 rounded-lg py-3">
                 Cancelar
               </button>
             </Link>
           </div>
         </form>
-        <Toaster
-          position="bottom-center"
-          reverseOrder={false} />
       </div>
-    </div>
+      <Toaster
+        position="bottom-center"
+        reverseOrder={false} />
+    </>
   )
 }
 

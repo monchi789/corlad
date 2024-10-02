@@ -4,18 +4,8 @@ import { PopUp } from "../../interfaces/model/PopUp";
 import { getPopUp } from "../../api/popup.api";
 
 export function PopUps() {
-
   const [data, setData] = useState<PopUp[]>([]);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const modalShown = localStorage.getItem('modalShown');
-
-    if (!modalShown) {
-      setVisible(true);
-      localStorage.setItem('modalShown', 'true');
-    }
-  }, []);
+  const [visible, setVisible] = useState(true);
 
   const hideDialog = () => {
     setVisible(false);
@@ -27,28 +17,19 @@ export function PopUps() {
         <i className="pi pi-times text-black hover:bg-[#00330A] hover:text-white transition duration-300 text-xl px-2 py-1 rounded"></i>
       </button>
     </div>
-  )
+  );
 
   useEffect(() => {
     async function cargarPopUp() {
       const res = await getPopUp();
 
-      /*
-        Mapeo del api 
-      */
-      const popups: PopUp[] = res.data.map((element: any) => ({
-        id: element.id,
-        imagen: element.imagen,
-        estado_popup: element.estado_popup,
-      }));
-
-      setData(popups)
-
+      setData(res.data);
     }
+
     cargarPopUp();
   }, []);
 
-  const popUpsActivo = data.filter(item => item.estado_popup)
+  const popUpsActivo = data.filter(item => item.estado_popup);
 
   return (
     <div className={`${visible ? 'fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm' : ''} flex justify-center items-center z-20`}>
@@ -60,5 +41,5 @@ export function PopUps() {
         </Dialog>
       </div>
     </div>
-  )
+  );
 }

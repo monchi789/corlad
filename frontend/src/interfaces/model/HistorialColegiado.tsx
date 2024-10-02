@@ -8,7 +8,9 @@ export interface HistorialColegiado {
   id_especialidad: Especialidad,
   id_estado_colegiatura: EstadoColegiatura
   universidad: string,
+  nombre_universidad_bachiller: string,
   denominacion_bachiller: string,
+  nombre_universidad_titulo:string,
   denominacion_titulo: string,
   titulo_fecha: string
   fecha_bachiller: string
@@ -20,7 +22,9 @@ export const defaultHistorialColegiado: HistorialColegiado = {
   id_especialidad: defaultEspecialidad,
   id_estado_colegiatura: defaultEstadoColegiatura,
   universidad: "",
+  nombre_universidad_bachiller: "",
   denominacion_bachiller: "",
+  nombre_universidad_titulo: "",
   denominacion_titulo: "",
   titulo_fecha: "",
   fecha_bachiller: ""

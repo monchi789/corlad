@@ -7,7 +7,7 @@ import { Footer } from "../../shared/Footer";
 import { Contacto } from "../contactanos/contacto/Contacto";
 import { Publicacion } from "../../../interfaces/model/Publicacion";
 import { getAllNoticiasByPage } from "../../../api/publicacion.api";
-import { Servicios } from "./servicios/Servicios";
+import { Servicios } from "./components/Servicios";
 import { PopUps } from "../../shared/PopUps";
 import { Gallery } from "../../shared/Gallery";
 import logo_corlad_blanco from '../../../assets/web/corlad_logo_blanco.png'
@@ -59,7 +59,7 @@ export default function Inicio() {
         <Gallery />
       </div>
 
-      <div className="container mx-auto md:px-10">
+      <div className="container  mx-auto md:px-10">
         {/*INFORMACION INSTITUCIONAL*/}
         <div className="flex md:flex-col lg:flex-row items-center my-24 mx-auto w-4/5">
           <img className='md:w-2/5 hidden lg:block md:mb-10' src={logo_corlad} alt="Logotipo corlad" />
@@ -99,23 +99,29 @@ export default function Inicio() {
 
       <div className="container mx-auto md:px-10">
         {/*Nuestros aliados*/}
-        <div className="flex flex-col items-center mx-auto">
+        <div className="flex flex-col items-center mx-auto mt-24">
           <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-24 font-nunito">NUESTROS CONVENIOS</h3>
           <Carrousel />
         </div>
 
         {/*Noticias*/}
         <div className="flex flex-col items-center my-24 mx-auto">
-          <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-24 font-nunito">NOTICIAS</h3>
+          <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-12 mt-24 font-nunito">PUBLICACIONES</h3>
           <div className="flex flex-col xl:flex-row space-y-10 xl:space-y-0 xl:space-x-14 mb-12">
             {data.slice(0, 3).map((noticia, index) => (
-              <Card key={index} imageSource={import.meta.env.VITE_API_URL_ALTER + noticia.imagen_publicacion} imageAlt="" cardTitle={noticia.titulo} cardText={limitarContenido(noticia.contenido, 30)} noticiaId={noticia.id} />
+              <Card 
+              key={index} 
+              imageSource={noticia.imagen_publicacion ? import.meta.env.VITE_API_URL_ALTER + noticia.imagen_publicacion : null }
+              imageAlt={noticia.titulo} 
+              cardTitle={noticia.titulo} 
+              cardText={limitarContenido(noticia.contenido, 30)} 
+              noticiaId={noticia.id} />
             ))}
           </div>
-          <Link to={'/noticias'} className="font-extrabold bg-[#a67102] text-white px-8 py-1 rounded-lg font-nunito">Ver Más</Link>
+          <Link to={'/noticias'} className="font-semibold font-nunito bg-corlad hover:bg-hover-corlad transition duration-300 text-white rounded-lg px-5 py-2">Ver más publicaciones</Link>
         </div>
-
       </div>
+
       <div className="w-full">
         <h3 className="font-extrabold text-center text-3xl md:text-4xl text-[#a67102] mb-12 font-nunito">CONTÁCTANOS</h3>
         <div className="mx-auto py-24 bg-cover bg-center" style={{ backgroundImage: `url(${background})` }}>

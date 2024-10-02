@@ -60,7 +60,7 @@ export default function Noticias() {
   const handleCategoriaClick = async (categoria: string) => {
     setActiveCategoria(categoria);
     const params = `?categoria=${categoria}&page=1&page_size=${rows}`;
-  
+
     try {
       const res = await getNoticiasByFilter(params);
       setNoticiasList(res.data.results);
@@ -103,19 +103,20 @@ export default function Noticias() {
   return (
     <>
       <Header />
-      <div className="container flex flex-col my-48 mx-auto">
+      <div className="container flex flex-col my-40 mx-auto">
         <h1 className="text-4xl text-[#a67102] font-extrabold font-nunito text-center mb-24">NOTICIAS</h1>
-        <div className="flex flex-col lg:flex-row mx-auto justify-center">
-          <div className="flex flex-col w-full lg:w-1/6 items-center lg:items-start px-5">
-            <p className="font-nunito font-extrabold text-2xl text-[#00330A] mb-10 px-3">Categorías</p>
-            <div className="flex flex-col items-start space-y-5 w-full">
+        <div className="flex flex-col lg:flex-row justify-center mx-auto space-x-5">
+          {/* Categorías */}
+          <div className="flex flex-col w-full lg:w-2/6 bg-[#F8F8F8] items-center lg:items-start rounded-xl p-5">
+            <p className="font-nunito font-extrabold text-2xl text-[#00330A] mb-5 px-3">Categorías</p>
+            <div className="flex flex-col items-center lg:items-start space-y-5 w-full">
               {categoriaData.map((element, index) => (
                 <button
                   key={index}
-                  className={classNames('py-3 px-3 w-full text-left transition duration-300', {
+                  className={classNames('w-full text-left transition duration-300 p-3 rounded-md', {
                     'bg-[#00330A] text-white': activeCategoria === element.nombre_categoria,
                     'hover:bg-[#00330A] hover:text-white': activeCategoria !== element.nombre_categoria,
-                    'bg-white text-black': activeCategoria !== element.nombre_categoria && !classNames('hover:bg-[#00330A] hover:text-white')
+                    'bg-white text-black': activeCategoria !== element.nombre_categoria,
                   })}
                   onClick={() => handleCategoriaClick(element.nombre_categoria)}
                 >
@@ -124,35 +125,44 @@ export default function Noticias() {
               ))}
             </div>
           </div>
-          <div className="lg:w-4/6 mx-5 space-y-10 mb-24">
+
+          {/* Noticias */}
+          <div className="lg:w-5/6 space-y-10 mb-24 mx-5 lg:mx-0">
             {noticiasList.length === 0 ? (
-              <div className="flex flex-col text-center text-xl text-gray-500 mx-auto mt-10">
-                <p className="justify-center">No hay publicaciones disponibles todavía.</p>
+              // Contenedor responsivo para cuando no hay noticias disponibles
+              <div className="flex flex-col items-center text-center text-xl text-gray-500 ms-10 py-10">
+                <p className="mb-5">No hay publicaciones disponibles todavía.</p>
+                <p className="text-base text-gray-400">Por favor, verifica más tarde.</p>
               </div>
             ) : (
               noticiasList.map((noticia, index) => (
                 <div key={index}>
                   <HorizontalCard
-                    imageSource={import.meta.env.VITE_API_URL_ALTER + noticia.imagen_publicacion}
-                    imageAlt=""
+                    imageSource={noticia.imagen_publicacion ? import.meta.env.VITE_API_URL_ALTER + noticia.imagen_publicacion : null}
+                    imageAlt={noticia.titulo}
                     cardTitle={noticia.titulo}
                     cardText={limitarContenido(noticia.contenido, 100)}
+                    cardDate={noticia.fecha_publicacion}
                     noticiaId={noticia.id}
                   />
                   <Divider className="border border-solid my-10" />
                 </div>
               ))
             )}
-            <Paginator
-              first={first}
-              rows={rows}
-              totalRecords={totalRecords}
-              onPageChange={onPageChange}
-              className="space-x-5"
-              template={template}
-            />
+            {/* Paginador */}
+            {noticiasList.length > 0 && (
+              <Paginator
+                first={first}
+                rows={rows}
+                totalRecords={totalRecords}
+                onPageChange={onPageChange}
+                className="space-x-5"
+                template={template}
+              />
+            )}
           </div>
         </div>
+
       </div>
       <Footer />
     </>
