@@ -48,7 +48,7 @@ export default function AgregarPagos() {
   const [isLoading, setIsLoading] = useState(false);
 
   // Calcular el monto total
-  const totalMonto = selectedTarifaList.reduce((acc, tarifa) => acc + tarifa.precio_tarifa, 0);
+  const totalMonto = selectedTarifaList.reduce((acc, tarifa) => acc + Number(tarifa.precio_tarifa), 0);
 
   const cargarTarifas = async () => {
     try {
@@ -263,7 +263,6 @@ export default function AgregarPagos() {
               <SimpleTable<Tarifa>
                 columns={columns}
                 data={selectedTarifaList}
-
               />
               <div className="flex flex-row justify-between text-md text-default font-nunito font-bold bg-custom-light-turquoise rounded-lg mt-5 p-5">
                 <span>Total:</span>

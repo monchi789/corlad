@@ -22,7 +22,7 @@ const ColegiadosPage = lazy(() => import('../dashboard/modules/colegiados/Colegi
 const AgregarColegiado = lazy(() => import('../dashboard/modules/colegiados/AgregarColegiado.tsx'));
 const EditarColegiado = lazy(() => import('../dashboard/modules/colegiados/EditarColegiado.tsx'));
 const Capitulos = lazy(() => import('../dashboard/modules/capitulos/Capitulos.tsx'));
-const PopUpsAdmin = lazy(() => import('../dashboard/modules/popups/PopUpsPage.tsx'));
+const PopUpsPage = lazy(() => import('../dashboard/modules/popups/PopUpsPage.tsx'));
 const SlidersAdmin = lazy(() => import('../dashboard/modules/sliders/SlidersPage.tsx'));
 const PublicacionesAdmin = lazy(() => import('../dashboard/modules/publicaciones/PublicacionesPage.tsx'));
 const NuevaPublicacion = lazy(() => import('../dashboard/modules/publicaciones/NuevaPublicacion.tsx'));
@@ -77,7 +77,7 @@ const adminRoutes = [
   { path: "/admin/publicaciones/nueva-publicacion", element: <NuevaPublicacion />, allowedGroups: ['admin', 'publicador'] },
   { path: "/admin/publicaciones/editar-publicacion/:id", element: <EditarPublicacion />, allowedGroups: ['admin', 'publicador'] },
   { path: "/admin/publicaciones/categorias", element: <CategoriasPage />, allowedGroups: ['admin', 'publicador'] },
-  { path: "/admin/anuncios", element: <PopUpsAdmin />, allowedGroups: ['admin', 'publicador'] },
+  { path: "/admin/anuncios", element: <PopUpsPage />, allowedGroups: ['admin', 'publicador'] },
   { path: "/admin/galeria", element: <SlidersAdmin />, allowedGroups: ['admin', 'publicador'] },
 ];
 

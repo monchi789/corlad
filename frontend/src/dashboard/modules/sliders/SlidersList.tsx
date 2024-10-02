@@ -521,18 +521,20 @@ export const SlidersList = () => {
 
   return (
     <div className="flex flex-col my-5 space-y-5">
-      <div className="flex flex-row">
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center text-gray-700 hover:text-gray-900 p-2"
-        >
-          <FaArrowCircleLeft className="mr-2" size={"30px"} />
-        </button>
-        <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Galerías de fotos</h4>
-      </div>
+      <div className="flex flex-col md:flex-row justify-between space-y-5 md:space-y-0">
+          <div className="flex flex-row">
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center text-gray-700 hover:text-gray-900 p-2"
+            >
+              <FaArrowCircleLeft className="mr-2" size={"30px"} />
+            </button>
+            <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold my-auto">Galerías de fotos</h4>
+          </div>
+        </div>
 
       <div className="text-default font-nunito font-bold ">
-        <span>Bienvenido al panel de administración de la galería de fotos, aqui se pueden crear hasta cinco galerías que se quieran mostrar en la página web.</span>
+        <span>Bienvenido al panel de administración de la galería de fotos, en este apartado se pueden crear hasta cinco galerías que se quieran mostrar en la página web.</span>
       </div>
 
       <div className="flex flex-wrap gap-3">
