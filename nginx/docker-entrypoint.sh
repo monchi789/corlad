@@ -1,14 +1,11 @@
 #!/bin/sh
 
-# Wait for certbot to obtain the certificate
-until [ -f /etc/letsencrypt/live/corladcusco.com/fullchain.pem ]
-do
-    echo "Waiting for Certbot to obtain SSL certificate..."
-    sleep 5
-done
-
-# Generate the final nginx.conf
-envsubst < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
+# Check if SSL cert exists, otherwise use default config
+if [ -f /etc/letsencrypt/live/corladcusco.com/fullchain.pem ]; then
+    envsubst < /etc/nginx/nginx-ssl.conf.template > /etc/nginx/nginx.conf
+else
+    envsubst < /etc/nginx/nginx-no-ssl.conf.template > /etc/nginx/nginx.conf
+fi
 
 # Execute the CMD from the Dockerfile
 exec "$@"
