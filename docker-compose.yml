@@ -72,24 +72,23 @@ services:
       - "80:80"
 
   nginx:
-    image: nginx:alpine
-    volumes:
-      - ./frontend:/usr/share/nginx/html
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./ssl:/etc/nginx/ssl  # Asegúrate de tener los certificados aquí
+    build: ./nginx
     ports:
       - "80:80"
       - "443:443"
-    networks:
-      - frontend-network
+    volumes:
+      - ./certbot:/var/www/certbot
+      - ./nginx/certificates:/etc/nginx/ssl
+    depends_on:
+      - frontend
+      - backend
+      - pgadmin
 
   certbot:
     image: certbot/certbot
     volumes:
-      - ./ssl:/etc/letsencrypt
-      - ./www:/var/www/certbot
-    networks:
-      - frontend-network
+      - ./certbot:/var/www/certbot
+      - ./nginx/certificates:/etc/nginx/ss
 
 networks:
   frontend-network:
