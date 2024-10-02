@@ -5,18 +5,7 @@ import { getPopUp } from "../../api/popup.api";
 
 export function PopUps() {
   const [data, setData] = useState<PopUp[]>([]);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    // Verificar si el modal ya se ha mostrado en esta sesión
-    const popupShown = sessionStorage.getItem('popupShown');
-
-    if (!popupShown) {
-      setVisible(true);
-      // Marcar modal como mostrado en la sesión actual
-      sessionStorage.setItem('popupShown', 'true');
-    }
-  }, []);
+  const [visible, setVisible] = useState(true);
 
   const hideDialog = () => {
     setVisible(false);

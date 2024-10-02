@@ -138,7 +138,7 @@ export const Header = React.memo(function Header() {
         </Link>
         <div className="hidden lg:flex lg:flex-1 my-auto items-center justify-end me-10">
           <ul className="flex gap-5 font-nunito text-lg font-semibold items-center">
-            <li className="hover:text-[#008634] transition duration-300 p-1">
+            <li className="text-default-green hover:text-corlad transition duration-300 p-1">
               <NavLink
                 to="/"
                 className={({ isActive }) => isActive || activeLink === 'inicio' ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' : 'bg-white'}
@@ -148,7 +148,7 @@ export const Header = React.memo(function Header() {
               </NavLink>
             </li>
             <li
-              className="hover:text-[#008634] transition duration-300 p-1 relative"
+              className="text-default-green hover:text-corlad transition duration-300 p-1 relative"
               onMouseEnter={() => handleMouseEnter('institucional')}
               onMouseLeave={() => handleMouseLeave('institucional')}
             >
@@ -189,7 +189,7 @@ export const Header = React.memo(function Header() {
               </div>
             </li>
             <li
-              className="hover:text-[#008634] transition duration-300 p-1 relative"
+              className="text-default-green hover:text-corlad transition duration-300 p-1 relative"
               onMouseEnter={() => handleMouseEnter('publicaciones')}
               onMouseLeave={() => handleMouseLeave('publicaciones')}
             >
@@ -226,7 +226,7 @@ export const Header = React.memo(function Header() {
               </div>
             </li>
 
-            <li className="hover:text-[#008634] transition duration-300 p-1">
+            <li className="text-default-green hover:text-corlad transition duration-300 p-1">
               <NavLink
                 to="/contactanos"
                 className={({ isActive }) => isActive || activeLink === 'contactanos' ? 'text-[#00330a] underline decoration-4 decoration-[#00330a]' : 'bg-white'}
@@ -235,7 +235,7 @@ export const Header = React.memo(function Header() {
                 Contáctanos
               </NavLink>
             </li>
-            <li className="hover:text-[#008634] transition duration-300 relative"
+            <li className="text-default-green hover:text-corlad transition duration-300 relative"
               onMouseEnter={() => handleMouseEnter('colegiatura')}
               onMouseLeave={() => handleMouseLeave('colegiatura')}
             >
@@ -244,7 +244,7 @@ export const Header = React.memo(function Header() {
                 className={({ isActive }) => `${isActive || activeLink === 'consultar-habilidad' ? '' : 'bg-white'} flex items-center`}
                 onClick={() => handleLinkClick('consultar-habilidad')}
               >
-                <button className="flex flex-row rounded-lg bg-[#00330a] text-lg text-white font-nunito font-semibold hover:bg-[#008634] transition duration-300 py-1 px-4">
+                <button className="flex flex-row rounded-lg bg-[#00330a] text-lg text-white font-nunito font-semibold hover:bg-corlad transition duration-300 py-1 px-4">
                   Colegiatura
                   <FaCaretDown size={15} className="ml-1 my-auto" />
                 </button>

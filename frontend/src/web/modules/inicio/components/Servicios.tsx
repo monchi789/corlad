@@ -7,7 +7,7 @@ export function Servicios() {
   return (
     <div className="flex flex-wrap xl:flex-nowrap md:flex-col xl:flex-row space-y-24 lg:space-y-24 xl:space-y-0 xl:space-x-6 justify-between text-center mb-12">
       {/* Consultar Colegiatura */}
-      <div className="flex flex-col w-full xl:w-1/3 py-8 lg:px-8 bg-[#F0F0F0] relative pt-16 rounded-3xl">
+      <div className="flex flex-col w-full xl:w-1/3 py-8 lg:px-8 bg-[#F8F8F8] relative pt-16 rounded-3xl">
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <MdOutlinePersonSearch size={'100px'} className='bg-[#04853D] rounded-full text-white text-center p-5' />
         </div>
@@ -18,7 +18,7 @@ export function Servicios() {
           Consulta el estado de tu colegiatura y otros detalles importantes sobre tu membresía en nuestra institución. 
         </p>
         <Link to={"/consultar-habilidad"}>
-          <button className="flex items-center justify-center bg-[#a67102] hover:bg-[#8C5D01] text-white rounded-lg mx-auto font-nunito transition duration-300 space-x-2 mt-5 py-2 px-4">
+          <button className="flex items-center justify-center bg-corlad hover:bg-hover-corlad text-white rounded-lg mx-auto font-nunito transition duration-300 space-x-2 mt-5 py-2 px-4">
             <span>Más información</span>
             <FaArrowRightLong />
           </button>
@@ -26,7 +26,7 @@ export function Servicios() {
       </div>
 
       {/* Publicaciones */}
-      <div className="flex flex-col w-full xl:w-1/3 py-8 px-8 bg-[#F0F0F0] relative pt-16 rounded-3xl">
+      <div className="flex flex-col w-full xl:w-1/3 py-8 px-8 bg-[#F8F8F8] relative pt-16 rounded-3xl">
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <HiOutlineNewspaper size={'100px'} className='bg-[#04853D] rounded-full text-white text-center p-5' />
         </div>
@@ -35,7 +35,7 @@ export function Servicios() {
           Mantente al tanto de las últimas noticias, eventos, y novedades de nuestra institución. 
         </p>
         <Link to={"/noticias"}>
-          <button className="flex items-center justify-center bg-[#a67102] hover:bg-[#8C5D01] text-white rounded-lg mx-auto font-nunito transition duration-300 space-x-2 mt-5 py-2 px-4">
+          <button className="flex items-center justify-center bg-corlad hover:bg-hover-corlad text-white rounded-lg mx-auto font-nunito transition duration-300 space-x-2 mt-5 py-2 px-4">
             <span>Más información</span>
             <FaArrowRightLong />
           </button>
@@ -43,7 +43,7 @@ export function Servicios() {
       </div>
 
       {/* Bolsa de Trabajo */}
-      <div className="flex flex-col w-full xl:w-1/3 py-8 px-8 bg-[#F0F0F0] relative pt-16 rounded-3xl ">
+      <div className="flex flex-col w-full xl:w-1/3 py-8 px-8 bg-[#F8F8F8] relative pt-16 rounded-3xl ">
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <MdWork size={'100px'} className='bg-[#04853D] rounded-full text-white text-center p-5' />
         </div>
@@ -52,7 +52,7 @@ export function Servicios() {
           Encuentra ofertas de trabajo en tu área de especialidad y accede a recursos para mejorar tus habilidades profesionales.
         </p>
         <Link to={"/bolsa-trabajo"}>
-        <button className="flex items-center justify-center bg-[#a67102] hover:bg-[#8C5D01] text-white rounded-lg mx-auto font-nunito transition duration-300 space-x-2 mt-5 py-2 px-4">
+        <button className="flex items-center justify-center bg-corlad hover:bg-hover-corlad text-white rounded-lg mx-auto font-nunito transition duration-300 space-x-2 mt-5 py-2 px-4">
         <span>Más información</span>
             <FaArrowRightLong />
           </button>

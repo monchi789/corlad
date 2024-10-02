@@ -105,10 +105,10 @@ export default function Noticias() {
       <Header />
       <div className="container flex flex-col my-40 mx-auto">
         <h1 className="text-4xl text-[#a67102] font-extrabold font-nunito text-center mb-24">NOTICIAS</h1>
-        <div className="flex flex-col lg:flex-row mx-auto justify-center">
+        <div className="flex flex-col lg:flex-row justify-center mx-auto space-x-5">
           {/* Categorías */}
-          <div className="flex flex-col w-full lg:w-2/6 items-center lg:items-start px-5 lg:px-10">
-            <p className="font-nunito font-extrabold text-2xl text-[#00330A] mb-6 lg:mb-10 px-3">Categorías</p>
+          <div className="flex flex-col w-full lg:w-2/6 bg-[#F8F8F8] items-center lg:items-start rounded-xl p-5">
+            <p className="font-nunito font-extrabold text-2xl text-[#00330A] mb-5 px-3">Categorías</p>
             <div className="flex flex-col items-center lg:items-start space-y-5 w-full">
               {categoriaData.map((element, index) => (
                 <button
@@ -138,7 +138,7 @@ export default function Noticias() {
               noticiasList.map((noticia, index) => (
                 <div key={index}>
                   <HorizontalCard
-                    imageSource={import.meta.env.VITE_API_URL_ALTER + noticia.imagen_publicacion}
+                    imageSource={noticia.imagen_publicacion ? import.meta.env.VITE_API_URL_ALTER + noticia.imagen_publicacion : null}
                     imageAlt={noticia.titulo}
                     cardTitle={noticia.titulo}
                     cardText={limitarContenido(noticia.contenido, 100)}

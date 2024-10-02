@@ -28,7 +28,7 @@ const PublicacionesAdmin = lazy(() => import('../dashboard/modules/publicaciones
 const NuevaPublicacion = lazy(() => import('../dashboard/modules/publicaciones/NuevaPublicacion.tsx'));
 const EditarPublicacion = lazy(() => import('../dashboard/modules/publicaciones/EditarPublicacion.tsx'));
 const CategoriasPage = lazy(() => import('../dashboard/modules/categorias/CategoriasPage.tsx'));
-const Pagos = lazy(() => import('../dashboard/modules/pagos/Pagos.tsx'));
+const PagosPage = lazy(() => import('../dashboard/modules/pagos/PagosPage.tsx'));
 const AgregarPagos = lazy(() => import('../dashboard/modules/pagos/AgregarPagos.tsx'));
 const EditarPagos = lazy(() => import('../dashboard/modules/pagos/EditarPagos.tsx'));
 const EstadoCuentas = lazy(() => import('../dashboard/modules/estadocuenta/EstadoCuentas.tsx'));
@@ -66,7 +66,7 @@ const adminRoutes = [
   { path: "/admin/colegiado/nuevo-colegiado", element: <AgregarColegiado />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/colegiado/editar-colegiado/:id1/:id2", element: <EditarColegiado />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/capitulos", element: <Capitulos />, allowedGroups: ['admin', 'secretaria'] },
-  { path: "/admin/pagos", element: <Pagos />, allowedGroups: ['admin', 'secretaria'] },
+  { path: "/admin/pagos", element: <PagosPage />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/pagos/nuevo-pago", element: <AgregarPagos />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/pagos/editar-pago/:id", element: <EditarPagos />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/pagos/estado-cuenta", element: <EstadoCuentas />, allowedGroups: ['admin', 'secretaria'] },

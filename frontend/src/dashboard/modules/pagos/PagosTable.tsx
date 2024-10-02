@@ -29,7 +29,7 @@ export function PagosTable({ pagosList }: PagosProps) {
       </div>
       <div className="w-1/6 my-auto">{pago.id_colegiado.dni_colegiado}</div>
       <div className="w-1/6 my-auto">{pago.id_metodo_pago.nombre_metodo_pago}</div>
-      <div className="w-1/6 my-auto">{pago.monto_pago}</div>
+      <div className="w-1/6 my-auto">S./.{pago.monto_total}</div>
       <div className="w-1/6 my-auto">{pago.observacion}</div>
       <div className="flex flex-row w-1/6 text-[#8F650C] justify-center my-auto">
         <button><Link to={`/admin/pagos/editar-pago/${pago.id}`}><FaEdit size={"25px"} /></Link></button>

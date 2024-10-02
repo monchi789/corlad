@@ -202,8 +202,8 @@ export default function ConsultarHabilidad() {
                 </div>
                 <div className="space-y-1">
                   <p className="text-[#a67102] font-semibold">Estado:</p>
-                  <p className={colegiadoData[0].id_estado_colegiatura.estado_colegiatura ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>
-                    {colegiadoData[0].id_estado_colegiatura.estado_colegiatura ? "Habilitado" : "No Habilitado"}
+                  <p className={colegiadoData[0].id_colegiado.estado ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>
+                    {colegiadoData[0].id_colegiado.estado ? "Habilitado" : "No Habilitado"}
                   </p>
                 </div>
               </div>

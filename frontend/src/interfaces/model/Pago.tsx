@@ -12,10 +12,10 @@ export const defaultMetodoPago = {
 
 export interface Pago {
   id: number
-  fecha_pago: string,
-  monto_total: number,
+  fecha_pago?: string,
+  monto_total?: number,
   numero_operacion: string,
-  meses_pagados: string[],
+  meses_pagados?: string[],
   observacion: string,
   id_colegiado: Colegiado,
   id_metodo_pago: MetodoPago,
@@ -24,10 +24,7 @@ export interface Pago {
 
 export const defaultPago: Pago = {
   id: 0,
-  fecha_pago: "",
-  monto_total: 0,
   numero_operacion: "",
-  meses_pagados: [],
   observacion: "",
   id_colegiado: defaultColegiado,
   id_metodo_pago: defaultMetodoPago,

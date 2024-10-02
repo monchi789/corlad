@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -11,13 +11,15 @@ import { Tarifa } from "../../../interfaces/model/Tarifa";
 import { getAllTarifas } from "../../../api/tarifa.api";
 import AsyncSelect from "react-select/async"
 import makeAnimated from 'react-select/animated';
-import SimpleTable from "../../components/SimpleTable";
+import SimpleTable from "../../components/ui/SimpleTable";
 import { ColumnDef } from "@tanstack/react-table";
 import { MultiValue } from 'react-select';
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { SubmitHandler, useForm } from "react-hook-form"
 import ErrorSpan from "../../components/ui/ErrorSpan";
 import BuscarColegiadoPagos from "./BuscarColegiadoPagos";
+import { Checkbox, FormGroup } from "@mui/material";
+import Spinner from "../../components/ui/Spinner";
 
 const animatedComponents = makeAnimated();
 
@@ -28,11 +30,9 @@ interface Option {
 
 interface FormData {
   numero_operacion: string;
-  fecha_pago: string;
   observacion: string;
   monto_pago_decimal: number;
 }
-
 
 export default function AgregarPagos() {
   const navigate = useNavigate();
@@ -41,11 +41,24 @@ export default function AgregarPagos() {
 
   const [errorColegiado, setErrorColegiado] = useState(false);
   const [colegiado, setColegiado] = useState<Colegiado | null>(null);
+  const [allTarifasList, setAllTarifaList] = useState<Tarifa[]>([]);
   const [selectedTarifaList, setSelectedTarifaList] = useState<Tarifa[]>([]);
   const [selectedMetodoPago, setSelectedMetodoPago] = useState('');
 
+  const [isMensualidad, setIsMensualidad] = useState(false);
+  const [selectedMonths, setSelectedMonths] = useState<string[]>([]);
+
   const [colegiadoData, setColegiadoData] = useState<Colegiado>(defaultColegiado) // Estado para guardar el colegiado buscado
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    // Obtener el mes actual (0-11) y calcular el mes posterior (1-12)
+    const currentMonth = new Date().getMonth(); // Devuelve 0 para enero, 11 para diciembre
+    const nextMonth = (currentMonth + 1) % 12; // Obtiene el mes posterior (0-11)
+
+    // Actualiza el estado para seleccionar el mes posterior como default checked
+    setSelectedMonths([months[nextMonth].value]);
+  }, []);
 
   // Calcular el monto total
   const totalMonto = selectedTarifaList.reduce((acc, tarifa) => acc + Number(tarifa.precio_tarifa), 0);
@@ -53,7 +66,8 @@ export default function AgregarPagos() {
   const cargarTarifas = async () => {
     try {
       const res = await getAllTarifas();
-      const tarifas: Tarifa[] = res.data.results;
+      const tarifas: Tarifa[] = res.data;
+      setAllTarifaList(tarifas)
 
       // Transforma la data de tarifa como un select
       return tarifas.map(tarifa => ({
@@ -76,32 +90,48 @@ export default function AgregarPagos() {
 
     const metodoPago: MetodoPago = resMetodoPago.data[0]
 
-    const ids = selectedTarifaList.map((tarifa) => tarifa.id);
+    const tarifasIdList = selectedTarifaList.map((tarifa) => tarifa.id);
 
-    const pago: Pago = {
-      id: 0,
-      fecha_pago: data.fecha_pago,
-      monto_total: totalMonto,
-      numero_operacion: data.numero_operacion,
-      meses_pagados: ["10"],
-      observacion: data.observacion,
-      id_colegiado: colegiado as Colegiado,
-      id_metodo_pago: metodoPago,
-      tarifas: ids
-    };
-    console.log(pago)
-    const res = await createPago(pago);
-    console.log(res)
-    try {
-      const res = await createPago(pago);
-      console.log(res)
-      toast.success('Pago registrado exitosamente');
-      navigate("/admin/pagos")
-    } catch (error) {
-      toast.error("Error al registrar el pago");
-    } finally {
-      setIsLoading(false)
+    if (isMensualidad) {
+      const pago: Pago = {
+        id: 0,
+        numero_operacion: data.numero_operacion,
+        observacion: data.observacion,
+        id_colegiado: colegiado as Colegiado,
+        id_metodo_pago: metodoPago,
+        tarifas: tarifasIdList,
+        meses_pagados: selectedMonths
+      };
+      try {
+        await createPago(pago);
+        toast.success('Pago registrado exitosamente');
+        navigate("/admin/pagos")
+      } catch (error) {
+        toast.error("Error al registrar el pago");
+      } finally {
+        setIsLoading(false)
+      }
+    } else {
+      const pago: Pago = {
+        id: 0,
+        numero_operacion: data.numero_operacion,
+        observacion: data.observacion,
+        id_colegiado: colegiado as Colegiado,
+        id_metodo_pago: metodoPago,
+        tarifas: tarifasIdList
+      };
+      console.log(pago)
+      try {
+        await createPago(pago);
+        toast.success('Pago registrado exitosamente');
+        navigate("/admin/pagos")
+      } catch (error) {
+        toast.error("Error al registrar el pago");
+      } finally {
+        setIsLoading(false)
+      }
     }
+
   }
 
   const customStyles = {
@@ -158,8 +188,66 @@ export default function AgregarPagos() {
     newValue: MultiValue<Option>,
   ) => {
     const selectedTarifas = newValue.map(option => option.value);
-    setSelectedTarifaList(selectedTarifas);
+    setSelectedTarifaList(prevList => {
+      const mensualidadTarifa = prevList.find(t => t.nombre_tarifa.startsWith('Mensualidad ('));
+      return mensualidadTarifa ? [...selectedTarifas, mensualidadTarifa] : selectedTarifas;
+    });
   };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsMensualidad(event.target.checked); // Actualiza el estado con el valor del checkbox
+  };
+
+  const handleChangeMeses = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    // Agrega o elimina el mes de la lista de meses seleccionados
+    setSelectedMonths((prev) => {
+      if (prev.includes(value)) {
+        return prev.filter((month) => month !== value); // Eliminar el mes
+      } else {
+        return [...prev, value]; // Agregar el mes
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (isMensualidad) {
+      const tarifaMensualidad = allTarifasList.find(tarifa => tarifa.nombre_tarifa === 'Mensualidad');
+      if (tarifaMensualidad) {
+        const cantidadMeses = selectedMonths.length;
+        const nuevaTarifa = {
+          ...tarifaMensualidad,
+          nombre_tarifa: `Mensualidad (${cantidadMeses} ${cantidadMeses === 1 ? 'mes' : 'meses'})`,
+          precio_tarifa: Number(tarifaMensualidad.precio_tarifa) * cantidadMeses
+        };
+
+        setSelectedTarifaList(prevList => {
+          const filteredList = prevList.filter(t => t.nombre_tarifa !== 'Mensualidad' && !t.nombre_tarifa.startsWith('Mensualidad ('));
+          return cantidadMeses > 0 ? [...filteredList, nuevaTarifa] : filteredList;
+        });
+      }
+    } else {
+      setSelectedTarifaList(prevList => prevList.filter(t => t.nombre_tarifa !== 'Mensualidad' && !t.nombre_tarifa.startsWith('Mensualidad (')));
+    }
+  }, [isMensualidad, selectedMonths, allTarifasList]);
+  // Agrega selectedMonths y allTarifasList como dependencias
+
+  // Array de meses con sus nombres y valores correspondientes
+  const months = [
+    { label: 'Enero', value: '01' },
+    { label: 'Febrero', value: '02' },
+    { label: 'Marzo', value: '03' },
+    { label: 'Abril', value: '04' },
+    { label: 'Mayo', value: '05' },
+    { label: 'Junio', value: '06' },
+    { label: 'Julio', value: '07' },
+    { label: 'Agosto', value: '08' },
+    { label: 'Septiembre', value: '09' },
+    { label: 'Octubre', value: '10' },
+    { label: 'Noviembre', value: '11' },
+    { label: 'Diciembre', value: '12' },
+  ];
 
   return (
     <>
@@ -178,12 +266,20 @@ export default function AgregarPagos() {
         <form className="flex flex-col space-y-5 my-5" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-row space-x-10">
             <div className="flex flex-col w-full lg:w-2/4">
+              <div className="flex flex-row justify-start space-x-10 mb-3 px-5">
+                <span className="font-nunito font-bold my-auto"> ¿Pago de mensualidad de un colegiado?</span>
+                <Checkbox
+                  checked={isMensualidad}
+                  onChange={handleChange}
+                  sx={{ color: '#00330A', '&.Mui-checked': { color: '#00330A' } }}
+                />
+              </div>
               <BuscarColegiadoPagos
                 onColegiadoFound={(foundColegiado) => setColegiado(foundColegiado)}
               />
               <div className="text-default-green px-5 py-2">
                 <div className="flex flex-row w-full space-x-10">
-                  <div className="w-1/2 space-y-2">
+                  <div className="w-full space-y-2">
                     <label htmlFor="numero_operacion" className="w-full text-xl font-nunito font-extrabold block my-auto">Numero de operación:</label>
                     <input
                       type="number"
@@ -193,21 +289,10 @@ export default function AgregarPagos() {
                       {...register("numero_operacion")}
                     />
                   </div>
-                  <div className="w-1/2 space-y-2">
-                    <label htmlFor="fecha_pago" className="w-full text-xl font-nunito font-extrabold block my-auto">Fecha de pago:</label>
-                    <input
-                      type="date"
-                      className="w-full bg-custom-light-turquoise rounded-lg focus:outline-none shadow-custom-input focus:shadow-custom-input py-2 px-3"
-                      {...register("fecha_pago", { required: "Este campo es obligatorio." })}
-                    />
-                    {
-                      errors.fecha_pago && <ErrorSpan mensaje={errors.fecha_pago.message} />
-                    }
-                  </div>
                 </div>
               </div>
 
-              <div className="flex flex-col text-[#00330A] space-y-2 mb-5 px-5 py-4">
+              <div className="flex flex-col text-[#00330A] space-y-2 px-5 py-4">
                 <span className="text-xl font-nunito font-extrabold">Método de pago:</span>
                 <div className="flex flex-row w-full justify-between">
                   <RadioGroup
@@ -238,6 +323,28 @@ export default function AgregarPagos() {
                 </div>
               </div>
 
+              {isMensualidad && (
+                <div className="flex flex-col text-[#00330A] space-y-2 mb-5 px-5 py-4">
+                  <span className="text-xl font-nunito font-extrabold">Meses pagados:</span>
+                  <div className="flex flex-wrap w-full justify-between">
+                    {months.map(({ label, value }) => (
+                      <FormControlLabel
+                        key={value}
+                        control={
+                          <Checkbox
+                            value={value}
+                            checked={selectedMonths.includes(value)}
+                            onChange={handleChangeMeses}
+                            sx={{ color: '#00330A', '&.Mui-checked': { color: '#00330A' } }}
+                          />
+                        }
+                        label={<span className="text-default-green font-semibold">{label}</span>}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="flex flex-col w-full bg-dark-light-turquoise text-default-green rounded-2xl space-y-2 p-5">
                 <label htmlFor="observacion" className="w-full text-xl font-nunito font-extrabold block">Observación:</label>
                 <textarea
@@ -258,6 +365,7 @@ export default function AgregarPagos() {
                   defaultOptions
                   loadOptions={cargarTarifas}
                   onChange={handleSelectChange}
+                  value={selectedTarifaList.filter(t => !t.nombre_tarifa.startsWith('Mensualidad (')).map(t => ({ value: t, label: `${t.nombre_tarifa} - S/.${t.precio_tarifa}` }))}
                 />
               </div>
               <SimpleTable<Tarifa>
@@ -272,7 +380,16 @@ export default function AgregarPagos() {
             </div>
           </div>
           <div className="flex flex-row justify-end text-md font-nunito font-bold space-x-5 mt-5 me-5">
-            <button type="submit" className="w-2/6 bg-[#007336] text-white hover:bg-[#00330A] shadow-md rounded-lg transition duration-300 space-x-4 px-8 py-2">Guardar pago</button>
+            <button
+              type="submit"
+              className={
+                `w-2/6 bg-corlad text-white shadow-md rounded-lg space-x-4 px-8 py-2
+            ${isLoading ? 'opacity-50' : 'hover:bg-hover-corlad transition duration-300'}`
+              }
+              disabled={isLoading}
+            >
+              {isLoading ? <Spinner /> : 'Guardar pago'}
+            </button>
             <Link to={"/admin/pagos"} className="w-1/6">
               <button type="button" className="w-full border-solid border-2 border-[#3A3A3A] hover:bg-default-gray hover:text-white transition duration-300 rounded-lg py-3">
                 Cancelar

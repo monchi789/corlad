@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import SimpleTable from "../../components/SimpleTable";
+import SimpleTable from "../../components/ui/SimpleTable";
 import { ColumnDef } from '@tanstack/react-table';
 import Spinner from "../../components/ui/Spinner";
 import { defaultTarifa, Tarifa } from "../../../interfaces/model/Tarifa";
@@ -54,7 +54,7 @@ export default function TarifasPage() {
 
     try {
       const res = await getAllTarifas();
-      setTarifas(res.data.results);
+      setTarifas(res.data);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);

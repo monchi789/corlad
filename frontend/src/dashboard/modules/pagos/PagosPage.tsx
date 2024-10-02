@@ -78,12 +78,14 @@ export default function Pagos() {
           </button>
           <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold my-auto">Administración de pagos</h4>
         </div>
-        <Link className="flex flex-row space-x-3 my-auto" to={"/admin/pagos/nuevo-pago"}>
-          <button className="flex flex-row w-full justify-center bg-corlad text-lg text-white font-nunito font-semibold hover:bg-hover-corlad shadow-black shadow-md rounded-lg transition duration-300 hover:scale-110 ease-in-out delay-50 space-x-3 my-auto px-4 py-1">
-            <IoMdAddCircleOutline className="my-auto" size={"25px"} />
-            <span className="my-auto">Nuevo pago</span>
-          </button>
-        </Link>
+        <div className="flex flex-row space-x-3 my-auto">
+          <Link className="flex flex-row space-x-3 my-auto" to={"/admin/pagos/nuevo-pago"}>
+            <button className="flex flex-row w-full justify-center bg-corlad text-lg text-white font-nunito font-semibold hover:bg-hover-corlad shadow-black shadow-md rounded-lg transition duration-300 hover:scale-110 ease-in-out delay-50 space-x-3 my-auto px-4 py-1">
+              <IoMdAddCircleOutline className="my-auto" size={"25px"} />
+              <span className="my-auto">Nuevo pago</span>
+            </button>
+          </Link>
+        </div>
       </div>
 
       <BuscarPagos onSearchResults={handleSearchResults} />
