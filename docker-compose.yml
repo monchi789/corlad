@@ -83,6 +83,14 @@ services:
     networks:
       - frontend-network
 
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./ssl:/etc/letsencrypt
+      - ./www:/var/www/certbot
+    networks:
+      - frontend-network
+
 networks:
   frontend-network:
     driver: bridge
