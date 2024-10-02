@@ -66,8 +66,9 @@ services:
       - frontend-network
 
   nginx:
-    build: ./nginx
-    dockerfile: Dockerfile
+    build: 
+      context: ./nginx
+      dockerfile: Dockerfile
     ports:
       - "80:80"
       - "443:443"
