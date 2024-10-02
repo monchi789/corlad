@@ -67,6 +67,7 @@ services:
 
   nginx:
     build: ./nginx
+    dockerfile: Dockerfile
     ports:
       - "80:80"
       - "443:443"
