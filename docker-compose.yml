@@ -22,7 +22,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   pgadmin4:
-          image: elestio/pgadmin:${SOFTWARE_VERSION_TAG}
+          image: elestio/pgadmin
           restart: always
           environment:
           PGADMIN_DEFAULT_EMAIL: ${ADMIN_EMAIL}
