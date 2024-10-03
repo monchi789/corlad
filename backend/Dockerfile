@@ -1,12 +1,23 @@
 # Utilizar la imagen oficial de Python para Alpine
 FROM python:3.10-alpine
 
+# Instalar dependencias necesarias para el entorno
+RUN apk add --no-cache gcc musl-dev linux-headers libffi-dev
+
+# Definir el directorio de trabajo
 WORKDIR /app
 
+# Copiar solo el archivo de requisitos primero para aprovechar el cache de Docker
 COPY requirements.txt .
-RUN pip install -r requirements.txt
 
+# Instalar las dependencias de Python
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copiar el resto de la aplicación
 COPY . .
+
+# Crear el directorio para archivos estáticos
+RUN mkdir -p /app/staticfiles
 
 # Ejecutar la recolección de archivos estáticos
 RUN python manage.py collectstatic --noinput
