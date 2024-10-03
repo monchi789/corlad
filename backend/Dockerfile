@@ -1,29 +1,32 @@
-# Utilizar la imagen oficial de Python para Alpine
-FROM python:3.10-alpine
+# Stage 1: Build the Django application
+FROM python:3.10-alpine AS build
 
-# Instalar dependencias necesarias para el entorno
-RUN apk add --no-cache gcc musl-dev linux-headers libffi-dev
-
-# Definir el directorio de trabajo
 WORKDIR /app
 
-# Copiar solo el archivo de requisitos primero para aprovechar el cache de Docker
+# Copiar los archivos de requerimientos y Django
 COPY requirements.txt .
 
-# Instalar las dependencias de Python
+# Instalar dependencias
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar el resto de la aplicación
+# Copiar el resto del código fuente
 COPY . .
 
-# Crear el directorio para archivos estáticos
-RUN mkdir -p /app/staticfiles
+# Ejecutar las migraciones de la base de datos y compilar archivos estáticos
+RUN python manage.py migrate && \
+    python manage.py collectstatic --noinput
 
-# Ejecutar la recolección de archivos estáticos
-RUN python manage.py collectstatic --noinput
+# Stage 2: Serve the Django application using Nginx
+FROM nginx:alpine
 
-# Exponer el puerto 8000
+# Copiar los archivos estáticos generados por Django a Nginx
+COPY --from=build /app/staticfiles /usr/share/nginx/html/static
+
+# Copiar el archivo de configuración de Nginx
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Cambiar la configuración de Nginx para escuchar en el puerto 8000
+RUN sed -i 's/listen\s*80;/listen 8000;/' /etc/nginx/nginx.conf
+
+# Exponer el puerto 8000 para servir la aplicación
 EXPOSE 8000
-
-# Comando para ejecutar Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "server.wsgi:application"]
