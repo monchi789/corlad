@@ -29,7 +29,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${ADMIN_PASSWORD}
       PGADMIN_LISTEN_PORT: 8080
     ports:
-      - "172.17.0.1:8080:8080"
+      - "8080:8080"
     volumes:
       - ./servers.json:/pgadmin4/servers.json
 
@@ -49,7 +49,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "5173:5173"
     volumes:
       - ./frontend:/app
       - /app/node_modules
