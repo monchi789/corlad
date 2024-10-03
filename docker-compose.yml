@@ -21,15 +21,17 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-    ports:
-      - "5050:5050"
-    depends_on:
-      - db
+  pgadmin4:
+          image: elestio/pgadmin:${SOFTWARE_VERSION_TAG}
+          restart: always
+          environment:
+          PGADMIN_DEFAULT_EMAIL: ${ADMIN_EMAIL}
+          PGADMIN_DEFAULT_PASSWORD: ${ADMIN_PASSWORD}
+          PGADMIN_LISTEN_PORT: 8080
+          ports:
+          - "172.17.0.1:8080:8080"
+          volumes:
+          - ./servers.json:/pgadmin4/servers.json
 
   backend:
     build:
