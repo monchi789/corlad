@@ -1,26 +1,35 @@
-version: '3.8'
-
 services:
+  nginx:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+
   db:
     image: postgres:16.2-alpine
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - backend-network
 
   pgadmin:
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-    networks:
-      - backend-network
     ports:
-      - "5432:5432"
+      - "5050:5050"
+    depends_on:
+      - db
 
   backend:
     build:
@@ -28,73 +37,20 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./backend:/app
-    environment:
-      - DEBUG=${DEBUG}
-      - SECRET_KEY=${SECRET_KEY}
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=db
-      - DB_PORT=5432
-      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
-      - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS}
-      - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL}
-      - EMAIL_BACKEND=${EMAIL_BACKEND}
-      - EMAIL_HOST=${EMAIL_HOST}
-      - EMAIL_PORT=${EMAIL_PORT}
-      - EMAIL_USE_TLS=${EMAIL_USE_TLS}
-      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
-      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
-    depends_on:
-      - db
-    networks:
-      - backend-network
     ports:
       - "8000:8000"
+    depends_on:
+      - db
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    environment:
-      - VITE_API_URL=${VITE_API_URL}
-      - VITE_API_URL_ALTER=${VITE_API_URL_ALTER}
-      - VITE_WHATSAPP=${VITE_WHATSAPP}
-    depends_on:
-      - backend
-    networks:
-      - frontend-network
-    ports:
-      - "80:80"
-
-  nginx:
-    build: ./nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./certbot:/var/www/certbot
-      - ./nginx/certificates:/etc/nginx/ssl
-    depends_on:
-      - frontend
-      - backend
-      - pgadmin
-
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./certbot:/var/www/certbot
-      - ./nginx/certificates:/etc/nginx/ss
-
-networks:
-  frontend-network:
-    driver: bridge
-  backend-network:
-    driver: bridge
 
 volumes:
   postgres_data:
