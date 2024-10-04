@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from rest_framework.permissions import AllowAny
 from drf_yasg.views import get_schema_view
+from django.conf import settings
 from drf_yasg import openapi
 from django.conf import settings
 from rest_framework_simplejwt.views import TokenRefreshView
@@ -57,4 +58,6 @@ urlpatterns = [
 ]
 
 # Servir imagenes staticas
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

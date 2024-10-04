@@ -1,21 +1,42 @@
 # Utilizar la imagen oficial de Python para Alpine
 FROM python:3.10-alpine
 
+# Establecer variables de entorno
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
 # Establecer el directorio de trabajo en el contenedor
 WORKDIR /app
 
-# Instalar herramientas de construcción y dependencias de PostgreSQL
-RUN apk add --no-cache build-base postgresql-dev
+# Instalar herramientas de construcción y dependencias
+RUN apk add --no-cache \
+    build-base \
+    postgresql-dev \
+    jpeg-dev \
+    zlib-dev \
+    libffi-dev
 
 # Instalar dependencias de Python
-COPY ./requirements.txt /app/requirements.txt
+COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar el contenido del directorio actual en el contenedor
-COPY . /app
+# Copiar el proyecto
+COPY . /app/
 
-# Ejecutar collectstatic para recopilar archivos estáticos
+# Crear directorios para archivos estáticos y media
+RUN mkdir -p /app/staticfiles /app/media
+
+# Otorgar permisos adecuados
+RUN chmod -R 755 /app/staticfiles /app/media
+
+# Recolectar archivos estáticos
 RUN python manage.py collectstatic --noinput
 
-# Comando para migrar la base de datos y luego iniciar el servidor
-CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+# Exponer el puerto en el que se ejecutará la aplicación
+EXPOSE 8000
+
+# Definir volúmenes para archivos estáticos y media
+VOLUME ["/app/staticfiles", "/app/media"]
+
+# Comando para ejecutar las migraciones y luego iniciar el servidor
+CMD ["sh", "-c", "python manage.py migrate && gunicorn server.wsgi:application --bind 0.0.0.0:8000"]
