@@ -3,8 +3,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { Colegiado, defaultColegiado } from "../../../interfaces/model/Colegiado";
-import { defaultPago, MetodoPago, Pago } from "../../../interfaces/model/Pago";
+import { Colegiado } from "../../../interfaces/model/Colegiado";
+import { MetodoPago, Pago } from "../../../interfaces/model/Pago";
 import { createPago, getMetodoPagoByFilter, getPagoById } from "../../../api/pagos.api";
 import toast, { Toaster } from "react-hot-toast";
 import { Tarifa } from "../../../interfaces/model/Tarifa";
@@ -16,9 +16,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { MultiValue } from 'react-select';
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { SubmitHandler, useForm } from "react-hook-form"
-import ErrorSpan from "../../components/ui/ErrorSpan";
 import BuscarColegiadoPagos from "./BuscarColegiadoPagos";
-import { Checkbox, FormGroup } from "@mui/material";
+import { Checkbox } from "@mui/material";
 import Spinner from "../../components/ui/Spinner";
 
 const animatedComponents = makeAnimated();
@@ -39,9 +38,8 @@ export default function EditarPagos() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>()
+  const { register, handleSubmit, setValue } = useForm<FormData>()
 
-  const [errorColegiado, setErrorColegiado] = useState(false);
   const [colegiado, setColegiado] = useState<Colegiado | null>(null);
   const [allTarifasList, setAllTarifaList] = useState<Tarifa[]>([]);
   const [selectedTarifaList, setSelectedTarifaList] = useState<Tarifa[]>([]);
@@ -50,7 +48,6 @@ export default function EditarPagos() {
   const [isMensualidad, setIsMensualidad] = useState(false);
   const [selectedMonths, setSelectedMonths] = useState<string[]>([]);
 
-  const [colegiadoData, setColegiadoData] = useState<Colegiado>(defaultColegiado) // Estado para guardar el colegiado buscado
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
