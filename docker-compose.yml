@@ -39,6 +39,8 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./backend:/app
+      - ./staticfiles:/app/staticfiles
+      - ./media:/app/media
     ports:
       - "8000:8000"
     depends_on:
