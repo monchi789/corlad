@@ -1,11 +1,12 @@
 import React from 'react';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-
 import {
   useReactTable,
   getCoreRowModel,
   flexRender,
   ColumnDef,
+  Row,
+  CellContext,
 } from '@tanstack/react-table';
 
 type DataType = Record<string, any>;
@@ -53,8 +54,8 @@ const SimpleTable = <T extends DataType>({
   const tableColumns = React.useMemo(() => {
     const formattedColumns = columns.map((column) => ({
       ...column,
-      cell: (info: any) => {
-        const value = info.getValue();
+      cell: (info: CellContext<T, unknown>) => {
+        const value = info.getValue() as React.ReactNode;  // Cast the value to ReactNode
         if (column.isMoney) {
           return (
             <div className="text-right">
@@ -73,7 +74,7 @@ const SimpleTable = <T extends DataType>({
         {
           id: 'actions',
           header: 'Acciones',
-          cell: ({ row }) => (
+          cell: ({ row }: { row: Row<T> }) => (
             <ActionButtons row={row.original} onEdit={onEdit} onDelete={onDelete} />
           ),
         },
@@ -103,9 +104,9 @@ const SimpleTable = <T extends DataType>({
                   {header.isPlaceholder
                     ? null
                     : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                 </th>
               ))}
             </tr>
