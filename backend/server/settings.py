@@ -48,10 +48,12 @@ INSTALLED_APPS = [
     'django_filters',
     'drf_yasg',
     'rest_framework_simplejwt',
+    'whitenoise',  # Agrega WhiteNoise aquí
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Asegúrate de que esta línea esté presente
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -60,7 +62,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 
 ROOT_URLCONF = 'server.urls'
 
@@ -119,7 +120,6 @@ USE_TZ = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -153,11 +153,10 @@ SIMPLE_JWT = {
     'TOKEN_TYPE_CLAIM': 'token_type',
 }
 
-
+# Rutas para archivos estáticos
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-
-# Ruta donde se almacenarán los archivos estáticos después de ejecutado collectstatic
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Ruta desde la que se servirá el contenido estático en producción
 STATIC_URL = '/static/'
+
+# Agregar WhiteNoise para servir archivos estáticos
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
