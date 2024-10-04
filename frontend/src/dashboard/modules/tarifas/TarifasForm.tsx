@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from "react-hook-form"
 
 import { createTarifa, updateTarifa } from '../../../api/tarifa.api';
-import { defaultTarifa, Tarifa } from '../../../interfaces/model/Tarifa';
+import { Tarifa } from '../../../interfaces/model/Tarifa';
 import ErrorSpan from '../../components/ui/ErrorSpan';
 import Spinner from '../../components/ui/Spinner';
 

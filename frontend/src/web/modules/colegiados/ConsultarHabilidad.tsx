@@ -40,7 +40,7 @@ export default function ConsultarHabilidad() {
   const onPageChange = (event: PaginatorPageChangeEvent) => {
     setFirst(event.first);
     setRows(event.rows);
-    handleSearch(event.page, event.rows);
+    handleSearch();
     window.scrollTo(0, 0);
   };
 
@@ -65,7 +65,7 @@ export default function ConsultarHabilidad() {
     }
   };
 
-  const handleSearch = async (page = 0, pageSize = rows) => {
+  const handleSearch = async () => {
     let params = "";
 
     if (selectedOption) {
@@ -89,7 +89,7 @@ export default function ConsultarHabilidad() {
         setIsLoading(true);
         setIsNotFound(false);
 
-        const res = await getConsultarHabilidad(page, pageSize, params);
+        const res = await getConsultarHabilidad(params);
         if (res.data.results && res.data.results.length > 0) {
           setColegiadoData(res.data.results); // Cambiar a múltiples resultados
           setTotalRecords(res.data.count);
@@ -161,7 +161,7 @@ export default function ConsultarHabilidad() {
           )}
           <button
             className="w-full md:w-1/5 bg-[#00330a] hover:bg-green-800 transition duration-300 text-[#f0f0f0] md:ms-3 px-5 py-3 rounded"
-            onClick={() => handleSearch(0, rows)}
+            onClick={() => handleSearch()}
           >
             Buscar
           </button>
