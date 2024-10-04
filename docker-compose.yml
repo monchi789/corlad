@@ -39,8 +39,8 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./backend:/app
-      - ./staticfiles:/app/staticfiles
-      - ./media:/app/media
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
     ports:
       - "8000:8000"
     depends_on:
@@ -59,3 +59,5 @@ services:
 volumes:
   postgres_data:
   node_modules:
+  static_volume:
+  media_volume:

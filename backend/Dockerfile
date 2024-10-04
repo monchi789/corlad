@@ -20,6 +20,9 @@ RUN apk add --no-cache \
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Instalar whitenoise
+RUN pip install whitenoise
+
 # Copiar el proyecto
 COPY . /app/
 
@@ -34,9 +37,6 @@ RUN python manage.py collectstatic --noinput
 
 # Exponer el puerto en el que se ejecutará la aplicación
 EXPOSE 8000
-
-# Definir volúmenes para archivos estáticos y media
-VOLUME ["/app/staticfiles", "/app/media"]
 
 # Comando para ejecutar las migraciones y luego iniciar el servidor
 CMD ["sh", "-c", "python manage.py migrate && gunicorn server.wsgi:application --bind 0.0.0.0:8000"]
