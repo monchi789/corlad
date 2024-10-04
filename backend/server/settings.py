@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'django_filters',
     'drf_yasg',
     'rest_framework_simplejwt',
-    'whitenoise',  # Agrega WhiteNoise aquí
+    'whitenoise',  # Agrega WhiteNoise aquí,
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
