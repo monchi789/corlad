@@ -153,3 +153,10 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
 }
+
+
+# Ruta donde se almacenarán los archivos estáticos después de ejecutado collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Ruta desde la que se servirá el contenido estático en producción
+STATIC_URL = '/static/'
