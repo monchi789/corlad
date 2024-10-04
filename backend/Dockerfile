@@ -20,9 +20,6 @@ RUN apk add --no-cache \
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Instalar whitenoise
-RUN pip install whitenoise
-
 # Copiar el proyecto
 COPY . /app/
 
