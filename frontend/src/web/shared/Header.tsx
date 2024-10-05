@@ -85,19 +85,19 @@ export const Header = React.memo(function Header() {
           </div>
         </li>
         <li className="my-4 py-4 border-b">
-            <NavLink to="/noticias" className={({ isActive }) =>
-              `${isActive || activeLink === 'noticias' ? 'underline decoration-4 decoration-[#00330a]' : ''}
+          <NavLink to="/noticias" className={({ isActive }) =>
+            `${isActive || activeLink === 'noticias' ? 'underline decoration-4 decoration-[#00330a]' : ''}
                 block hover:bg-gray-100 transition duration-200 px-4 py-2`}
-            >
-              Noticias
-            </NavLink>
+          >
+            Noticias
+          </NavLink>
 
-            <NavLink to="/bolsa-trabajo" className={({ isActive }) =>
-              `${isActive || activeLink === 'bolsa-trabajo' ? 'underline decoration-4 decoration-[#00330a]' : ''}
+          <NavLink to="/bolsa-trabajo" className={({ isActive }) =>
+            `${isActive || activeLink === 'bolsa-trabajo' ? 'underline decoration-4 decoration-[#00330a]' : ''}
                 block hover:bg-gray-100 transition duration-200 px-4 py-2`}
-            >
-              Bolsa de trabajo
-            </NavLink>
+          >
+            Bolsa de trabajo
+          </NavLink>
         </li>
         <li className="my-4 py-4 border-b">
           <NavLink
@@ -109,19 +109,19 @@ export const Header = React.memo(function Header() {
           </NavLink>
         </li>
         <li>
-            <NavLink to="/colegiatura" className={({ isActive }) =>
-              `${isActive || activeLink === 'colegiatura' ? 'underline decoration-4 decoration-[#00330a]' : ''}
+          <NavLink to="/colegiatura" className={({ isActive }) =>
+            `${isActive || activeLink === 'colegiatura' ? 'underline decoration-4 decoration-[#00330a]' : ''}
                 block hover:bg-gray-100 transition duration-200 px-4 py-2`}
-            >
-              ¿Cómo colegiarse?
-            </NavLink>
+          >
+            ¿Cómo colegiarse?
+          </NavLink>
 
-            <NavLink to="/consultar-habilidad" className={({ isActive }) =>
-              `${isActive || activeLink === 'bolsa-trabajo' ? 'underline decoration-4 decoration-[#00330a]' : ''}
+          <NavLink to="/consultar-habilidad" className={({ isActive }) =>
+            `${isActive || activeLink === 'bolsa-trabajo' ? 'underline decoration-4 decoration-[#00330a]' : ''}
                 block hover:bg-gray-100 transition duration-200 px-4 py-2`}
-            >
-              Consultar habilidad
-            </NavLink>
+          >
+            Consultar habilidad
+          </NavLink>
         </li>
       </ul>
     </div>
@@ -279,10 +279,16 @@ export const Header = React.memo(function Header() {
         <div>
           {content}
         </div>
-        <button className="block lg:hidden transition me-10" onClick={handleClick}>
+        <button
+          className="block lg:hidden transition me-10"
+          aria-label="Abrir menú de navegación"
+          onClick={handleClick}
+        >
           {click ? <FaTimes size={25} color="#00330A" /> : <FiAlignJustify size={25} color="#00330A" />}
         </button>
       </div>
     </nav>
   );
 });
+
+export default Header

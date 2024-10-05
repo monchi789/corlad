@@ -15,13 +15,11 @@ export function Servicios() {
           CONSULTAR <br /> COLEGIATURA
         </h3>
         <p className="text-[#363636] font-didact mb-auto">
-          Consulta el estado de tu colegiatura y otros detalles importantes sobre tu membresía en nuestra institución. 
+          Consulta el estado de tu colegiatura y otros detalles importantes sobre tu membresía en nuestra institución.
         </p>
-        <Link to={"/consultar-habilidad"}>
-          <button className="flex items-center justify-center bg-corlad hover:bg-hover-corlad text-white rounded-lg mx-auto font-nunito transition duration-300 space-x-2 mt-5 py-2 px-4">
-            <span>Más información</span>
-            <FaArrowRightLong />
-          </button>
+        <Link className="flex items-center justify-center bg-corlad hover:bg-hover-corlad text-white rounded-lg mx-auto font-nunito transition duration-300 space-x-2 mt-5 py-2 px-4" to={"/consultar-habilidad"}>
+          <span>Más información</span>
+          <FaArrowRightLong />
         </Link>
       </div>
 
@@ -32,13 +30,11 @@ export function Servicios() {
         </div>
         <h3 className="text-[#363636] font-extrabold font-nunito text-xl my-5">PUBLICACIONES</h3>
         <p className="text-[#363636] font-didact mb-auto">
-          Mantente al tanto de las últimas noticias, eventos, y novedades de nuestra institución. 
+          Mantente al tanto de las últimas noticias, eventos, y novedades de nuestra institución.
         </p>
-        <Link to={"/noticias"}>
-          <button className="flex items-center justify-center bg-corlad hover:bg-hover-corlad text-white rounded-lg mx-auto font-nunito transition duration-300 space-x-2 mt-5 py-2 px-4">
-            <span>Más información</span>
-            <FaArrowRightLong />
-          </button>
+        <Link className="flex items-center justify-center bg-corlad hover:bg-hover-corlad text-white rounded-lg mx-auto font-nunito transition duration-300 space-x-2 mt-5 py-2 px-4" to={"/noticias"}>
+          <span>Más información</span>
+          <FaArrowRightLong />
         </Link>
       </div>
 
@@ -51,15 +47,14 @@ export function Servicios() {
         <p className="text-[#363636] font-didact mb-auto">
           Encuentra ofertas de trabajo en tu área de especialidad y accede a recursos para mejorar tus habilidades profesionales.
         </p>
-        <Link to={"/bolsa-trabajo"}>
-        <button className="flex items-center justify-center bg-corlad hover:bg-hover-corlad text-white rounded-lg mx-auto font-nunito transition duration-300 space-x-2 mt-5 py-2 px-4">
-        <span>Más información</span>
-            <FaArrowRightLong />
-          </button>
+        <Link className="flex items-center justify-center bg-corlad hover:bg-hover-corlad text-white rounded-lg mx-auto font-nunito transition duration-300 space-x-2 mt-5 py-2 px-4" to={"/bolsa-trabajo"}>
+
+          <span>Más información</span>
+          <FaArrowRightLong />
         </Link>
       </div>
     </div>
-
-
   )
 }
+
+export default Servicios

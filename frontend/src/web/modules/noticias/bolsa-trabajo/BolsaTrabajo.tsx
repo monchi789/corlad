@@ -71,7 +71,7 @@ export default function BolsaTrabajo() {
     <>
       <Header />
       <div className="container flex flex-col my-40 mx-auto">
-        <h1 className="text-4xl text-[#a67102] font-extrabold font-nunito text-center mb-24">Bolsa de trabajo</h1>
+        <h1 className="text-4xl text-[#a67102] font-extrabold font-nunito text-center mb-24">BOLSA DE TRABAJO</h1>
         <div className="flex flex-col justify-center lg:w-full mb-24 mx-10">
           {/* Noticias */}
           {noticiasList.length === 0 ? (
