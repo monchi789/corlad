@@ -37,10 +37,6 @@
     "react-slick": "^0.30.2",
     "react-spinners": "^0.14.1",
     "react-switch": "^7.0.0",
-    "slate": "^0.103.0",
-    "slate-history": "^0.100.0",
-    "slate-hyperscript": "^0.100.0",
-    "slate-react": "^0.107.1",
     "slick-carousel": "^1.8.1",
     "vite-bundle-visualizer": "^1.2.1"
   },
