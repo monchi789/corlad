@@ -4,7 +4,7 @@ import { getAllNoticiasByPage } from "../../../api/publicacion.api";
 import { Publicacion } from "../../../interfaces/model/Publicacion";
 import logo_corlad_blanco from '../../../assets/web/corlad_logo_blanco.png'
 import logo_corlad from '../../../assets/web/corlad_logo.png'
-import background from "../../../assets/web/machupicchu.jpg"
+import background from "../../../assets/web/machupicchu.webp"
 import 'react-image-gallery/styles/css/image-gallery.css'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
