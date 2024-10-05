@@ -71,16 +71,16 @@ export default function Nosotros() {
 
       <div className="flex flex-col lg:flex-row mx-auto w-full font-nunito items-center space-y-10 lg:space-y-0 mt-5 mb-24">
         <div className="lg:w-1/3 text-center">
-          <p className="text-4xl text-[#363636] lg:text-5xl font-extrabold">2000+</p>
-          <p className="font-semibold text-lg lg:text-xl text-[#a67102]">Colegiados</p>
+          <p className="text-4xl text-[#00330A] lg:text-5xl font-extrabold">2000+</p>
+          <p className="font-bold text-lg lg:text-xl text-[#00330A]">Colegiados</p>
         </div>
         <div className="lg:w-1/3 text-center">
-          <p className="text-4xl text-[#363636] lg:text-5xl font-extrabold">2+</p>
-          <p className="font-semibold text-lg text-[#a67102]">Convenios institucionales</p>
+          <p className="text-4xl text-[#00330A] lg:text-5xl font-extrabold">2+</p>
+          <p className="font-bold text-lg text-[#00330A]">Convenios institucionales</p>
         </div>
         <div className="lg:w-1/3 text-center">
-          <p className="text-4xl text-[#363636] lg:text-5xl font-extrabold">40</p>
-          <p className="font-semibold text-lg text-[#a67102]">Años sirviendo</p>
+          <p className="text-4xl text-[#00330A] lg:text-5xl font-extrabold">40</p>
+          <p className="font-bold text-lg text-[#00330A]">Años sirviendo</p>
         </div>
       </div>
 

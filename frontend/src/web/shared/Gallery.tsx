@@ -68,7 +68,7 @@ export function Gallery() {
         renderItem={renderItem}
         showPlayButton={false}
         showNav={false}
-        showBullets={true}
+        showBullets={false}
         showFullscreenButton={false}
         autoPlay={true}
         slideInterval={5000}
@@ -78,3 +78,5 @@ export function Gallery() {
     </>
   );
 }
+
+export default Gallery

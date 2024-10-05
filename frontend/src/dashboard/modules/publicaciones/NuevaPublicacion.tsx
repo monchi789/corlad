@@ -4,7 +4,7 @@ import { Dropdown } from "primereact/dropdown";
 import { Categoria } from "../../../interfaces/model/Categoria";
 import { getAllCategoriasAdmin } from "../../../api/categoria.api";
 import JoditEditor from 'jodit-react';
-import imagen_default from "../../../assets/dashboard/default_image.jpg";
+import imagen_default from "../../../assets/dashboard/default_image.webp";
 import { defaultPublicacion, Publicacion } from "../../../interfaces/model/Publicacion";
 import { createPublicacion } from "../../../api/publicacion.api";
 import { FaArrowCircleLeft } from "react-icons/fa";

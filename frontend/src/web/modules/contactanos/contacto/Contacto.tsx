@@ -43,7 +43,7 @@ export function Contacto() {
 
   return (
     <div className="flex flex-col relative xl:flex-row bg-[#03853D] max-w-5xl md:mx-10 xl:mx-auto p-8 md:px-12 font-nunito rounded-3xl">
-      <div className="bg-[#00330A] text-[#a67102] p-5 rounded-2xl xl:w-2/5 xl:absolute -left-24 top-4 bottom-4 shadow-lg z-10 my-5 xl:my-10">
+      <div className="bg-[#00330A] text-[#F5D48F] p-5 rounded-2xl xl:w-2/5 xl:absolute -left-24 top-4 bottom-4 shadow-lg z-10 my-5 xl:my-10">
         <div className="py-5 md:ms-8">
           <h3 className="text-center text-2xl font-bold mb-6">Contacto</h3>
           <div className="space-y-8">

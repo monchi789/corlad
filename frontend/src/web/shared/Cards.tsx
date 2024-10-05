@@ -25,7 +25,7 @@ const formatTitle = (title: string) => {
     .replace(/[^\w-]/g, ''); // Elimina caracteres especiales
 };
 
-export const Card: React.FC<CardProps> = ({ imageSource, imageAlt, cardTitle, cardText, noticiaId }) => {
+const Card: React.FC<CardProps> = ({ imageSource, imageAlt, cardTitle, cardText, noticiaId }) => {
   const formattedTitle = formatTitle(cardTitle);
   return (
     <div className="flex flex-col bg-[#F8F8F8] rounded-3xl shadow-md min-w-[300px]  max-w-[300px]">
@@ -37,18 +37,16 @@ export const Card: React.FC<CardProps> = ({ imageSource, imageAlt, cardTitle, ca
       <div className="flex flex-col justify-between flex-1 px-5 py-4">
         <h4 className="text-xl text-[#00330A] font-nunito font-extrabold mb-3">{cardTitle}</h4>
         <p className="text-[#363636] mb-auto" dangerouslySetInnerHTML={{ __html: cardText }} />
-        <Link to={`/noticias/${noticiaId}/${formatTitle(formattedTitle)}`}>
-          <button className="flex items-center justify-center bg-corlad hover:bg-hover-corlad text-white rounded-lg mx-auto font-nunito transition duration-300 space-x-2 mt-5 py-1 px-4">
-            <span>Leer más</span>
-            <FaArrowRightLong />
-          </button>
+        <Link className="flex items-center justify-center bg-corlad hover:bg-hover-corlad text-white rounded-lg mx-auto font-nunito transition duration-300 space-x-2 mt-5 py-2 px-4" to={`/noticias/${noticiaId}/${formatTitle(formattedTitle)}`}>
+          <span className="font-bold">Leer más</span>
+          <FaArrowRightLong />
         </Link>
       </div>
     </div>
   )
 }
 
-export const HorizontalCard: React.FC<horizontalCardProps> = ({ imageSource, imageAlt, cardTitle, cardText, cardDate, noticiaId }) => {
+const HorizontalCard: React.FC<horizontalCardProps> = ({ imageSource, imageAlt, cardTitle, cardText, cardDate, noticiaId }) => {
   const formattedTitle = formatTitle(cardTitle);
   return (
     <div className="flex flex-col lg:flex-row font-nunito bg-[#F8F8F8] rounded-xl lg:mt-0 px-5 py-10">
@@ -75,3 +73,5 @@ export const HorizontalCard: React.FC<horizontalCardProps> = ({ imageSource, ima
   );
 }
 
+export default Card
+export {Card, HorizontalCard}

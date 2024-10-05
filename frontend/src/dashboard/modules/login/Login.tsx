@@ -56,7 +56,6 @@ export default function Login() {
       // Redirige al inicio
       navigate('/admin');
     } catch (error) {
-      console.log(error)
       setError('Error al iniciar sesión');
     }
   };
@@ -170,7 +169,7 @@ export default function Login() {
                   }}
                 />
                   <span className="text-[#B50C0C] mt-2">{error}</span><br />
-                  <button className="bg-[#00330A] hover:bg-[#5F4102] text-white font-nunito font-bold shadow-md transition duration-200 rounded mt-3 mb-2 px-6 py-1.5" type="submit">
+                  <button className="bg-hover-corlad hover:bg-corlad text-white font-nunito font-bold shadow-md transition duration-200 rounded mt-3 mb-2 px-6 py-1.5" type="submit">
                     Ingresar
                   </button>
               </Box>
