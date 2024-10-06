@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../dashboard/contexts/AuthContext';
+import { useAuth } from '../pages/dashboard/contexts/AuthContext';
 
 interface GroupProtectedRouteProps {
   children: React.ReactElement;
@@ -18,7 +18,7 @@ export const GroupProtectedRoute: React.FC<GroupProtectedRouteProps> = ({ childr
   const hasAllowedGroup = allowedGroups.some(group => hasGroup(group));
 
   if (!hasAllowedGroup) {
-    return <Navigate to="/unauthorized" replace />;
+    return <Navigate to="/no-autorizado" replace />;
   }
 
   return children;

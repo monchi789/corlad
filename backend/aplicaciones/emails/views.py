@@ -25,7 +25,7 @@ class EmailAPIView(APIView):
             from_email = correo  
 
             # Envia el email
-            send_mail(subject, message, from_email, ['corladcusco043@gmail.com'])
+            send_mail(subject, message, from_email, ['corladcusco@gmail.com'])
             
             # Retorna un mensaje de confirmacion
             return Response({'message': 'Correo Enviado con Exito'}, status=status.HTTP_200_OK)
