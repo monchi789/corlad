@@ -2,39 +2,39 @@
 import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { GroupProtectedRoute } from './GroupProtectedRoute.tsx';
-import AdminLayout from '../dashboard/AdminLayout.tsx';
+import AdminLayout from '../pages/dashboard/AdminLayout.tsx';
 
 // Rutas públicas con Lazy Loading
-const Inicio = lazy(() => import('../web/modules/inicio/Inicio.tsx'));
-const Nosotros = lazy(() => import('../web/modules/institucional/Nosotros.tsx'));
-const Normativas = lazy(() => import('../web/modules/institucional/Normativas.tsx'))
-const Noticias = lazy(() => import('../web/modules/noticias/Noticias.tsx'));
-const Noticia = lazy(() => import('../web/modules/noticias/noticia/Noticia.tsx'));
-const BolsaTrabajo = lazy(() => import('../web/modules/noticias/bolsa-trabajo/BolsaTrabajo.tsx'));
-const Contactanos = lazy(() => import('../web/modules/contactanos/Contactanos.tsx'));
-const ConsultarHabilidad = lazy(() => import('../web/modules/colegiados/ConsultarHabilidad.tsx'));
-const Colegiatura = lazy(() => import('../web/modules/colegiados/Colegiatura.tsx'));
+const Inicio = lazy(() => import('../pages/public/modules/inicio/Inicio.tsx'));
+const Nosotros = lazy(() => import('../pages/public/modules/institucional/Nosotros.tsx'));
+const Normativas = lazy(() => import('../pages/public/modules/institucional/Normativas.tsx'))
+const Noticias = lazy(() => import('../pages/public/modules/noticias/Noticias.tsx'));
+const Noticia = lazy(() => import('../pages/public/modules/noticias/noticia/Noticia.tsx'));
+const BolsaTrabajo = lazy(() => import('../pages/public/modules/noticias/bolsa-trabajo/BolsaTrabajo.tsx'));
+const Contactanos = lazy(() => import('../pages/public/modules/contactanos/Contactanos.tsx'));
+const ConsultarHabilidad = lazy(() => import('../pages/public/modules/colegiados/ConsultarHabilidad.tsx'));
+const Colegiatura = lazy(() => import('../pages/public/modules/colegiados/Colegiatura.tsx'));
 
 // Rutas protegidas con Lazy Loading
-const Login = lazy(() => import('../dashboard/modules/login/Login.tsx'));
-const InicioAdmin = lazy(() => import('../dashboard/modules/inicio/InicioAdmin.tsx'));
-const ColegiadosPage = lazy(() => import('../dashboard/modules/colegiados/ColegiadosPage.tsx'));
-const AgregarColegiado = lazy(() => import('../dashboard/modules/colegiados/AgregarColegiado.tsx'));
-const EditarColegiado = lazy(() => import('../dashboard/modules/colegiados/EditarColegiado.tsx'));
-const Capitulos = lazy(() => import('../dashboard/modules/capitulos/Capitulos.tsx'));
-const PopUpsPage = lazy(() => import('../dashboard/modules/popups/PopUpsPage.tsx'));
-const SlidersAdmin = lazy(() => import('../dashboard/modules/sliders/SlidersPage.tsx'));
-const PublicacionesAdmin = lazy(() => import('../dashboard/modules/publicaciones/PublicacionesPage.tsx'));
-const NuevaPublicacion = lazy(() => import('../dashboard/modules/publicaciones/NuevaPublicacion.tsx'));
-const EditarPublicacion = lazy(() => import('../dashboard/modules/publicaciones/EditarPublicacion.tsx'));
-const CategoriasPage = lazy(() => import('../dashboard/modules/categorias/CategoriasPage.tsx'));
-const PagosPage = lazy(() => import('../dashboard/modules/pagos/PagosPage.tsx'));
-const AgregarPagos = lazy(() => import('../dashboard/modules/pagos/AgregarPagos.tsx'));
-const EditarPagos = lazy(() => import('../dashboard/modules/pagos/EditarPagos.tsx'));
-const EstadoCuentas = lazy(() => import('../dashboard/modules/estadocuenta/EstadoCuentas.tsx'));
-const TarifasPage = lazy(() => import('../dashboard/modules/tarifas/TarifasPage.tsx'));
+const Login = lazy(() => import('../pages/dashboard/modules/login/Login.tsx'));
+const InicioAdmin = lazy(() => import('../pages/dashboard/modules/inicio/InicioAdmin.tsx'));
+const ColegiadosPage = lazy(() => import('../pages/dashboard/modules/colegiados/ColegiadosPage.tsx'));
+const AgregarColegiado = lazy(() => import('../pages/dashboard/modules/colegiados/AgregarColegiado.tsx'));
+const EditarColegiado = lazy(() => import('../pages/dashboard/modules/colegiados/EditarColegiado.tsx'));
+const Capitulos = lazy(() => import('../pages/dashboard/modules/capitulos/Capitulos.tsx'));
+const PopUpsPage = lazy(() => import('../pages/dashboard/modules/popups/PopUpsPage.tsx'));
+const SlidersAdmin = lazy(() => import('../pages/dashboard/modules/sliders/SlidersPage.tsx'));
+const PublicacionesAdmin = lazy(() => import('../pages/dashboard/modules/publicaciones/PublicacionesPage.tsx'));
+const NuevaPublicacion = lazy(() => import('../pages/dashboard/modules/publicaciones/NuevaPublicacion.tsx'));
+const EditarPublicacion = lazy(() => import('../pages/dashboard/modules/publicaciones/EditarPublicacion.tsx'));
+const CategoriasPage = lazy(() => import('../pages/dashboard/modules/categorias/CategoriasPage.tsx'));
+const PagosPage = lazy(() => import('../pages/dashboard/modules/pagos/PagosPage.tsx'));
+const AgregarPagos = lazy(() => import('../pages/dashboard/modules/pagos/AgregarPagos.tsx'));
+const EditarPagos = lazy(() => import('../pages/dashboard/modules/pagos/EditarPagos.tsx'));
+const EstadoCuentas = lazy(() => import('../pages/dashboard/modules/estadocuenta/EstadoCuentas.tsx'));
+const TarifasPage = lazy(() => import('../pages/dashboard/modules/tarifas/TarifasPage.tsx'));
 
-const Unauthorized = lazy(() => import('../dashboard/components/NoAutorizado.tsx'));
+const NoAutorizado = lazy(() => import('./NoAutorizado.tsx'));
 // Componente de carga personalizada
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center h-screen">
@@ -107,7 +107,7 @@ const AppRoutes = () => {
         ))}
 
         {/* Ruta para usuarios no autorizados */}
-        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/no-autorizado" element={<NoAutorizado />} />
 
         {/* Ruta para redirigir a /admin cuando no existe */}
         <Route path="*" element={<Navigate to="/admin" replace />} />
