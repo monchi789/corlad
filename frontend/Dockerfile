@@ -15,8 +15,8 @@ FROM nginx:alpine
 # Copiar los archivos de construcción al directorio de Nginx
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Cambiar la configuración de Nginx para escuchar en el puerto 3000
-RUN sed -i 's/listen\s*80;/listen 5173;/' /etc/nginx/conf.d/default.conf
+# Copiar la configuración personalizada de Nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Exponer el puerto 3000 para el servidor Nginx
+# Exponer el puerto 5173 para el servidor Nginx
 EXPOSE 5173
