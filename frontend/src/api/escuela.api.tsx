@@ -108,7 +108,7 @@ export const deleteEspecialidad = (id: number) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken');
 
-  return axios.delete(`${apiUrl}especialidad/especialidades/${id}`, {
+  return axios.delete(`${apiUrl}especialidad/especialidades/${id}/`, {
     headers: {
       'Authorization': `Bearer ${token}` 
     }

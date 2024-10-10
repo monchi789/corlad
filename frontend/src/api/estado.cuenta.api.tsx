@@ -5,7 +5,7 @@ export const getAllEstadosCuentas = (page=0, pageSize=10) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.get(`${apiUrl}gestion-pagos/estado-cuentas/?page=${page + 1}&page_size=${pageSize}`, {
+  return axios.get(`${apiUrl}pago/estado-cuenta/?page=${page + 1}&page_size=${pageSize}`, {
     headers: {
       'Authorization': `Bearer ${token}` // Incluyendo el token en los encabezados
     }
@@ -16,7 +16,7 @@ export const getEstadoCuentaByFilters = (numero_colegiatura?: string, dni_colegi
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.get(`${apiUrl}gestion-pagos/estado-cuentas/`, {
+  return axios.get(`${apiUrl}pago/estado-cuenta/`, {
     params: {
       numero_colegiatura,
       dni_colegiado,
