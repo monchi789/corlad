@@ -22,7 +22,7 @@ export const NoAutorizado: React.FC = () => {
             <FaArrowLeft className="mr-2" /> Regresar
           </button>
           <Link 
-            to="/login" 
+            to="/admin/login" 
             className="px-4 py-2 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600 transition duration-300"
           >
             Volver a iniciar sesión

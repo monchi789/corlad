@@ -19,10 +19,11 @@ interface MenuItemProps {
 }
 
 export function Sidebar() {
-  const { dropdownStates, toggleDropdown } = useDropdown();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { hasGroup, logout } = useAuth();
 
+  const { dropdownStates, toggleDropdown } = useDropdown();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   const handleLogout = () => logout();

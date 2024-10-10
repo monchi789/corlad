@@ -285,7 +285,7 @@ const ConfirmDeleteModal: React.FC<{
             }
             onClick={onConfirm}
           >
-            {isLoading ? <Spinner /> : 'Guardar'}
+            {isLoading ? <Spinner /> : 'Eliminar'}
           </button>
         </div>
       </div>

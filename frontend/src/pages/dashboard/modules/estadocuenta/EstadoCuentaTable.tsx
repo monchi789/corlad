@@ -1,6 +1,5 @@
-import { Avatar } from "primereact/avatar";
 import { TableCards } from "../../components/TableCards";
-import { EstadoCuenta } from "../../../../interfaces/model/EstadoCuenta";
+import { EstadoCuenta } from "../../../../interfaces/EstadoCuenta";
 
 interface EstadoCuentaTableProps {
   estadoCuentaList: EstadoCuenta[];
@@ -18,16 +17,13 @@ export function EstadoCuentaTable({ estadoCuentaList }: EstadoCuentaTableProps) 
   const renderRow = (estado: EstadoCuenta) => (
     <>
       <div className="w-2/6 flex flex-row space-x-3">
-        <Avatar className="my-auto" shape="circle" image={import.meta.env.VITE_API_URL_ALTER + estado.id_colegiado.foto_colegiado} size="xlarge" />
         <div className="flex flex-col">
-          <p>{estado.id_colegiado.nombre}</p>
-          <p>{estado.id_colegiado.apellido_paterno + ' ' + estado.id_colegiado.apellido_materno}</p>
+          <p>{estado.nombre}</p>
+          <p>{estado.apellido_paterno + ' ' + estado.apellido_materno}</p>
         </div>
       </div>
-      <div className="w-1/6 my-auto">{estado.id_colegiado.dni_colegiado}</div>
-      <div className="w-1/6 my-auto">{estado.id_colegiado.numero_colegiatura}</div>
-      <div className="w-1/6 my-auto">{estado.fecha_actualizacion}</div>
-      <div className="w-1/6 my-auto">S/. {estado.saldo}</div>
+      <div className="w-1/6 my-auto">{estado.numero_colegiatura}</div>
+      <div className="w-1/6 my-auto">S/. {estado.monto_acumulado}</div>
     </>
   );
 
