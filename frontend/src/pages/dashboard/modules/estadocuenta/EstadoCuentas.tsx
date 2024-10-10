@@ -1,55 +1,62 @@
 import { useState, useEffect } from "react";
 import { BuscarEstadoCuenta } from "./BuscarEstadoCuenta";
-import { EstadoCuentaTable } from "./EstadoCuentaTable";
-import { EstadoCuenta } from "../../../../interfaces/model/EstadoCuenta";
+import { ColumnDef } from '@tanstack/react-table';
+import { EstadoCuenta } from "../../../../interfaces/EstadoCuenta";
 import { getAllEstadosCuentas } from "../../../../api/estado.cuenta.api";
-import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
-import { classNames } from "primereact/utils";
+import SimpleTable from "../../components/ui/SimpleTable";
+import { useNavigate } from "react-router-dom";
+import { FaArrowCircleLeft } from "react-icons/fa";
+
+type CustomColumnDef<T> = ColumnDef<T> & {
+  isMoney?: boolean;
+};
+
+const columns: CustomColumnDef<EstadoCuenta>[] = [
+  {
+    header: 'Nombre',
+    accessorKey: 'nombre',
+    cell: info => info.getValue()
+  },
+  {
+    header: 'Apellido paterno',
+    accessorKey: 'apellido_paterno',
+    cell: info => info.getValue()
+  },
+  {
+    header: 'Apellido materno',
+    accessorKey: 'apellido_materno',
+    cell: info => info.getValue()
+  },
+  {
+    header: 'Numero colegiatura',
+    accessorKey: 'numero_colegiatura',
+    cell: info => info.getValue()
+  },
+  {
+    header: 'Monto S/.',
+    accessorKey: 'monto_acumulado',
+    isMoney: true,
+    cell: info => {
+      const value = info.getValue();
+      return typeof value === 'number' ? `S/. ${value.toFixed(2)}` : value;
+    }
+  }
+];
 
 export default function EstadoCuentas() {
+  const navigate = useNavigate();
+
   const [estadoCuentaList, setEstadoCuentaList] = useState<EstadoCuenta[]>([]);
-  const [totalRecords, setTotalRecords] = useState(0);
-  const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(10); // Número de noticias por página
+  const [rows, ] = useState(10); // Número de noticias por página
 
   async function cargarEstadosCuentas(page = 0, pageSize = rows) {
     try {
       const res = await getAllEstadosCuentas(page, pageSize);
       setEstadoCuentaList(res.data.results);
-      setTotalRecords(res.data.count);
     } catch (error) {
       console.error("Error fetching estado de cuenta:", error);
     }
   }
-
-  // Función para manejar el cambio de página
-  const onPageChange = (event: PaginatorPageChangeEvent) => {
-    setFirst(event.first);
-    setRows(event.rows);
-    cargarEstadosCuentas(event.page, event.rows);
-    window.scrollTo(0, 0);
-  };
-
-  // Template para el paginador
-  const template = {
-    layout: 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink',
-    PageLinks: (options: any) => {
-
-      const isActive = options.page === options.currentPage;
-
-      return (
-        <button
-          className={classNames('px-3 py-1 mx-1 rounded-lg transition duration-300', {
-            'bg-[#007336] text-white': isActive,
-            'bg-white text-black': !isActive
-          })}
-          onClick={options.onClick}
-        >
-          {options.page + 1}
-        </button>
-      )
-    }
-  };
 
   useEffect(() => {
     cargarEstadosCuentas();
@@ -61,24 +68,23 @@ export default function EstadoCuentas() {
 
   return (
     <>
-
-      <div className="flex flex-col space-y-5 my-5">
-        <div className="flex flex-row justify-between">
-          <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Estados de cuenta</h4>
+        <div className="flex flex-row">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center text-gray-700 hover:text-gray-900 p-2"
+          >
+            <FaArrowCircleLeft className="mr-2" size={"30px"} />
+          </button>
+          <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold my-auto">Estados de cuenta de los colegiados</h4>
         </div>
-      </div>
 
       <BuscarEstadoCuenta onSearchResults={handleSearchResults} />
 
-      <EstadoCuentaTable estadoCuentaList={estadoCuentaList} />
-
-      <Paginator
-        first={first}
-        rows={rows}
-        totalRecords={totalRecords}
-        onPageChange={onPageChange}
-        className="space-x-5 mt-5"
-        template={template}
+      <SimpleTable<EstadoCuenta>
+      columns={columns}
+      data={estadoCuentaList}
+      pagination={true}
+      pageSize={10}
       />
     </>
   );

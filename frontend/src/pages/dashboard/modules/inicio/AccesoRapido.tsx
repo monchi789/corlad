@@ -10,8 +10,8 @@ const AccesoRapido = () => {
     { label: 'Nuevo capítulo', icon: <AccountBalance sx={{ color: '#3A3A3A' }} />, link: '/admin/capitulos', group: ['secretaria', 'admin'] },
     { label: 'Nuevo pago', icon: <Payment sx={{ color: '#3A3A3A' }} />, link: '/admin/pagos/nuevo-pago', group: ['secretaria', 'admin'] },
     { label: 'Nueva publicación', icon: <Publish sx={{ color: '#3A3A3A' }} />, link: '/admin/publicaciones/nueva-publicacion', group: ['publicador', 'admin'] },
-    { label: 'Actualizar anuncio', icon: <OpenInBrowser sx={{ color: '#3A3A3A' }} />, link: '/admin/anuncios', group: ['publicador', 'admin'] },
-    { label: 'Actualizar galería', icon: <Slideshow sx={{ color: '#3A3A3A' }} />, link: '/admin/galeria', group: ['publicador', 'admin'] },
+    { label: 'Administrar anuncio', icon: <OpenInBrowser sx={{ color: '#3A3A3A' }} />, link: '/admin/anuncios', group: ['publicador', 'admin'] },
+    { label: 'Administrar galería', icon: <Slideshow sx={{ color: '#3A3A3A' }} />, link: '/admin/galeria', group: ['publicador', 'admin'] },
   ];
 
   return (

@@ -163,13 +163,14 @@ export default function EditarColegiado() {
     const formData = convertToFormData(colegiadoData);
 
     try {
-      await updateColegiado(parseInt(id2!), formData);
+      const res1 = await updateColegiado(parseInt(id2!), formData);
 
       const filteredEspecialidad = especialidadData.filter(especialidad => especialidad.id === selectedEspecialidad);
       historialData.id_especialidad = filteredEspecialidad[0];
 
-      await updateHistorialColegiado(historialData.id, historialData);
+      const res2 = await updateHistorialColegiado(historialData.id, historialData);
 
+      console.log(res1,res2)
       toast.success('Colegiado actualizado exitosamente');
       navigate("/admin/colegiado")
     } catch (error: any) {
@@ -481,7 +482,6 @@ export default function EditarColegiado() {
                       value={historialData.nombre_universidad_bachiller}
                       onChange={handleChangeHistorial}
                       className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
-                      required
                     />
                   </div>
                   <div className="w-1/2">
@@ -519,7 +519,6 @@ export default function EditarColegiado() {
                       value={historialData.nombre_universidad_titulo}
                       onChange={handleChangeHistorial}
                       className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
-                      required
                     />
                   </div>
                   <div className="w-1/2">
