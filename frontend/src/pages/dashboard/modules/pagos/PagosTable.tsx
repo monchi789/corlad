@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { FaEdit } from "react-icons/fa";
 import { Pago } from "../../../../interfaces/model/Pago";
+import default_user from '../../../../assets/web/person_perfil.webp'
+import { FaEdit } from "react-icons/fa";
 import {
   useReactTable,
   getCoreRowModel,
@@ -41,7 +42,11 @@ export default function PagosTable({
       cell: ({ row }) => (
         <div className="flex items-center space-x-2">
           <img
-            src={`${import.meta.env.VITE_API_URL_ALTER}${row.original.id_colegiado.foto_colegiado}`}
+            src={
+              row.original.id_colegiado.foto_colegiado
+                ? `${import.meta.env.VITE_API_URL_ALTER}${row.original.id_colegiado.foto_colegiado}`
+                : default_user
+            } 
             alt="Foto del colegiado"
             className="w-10 h-10 rounded-full object-cover"
           />
@@ -123,18 +128,26 @@ export default function PagosTable({
           ))}
         </thead>
         <tbody className="divide-y divide-gray-300">
-          {table.getRowModel().rows.map(row => (
-            <tr
-              className="hover:bg-[#C9D9C6] transition duration-200"
-              key={row.id}
-            >
-              {row.getVisibleCells().map(cell => (
-                <td key={cell.id} className="whitespace-nowrap font-semibold text-default p-3">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
+          {table.getRowModel().rows.length === 0 ? (
+            <tr>
+              <td colSpan={columns.length} className="text-center bg-light text-gray-500 p-4">
+                No hay ningún elemento en la lista
+              </td>
             </tr>
-          ))}
+          ) : (
+            table.getRowModel().rows.map(row => (
+              <tr
+                className="hover:bg-[#C9D9C6] transition duration-200"
+                key={row.id}
+              >
+                {row.getVisibleCells().map(cell => (
+                  <td key={cell.id} className="whitespace-nowrap font-semibold text-default p-3">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
 
