@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
+import { PopUp } from "../interfaces/model/PopUp";
 
 export const getPopUps = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -12,7 +13,7 @@ export const getPopUps = () => {
   });
 }
 
-export const createPopUps = (data: any) => {
+export const createPopUps = (data: PopUp) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
@@ -23,7 +24,7 @@ export const createPopUps = (data: any) => {
   });
 }
 
-export const updatePopUps = (id: number, data: any) => {
+export const updatePopUps = (id: number, data: PopUp) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 

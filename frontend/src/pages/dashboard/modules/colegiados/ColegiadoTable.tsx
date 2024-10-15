@@ -1,116 +1,213 @@
-import { useState } from "react";
 import { Link } from 'react-router-dom';
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { FaCircleCheck } from "react-icons/fa6";
-import { IoIosCloseCircle } from "react-icons/io";
-import { Avatar } from "primereact/avatar";
-import { TableCards } from "../../components/TableCards";
-import toast from "react-hot-toast";
-import { HistorialColegiado } from "../../../../interfaces/model/HistorialColegiado";
-import { deleteHistorialColegiadoById } from "../../../../api/historial.colegiado.api";
+import { HistorialColegiado } from '../../../../interfaces/model/HistorialColegiado';
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { IoIosCloseCircle } from 'react-icons/io';
+import { FaCircleCheck } from 'react-icons/fa6';
+import {
+  useReactTable,
+  getCoreRowModel,
+  ColumnDef,
+  flexRender
+} from '@tanstack/react-table';
 
 interface ColegiadoTableProps {
   colegiadosList: HistorialColegiado[];
-  onDelete: (id: number) => void;
-
+  onDelete: (colegiado: HistorialColegiado) => void;
+  currentPage: number;
+  pageSize: number;
+  totalPages: number;
+  totalResults: number;
+  onPageChange: (page: number) => void;
+  onPageSizeChange: (pageSize: number) => void;
 }
 
-export function ColegiadoTable({ colegiadosList, onDelete }: ColegiadoTableProps) {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedColegiadoId, setSelectedColegiadoId] = useState<number | null>(null);
-
-  const handleDeleteColegiado = async (id: number): Promise<void> => {
-    try {
-      await deleteHistorialColegiadoById(id);
-      onDelete(id); // Notifica al componente padre para actualizar la lista
-      toast.success("Colegiado eliminado con éxito");
-    } catch (error) {
-      console.error("Error deleting colegiado:", error);
-      toast.error("Error eliminando colegiado");
-    }
-  };
-
-  const openModal = (id: number) => {
-    setSelectedColegiadoId(id);
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setSelectedColegiadoId(null);
-    setShowModal(false);
-  };
-
-  const confirmDelete = () => {
-    if (selectedColegiadoId !== null) {
-      handleDeleteColegiado(selectedColegiadoId);
-      closeModal();
-    }
-  };
-
-  const columns = [
-    { header: "Apellidos y nombres", accessor: "fullName", className: 'w-2/6 text-start' },
-    { header: "DNI", accessor: "dni", className: 'w-1/6 text-start' },
-    { header: "N° colegiatura", accessor: "numero_colegiatura", className: 'w-1/6 text-start' },
-    { header: "N° celular", accessor: "celular", className: 'w-1/6 text-start' },
-    { header: "Estado", accessor: "estado", className: 'w-1/6 text-start' },
-    { header: "E-mail", accessor: "email", className: 'w-1/6 text-start' },
-    { header: "Acciones", accessor: "actions", className: 'w-1/6 text-center' } // Class for actions column
+export default function ColegiadoTable({
+  colegiadosList,
+  onDelete,
+  currentPage,
+  pageSize,
+  totalPages,
+  totalResults,
+  onPageChange,
+  onPageSizeChange
+}: ColegiadoTableProps) {
+  const columns: ColumnDef<HistorialColegiado>[] = [
+    {
+      header: "N°",
+      cell: ({ row }) => (
+        <div className="text-center">
+          {row.index + 1}
+        </div>
+      ),
+    },
+    {
+      header: "Apellidos y nombres",
+      cell: ({ row }) => (
+        <div className="flex items-center space-x-2">
+          <img
+            src={`${import.meta.env.VITE_API_URL_ALTER}${row.original.id_colegiado.foto_colegiado}`}
+            alt="Foto del colegiado"
+            className="w-10 h-10 rounded-full object-cover"
+          />
+          <span>
+            {`${row.original.id_colegiado.apellido_paterno} ${row.original.id_colegiado.apellido_materno}, ${row.original.id_colegiado.nombre}`}
+          </span>
+        </div>
+      ),
+    },
+    {
+      header: "DNI",
+      accessorKey: "id_colegiado.dni_colegiado",
+    },
+    {
+      header: "N° Colegiatura / REGUC",
+      accessorKey: "id_colegiado.numero_colegiatura",
+    },
+    {
+      header: "N° Celular",
+      accessorKey: "id_colegiado.celular",
+    },
+    {
+      header: "Estado",
+      accessorKey: "id_colegiado.estado_activo",
+      cell: ({ row }) => (
+        <div className="text-center">
+          {row.original.id_colegiado.estado_activo ? (
+            <FaCircleCheck className="text-[#007336] mx-auto" size={"25px"} />
+          ) : (
+            <IoIosCloseCircle className="text-[#B50C0C] mx-auto" size={"30px"} />
+          )}
+        </div>
+      ),
+    },
+    {
+      header: "Email",
+      accessorKey: "id_colegiado.correo",
+    },
+    {
+      header: "Acciones",
+      cell: ({ row }) => (
+        <div className="flex justify-center space-x-2">
+          <button type="button">
+            <Link to={`/admin/colegiado/editar-colegiado/${row.original.id}/${row.original.id_colegiado.id}`}>
+              <FaEdit className="text-custom-yellow" size={"25px"} />
+            </Link>
+          </button>
+          <button type="button" onClick={() => onDelete(row.original)}>
+            <FaTrashAlt className="text-red-500" size={"25px"} />
+          </button>
+        </div>
+      ),
+    },
   ];
 
-  const renderRow = (colegiado: HistorialColegiado) => (
-    <>
-      <div className="w-2/6 flex flex-row space-x-3">
-        <Avatar className="my-auto" shape="circle" image={import.meta.env.VITE_API_URL_ALTER + colegiado.id_colegiado.foto_colegiado} size="xlarge" />
-        <div className="flex flex-col">
-          <p>{colegiado.id_colegiado.nombre}</p>
-          <p>{colegiado.id_colegiado.apellido_paterno + ' ' + colegiado.id_colegiado.apellido_materno}</p>
-        </div>
-      </div>
-      <div className="w-1/6 my-auto">{colegiado.id_colegiado.dni_colegiado}</div>
-      <div className="w-1/6 my-auto">{colegiado.id_colegiado.numero_colegiatura}</div>
-      <div className="w-1/6 my-auto">{colegiado.id_colegiado.celular}</div>
-      <div className="w-1/6 my-auto">
-        {colegiado.id_colegiado.estado_activo ? (
-          <FaCircleCheck className="text-[#007336]" size={"25px"} />
-        ) : (
-          <IoIosCloseCircle className="text-[#B50C0C]" size={"30px"} />
-        )}
-      </div>
-      <div className="w-1/6 my-auto">{colegiado.id_colegiado.correo}</div>
-      <div className="flex flex-row w-1/6 text-[#8F650C] text-2xl space-x-3 justify-center my-auto">
-        <button><Link to={`/admin/colegiado/editar-colegiado/${colegiado.id}/${colegiado.id_colegiado.id}`}><FaEdit size={"25px"} /></Link></button>
-        <button onClick={() => openModal(colegiado.id)}><FaTrashAlt size={"25px"} className="text-[#B50C0C]" /></button>
-      </div>
-    </>
-  );
+  const table = useReactTable({
+    data: colegiadosList,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    manualPagination: true,
+    pageCount: totalPages,
+    state: {
+      pagination: {
+        pageIndex: currentPage,
+        pageSize,
+      },
+    },
+    onPaginationChange: (updater) => {
+      if (typeof updater === 'function') {
+        const newState = updater({ pageIndex: currentPage, pageSize });
+        onPageChange(newState.pageIndex);
+        onPageSizeChange(newState.pageSize);
+      }
+    },
+  });
+
+  const startIndex = currentPage * pageSize + 1;
+  const endIndex = Math.min((currentPage + 1) * pageSize, totalResults);
 
   return (
-    <>
-      <TableCards columns={columns} data={colegiadosList} renderRow={renderRow} />
+    <div className="overflow-x-auto shadow rounded-xl">
+      <table className="min-w-full divide-y divide-gray-200 font-nunito">
+        <thead className="bg-corlad">
+          {table.getHeaderGroups().map(headerGroup => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map(header => (
+                <th
+                  key={header.id}
+                  className={`text-sm text-white font-bold uppercase tracking-wider p-3 py-3 ${header.id === "N°" || header.id === "id_colegiado_estado_activo" || header.id === "Acciones" ? 'text-center' : 'text-start'}`}
+                >
+                  {flexRender(header.column.columnDef.header, header.getContext())}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody className="divide-y divide-gray-300">
+          {table.getRowModel().rows.map(row => (
+            <tr
+              className="hover:bg-[#C9D9C6] transition duration-200"
+              key={row.id}
+            >
+              {row.getVisibleCells().map(cell => (
+                <td key={cell.id} className="whitespace-nowrap font-semibold text-default p-3">
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="fixed inset-0 bg-black opacity-50"></div>
-          <div className="bg-white p-6 rounded-lg shadow-lg z-10">
-            <h2 className="text-xl font-bold mb-4">Confirmar Eliminación</h2>
-            <p>¿Está seguro de que desea eliminar este colegiado?</p>
-            <div className="mt-6 flex justify-end space-x-4">
+      <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+        <div className="flex flex-1 justify-between sm:hidden">
+          <button
+            onClick={() => onPageChange(Math.max(0, currentPage - 1))}
+            disabled={currentPage === 0}
+            className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            Anterior
+          </button>
+          <button
+            onClick={() => onPageChange(Math.min(totalPages - 1, currentPage + 1))}
+            disabled={currentPage === totalPages - 1}
+            className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            Siguiente
+          </button>
+        </div>
+        <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm text-gray-700">
+              Mostrando <span className="font-medium">{startIndex}</span> a <span className="font-medium">{endIndex}</span> de{' '}
+              <span className="font-medium">{totalResults}</span> resultados
+            </p>
+          </div>
+          <div>
+            <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
               <button
-                onClick={closeModal}
-                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                onClick={() => onPageChange(Math.max(0, currentPage - 1))}
+                disabled={currentPage === 0}
+                className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
               >
-                Cancelar
+                <span className="sr-only">Anterior</span>
+                <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fillRule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clipRule="evenodd" />
+                </svg>
               </button>
               <button
-                onClick={confirmDelete}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                onClick={() => onPageChange(Math.min(totalPages - 1, currentPage + 1))}
+                disabled={currentPage === totalPages - 1}
+                className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
               >
-                Eliminar
+                <span className="sr-only">Siguiente</span>
+                <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                </svg>
               </button>
-            </div>
+            </nav>
           </div>
         </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 }
