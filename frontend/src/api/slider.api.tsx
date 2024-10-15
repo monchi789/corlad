@@ -1,6 +1,5 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
-import { Slider } from "../interfaces/model/Slider";
 
 // Para el panel de administrador
 export const getAllSliders = () => {
@@ -14,7 +13,7 @@ export const getAllSliders = () => {
   });
 }
 
-export const createSlider = (data: Slider) => {
+export const createSlider = (data: any) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
@@ -25,7 +24,7 @@ export const createSlider = (data: Slider) => {
   });
 }
 
-export const editSlider = (id: number, data: Slider) => {
+export const editSlider = (id: number, data: any) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 

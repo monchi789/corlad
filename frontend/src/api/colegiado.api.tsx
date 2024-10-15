@@ -1,6 +1,5 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
-import { Colegiado } from "../interfaces/model/Colegiado";
 
 export const getAllColegiados = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -52,7 +51,7 @@ export const createColegiado = async (formData: FormData) => {
   });
 };
 
-export const updateColegiado = async (id: number, formData: Colegiado) => {
+export const updateColegiado = async (id: number, formData: any) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
