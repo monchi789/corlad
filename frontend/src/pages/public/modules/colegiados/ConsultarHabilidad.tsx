@@ -9,6 +9,11 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
 import { classNames } from "primereact/utils";
 
+interface EstadoOption {
+  label: string;
+  value: "h" | "nh";
+}
+
 export default function ConsultarHabilidad() {
 
   const [selectedOption, setSelectedOption] = useState(null);
@@ -28,7 +33,7 @@ export default function ConsultarHabilidad() {
     { label: 'Apellidos', value: 'apellidos' },
   ];
 
-  const itemCategoria = (option: any) => {
+  const itemCategoria = (option: EstadoOption) => {
     return (
       <div className="flex hover:bg-[#E6F3E6] text-[#00330a] items-center justify-between px-3 py-2">
         <span>{option.label}</span>
@@ -228,7 +233,7 @@ export default function ConsultarHabilidad() {
                       <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900">{colegiado.id_colegiado.nombre}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900">{colegiado.id_colegiado.apellido_paterno + ' ' + colegiado.id_colegiado.apellido_materno}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-md">
-                        {colegiado.id_estado_colegiatura.estado_colegiatura ? (
+                        {colegiado.id_colegiado.estado ? (
                           <span className="text-[#00330a] font-semibold">Habilitado</span>
                         ) : (
                           <span className="text-red-600 font-semibold">No Habilitado</span>
