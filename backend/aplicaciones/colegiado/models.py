@@ -31,7 +31,7 @@ class Colegiado(models.Model):
     fecha_colegiatura = models.DateField(null=False, blank=True, default=timezone.now)
     sexo_colegiado = models.CharField(max_length=9, choices=SEXO, null=False, blank=True, default='O')
     fecha_nacimiento = models.DateField(null=False, blank=True, default=timezone.now)
-    estado_civil = models.CharField(max_length=7, null=False, blank=True, choices=ESTADO_CIVIL, default='SOLTERO')
+    estado_civil = models.CharField(max_length=20, null=False, blank=True, choices=ESTADO_CIVIL, default='SOLTERO')
     direccion = models.CharField(max_length=300, blank=True, null=False, default='')
     estado_activo = models.BooleanField(default=False)
 

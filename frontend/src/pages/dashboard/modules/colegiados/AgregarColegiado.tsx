@@ -167,12 +167,12 @@ export default function AgregarColegiado() {
 
       setFileName(null);
       setImageUrl(colegiado_default);
+      setIsLoading(false);
       navigate("/admin/colegiado")
     } catch (error: any) {
       if (error.response) {
         // Si el servidor respondió con un código de estado que no es 2xx
         const serverErrors = error.response.data;
-        console.log(error)
         // Extrae los errores específicos y muéstralos
         if (serverErrors.dni_colegiado) {
           toast.error(`Error en DNI: ${serverErrors.dni_colegiado[0]}`);
@@ -195,6 +195,9 @@ export default function AgregarColegiado() {
         // Otros errores
         toast.error(`Error al crear colegiado: ${error.message}`);
       }
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 

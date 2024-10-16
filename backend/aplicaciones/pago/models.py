@@ -8,8 +8,6 @@ from ..metodo_pago.models import MetodoPago
 from ..tarifa.models import Tarifa
 from django.db import models
 from django.utils import timezone
-from datetime import timedelta
-from ..historial_educativo.models import HistorialEducativo
 from dateutil.relativedelta import relativedelta
 
 

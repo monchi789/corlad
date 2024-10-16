@@ -15,6 +15,11 @@ interface BuscarColegiadoProps {
   onSearchResults: (results: HistorialColegiado[]) => void;
 }
 
+interface EstadoOption {
+  label: string;
+  value: "h" | "nh";
+}
+
 export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
 
   const [selectedEstado, setSelectedEstado] = useState<boolean | null>(null);
@@ -27,20 +32,20 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
   })
 
   // Renderiza cada item del dropdown de Estado
-  const ItemDropdown = (option: any) => (
+  const ItemDropdown = (option: EstadoOption) => (
     <div className="flex hover:bg-[#E6F3E6] text-[#00330a] font-nunito font-semibold items-center justify-between px-3 py-2">
       <span>{option.label}</span>
     </div>
   );
 
 
-  const optionsEstado = [
+  const optionsEstado: EstadoOption[] = [
     { label: 'Hábil', value: "h" },
     { label: 'No Hábil', value: "nh" },
   ];
 
   // Maneja el cambio en los campos del formulario del busqueda de colegiado
-  const handleChangeParams = (e: ChangeEvent<HTMLInputElement> | { name: string, value: any }) => {
+  const handleChangeParams = (e: ChangeEvent<HTMLInputElement> | { name: string, value: string | null }) => {
     const { name, value } = 'target' in e ? e.target : e;
     setParams(prevState => ({
       ...prevState,
@@ -49,14 +54,9 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
   };
 
   const handleSearch = async () => {
-    try {
-      const estado = params.estado_colegiado === "h" ? true : params.estado_colegiado === "nh" ? false : null;
-      const res = await getHistorialColegiadoByFilters(params.numero_colegiatura, params.dni_colegiado, params.apellido_paterno, estado as boolean);
-      console.log(res)
-      onSearchResults(res.data.results);
-    } catch (error) {
-      console.error("Error al buscar colegiado:", error);
-    }
+    const estado = params.estado_colegiado === "h" ? true : params.estado_colegiado === "nh" ? false : null;
+    const res = await getHistorialColegiadoByFilters(params.numero_colegiatura, params.dni_colegiado, params.apellido_paterno, estado as boolean);
+    onSearchResults(res.data.results);
   }
 
   return (

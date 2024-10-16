@@ -117,7 +117,6 @@ export default function AgregarPagos() {
         id_metodo_pago: metodoPago,
         tarifas: tarifasIdList
       };
-      console.log(pago)
       try {
         await createPago(pago);
         toast.success('Pago registrado exitosamente');

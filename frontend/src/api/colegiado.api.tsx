@@ -74,7 +74,7 @@ export const deleteColegiadoById = async (id: number) => {
 };
 
 // Para la parte pública
-export const getConsultarHabilidad = (params: any) => {
+export const getConsultarHabilidad = (params: string) => {
   const apiUrl = import.meta.env.VITE_API_URL;
 
   return axios.get(`${apiUrl}historial-educativo/consultar-habilidad/${params}`)
