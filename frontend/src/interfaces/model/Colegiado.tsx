@@ -42,7 +42,7 @@ export interface DetalleColegiado {
   apellido_paterno: string,
   apellido_materno: string,
   correo: string,
-  estado: boolean,
+  estado_activo: boolean,
   foto_colegiado: string,
   numero_colegiatura: string
 }
@@ -53,7 +53,7 @@ export const defaultDetalleColegiado: DetalleColegiado = {
   apellido_paterno: "",
   apellido_materno: "",
   correo: "",
-  estado: false,
+  estado_activo: false,
   foto_colegiado: "",
   numero_colegiatura: ""
 }
