@@ -13,7 +13,7 @@ class ColegiadoSerializer(serializers.ModelSerializer):
 class ColegiadoDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Colegiado
-        fields = ['id', 'nombre', 'apellido_paterno', 'apellido_materno', 'correo', 'numero_colegiatura', 'foto_colegiado']
+        fields = ['id', 'nombre', 'apellido_paterno', 'apellido_materno', 'correo', 'numero_colegiatura', 'foto_colegiado', 'estado_activo']
 
 
 

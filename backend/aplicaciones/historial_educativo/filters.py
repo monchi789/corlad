@@ -8,7 +8,7 @@ class HistorialEducativoFilter(filters.FilterSet):
     dni_colegiado = filters.CharFilter(field_name='id_colegiado__dni_colegiado', lookup_expr='iexact')
     numero_colegiatura = filters.CharFilter(field_name='id_colegiado__numero_colegiatura', lookup_expr='iexact')
     universidad = filters.BooleanFilter(field_name='universidad', lookup_expr='istartswith')
-    # estado_colegiado = filters.CharFilter(field_name='id_estado_colegiatura__estado_colegiatura', lookup_expr='iexact')
+    estado_colegiado = filters.CharFilter(field_name='id_colegiado__estado_activo', lookup_expr='iexact')
 
     class Meta:
         model = HistorialEducativo
@@ -20,7 +20,7 @@ class ConsultarHabilidadFilter(filters.FilterSet):
     numero_colegiatura = filters.CharFilter(field_name='id_colegiado__numero_colegiatura', lookup_expr='iexact')
     apellido_paterno = filters.CharFilter(field_name='id_colegiado__apellido_paterno', lookup_expr='istartswith')
     apellido_materno = filters.CharFilter(field_name='id_colegiado__apellido_materno', lookup_expr='istartswith')
-    # estado_colegiado = filters.CharFilter(field_name='id_estado_colegiatura__estado_colegiatura', lookup_expr='iexact')
+    estado_colegiado = filters.CharFilter(field_name='id_colegiado__estado_activo', lookup_expr='iexact')
 
     class Meta:
         model = HistorialEducativo

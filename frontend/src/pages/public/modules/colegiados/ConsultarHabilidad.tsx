@@ -9,6 +9,11 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
 import { classNames } from "primereact/utils";
 
+interface EstadoOption {
+  label: string;
+  value: "h" | "nh";
+}
+
 export default function ConsultarHabilidad() {
 
   const [selectedOption, setSelectedOption] = useState(null);
@@ -28,7 +33,7 @@ export default function ConsultarHabilidad() {
     { label: 'Apellidos', value: 'apellidos' },
   ];
 
-  const itemCategoria = (option: any) => {
+  const itemCategoria = (option: EstadoOption) => {
     return (
       <div className="flex hover:bg-[#E6F3E6] text-[#00330a] items-center justify-between px-3 py-2">
         <span>{option.label}</span>
@@ -124,9 +129,9 @@ export default function ConsultarHabilidad() {
             value={selectedOption}
             onChange={(e) => {
               setSelectedOption(e.value);
-              setInputValue("");  // Limpiar input cuando cambia la opción
-              setInputPaterno(""); // Limpiar input paterno
-              setInputMaterno(""); // Limpiar input materno
+              setInputValue("");  
+              setInputPaterno("");
+              setInputMaterno("");
             }}
             options={options}
             optionLabel="label"
@@ -157,6 +162,7 @@ export default function ConsultarHabilidad() {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Ingrese un valor"
+              disabled={!selectedOption}
             />
           )}
           <button
@@ -202,8 +208,8 @@ export default function ConsultarHabilidad() {
                 </div>
                 <div className="space-y-1">
                   <p className="text-[#a67102] font-semibold">Estado:</p>
-                  <p className={colegiadoData[0].id_colegiado.estado ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>
-                    {colegiadoData[0].id_colegiado.estado ? "Habilitado" : "No Habilitado"}
+                  <p className={colegiadoData[0].id_colegiado.estado_activo ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>
+                    {colegiadoData[0].id_colegiado.estado_activo ? "Habilitado" : "No Habilitado"}
                   </p>
                 </div>
               </div>
@@ -228,7 +234,7 @@ export default function ConsultarHabilidad() {
                       <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900">{colegiado.id_colegiado.nombre}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900">{colegiado.id_colegiado.apellido_paterno + ' ' + colegiado.id_colegiado.apellido_materno}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-md">
-                        {colegiado.id_estado_colegiatura.estado_colegiatura ? (
+                        {colegiado.id_colegiado.estado_activo ? (
                           <span className="text-[#00330a] font-semibold">Habilitado</span>
                         ) : (
                           <span className="text-red-600 font-semibold">No Habilitado</span>
@@ -252,7 +258,7 @@ export default function ConsultarHabilidad() {
           <div className="flex flex-col lg:flex-row mx-auto mb-12 lg:py-12 lg:my-24 w-4/5 rounded-lg justify-center items-center">
             {isNotFound && (
               <div className="text-center text-xl text-red-500 font-semibold">
-                No se encontraron resultados.
+                No se encontraron colegiados.
               </div>
             )}
           </div>
