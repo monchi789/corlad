@@ -17,7 +17,7 @@ export const getPublicacionesById = (id: number) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.get(`${apiUrl}publicacion/publicaciones/${id}`, {
+  return axios.get(`${apiUrl}publicacion/publicaciones/${id}/`, {
     headers: {
       'Authorization': `Bearer ${token}` // Incluyendo el token en los encabezados
     }
