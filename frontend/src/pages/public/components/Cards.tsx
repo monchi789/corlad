@@ -58,7 +58,7 @@ const Card: React.FC<CardProps> = ({ imageSource, imageAlt, cardTitle, cardText,
       <div className="flex flex-col justify-between flex-1 px-5 py-4">
         <div className="flex flex-row justify-between">
           <span className="text-sm text-gray-500">{formatDate(date)}</span>
-          <span className="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded-full">{category}</span>
+          <span className="bg-gray-200 text-gray-700 text-xs rounded-full px-3 py-1">{category}</span>
         </div>
         <h4 className="text-2xl text-[#00330A] font-nunito font-extrabold mb-3">{cardTitle}</h4>
         <p className="text-[#363636] mb-auto" dangerouslySetInnerHTML={{ __html: limitarContenido(cardText, 15) }} />
