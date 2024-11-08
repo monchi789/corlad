@@ -18,7 +18,7 @@ export const getHistorialColegiadoById = (id:number) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.get(`${apiUrl}historial-educativo/historial-educativo/${id}`, {
+  return axios.get(`${apiUrl}historial-educativo/historial-educativo/${id}/`, {
     headers: {
       'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados
       'Content-Type': 'application/json' // Asegurando el tipo de contenido
