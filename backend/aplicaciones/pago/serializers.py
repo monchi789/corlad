@@ -38,9 +38,9 @@ class PagoSerializer(serializers.ModelSerializer):
             'id_colegiado_id', 'id_metodo_pago_id',
             'tarifas', 'monto_total', 'fecha_pago',
             'numero_operacion', 'observacion',
-            'meses_pagados', 'foto_baucher'
+            'meses_pagados', 'foto_baucher', 'numero_recibo'
         ]
-        read_only_fields = ['monto_total', 'fecha_pago']
+        read_only_fields = ['monto_total']
 
     def validate(self, data):
         # Validación personalizada si es necesario
