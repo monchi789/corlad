@@ -4,7 +4,7 @@ import { defaultEspecialidad, Especialidad } from "./Especialidad"
 export interface HistorialColegiado {
   id: number
   id_colegiado: Colegiado
-  id_especialidad: Especialidad,
+  id_especialidad?: Especialidad
   universidad: string,
   nombre_universidad_bachiller: string,
   denominacion_bachiller: string,
@@ -17,7 +17,6 @@ export interface HistorialColegiado {
 export const defaultHistorialColegiado: HistorialColegiado = {
   id: 0,
   id_colegiado: defaultColegiado,
-  id_especialidad: defaultEspecialidad,
   universidad: "",
   nombre_universidad_bachiller: "",
   denominacion_bachiller: "",
