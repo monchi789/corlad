@@ -81,6 +81,13 @@ export default function EditarColegiado() {
     { label: 'Otro', value: "OTRO" }
   ];
 
+  const optionsEstado = [
+    { label: 'Activo', value: "ACTIVO" },
+    { label: 'No Activo', value: "NO_ACTIVO" },
+    { label: 'Fallecido', value: "FALLECIDO" },
+    { label: 'Trasladado', value: "TRASLADADO" }
+  ];
+
   // Carga la lista de escuelas al cargar el componente
   useEffect(() => {
     async function cargarEscuelas() {
@@ -163,10 +170,11 @@ export default function EditarColegiado() {
     const formData = convertToFormData(colegiadoData);
 
     try {
+      if (selectedEspecialidad) {
+        const filteredEspecialidad = especialidadData.filter(especialidad => especialidad.id === selectedEspecialidad);
+        historialData.id_especialidad = filteredEspecialidad[0];
+      }
       const res1 = await updateColegiado(parseInt(id2!), formData);
-
-      const filteredEspecialidad = especialidadData.filter(especialidad => especialidad.id === selectedEspecialidad);
-      historialData.id_especialidad = filteredEspecialidad[0];
 
       const res2 = await updateHistorialColegiado(historialData.id, historialData);
 
@@ -339,7 +347,7 @@ export default function EditarColegiado() {
 
                 </div>
                 <div className="flex flex-row space-x-5">
-                  <div className="w-2/4">
+                  <div className="w-1/4">
                     <label htmlFor="direccion" className="block mb-1">Dirección</label>
                     <input
                       type="text"
@@ -375,6 +383,23 @@ export default function EditarColegiado() {
                         handleChangeColegiado({ name: 'estado_civil', value: e.value });
                       }}
                       options={optionsEstadoCivil}
+                      placeholder="Elegir..."
+                      itemTemplate={itemDropdown}
+                      required
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <label htmlFor="estado_activo" className="block mb-1">Estado</label>
+                    <Dropdown
+                      id="estado_activo"
+                      name="estado_activo"
+                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
+                      panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
+                      value={colegiadoData.estado_activo}
+                      onChange={(e) => {
+                        handleChangeColegiado({ name: 'estado_activo', value: e.value });
+                      }}
+                      options={optionsEstado}
                       placeholder="Elegir..."
                       itemTemplate={itemDropdown}
                       required

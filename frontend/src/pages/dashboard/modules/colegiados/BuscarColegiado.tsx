@@ -17,7 +17,7 @@ interface BuscarColegiadoProps {
 
 interface EstadoOption {
   label: string;
-  value: "h" | "nh";
+  value: "ACTIVO" | "NO_ACTIVO" | "FALLECIDO" | "TRASLADADO";
 }
 
 export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
@@ -40,8 +40,10 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
 
 
   const optionsEstado: EstadoOption[] = [
-    { label: 'Hábil', value: "h" },
-    { label: 'No Hábil', value: "nh" },
+    { label: 'Activo', value: "ACTIVO" },
+    { label: 'No Activo', value: "NO_ACTIVO" },
+    { label: 'Fallecido', value: "FALLECIDO" },
+    { label: 'Trasladado', value: "TRASLADADO" },
   ];
 
   // Maneja el cambio en los campos del formulario del busqueda de colegiado

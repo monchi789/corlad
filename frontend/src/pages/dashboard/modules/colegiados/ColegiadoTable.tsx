@@ -65,7 +65,7 @@ export default function ColegiadoTable({
       accessorKey: "id_colegiado.dni_colegiado",
     },
     {
-      header: "N° Colegiatura / REGUC",
+      header: "REGUC",
       accessorKey: "id_colegiado.numero_colegiatura",
     },
     {
@@ -77,7 +77,7 @@ export default function ColegiadoTable({
       accessorKey: "id_colegiado.estado_activo",
       cell: ({ row }) => (
         <div className="text-center">
-          {row.original.id_colegiado.estado_activo ? (
+          {row.original.id_colegiado.estado_activo == "ACTIVO" ? (
             <FaCircleCheck className="text-[#007336] mx-auto" size={"25px"} />
           ) : (
             <IoIosCloseCircle className="text-[#B50C0C] mx-auto" size={"30px"} />
