@@ -65,12 +65,12 @@ export const getAllNoticiasByPage = (page = 0, pageSize = 5) => {
 
 export const getNoticiasById = (params:any) => {
   const apiUrl = import.meta.env.VITE_API_URL;
-  return axios.get(`${apiUrl}publicacion/list-publicacion/${params}`)
+  return axios.get(`${apiUrl}publicacion/list-publicacion/${params}/`)
 }
 
 export const getNoticiasByFilter = (params:any) => {
   const apiUrl = import.meta.env.VITE_API_URL;
-  return axios.get(`${apiUrl}publicacion/list-publicacion/${params}`)
+  return axios.get(`${apiUrl}publicacion/list-publicacion/${params}/`)
 }
 
 export const getBolsaTrabajo = () => {
