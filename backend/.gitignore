@@ -7,3 +7,4 @@ media/
 .env
 static
 .env.prod
+Dockerfile

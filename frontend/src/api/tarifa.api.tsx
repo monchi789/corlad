@@ -44,7 +44,7 @@ export const deleteTarifa = (id: number) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.delete(`${apiUrl}tarifa/tarifas/${id}`, {
+  return axios.delete(`${apiUrl}tarifa/tarifas/${id}/`, {
     headers: {
       'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados
       'Content-Type': 'application/json' // Indicando que el contenido es JSON

@@ -18,7 +18,7 @@ export const getHistorialColegiadoById = (id:number) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.get(`${apiUrl}historial-educativo/historial-educativo/${id}`, {
+  return axios.get(`${apiUrl}historial-educativo/historial-educativo/${id}/`, {
     headers: {
       'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados
       'Content-Type': 'application/json' // Asegurando el tipo de contenido
@@ -26,7 +26,7 @@ export const getHistorialColegiadoById = (id:number) => {
   });
 }
 
-export const getHistorialColegiadoByFilters = (numero_colegiatura?: string, dni_colegiado?: string, apellido_paterno?: string, estado_colegiado?: boolean) => {
+export const getHistorialColegiadoByFilters = (numero_colegiatura?: string, dni_colegiado?: string, apellido_paterno?: string, estado_activo?: string) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
@@ -35,7 +35,7 @@ export const getHistorialColegiadoByFilters = (numero_colegiatura?: string, dni_
       numero_colegiatura,
       dni_colegiado,
       apellido_paterno,
-      estado_colegiado
+      estado_activo
     },
     headers: {
       'Authorization': `Bearer ${token}`, // Incluyendo el token en los encabezados

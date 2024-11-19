@@ -35,7 +35,7 @@ export const updateCategoria = (id: number, updatedData: Partial<Categoria>) => 
 };
 
 export const deleteCategoria = (id: number) => {
-  return axios.delete<void>(`${apiUrl}categoria/categorias/${id}`, {
+  return axios.delete<void>(`${apiUrl}categoria/categorias/${id}/`, {
     headers: {
       'Authorization': `Bearer ${token}`
     }

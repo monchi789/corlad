@@ -17,7 +17,7 @@ export const getPublicacionesById = (id: number) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.get(`${apiUrl}publicacion/publicaciones/${id}`, {
+  return axios.get(`${apiUrl}publicacion/publicaciones/${id}/`, {
     headers: {
       'Authorization': `Bearer ${token}` // Incluyendo el token en los encabezados
     }
@@ -65,12 +65,12 @@ export const getAllNoticiasByPage = (page = 0, pageSize = 5) => {
 
 export const getNoticiasById = (params:any) => {
   const apiUrl = import.meta.env.VITE_API_URL;
-  return axios.get(`${apiUrl}publicacion/list-publicacion/${params}`)
+  return axios.get(`${apiUrl}publicacion/list-publicacion/${params}/`)
 }
 
 export const getNoticiasByFilter = (params:any) => {
   const apiUrl = import.meta.env.VITE_API_URL;
-  return axios.get(`${apiUrl}publicacion/list-publicacion/${params}`)
+  return axios.get(`${apiUrl}publicacion/list-publicacion/${params}/`)
 }
 
 export const getBolsaTrabajo = () => {

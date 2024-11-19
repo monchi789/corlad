@@ -32,7 +32,7 @@ export const getPagoById = (id:number) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
-  return axios.get(`${apiUrl}pago/pagos/${id}`, {
+  return axios.get(`${apiUrl}pago/pagos/${id}/`, {
     headers: {
       'Authorization': `Bearer ${token}` // Incluyendo el token en los encabezados
     }
@@ -66,7 +66,7 @@ export const createPago = (pago: Pago) => {
   });
 }
 
-export const updatePago = async (id: number, data: any) => {
+export const updatePago = async (id: number, data: Pago) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = Cookies.get('authToken'); // Obteniendo el token de las cookies
 
