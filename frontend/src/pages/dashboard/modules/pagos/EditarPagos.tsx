@@ -29,10 +29,11 @@ interface Option {
 
 interface FormData {
   numero_operacion: string;
+  fecha_pago: string;
   observacion: string;
   monto_pago_decimal: number;
+  numero_recibo: string;
 }
-
 
 export default function EditarPagos() {
   const navigate = useNavigate();
@@ -138,6 +139,8 @@ export default function EditarPagos() {
         id: 0,
         numero_operacion: data.numero_operacion,
         observacion: data.observacion,
+        fecha_pago: data.fecha_pago,
+        numero_recibo: data.numero_recibo,
         id_colegiado: colegiado as Colegiado,
         id_metodo_pago: metodoPago,
         tarifas: tarifasIdList,
@@ -157,6 +160,8 @@ export default function EditarPagos() {
         id: 0,
         numero_operacion: data.numero_operacion,
         observacion: data.observacion,
+        fecha_pago: data.fecha_pago,
+        numero_recibo: data.numero_recibo,
         id_colegiado: colegiado as Colegiado,
         id_metodo_pago: metodoPago,
         tarifas: tarifasIdList

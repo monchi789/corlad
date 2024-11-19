@@ -27,8 +27,8 @@ export const defaultPago: Pago = {
   id: 0,
   fecha_pago: "",
   numero_operacion: "",
-  observacion: "",
   numero_recibo: "",
+  observacion: "",
   id_colegiado: defaultColegiado,
   id_metodo_pago: defaultMetodoPago,
   tarifas: []
