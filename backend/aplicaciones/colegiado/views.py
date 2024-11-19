@@ -27,7 +27,7 @@ class ColegiadoViewSet(viewsets.ViewSet):
 
     # Métodos permitidos para filtros en la URL
     allow_query_params = {
-        'numero_colegiatura', 'dni_colegiado', 'apellido_paterno', 'estado'
+        'numero_colegiatura', 'dni_colegiado', 'apellido_paterno', 'estado', 'apellido_materno'
     }
 
     # Metodos

@@ -27,13 +27,14 @@ class Pago(models.Model):
         ('12', 'Diciembre'),
     ]
 
-    fecha_pago = models.DateTimeField(default=timezone.now, editable=False)
-    numero_operacion = models.CharField(null=True, blank=True, default='', validators=[validar_numero])
+    fecha_pago = models.DateTimeField()
+    numero_operacion = models.CharField(null=True, blank=True, default='', validators=[validar_espacio])
     observacion = models.CharField(max_length=255, null=True, blank=True, default='', validators=[validar_espacio])
     id_metodo_pago = models.ForeignKey(MetodoPago, on_delete=models.CASCADE, default=0)
     id_colegiado = models.ForeignKey(Colegiado, on_delete=models.CASCADE)
     tarifas = models.ManyToManyField(Tarifa, blank=True)
     foto_baucher = models.ImageField(upload_to='foto_baucher/', null=False, blank=True, default='')
+    numero_recibo = models.CharField(blank=True, null=True, default='', validators=[validar_espacio])
     
     monto_total = models.DecimalField(max_digits=10, decimal_places=2, editable=False, default=0)
     meses_pagados = ArrayField(

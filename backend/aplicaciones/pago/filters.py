@@ -10,7 +10,9 @@ class PagoFilter(filters.FilterSet):
     metodo_pago = filters.CharFilter(field_name='id_metodo_pago__nombre_metodo_pago')
     tipo_pago = filters.CharFilter(field_name='id_tipo_pago__nombre_tipo_pago')
     fecha_pago = filters.CharFilter(field_name='fecha_pago', lookup_expr='iexact')
+    apellido_materno = filters.CharFilter(field_name='id_colegiado__apellido_materno', lookup_expr='istartswith')
+    nombres = filters.CharFilter(field_name='id_colegiado__nombre', lookup_expr='istartswith')
 
     class Meta:
         model = Pago
-        fields = ['apellido_paterno', 'dni_colegiado', 'numero_colegiatura', 'metodo_pago', 'tipo_pago', 'fecha_pago']
+        fields = ['apellido_paterno', 'dni_colegiado', 'numero_colegiatura', 'metodo_pago', 'tipo_pago', 'fecha_pago', 'apellido_materno', 'nombres']
