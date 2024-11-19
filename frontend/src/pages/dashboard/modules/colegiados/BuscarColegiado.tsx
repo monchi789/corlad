@@ -8,7 +8,7 @@ interface ParametrosBusqueda {
   dni_colegiado?: string,
   numero_colegiatura?: string,
   apellido_paterno?: string,
-  estado_colegiado?: boolean | string | null
+  estado_activo?: string
 }
 
 interface BuscarColegiadoProps {
@@ -28,7 +28,7 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
     dni_colegiado: "",
     numero_colegiatura: "",
     apellido_paterno: "",
-    estado_colegiado: null
+    estado_activo: ""
   })
 
   // Renderiza cada item del dropdown de Estado
@@ -56,8 +56,7 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
   };
 
   const handleSearch = async () => {
-    const estado = params.estado_colegiado === "h" ? true : params.estado_colegiado === "nh" ? false : null;
-    const res = await getHistorialColegiadoByFilters(params.numero_colegiatura, params.dni_colegiado, params.apellido_paterno, estado as boolean);
+    const res = await getHistorialColegiadoByFilters(params.numero_colegiatura, params.dni_colegiado, params.apellido_paterno, params.estado_activo);
     onSearchResults(res.data.results);
   }
 
@@ -111,7 +110,7 @@ export const BuscarColegiado = ({ onSearchResults }: BuscarColegiadoProps) => {
               value={selectedEstado}
               onChange={(e) => {
                 setSelectedEstado(e.value);
-                handleChangeParams({ name: 'estado_colegiado', value: e.value });
+                handleChangeParams({ name: 'estado_activo', value: e.value });
               }}
               options={optionsEstado}
               optionLabel="label"
