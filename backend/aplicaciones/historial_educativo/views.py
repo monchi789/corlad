@@ -27,7 +27,7 @@ class HistorialEducativoViewSet(viewsets.ViewSet):
     filter_backends = [DjangoFilterBackend]
 
     allow_query_params = {
-        'estado_colegiado', 'apellido_paterno', 'apellido_materno', 'nombre_escuela', 'nombre_especialidad', 'dni_colegiado', 'numero_colegiatura', 'estado_colegiado', 
+        'estado_activo', 'apellido_paterno', 'apellido_materno', 'nombre_escuela', 'nombre_especialidad', 'dni_colegiado', 'numero_colegiatura', 
         'page', 'page_size'
     }
 
@@ -160,7 +160,7 @@ class ConsultarHabilidadViewSet(viewsets.ViewSet):
     filter_backends = [DjangoFilterBackend]
 
     allow_query_params = {
-        'dni_colegiado', 'numero_colegiatura', 'apellido_paterno', 'apellido_materno', 'estado_colegiado'
+        'dni_colegiado', 'numero_colegiatura', 'apellido_paterno', 'apellido_materno', 'estado_activo'
     }
     
     # Metodos
