@@ -124,7 +124,12 @@ const AyudaMain = () => {
           <div className="mt-6 bg-white rounded-lg shadow-md p-4">
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <ExternalLink className="w-4 h-4" />
-              <a href="#" className="hover:text-blue-600 transition-colors">
+              <a
+                href="/docs/manual.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-blue-600 transition-colors"
+              >
                 Consulta la guía del usuario aquí
               </a>
             </div>
