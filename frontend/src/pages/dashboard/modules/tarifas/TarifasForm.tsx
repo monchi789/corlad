@@ -95,7 +95,7 @@ export const TarifasForm = ({ onTarifaAdded, tarifa, resetTarifa  }: TarifaFormP
             }
           })}
         />
-        {errors.nombre_tarifa && <ErrorSpan mensaje={errors.nombre_tarifa.message} />}
+        {errors.nombre_tarifa && <ErrorSpan mensaje={errors.nombre_tarifa.message as string} />}
       </div>
 
       <div className="flex flex-col">
@@ -141,8 +141,8 @@ export const TarifasForm = ({ onTarifaAdded, tarifa, resetTarifa  }: TarifaFormP
             })}
           />
         </div>
-        {errors.monto_pago_entero && <ErrorSpan mensaje={errors.monto_pago_entero.message} />}
-        {errors.monto_pago_decimal && <ErrorSpan mensaje={errors.monto_pago_decimal.message} />}
+        {errors.monto_pago_entero && <ErrorSpan mensaje={errors.monto_pago_entero.message as string} />}
+        {errors.monto_pago_decimal && <ErrorSpan mensaje={errors.monto_pago_decimal.message as string} />}
       </div>
 
       <div className="flex flex-row space-x-5 mx-auto">
