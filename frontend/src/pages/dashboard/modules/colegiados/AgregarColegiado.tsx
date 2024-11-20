@@ -10,12 +10,10 @@ import { createColegiado, deleteColegiadoById } from "../../../../api/colegiado.
 import { createHistorialColegiado } from "../../../../api/historial.colegiado.api";
 import { getAllEscuelas } from "../../../../api/escuela.api";
 import { getAllEspecialidades } from "../../../../api/especialidad.api";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import Spinner from "../../components/ui/Spinner";
-import { FaArrowCircleLeft } from "react-icons/fa";
 import FormHeader from "./components/FormHeader";
-import ImageUploader from "./components/ImageUploader";
 
 export default function AgregarColegiado() {
   const navigate = useNavigate();
@@ -353,13 +351,24 @@ export default function AgregarColegiado() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="md:col-span-2">
+                <div className="md:col-span-1">
                   <label htmlFor="direccion" className="block text-sm font-semibold text-gray-700 mb-2">Dirección</label>
                   <input
                     type="text"
                     id="direccion"
                     name="direccion"
                     value={colegiadoData.direccion}
+                    onChange={handleChangeColegiado}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                  />
+                </div>
+                <div className="md:col-span-1">
+                  <label htmlFor="celular" className="block text-sm font-semibold text-gray-700 mb-2">Número Celular</label>
+                  <input
+                    type="text"
+                    id="celular"
+                    name="celular"
+                    value={colegiadoData.celular}
                     onChange={handleChangeColegiado}
                     className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
                   />
@@ -564,9 +573,6 @@ export default function AgregarColegiado() {
               </button>
             </Link>
           </div>
-          <Toaster
-            position="bottom-center"
-            reverseOrder={false} />
         </div>
       </form >
     </>

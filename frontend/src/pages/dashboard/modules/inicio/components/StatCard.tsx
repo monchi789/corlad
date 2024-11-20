@@ -1,7 +1,10 @@
+import React from "react";
+import CountUp from "react-countup";
+
 interface StatCardProps {
   title: string;
-  value: string;
-  icon: React.ComponentType<{ className: string }>;
+  value: number;
+  icon: React.ElementType;
   color: string;
 }
 
@@ -12,7 +15,9 @@ const StatCard = ({ title, value, icon: Icon, color }: StatCardProps) => (
     </div>
     <div>
       <p className="text-gray-600 text-sm font-medium">{title}</p>
-      <p className="text-2xl font-bold text-gray-800">{value}</p>
+      <p className="text-2xl font-bold text-gray-800">
+        <CountUp end={value} duration={1.5} />
+      </p>
     </div>
   </div>
 );

@@ -12,7 +12,7 @@ class PagoSerializer(serializers.ModelSerializer):
     id_colegiado = ColegiadoSerializer(read_only=True)
     id_metodo_pago = MetodoPagoSerializer(read_only=True)
 
-    fecha_pago = serializers.DateField(format="%Y-%m-%d")  
+    fecha_pago = serializers.DateField(format="%d-%m-%Y")  
     
     id_colegiado_id = serializers.PrimaryKeyRelatedField(
         queryset=Colegiado.objects.all(),

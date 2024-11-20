@@ -1,8 +1,8 @@
 import { ChangeEvent, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import { Dropdown } from 'primereact/dropdown';
-import { HistorialColegiado } from '../../../../interfaces/model/HistorialColegiado';
-import { getHistorialColegiadoByFilters } from '../../../../api/historial.colegiado.api';
+import { HistorialColegiado } from '../../../../../interfaces/model/HistorialColegiado';
+import { getHistorialColegiadoByFilters } from '../../../../../api/historial.colegiado.api';
 
 interface ParametrosBusqueda {
   dni_colegiado?: string,

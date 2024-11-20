@@ -11,8 +11,13 @@ import {
   FaClock
 } from 'react-icons/fa';
 import { capitalize } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import StatCard from './components/StatCard';
+import { getAllHistorialColegiado } from '../../../../api/historial.colegiado.api';
+import { getAllPagos } from '../../../../api/pagos.api';
+import { getAllPublicaciones } from '../../../../api/publicacion.api';
+import { getAllEscuelas } from '../../../../api/escuela.api';
+import { AiFillNotification } from 'react-icons/ai';
 
 interface QuickAccessButtonProps {
   icon: React.ComponentType<{ className: string }>;
@@ -38,6 +43,43 @@ export default function InicioAdmin() {
   const { user, hasGroup } = useAuth();
 
   const [time, setTime] = useState(new Date());
+
+  const [totalColegiados, setTotalColegiados] = useState(0)
+  const [totalPagos, setTotalPagos] = useState(0)
+  const [totalCapitulos, setTotalCapitulos] = useState(0)
+  const [totalPublicaciones, setTotalPublicaciones] = useState(0)
+
+  const cargarColegiados = useCallback(
+    async () => {
+      const res = await getAllHistorialColegiado();
+      setTotalColegiados(res.data.count);
+    },
+    []
+  );
+
+  const cargarPagos = useCallback(
+    async () => {
+      const res = await getAllPagos();
+      setTotalPagos(res.data.count);
+    },
+    []
+  );
+
+  const cargarCapitulos = useCallback(
+    async () => {
+      const res = await getAllEscuelas();
+      setTotalCapitulos(res.data.count);
+    },
+    []
+  );
+
+  const cargarPublicaciones = useCallback(
+    async () => {
+      const res = await getAllPublicaciones();
+      setTotalPublicaciones(res.data.count);
+    },
+    []
+  );
 
   interface QuickAccessButtonData {
     label: string;
@@ -72,7 +114,13 @@ export default function InicioAdmin() {
       group: ["publicador", "admin"]
     },
     {
-      label: "Administrar galería",
+      label: "Gestionar anuncios",
+      icon: AiFillNotification,
+      link: "/admin/galeria",
+      group: ["publicador", "admin"]
+    },
+    {
+      label: "Gestionar galería",
       icon: FaImages,
       link: "/admin/galeria",
       group: ["publicador", "admin"]
@@ -83,6 +131,13 @@ export default function InicioAdmin() {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    cargarColegiados();
+    cargarPagos();
+    cargarPublicaciones();
+    cargarCapitulos();
+  }, [cargarColegiados, cargarPagos, cargarCapitulos, cargarPublicaciones]);
 
   return (
     <div className="w-full mx-auto space-y-6">
@@ -122,27 +177,27 @@ export default function InicioAdmin() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
           title="Total Colegiados"
-          value="2,543"
+          value={totalColegiados}
           icon={FaGraduationCap}
-          color="bg-blue-500"
+          color="bg-green-500"
         />
         <StatCard
-          title="Capítulos Activos"
-          value="--"
+          title="Capítulos"
+          value={totalCapitulos}
           icon={FaUniversity}
           color="bg-green-500"
         />
         <StatCard
-          title="Pagos del Mes"
-          value="---"
+          title="Total de pagos"
+          value={totalPagos}
           icon={FaRegCreditCard}
-          color="bg-purple-500"
+          color="bg-green-500"
         />
         <StatCard
           title="Publicaciones"
-          value="---"
+          value={totalPublicaciones}
           icon={FaNewspaper}
-          color="bg-orange-500"
+          color="bg-green-500"
         />
       </div>
 

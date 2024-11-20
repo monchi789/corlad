@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { BuscarColegiado } from "./BuscarColegiado";
+import { BuscarColegiado } from "./components/BuscarColegiado";
 import ColegiadoTable from "./ColegiadoTable";
 import { HistorialColegiado } from "../../../../interfaces/model/HistorialColegiado";
 import { deleteHistorialColegiadoById, getAllHistorialColegiado } from "../../../../api/historial.colegiado.api";
@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { PersonAdd } from '@mui/icons-material';
 import { FaArrowCircleLeft } from "react-icons/fa";
 import toast from "react-hot-toast";
+import ViewColegiadoModal from "./components/ViewColegiadoModal";
 
 const ColegiadosMain = () => {
   const navigate = useNavigate();
@@ -19,6 +20,9 @@ const ColegiadosMain = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [selectedColegiado, setSelectedColegiado] = useState<HistorialColegiado | null>(null);
+
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [selectedViewColegiado, setSelectedViewColegiado] = useState<HistorialColegiado | null>(null);
 
   const handleDeleteColegiado = async (id: number): Promise<void> => {
     try {
@@ -48,6 +52,10 @@ const ColegiadosMain = () => {
     }
   };
 
+  const openModalViewColegiado = (colegiado: HistorialColegiado) => {
+    setSelectedViewColegiado(colegiado);
+    setShowViewModal(true);
+  };
 
   const cargarColegiados = useCallback(
     async (page = 0, size = pageSize) => {
@@ -107,6 +115,7 @@ const ColegiadosMain = () => {
 
       <ColegiadoTable
         colegiadosList={colegiadosList}
+        onView={openModalViewColegiado}
         onDelete={openModal}
         currentPage={currentPage}
         pageSize={pageSize}
@@ -141,6 +150,11 @@ const ColegiadosMain = () => {
           </div>
         </div>
       )}
+      <ViewColegiadoModal
+        isOpen={showViewModal}
+        onClose={() => setShowViewModal(false)}
+        colegiado={selectedViewColegiado}
+      />
     </>
   )
 }

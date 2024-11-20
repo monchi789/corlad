@@ -69,6 +69,10 @@ export default function PagosTable({
       accessorKey: "monto_total",
     },
     {
+      header: "Fecha del pago",
+      accessorKey: "fecha_pago",
+    },
+    {
       header: "Observaciones",
       accessorKey: "observacion",
     },
