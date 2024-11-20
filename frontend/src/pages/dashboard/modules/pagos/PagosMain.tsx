@@ -7,7 +7,7 @@ import { Pago } from "../../../../interfaces/model/Pago";
 import { getAllPagos } from "../../../../api/pagos.api";
 import { FaArrowCircleLeft } from "react-icons/fa";
 
-export default function Pagos() {
+const PagosMain = () => {
   const navigate = useNavigate();
 
   const [pagosList, setPagosList] = useState<Pago[]>([]);
@@ -60,16 +60,14 @@ export default function Pagos() {
           >
             <FaArrowCircleLeft className="mr-2" size={"30px"} />
           </button>
-          <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold my-auto">Administración de pagos</h4>
+          <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold my-auto">Gestión de pagos</h4>
         </div>
-        <div className="flex flex-row space-x-3 my-auto">
-          <Link className="flex flex-row space-x-3 my-auto" to={"/admin/pagos/nuevo-pago"}>
-            <button className="flex flex-row w-full justify-center bg-corlad text-lg text-white font-nunito font-semibold hover:bg-hover-corlad shadow-black shadow-md rounded-lg transition duration-300 hover:scale-110 ease-in-out delay-50 space-x-3 my-auto px-4 py-1">
-              <IoMdAddCircleOutline className="my-auto" size={"25px"} />
-              <span className="my-auto">Nuevo pago</span>
-            </button>
-          </Link>
-        </div>
+        <Link className="flex flex-row space-x-3 my-auto" to={"/admin/pagos/nuevo-pago"}>
+          <button className="flex flex-row text-lg text-white font-nunito font-semibold bg-best-green hover:bg-green-600 shadow-lg rounded-lg transition duration-300 hover:scale-105 ease-in-out space-x-3 px-4 py-2">
+            <IoMdAddCircleOutline className="my-auto" size={"25px"} />
+            <span className="my-auto">Nuevo pago</span>
+          </button>
+        </Link>
       </div>
 
       <BuscarPagos onSearchResults={handleSearchResults} />
@@ -86,3 +84,5 @@ export default function Pagos() {
     </>
   )
 }
+
+export default PagosMain;

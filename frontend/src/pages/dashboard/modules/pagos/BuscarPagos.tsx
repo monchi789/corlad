@@ -38,57 +38,59 @@ export const BuscarPagos = ({ onSearchResults }: BuscarPagoProps) => {
   }
 
   return (
-    <div className="mt-5 pb-5">
-      <div className="mt-5 bg-[#E1EBDE] shadow-custom-input rounded-2xl">
-        <div className="flex flex-col md:flex-row md:space-x-5 space-y-5 md:space-y-0 p-4">
-          <div className="md:w-2/6 flex flex-col">
-            <label htmlFor="dni_colegiado" className="block font-nunito font-bold mb-1">Documento de identidad</label>
-            <input
-              type="number"
-              id="dni_colegiado"
-              name="dni_colegiado"
-              onChange={handleChangeParams}
-              value={params?.dni_colegiado}
-              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-xl shadow-custom-input focus:outline-none p-2"
-              required
-            />
-          </div>
-          <div className="md:w-2/6 flex flex-col">
-            <label htmlFor="numero_colegiatura" className="block font-nunito font-bold mb-1">N° Colegiatura</label>
-            <input
-              type="number"
-              id="numero_colegiatura"
-              name="numero_colegiatura"
-              onChange={handleChangeParams}
-              value={params?.numero_colegiatura}
-              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-xl shadow-custom-input focus:outline-none p-2"
-              required
-            />
-          </div>
-          <div className="md:w-2/6 flex flex-col">
-            <label htmlFor="apellido_paterno" className="block font-nunito font-bold mb-1">Apellido paterno</label>
-            <input
-              type="text"
-              id="apellido_paterno"
-              name="apellido_paterno"
-              onChange={handleChangeParams}
-              value={params?.apellido_paterno}
-              className="w-full bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-xl shadow-custom-input focus:outline-none p-2"
-              required
-            />
-          </div>
-          <div className="md:w-1/6 flex items-end">
-            <button
-              onClick={handleSearch}
-              className="w-full md:max-w-xs font-nunito font-semibold bg-[#007336] text-white hover:bg-[#00330A] shadow-custom-input rounded-xl transition duration-300 mt-auto py-2">
-              <SearchIcon /> Buscar
-            </button>
-          </div>
+    <div className="bg-light shadow-custom-input rounded-2xl my-5 p-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="col-span-1">
+          <label htmlFor="dni_colegiado" className="block text-sm font-semibold text-gray-700 mb-2">Documento de identidad</label>
+          <input
+            type="number"
+            id="dni_colegiado"
+            name="dni_colegiado"
+            onChange={handleChangeParams}
+            value={params?.dni_colegiado}
+            className="w-full text-default font-nunito font-semibold placeholder-[#007336] bg-[#F1F9F1] border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+            required
+          />
+        </div>
+
+        <div className="col-span-1">
+          <label htmlFor="numero_colegiatura" className="block text-sm font-semibold text-gray-700 mb-2">N° Colegiatura</label>
+          <input
+            type="number"
+            id="numero_colegiatura"
+            name="numero_colegiatura"
+            onChange={handleChangeParams}
+            value={params?.numero_colegiatura}
+            className="w-full text-default font-nunito font-semibold placeholder-[#007336] bg-[#F1F9F1] border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+            required
+          />
+        </div>
+
+        <div className="col-span-1">
+          <label htmlFor="apellido_paterno" className="block text-sm font-semibold text-gray-700 mb-2">Apellido paterno</label>
+          <input
+            type="text"
+            id="apellido_paterno"
+            name="apellido_paterno"
+            onChange={handleChangeParams}
+            value={params?.apellido_paterno}
+            className="w-full text-default font-nunito font-semibold placeholder-[#007336] bg-[#F1F9F1] border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+            required
+          />
+        </div>
+
+        <div className="col-span-1 flex items-end">
+          <button
+            className="w-full font-nunito font-bold border-solid border-2 border-default hover:bg-corlad hover:border-corlad hover:text-white rounded-lg transition duration-300 space-x-1 py-2"
+
+            onClick={handleSearch}
+          >
+            <SearchIcon />
+            <span>Buscar</span>
+          </button>
         </div>
       </div>
     </div>
-
-
   );
 };
 

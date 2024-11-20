@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Sidebar } from './components/shared/Sidebar';
-import { SessionHeader } from './components/shared/SessionHeader';
+import { Toaster } from 'react-hot-toast';
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -8,15 +8,22 @@ interface AdminLayoutProps {
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   return (
-    <div className="flex h-screen">
-      <Sidebar />
-      <div className="w-full h-screen overflow-y-auto p-5 xl:mx-2">
-        <SessionHeader />
-        <div className="mt-5">
+    <>
+      <div className="flex h-screen bg-gray-100">
+        {/* Sidebar */}
+        <Sidebar />
+
+        <div className="flex-grow overflow-y-auto p-6">
           {children}
         </div>
       </div>
-    </div>
+
+      {/* Toast Notifications */}
+      <Toaster
+        position="bottom-center"
+        reverseOrder={false}
+      />
+    </>
   );
 };
 

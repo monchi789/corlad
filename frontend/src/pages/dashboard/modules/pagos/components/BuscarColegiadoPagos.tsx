@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { getColegiadoByFilters } from '../../../../api/colegiado.api';
-import { Colegiado } from '../../../../interfaces/model/Colegiado';
-import Spinner from '../../components/ui/Spinner';
+import { getColegiadoByFilters } from '../../../../../api/colegiado.api';
+import { Colegiado } from '../../../../../interfaces/model/Colegiado';
+import Spinner from '../../../components/ui/Spinner';
 
 interface BuscarColegiadoProps {
   onColegiadoFound: (colegiado: Colegiado | null) => void;
@@ -50,15 +50,15 @@ const BuscarColegiado: React.FC<BuscarColegiadoProps> = ({ onColegiadoFound, col
   };
 
   return (
-    <div className="flex flex-col bg-dark-light-turquoise text-default-green rounded-2xl space-y-3 p-4 mb-5">
-      <span className="text-xl font-nunito font-extrabold">Buscar colegiado:</span>
+    <div className="flex flex-col bg-white text-default-green rounded-2xl space-y-3 p-4 mb-5">
+      <span className="text-md font-nunito font-extrabold">Buscar colegiado:</span>
       <div className="flex flex-col">
         <div className="flex flex-row font-nunito font-bold space-x-7 mb-5">
           <input
             type="number"
             id="dni_colegiado"
             name="dni_colegiado"
-            className="w-full bg-custom-light-turquoise focus:outline-none shadow-custom-input rounded-lg p-1 px-2"
+            className="w-full text-default font-nunito font-semibold placeholder-[#007336] bg-default-input border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
             placeholder="Documento de identidad"
             value={dniColegiado}
             onChange={(e) => setDniColegiado(e.target.value)}
@@ -68,7 +68,7 @@ const BuscarColegiado: React.FC<BuscarColegiadoProps> = ({ onColegiadoFound, col
             type="number"
             id="numero_colegiatura"
             name="numero_colegiatura"
-            className="w-full bg-custom-light-turquoise focus:outline-none shadow-custom-input rounded-lg p-1 px-2"
+            className="w-full text-default font-nunito font-semibold placeholder-[#007336] bg-default-input border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
             placeholder="N° colegiatura"
             value={numeroColegiatura}
             onChange={(e) => setNumeroColegiatura(e.target.value)}
@@ -81,7 +81,7 @@ const BuscarColegiado: React.FC<BuscarColegiadoProps> = ({ onColegiadoFound, col
             Buscar
           </button>
         </div>
-        <div className="mb-3">
+        <div className="mb-1">
           {loading && <Spinner />}
         </div>
         <input
@@ -91,7 +91,7 @@ const BuscarColegiado: React.FC<BuscarColegiadoProps> = ({ onColegiadoFound, col
               ? `${selectedColegiado.numero_colegiatura} - ${selectedColegiado.apellido_paterno} - ${selectedColegiado.apellido_materno} - ${selectedColegiado.nombre} - ${selectedColegiado.dni_colegiado}`
               : "No se encontró ningún colegiado con esos parámetros"
           }
-          className="bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-bold shadow-custom-input rounded-lg mb-3 p-2"
+          className="w-full text-default font-nunito font-semibold placeholder-[#007336] bg-[#F1F9F1] border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
           placeholder="Colegiado que realizó el pago"
           disabled
         />

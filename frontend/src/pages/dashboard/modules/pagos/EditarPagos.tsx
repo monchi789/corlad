@@ -5,8 +5,8 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { Colegiado } from "../../../../interfaces/model/Colegiado";
 import { MetodoPago, Pago } from "../../../../interfaces/model/Pago";
-import { createPago, getMetodoPagoByFilter, getPagoById } from "../../../../api/pagos.api";
-import toast, { Toaster } from "react-hot-toast";
+import { getMetodoPagoByFilter, getPagoById, updatePago } from "../../../../api/pagos.api";
+import toast from "react-hot-toast";
 import { Tarifa } from "../../../../interfaces/model/Tarifa";
 import { getAllTarifas } from "../../../../api/tarifa.api";
 import AsyncSelect from "react-select/async"
@@ -16,7 +16,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { MultiValue } from 'react-select';
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { SubmitHandler, useForm } from "react-hook-form"
-import BuscarColegiadoPagos from "./BuscarColegiadoPagos";
+import BuscarColegiadoPagos from "./components/BuscarColegiadoPagos";
 import { Checkbox } from "@mui/material";
 import Spinner from "../../components/ui/Spinner";
 
@@ -69,6 +69,8 @@ export default function EditarPagos() {
 
           // Establecer los valores del formulario
           setValue("numero_operacion", pagoData.numero_operacion);
+          setValue("fecha_pago", pagoData.fecha_pago);
+          setValue("numero_recibo", pagoData.numero_recibo);
           setValue("observacion", pagoData.observacion);
 
           // Establecer el colegiado
@@ -147,11 +149,11 @@ export default function EditarPagos() {
         meses_pagados: selectedMonths
       };
       try {
-        await createPago(pago);
-        toast.success('Pago registrado exitosamente');
+        await updatePago(parseInt(id as string), pago);
+        toast.success('Pago actualizado exitosamente');
         navigate("/admin/pagos")
       } catch (error) {
-        toast.error("Error al registrar el pago");
+        toast.error("Error al actualizar el pago");
       } finally {
         setIsLoading(false)
       }
@@ -166,13 +168,12 @@ export default function EditarPagos() {
         id_metodo_pago: metodoPago,
         tarifas: tarifasIdList
       };
-      console.log(pago)
       try {
-        await createPago(pago);
-        toast.success('Pago registrado exitosamente');
+        await updatePago(parseInt(id as string), pago);
+        toast.success('Pago actualizado exitosamente');
         navigate("/admin/pagos")
       } catch (error) {
-        toast.error("Error al registrar el pago");
+        toast.error("Error al actualizar el pago");
       } finally {
         setIsLoading(false)
       }
@@ -277,9 +278,7 @@ export default function EditarPagos() {
       setSelectedTarifaList(prevList => prevList.filter(t => t.nombre_tarifa !== 'Mensualidad' && !t.nombre_tarifa.startsWith('Mensualidad (')));
     }
   }, [isMensualidad, selectedMonths, allTarifasList]);
-  // Agrega selectedMonths y allTarifasList como dependencias
 
-  // Array de meses con sus nombres y valores correspondientes
   const months = [
     { label: 'Enero', value: '01' },
     { label: 'Febrero', value: '02' },
@@ -297,7 +296,7 @@ export default function EditarPagos() {
 
   return (
     <>
-      <div className="flex flex-col space-y-5 my-5">
+      <div className="flex flex-col space-y-5">
         <div className="flex flex-col md:flex-row justify-between space-y-5 md:space-y-0">
           <div className="flex flex-row">
             <button
@@ -306,7 +305,7 @@ export default function EditarPagos() {
             >
               <FaArrowCircleLeft className="mr-2" size={"30px"} />
             </button>
-            <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold my-auto">Editar Pago</h4>
+            <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold my-auto">Actualizar pago</h4>
           </div>
         </div>
         <form className="flex flex-col space-y-5 my-5" onSubmit={handleSubmit(onSubmit)}>
@@ -326,22 +325,39 @@ export default function EditarPagos() {
               />
               <div className="text-default-green px-5 py-2">
                 <div className="flex flex-row w-full space-x-10">
-                  <div className="w-full space-y-2">
-                    <label htmlFor="numero_operacion" className="w-full text-xl font-nunito font-extrabold block my-auto">Numero de operación:</label>
+                  <div className="w-full">
+                    <label htmlFor="numero_recibo" className="block text-sm font-semibold text-gray-700 mb-2">Número de recibo:</label>
                     <input
-                      type="number"
-                      className="w-full bg-custom-light-turquoise focus:outline-none shadow-custom-input rounded-lg py-2 px-3"
+                      type="text"
+                      className="w-full text-default font-nunito font-semibold placeholder-[#007336] bg-[#F1F9F1] border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
                       placeholder="0000"
-                      min={0}
-                      {...register("numero_operacion")}
+                      {...register("numero_recibo")}
+                    />
+                  </div>
+                  <div className="w-full">
+                    <label htmlFor="fecha_pago" className="block text-sm font-semibold text-gray-700 mb-2">Fecha del pago</label>
+                    <input
+                      type="date"
+                      className="w-full text-default font-nunito font-semibold placeholder-[#007336] bg-[#F1F9F1] border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                      {...register("fecha_pago")}
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-col text-[#00330A] space-y-2 px-5 py-4">
-                <span className="text-xl font-nunito font-extrabold">Método de pago:</span>
-                <div className="flex flex-row w-full justify-between">
+              <div className="text-default-green px-5 py-2">
+                <label htmlFor="numero_operacion" className="block text-sm font-semibold text-gray-700 mb-2">Numero de operación:</label>
+                <input
+                  type="text"
+                  className="w-full text-default font-nunito font-semibold placeholder-[#007336] bg-[#F1F9F1] border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                  placeholder="0000"
+                  {...register("numero_operacion")}
+                />
+              </div>
+
+              <div className="flex flex-col text-[#00330A] px-5 py-4">
+                <span className="block text-sm font-semibold text-gray-700 mb-1">Método de pago:</span>
+                <div className="flex flex-col sm:flex-row w-full justify-between sm:space-x-4">
                   <RadioGroup
                     row
                     aria-labelledby="pagos-row-radio-buttons-group"
@@ -350,22 +366,49 @@ export default function EditarPagos() {
                     value={selectedMetodoPago}
                     onChange={handleChangeMetodoPago}
                   >
-                    <FormControlLabel className="w-1/5" value="efectivo" control={<Radio
-                      sx={{ color: '#00330A', '&.Mui-checked': { color: '#00330A' } }}
-                    />} label={<span className="text-default-green font-semibold">Efectivo</span>} />
+                    <FormControlLabel
+                      className="w-full sm:w-1/5"
+                      value="efectivo"
+                      control={
+                        <Radio
+                          sx={{ color: '#007336', '&.Mui-checked': { color: '#007336' } }}
+                        />
+                      }
+                      label={<span className="text-corlad text-sm font-semibold">Efectivo</span>}
+                    />
 
-                    <FormControlLabel className="w-1/5" value="deposito" control={<Radio
-                      sx={{ color: '#00330A', '&.Mui-checked': { color: '#00330A' } }}
-                    />} label={<span className="text-default-green font-semibold">Depósito</span>} />
+                    <FormControlLabel
+                      className="w-full sm:w-1/5"
+                      value="deposito"
+                      control={
+                        <Radio
+                          sx={{ color: '#007336', '&.Mui-checked': { color: '#007336' } }}
+                        />
+                      }
+                      label={<span className="text-corlad text-sm font-semibold">Depósito</span>}
+                    />
 
-                    <FormControlLabel className="w-1/5" value="yape" control={<Radio
-                      sx={{ color: '#00330A', '&.Mui-checked': { color: '#00330A' } }}
-                    />} label={<span className="text-default-green font-semibold">Yape</span>} />
+                    <FormControlLabel
+                      className="w-full sm:w-1/5"
+                      value="yape"
+                      control={
+                        <Radio
+                          sx={{ color: '#007336', '&.Mui-checked': { color: '#007336' } }}
+                        />
+                      }
+                      label={<span className="text-corlad text-sm font-semibold">Yape</span>}
+                    />
 
-                    <FormControlLabel className="w-1/5" value="plin" control={<Radio
-                      sx={{ color: '#00330A', '&.Mui-checked': { color: '#00330A' } }}
-                    />} label={<span className="text-default-green font-semibold">Plin</span>} />
-
+                    <FormControlLabel
+                      className="w-full sm:w-1/5"
+                      value="plin"
+                      control={
+                        <Radio
+                          sx={{ color: '#007336', '&.Mui-checked': { color: '#007336' } }}
+                        />
+                      }
+                      label={<span className="text-corlad text-sm font-semibold">Plin</span>}
+                    />
                   </RadioGroup>
                 </div>
               </div>
@@ -373,7 +416,7 @@ export default function EditarPagos() {
               {isMensualidad && (
                 <div className="flex flex-col text-[#00330A] space-y-2 mb-5 px-5 py-4">
                   <span className="text-xl font-nunito font-extrabold">Meses pagados:</span>
-                  <div className="flex flex-wrap w-full justify-between">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                     {months.map(({ label, value }) => (
                       <FormControlLabel
                         key={value}
@@ -392,8 +435,8 @@ export default function EditarPagos() {
                 </div>
               )}
 
-              <div className="flex flex-col w-full bg-dark-light-turquoise text-default-green rounded-2xl space-y-2 p-5">
-                <label htmlFor="observacion" className="w-full text-xl font-nunito font-extrabold block">Observación:</label>
+              <div className="flex flex-col w-full bg-dark-light-turquoise text-default-green rounded-2xl px-5">
+                <label htmlFor="observacion" className="block text-sm font-semibold text-gray-700 mb-2">Observación:</label>
                 <textarea
                   rows={4}
                   className="bg-[#ECF6E8] border-solid border border-black resize-none focus:outline-none rounded-lg p-2"
@@ -401,7 +444,7 @@ export default function EditarPagos() {
                 />
               </div>
             </div>
-            <div className="flex flex-col w-2/4 bg-dark-light-turquoise rounded-lg p-5">
+            <div className="flex flex-col w-2/4 bg-white rounded-lg p-5">
               <div className="flex frex-row justify-between space-x-5">
                 <AsyncSelect<Option, true>
                   className="mb-5 w-full"
@@ -431,12 +474,13 @@ export default function EditarPagos() {
               type="submit"
               className={
                 `w-2/6 bg-corlad text-white shadow-md rounded-lg space-x-4 px-8 py-2
-            ${isLoading ? 'opacity-50' : 'hover:bg-hover-corlad transition duration-300'}`
+              ${isLoading ? 'opacity-50' : 'hover:bg-hover-corlad transition duration-300'}`
               }
               disabled={isLoading}
             >
               {isLoading ? <Spinner /> : 'Guardar pago'}
-            </button>            <Link to={"/admin/pagos"} className="w-1/6">
+            </button>
+            <Link to={"/admin/pagos"} className="w-1/6">
               <button type="button" className="w-full border-solid border-2 border-[#3A3A3A] hover:bg-default-gray hover:text-white transition duration-300 rounded-lg py-3">
                 Cancelar
               </button>
@@ -444,9 +488,6 @@ export default function EditarPagos() {
           </div>
         </form>
       </div>
-      <Toaster
-        position="bottom-center"
-        reverseOrder={false} />
     </>
   )
 }

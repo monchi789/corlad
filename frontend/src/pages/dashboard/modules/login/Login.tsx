@@ -1,194 +1,157 @@
 import { FormEvent, useState } from "react";
-import {
-  Box, Typography, TextField, IconButton, InputAdornment, Grid,
-  Container
-} from '@mui/material';
-import { FaUser } from "react-icons/fa";
-import { AiOutlineEye } from "react-icons/ai";
-import { PiEyeClosed } from "react-icons/pi";
-import { MdLock } from "react-icons/md";
-import logo_corlad from '../../../../assets/web/corlad_logo.png';
-import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from 'jwt-decode';
 import { useAuth } from "../../contexts/AuthContext";
+import { jwtDecode } from "jwt-decode";
+import { FaUser } from "react-icons/fa";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { MdLock } from "react-icons/md";
+import axios from "axios";
+import logo_corlad from '../../../../assets/web/corlad_logo.png';
+import bgImage from '../../../../assets/web/machupicchu.webp';
 
-// Función para decodificar el token JWT
 export function getDecodedToken(token: string) {
   try {
-
-    const decoded = jwtDecode(token); // Usa el tipo genérico aquí
-
+    const decoded = jwtDecode(token);
     return decoded;
-
   } catch (error) {
-
     return null;
-
   }
 }
 
-// Componente de inicio de sesión
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
-
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const handleTogglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError("");
+    
     try {
       const apiUrl = import.meta.env.VITE_API_URL;
       const response = await axios.post(`${apiUrl}api/token/`, { username, password });
       const token = response.data.access;
-
-      // Usa la función login del contexto de autenticación
-      // Esta función ahora decodifica el token y almacena la información del usuario
       login(token);
-
-      // Redirige al inicio
       navigate('/admin');
     } catch (error) {
-      setError('Error al iniciar sesión');
+      setError('Las credenciales ingresadas son incorrectas');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="w-full h-screen bg-[#ECFFF4] flex justify-center items-center">
-      <div className="w-full max-w-4xl mx-auto">
-        <Container className="bg-white" sx={{ position: 'relative', p: 5, borderRadius: '20px', boxShadow: '0 4px 8px rgba(43, 94, 59, 0.4)' }}>
-          <Box sx={{ textAlign: 'center', mb: 4 }}>
-            <Typography component="h1" variant="h5" sx={{ fontFamily: 'Nunito Sans', color: '#00330A' }}>
-              Colegio Regional de Licenciados en Administración - Cusco
-            </Typography>
-          </Box>
-          <Grid container spacing={4} alignItems="center">
-            <Grid item xs={12} md={6}>
-              <Typography component="h2" variant="h4" sx={{ fontFamily: 'Nunito Sans', color: '#00330A', marginTop: 2, fontWeight: 'bold' }}>
-                Bienvenido
-              </Typography>
-              <Typography component="p" sx={{ fontFamily: 'Nunito Sans', color: 'black', marginBottom: 4 }}>
-                Inicie sesión con los datos que ingresó durante el registro
-              </Typography>
-              <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleLogin}>
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="username"
-                  name="username"
-                  autoComplete="username"
-                  autoFocus
-                  variant="outlined"
-                  placeholder="Usuario"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      backgroundColor: '#94b38f',
-                      boxShadow: '0 4px 8px rgba(43, 94, 59, 0.4)',
-                      '& fieldset': {
-                        border: 'none',
-                      },
-                      '&:hover fieldset': {
-                        border: 'none',
-                      },
-                      '&.Mui-focused fieldset': {
-                        border: 'none',
-                      },
-                      '&::placeholder': {
-                        color: '#2B5E3B',
-                        opacity: 1,
-                      },
-                    },
-                    '& .MuiInputBase-input': {
-                      color: '#2B5E3B',
-                    },
-                  }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <FaUser color="#00330A" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  autoComplete="current-password"
-                  placeholder="Contraseña"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      backgroundColor: '#94b38f',
-                      boxShadow: '0 4px 8px rgba(43, 94, 59, 0.4)',
-                      '& fieldset': {
-                        border: 'none',
-                      },
-                      '&:hover fieldset': {
-                        border: 'none',
-                      },
-                      '&.Mui-focused fieldset': {
-                        border: 'none',
-                      },
-                      '&::placeholder': {
-                        color: '#2B5E3B',
-                        opacity: 1,
-                      },
-                    },
-                    '& .MuiInputBase-input': {
-                      color: '#2B5E3B',
-                    },
-                  }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <MdLock color="#00330A" />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton onClick={handleTogglePasswordVisibility}>
-                          {showPassword ? <AiOutlineEye color="#00330A" /> : <PiEyeClosed color="#00330A" />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                  <span className="text-[#B50C0C] mt-2">{error}</span><br />
-                  <button className="bg-hover-corlad hover:bg-corlad text-white font-nunito font-bold shadow-md transition duration-200 rounded mt-3 mb-2 px-6 py-1.5" type="submit">
-                    Ingresar
+    <div 
+      className="min-h-screen flex items-center justify-center p-4 relative"
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
+      <div 
+        className="absolute inset-0"
+        style={{
+          backgroundColor: 'rgba(255, 255, 255, 0.2)',
+          backdropFilter: 'blur(8px)'
+        }}
+      />
+
+      <div className="w-full max-w-3xl relative z-10">
+        <div className="bg-white bg-opacity-95 rounded-2xl shadow-2xl overflow-hidden">
+          <div className="flex flex-col md:flex-row">
+
+            <div className="w-full md:w-1/2 p-8 md:p-12">
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-gray-800 mb-2">
+                  ¡Bienvenido!
+                </h2>
+                <p className="text-gray-600">
+                  Inicie sesión con los datos que ingresó durante el registro
+                </p>
+              </div>
+              
+              <form onSubmit={handleLogin} className="space-y-6">
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FaUser className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="block w-full outline-none border border-gray-200 rounded-lg focus:ring-2 focus:ring-corlad focus:border-transparent transition-all duration-200 bg-gray-50 pl-10 pr-3 py-3"
+                    placeholder="Usuario"
+                    required
+                  />
+                </div>
+
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <MdLock className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="block w-full outline-none border border-gray-200 rounded-lg focus:ring-2 focus:ring-corlad focus:border-transparent transition-all duration-200 bg-gray-50 pl-10 pr-10 py-3"
+                    placeholder="Contraseña"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  >
+                    {showPassword ? (
+                      <AiOutlineEyeInvisible className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    ) : (
+                      <AiOutlineEye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    )}
                   </button>
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Box
-                component="img"
-                sx={{
-                  width: '100%',
-                  maxHeight: 300,
-                  objectFit: 'contain',
-                }}
-                alt="Login"
+                </div>
+
+                {error && (
+                  <p className="text-red-500 text-sm">{error}</p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-corlad hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                >
+                  {isLoading ? (
+                    <span className="flex items-center justify-center">
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Ingresando...
+                    </span>
+                  ) : (
+                    'Ingresar'
+                  )}
+                </button>
+              </form>
+            </div>
+
+            <div className="w-full md:w-1/2 bg-white p-12 flex flex-col justify-center items-center">
+              <img
                 src={logo_corlad}
+                alt="CORLAD Logo"
+                className="w-64 h-64 object-contain mb-8"
               />
-            </Grid>
-          </Grid>
-        </Container>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  )
+  );
 }

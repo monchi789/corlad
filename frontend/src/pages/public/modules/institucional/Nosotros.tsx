@@ -146,13 +146,13 @@ export default function Nosotros() {
             ))}
           </div>
         </div>
-
-        <div className="flex flex-col items-center mx-auto mb-24">
-          <h3 className="font-extrabold text-center text-3xl lg:text-4xl md:text-4xl text-[#a67102] mb-24 font-nunito">NUESTROS CONVENIOS</h3>
-          <Carousel />
-        </div>
-
       </div>
+
+      <div className="flex flex-col items-center mb-16">
+        <h3 className="font-extrabold text-center text-3xl lg:text-4xl md:text-4xl text-[#a67102] mb-24 font-nunito">NUESTROS CONVENIOS</h3>
+        <Carousel />
+      </div>
+
       <Footer />
     </div>
   )

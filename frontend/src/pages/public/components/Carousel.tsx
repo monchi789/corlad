@@ -59,7 +59,7 @@ const MyCarousel: React.FC = () => {
   };
 
   return (
-    <div className="w-full mx-auto">
+    <div className="w-full">
       <Slider {...settings}>
         {images.map((image, index) => (
           <div key={index} className="px-2">

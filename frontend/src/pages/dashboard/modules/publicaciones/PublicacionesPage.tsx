@@ -170,7 +170,7 @@ export default function PublicacionesAdmin() {
 
   return (
     <>
-      <div className="flex flex-col space-y-5 my-5">
+      <div className="flex flex-col space-y-5">
         <div className="flex flex-row justify-between">
           <div className="flex flex-col md:flex-row justify-between space-y-5 md:space-y-0">
             <div className="flex flex-row">

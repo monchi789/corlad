@@ -159,7 +159,7 @@ export default function EditarPublicacion() {
 
   return (
     <>
-        <div className="flex flex-col space-y-5 my-10">
+        <div className="flex flex-col space-y-5">
           <div className="flex flex-row justify-between">
             <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Editar publicación</h4>
           </div>

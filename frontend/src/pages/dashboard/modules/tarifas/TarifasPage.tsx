@@ -94,7 +94,7 @@ export default function TarifasPage() {
 
   return (
     <>
-      <div className="flex flex-col my-5 space-y-5">
+      <div className="flex flex-col pace-y-5">
         <div className="flex flex-col md:flex-row justify-between space-y-5 md:space-y-0">
           <div className="flex flex-row">
             <button
