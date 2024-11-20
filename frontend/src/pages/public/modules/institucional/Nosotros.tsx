@@ -6,6 +6,7 @@ import direccion_03 from "../../../../assets/web/directivos/director_economia_fi
 import direccion_04 from "../../../../assets/web/directivos/director_desarrollo_habilitacion.jpg"
 import direccion_05 from "../../../../assets/web/directivos/director_informacion_cientifica_tecnologica.jpg"
 import direccion_06 from "../../../../assets/web/directivos/director_imagen_institucional.jpg"
+import direccion_07 from "../../../../assets/web/directivos/director_general_secretaria.jpg"
 
 import { Footer } from "../../components/shared/Footer";
 import Carousel from "../../components/Carousel";
@@ -42,6 +43,11 @@ export default function Nosotros() {
       imgDirectivo: direccion_06,
       nombreDirectivo: "Manuel Jesus Zvietcovich Alvarez",
       cargoDirectivo: "DIRECTOR DE IMAGEN INSTITUCIONAL"
+    },
+    {
+      imgDirectivo: direccion_07,
+      nombreDirectivo: "Edwin Umeres Mena",
+      cargoDirectivo: "DIRECTOR GENERAL DE SECRETARIA"
     }
   ]
 
