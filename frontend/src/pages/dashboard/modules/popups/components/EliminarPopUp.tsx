@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { deletePopUps } from "../../../../api/popup.api";
-import { PopUp } from "../../../../interfaces/model/PopUp";
-import Spinner from "../../components/ui/Spinner";
+import { deletePopUps } from "../../../../../api/popup.api";
+import { PopUp } from "../../../../../interfaces/model/PopUp";
+import Spinner from "../../../components/ui/Spinner";
 
 interface EliminarPopUpProps {
   isOpen: boolean;

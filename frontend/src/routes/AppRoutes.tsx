@@ -17,22 +17,23 @@ const Colegiatura = lazy(() => import('../pages/public/modules/colegiados/Colegi
 
 // Rutas protegidas con Lazy Loading
 const Login = lazy(() => import('../pages/dashboard/modules/login/Login.tsx'));
-const InicioAdmin = lazy(() => import('../pages/dashboard/modules/inicio/InicioAdmin.tsx'));
-const ColegiadosPage = lazy(() => import('../pages/dashboard/modules/colegiados/ColegiadosPage.tsx'));
+const Home = lazy(() => import('../pages/dashboard/modules/inicio/InicioAdmin.tsx'));
+const Colegiado = lazy(() => import('../pages/dashboard/modules/colegiados/ColegiadosMain.tsx'));
 const AgregarColegiado = lazy(() => import('../pages/dashboard/modules/colegiados/AgregarColegiado.tsx'));
 const EditarColegiado = lazy(() => import('../pages/dashboard/modules/colegiados/EditarColegiado.tsx'));
-const Capitulos = lazy(() => import('../pages/dashboard/modules/capitulos/Capitulos.tsx'));
-const PopUpsPage = lazy(() => import('../pages/dashboard/modules/popups/PopUpsPage.tsx'));
-const SlidersAdmin = lazy(() => import('../pages/dashboard/modules/sliders/SlidersPage.tsx'));
-const PublicacionesAdmin = lazy(() => import('../pages/dashboard/modules/publicaciones/PublicacionesPage.tsx'));
+const Capitulos = lazy(() => import('../pages/dashboard/modules/capitulos/CapitulosEspecialidadesMain.tsx'));
+const PopUp = lazy(() => import('../pages/dashboard/modules/popups/PopUpsMain.tsx'));
+const Slider = lazy(() => import('../pages/dashboard/modules/sliders/SlidersMain.tsx'));
+const Publicacion = lazy(() => import('../pages/dashboard/modules/publicaciones/PublicacionesPage.tsx'));
 const NuevaPublicacion = lazy(() => import('../pages/dashboard/modules/publicaciones/NuevaPublicacion.tsx'));
 const EditarPublicacion = lazy(() => import('../pages/dashboard/modules/publicaciones/EditarPublicacion.tsx'));
-const CategoriasPage = lazy(() => import('../pages/dashboard/modules/categorias/CategoriasPage.tsx'));
-const PagosPage = lazy(() => import('../pages/dashboard/modules/pagos/PagosPage.tsx'));
+const Categoria = lazy(() => import('../pages/dashboard/modules/categorias/CategoriasPage.tsx'));
+const Pago = lazy(() => import('../pages/dashboard/modules/pagos/PagosMain.tsx'));
 const AgregarPagos = lazy(() => import('../pages/dashboard/modules/pagos/AgregarPagos.tsx'));
 const EditarPagos = lazy(() => import('../pages/dashboard/modules/pagos/EditarPagos.tsx'));
-const EstadoCuentas = lazy(() => import('../pages/dashboard/modules/estadocuenta/EstadoCuentas.tsx'));
-const TarifasPage = lazy(() => import('../pages/dashboard/modules/tarifas/TarifasPage.tsx'));
+const EstadoCuenta = lazy(() => import('../pages/dashboard/modules/estadocuenta/EstadoCuentas.tsx'));
+const Tarifa = lazy(() => import('../pages/dashboard/modules/tarifas/TarifasPage.tsx'));
+const Ayuda = lazy(() => import('../pages/dashboard/modules/ayuda/AyudaMain.tsx'));
 
 const NoAutorizado = lazy(() => import('./NoAutorizado.tsx'));
 // Componente de carga personalizada
@@ -59,26 +60,27 @@ const publicRoutes = [
 ];
 
 const adminRoutes = [
-  { path: "/admin", element: <InicioAdmin />, allowedGroups: ['admin', 'secretaria', 'publicador'] },
+  { path: "/admin", element: <Home />, allowedGroups: ['admin', 'secretaria', 'publicador'] },
+  { path: "/admin/ayuda", element: <Ayuda />, allowedGroups: ['admin', 'secretaria', 'publicador'] },
 
   // Permisos para secretaria
-  { path: "/admin/colegiado", element: <ColegiadosPage />, allowedGroups: ['admin', 'secretaria'] },
+  { path: "/admin/colegiado", element: <Colegiado />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/colegiado/nuevo-colegiado", element: <AgregarColegiado />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/colegiado/editar-colegiado/:id1/:id2", element: <EditarColegiado />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/capitulos", element: <Capitulos />, allowedGroups: ['admin', 'secretaria'] },
-  { path: "/admin/pagos", element: <PagosPage />, allowedGroups: ['admin', 'secretaria'] },
+  { path: "/admin/pagos", element: <Pago />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/pagos/nuevo-pago", element: <AgregarPagos />, allowedGroups: ['admin', 'secretaria'] },
   { path: "/admin/pagos/editar-pago/:id", element: <EditarPagos />, allowedGroups: ['admin', 'secretaria'] },
-  { path: "/admin/pagos/estado-cuenta", element: <EstadoCuentas />, allowedGroups: ['admin', 'secretaria'] },
-  { path: "/admin/tarifas", element: <TarifasPage />, allowedGroups: ['admin', 'secretaria'] },
+  { path: "/admin/pagos/estado-cuenta", element: <EstadoCuenta />, allowedGroups: ['admin', 'secretaria'] },
+  { path: "/admin/tarifas", element: <Tarifa />, allowedGroups: ['admin', 'secretaria'] },
 
   // Permisos para publicador
-  { path: "/admin/publicaciones", element: <PublicacionesAdmin />, allowedGroups: ['admin', 'publicador'] },
+  { path: "/admin/publicaciones", element: <Publicacion />, allowedGroups: ['admin', 'publicador'] },
   { path: "/admin/publicaciones/nueva-publicacion", element: <NuevaPublicacion />, allowedGroups: ['admin', 'publicador'] },
   { path: "/admin/publicaciones/editar-publicacion/:id", element: <EditarPublicacion />, allowedGroups: ['admin', 'publicador'] },
-  { path: "/admin/publicaciones/categorias", element: <CategoriasPage />, allowedGroups: ['admin', 'publicador'] },
-  { path: "/admin/anuncios", element: <PopUpsPage />, allowedGroups: ['admin', 'publicador'] },
-  { path: "/admin/galeria", element: <SlidersAdmin />, allowedGroups: ['admin', 'publicador'] },
+  { path: "/admin/publicaciones/categorias", element: <Categoria />, allowedGroups: ['admin', 'publicador'] },
+  { path: "/admin/anuncios", element: <PopUp />, allowedGroups: ['admin', 'publicador'] },
+  { path: "/admin/galeria", element: <Slider />, allowedGroups: ['admin', 'publicador'] },
 ];
 
 const AppRoutes = () => {

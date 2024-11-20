@@ -6,9 +6,9 @@ import { deleteHistorialColegiadoById, getAllHistorialColegiado } from "../../..
 import { Link, useNavigate } from 'react-router-dom';
 import { PersonAdd } from '@mui/icons-material';
 import { FaArrowCircleLeft } from "react-icons/fa";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
-export default function ColegiadosAdmin() {
+const ColegiadosMain = () => {
   const navigate = useNavigate();
 
   const [colegiadosList, setColegiadosList] = useState<HistorialColegiado[]>([]);
@@ -85,18 +85,18 @@ export default function ColegiadosAdmin() {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row justify-between mt-5">
+      <div className="flex flex-col md:flex-row justify-between">
         <div className="flex flex-row">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center text-gray-700 hover:text-gray-900 p-2"
+            className="flex items-center text-gray-700 hover:text-gray-900 p-2 transition duration-300 hover:scale-110"
           >
             <FaArrowCircleLeft className="mr-2" size={"30px"} />
           </button>
           <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold my-auto">Colegiados</h4>
         </div>
         <Link className="flex flex-row space-x-3 my-auto" to={"/admin/colegiado/nuevo-colegiado"}>
-          <button className="flex flex-row bg-[#007336] text-lg text-white font-nunito font-semibold hover:bg-[#00330A] shadow-black shadow-md rounded-lg transition duration-300 hover:scale-110 ease-in-out delay-150 space-x-3 px-4 py-1">
+          <button className="flex flex-row text-lg text-white font-nunito font-semibold bg-best-green hover:bg-green-600 shadow-lg rounded-lg transition duration-300 hover:scale-105 ease-in-out space-x-3 px-4 py-2">
             <PersonAdd className="my-auto" />
             <span className="my-auto">Nuevo colegiado</span>
           </button>
@@ -141,10 +141,8 @@ export default function ColegiadosAdmin() {
           </div>
         </div>
       )}
-
-      <Toaster
-        position="bottom-center"
-        reverseOrder={false} />
     </>
   )
 }
+
+export default ColegiadosMain;

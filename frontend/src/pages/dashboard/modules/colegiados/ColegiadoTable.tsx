@@ -157,7 +157,7 @@ export default function ColegiadoTable({
           ) : (
             table.getRowModel().rows.map(row => (
               <tr
-                className="hover:bg-[#C9D9C6] transition duration-200"
+                className="bg-white hover:bg-light transition duration-200"
                 key={row.id}
               >
                 {row.getVisibleCells().map(cell => (
