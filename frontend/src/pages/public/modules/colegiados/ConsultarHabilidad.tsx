@@ -245,7 +245,7 @@ export default function ConsultarHabilidad() {
                       <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900">{colegiado.id_colegiado.apellido_paterno + ' ' + colegiado.id_colegiado.apellido_materno}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-md">
                         <span className={`font-semibold ${getEstadoColor(colegiado.id_colegiado.estado_activo)}`}>
-                          {colegiado.id_colegiado.estado_activo === 'NO_ACTIVO' ?  'No activo'  : 'No activo'}
+                          {colegiado.id_colegiado.estado_activo === 'NO_ACTIVO' ?  'No activo'  : colegiadoData[0].id_colegiado.estado_activo}
                         </span>
                       </td>
                     </tr>
