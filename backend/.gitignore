@@ -8,3 +8,5 @@ media/
 static
 .env.prod
 Dockerfile
+docker-compose.yml
+postgres/
