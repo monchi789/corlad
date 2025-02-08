@@ -25,18 +25,24 @@ export function PopUps() {
 
   useEffect(() => {
     async function cargarPopUp() {
-      const res = await getPopUp();
-      setData(res.data);
-      
-      // Solo mostrar el popup si hay elementos activos
-      const elementosActivos = res.data.filter(item => item.estado_popup);
-      if (elementosActivos.length > 0) {
-        setVisible(true);
+      try {
+        const res = await getPopUp();
+        const popUps: PopUp[] = res.data;
+        setData(popUps);
+  
+        // Mostrar popup si hay elementos activos
+        const elementosActivos = popUps.filter(item => item.estado_popup);
+        if (elementosActivos.length > 0) {
+          setVisible(true);
+        }
+      } catch (error) {
+        console.error("Error al cargar popups:", error);
       }
     }
-
+  
     cargarPopUp();
   }, []);
+  
 
   const popUpsActivo = data.filter(item => item.estado_popup);
 
