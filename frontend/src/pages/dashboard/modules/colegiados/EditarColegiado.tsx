@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import colegiado_default from "../../../../assets/dashboard/person_perfil.webp"
-import { Divider } from "primereact/divider";
 import { Dropdown } from "primereact/dropdown";
 import { RiImageAddFill } from "react-icons/ri";
 import { Colegiado, defaultColegiado } from "../../../../interfaces/model/Colegiado";
@@ -12,8 +11,9 @@ import { getColegiadoById, updateColegiado } from "../../../../api/colegiado.api
 import { getHistorialColegiadoById, updateHistorialColegiado } from "../../../../api/historial.colegiado.api";
 import { getAllEscuelas } from "../../../../api/escuela.api";
 import { getAllEspecialidades } from "../../../../api/especialidad.api";
-import toast, { Toaster } from "react-hot-toast";
-import { FaArrowCircleLeft } from "react-icons/fa";
+import toast from "react-hot-toast";
+import Spinner from "../../components/ui/Spinner";
+import FormHeader from "./components/FormHeader";
 
 export default function EditarColegiado() {
   const navigate = useNavigate();
@@ -22,6 +22,7 @@ export default function EditarColegiado() {
   const [selectedCapitulo, setSelectedCapitulo] = useState<number | null>(null);
   const [selectedEspecialidad, setSelectedEspecialidad] = useState<number | null>(null);
   const [filteredEspecialidadData, setFilteredEspecialidadData] = useState<Especialidad[]>([]);
+  const [isLoading, setIsLoading] = useState(false); // Estado para controlar la carga
 
   const [colegiadoData, setColegiadoData] = useState<Colegiado>(defaultColegiado);
   const [escuelaData, setEscuelaData] = useState<Escuela[]>([]);
@@ -167,6 +168,8 @@ export default function EditarColegiado() {
   // Maneja el envío del formulario para crear un colegiado y su historial
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true); // Comienza la carga
+
     const formData = convertToFormData(colegiadoData);
 
     try {
@@ -174,11 +177,10 @@ export default function EditarColegiado() {
         const filteredEspecialidad = especialidadData.filter(especialidad => especialidad.id === selectedEspecialidad);
         historialData.id_especialidad = filteredEspecialidad[0];
       }
-      const res1 = await updateColegiado(parseInt(id2!), formData);
+      await updateColegiado(parseInt(id2!), formData);
 
-      const res2 = await updateHistorialColegiado(historialData.id, historialData);
+      await updateHistorialColegiado(historialData.id, historialData);
 
-      console.log(res1,res2)
       toast.success('Colegiado actualizado exitosamente');
       navigate("/admin/colegiado")
     } catch (error: any) {
@@ -205,10 +207,33 @@ export default function EditarColegiado() {
         // Otros errores
         toast.error(`Error al crear colegiado: ${error.message}`);
       }
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Revoca la URL de la imagen cuando el componente se desmonta o cambia la URL
+  useEffect(() => {
+    async function cargarDatosColegiado() {
+      if (id1 && id2) {
+        const resColegiado = await getColegiadoById(parseInt(id2));
+        setColegiadoData(resColegiado.data);
+  
+        const photoUrl = resColegiado.data.foto_colegiado
+          ? import.meta.env.VITE_API_URL_ALTER + resColegiado.data.foto_colegiado
+          : colegiado_default;
+        setImageUrl(photoUrl);
+  
+        const resHistorialColegiado = await getHistorialColegiadoById(parseInt(id1));
+        setHistorialData(resHistorialColegiado.data);
+  
+        setSelectedCapitulo(resHistorialColegiado.data.id_especialidad.id_escuela.id);
+        setSelectedEspecialidad(resHistorialColegiado.data.id_especialidad.id);
+      }
+    }
+    cargarDatosColegiado();
+  }, [id1, id2]);
+
   useEffect(() => {
     return () => {
       if (imageUrl !== colegiado_default) {
@@ -219,378 +244,358 @@ export default function EditarColegiado() {
 
   return (
     <>
-      <form className="flex flex-col w-full space-x-5 my-5" onSubmit={handleSubmit}>
-        <div className="flex flex-row mb-5">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center text-gray-700 hover:text-gray-900 p-2"
-          >
-            <FaArrowCircleLeft className="mr-2" size={"30px"} />
-          </button>
-          <h4 className="text-3xl text-[#3A3A3A] font-nunito font-extrabold my-auto">Editar colegiado</h4>
-        </div>
-        <div className="flex flex-row w-full">
-          <div className="flex flex-col w-1/4">
-            <img className="w-5/6 mt-5" src={imageUrl} alt="Perfil colegiado" />
-            <button
-              type="button"
-              className="flex flex-row justify-between bg-corlad hover:bg-hover-corlad text-start text-white font-nunito font-extrabold rounded-md transition duration-300 py-2 px-3 mt-10"
-              onClick={handleFileButtonClick}
-            >
-              <span>Seleccionar archivo</span>
-              <RiImageAddFill size={"25px"} />
-            </button>
-            <input
-              type="file"
-              ref={fileInputRef}
-              style={{ display: 'none' }}
-              onChange={handleFileChange}
-            />
-            <span className="mt-5">{fileName ? fileName : "Ningún archivo seleccionado"}</span>
-          </div>
-          <Divider layout="vertical" className="border border-solid mx-10" />
-          <div className="flex flex-col w-3/4 me-5">
-            <div className="text-[#3A3A3A] font-nunito font-bold space-y-3">
-              <div className="bg-[#C9D9C6] rounded-2xl space-y-2 px-5 py-4">
-                <div className="flex flex-row space-x-5">
-                  <div className="w-1/3">
-                    <label htmlFor="nombre" className="block mb-1">Nombres</label>
-                    <input
-                      type="text"
-                      id="nombre"
-                      name="nombre"
-                      value={colegiadoData.nombre}
-                      onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
-                      required
-                    />
-                  </div>
-                  <div className="w-1/3">
-                    <label htmlFor="apellido_paterno" className="block mb-1">Apellido paterno</label>
-                    <input
-                      type="text"
-                      id="apellido_paterno"
-                      name="apellido_paterno"
-                      value={colegiadoData.apellido_paterno}
-                      onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
-                      required
-                    />
-                  </div>
-                  <div className="w-1/3">
-                    <label htmlFor="apellido_materno" className="block mb-1">Apellido materno</label>
-                    <input
-                      type="text"
-                      id="apellido_materno"
-                      name="apellido_materno"
-                      value={colegiadoData.apellido_materno}
-                      onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-row space-x-5">
-                  <div className="w-1/4">
-                    <label htmlFor="dni_colegiado" className="block mb-1">DNI</label>
-                    <input
-                      type="text"
-                      id="dni_colegiado"
-                      name="dni_colegiado"
-                      value={colegiadoData.dni_colegiado}
-                      onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
-                      required
-                    />
-                  </div>
-                  <div className="w-1/4">
-                    <label htmlFor="fecha_nacimiento" className="block mb-1">Fecha de Nacimiento</label>
-                    <input
-                      type="date"
-                      id="fecha_nacimiento"
-                      name="fecha_nacimiento"
-                      value={colegiadoData.fecha_nacimiento}
-                      onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
-                      required
-                    />
-                  </div>
-                  <div className="w-1/4">
-                    <label htmlFor="sexo_colegiado" className="block mb-1">Sexo</label>
-                    <Dropdown
-                      id="sexo_colegiado"
-                      name="sexo_colegiado"
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
-                      panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
-                      value={colegiadoData.sexo_colegiado}
-                      onChange={(e) => {
-                        handleChangeColegiado({ name: 'sexo_colegiado', value: e.value });
-                      }}
-                      options={optionsSexo}
-                      placeholder="Elegir..."
-                      itemTemplate={itemDropdown}
-                      required
-                    />
-                  </div>
-                  <div className="w-1/4">
-                    <label htmlFor="correo" className="block mb-1">Correo electrónico</label>
-                    <input
-                      type="text"
-                      id="correo"
-                      name="correo"
-                      value={colegiadoData.correo}
-                      onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
-                      required
-                    />
-                  </div>
-
-                </div>
-                <div className="flex flex-row space-x-5">
-                  <div className="w-1/4">
-                    <label htmlFor="direccion" className="block mb-1">Dirección</label>
-                    <input
-                      type="text"
-                      id="direccion"
-                      name="direccion"
-                      value={colegiadoData.direccion}
-                      onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
-                      required
-                    />
-                  </div>
-                  <div className="w-1/4">
-                    <label htmlFor="celular" className="block mb-1">N° de Celular</label>
-                    <input
-                      type="text"
-                      id="celular"
-                      name="celular"
-                      value={colegiadoData.celular}
-                      onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
-                      required
-                    />
-                  </div>
-                  <div className="w-1/4">
-                    <label htmlFor="estado_civil" className="block mb-1">Estado Civil</label>
-                    <Dropdown
-                      id="estado_civil"
-                      name="estado_civil"
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
-                      panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
-                      value={colegiadoData.estado_civil}
-                      onChange={(e) => {
-                        handleChangeColegiado({ name: 'estado_civil', value: e.value });
-                      }}
-                      options={optionsEstadoCivil}
-                      placeholder="Elegir..."
-                      itemTemplate={itemDropdown}
-                      required
-                    />
-                  </div>
-                  <div className="w-1/4">
-                    <label htmlFor="estado_activo" className="block mb-1">Estado</label>
-                    <Dropdown
-                      id="estado_activo"
-                      name="estado_activo"
-                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
-                      panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
-                      value={colegiadoData.estado_activo}
-                      onChange={(e) => {
-                        handleChangeColegiado({ name: 'estado_activo', value: e.value });
-                      }}
-                      options={optionsEstado}
-                      placeholder="Elegir..."
-                      itemTemplate={itemDropdown}
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl px-5 py-4">
-                <div className="flex flex-row space-x-5">
-                  <div className="w-1/3">
-                    <label htmlFor="numero_colegiatura_anterior" className="block mb-1">N° de Colegiatura anterior</label>
-                    <input
-                      type="text"
-                      id="numero_colegiatura_anterior"
-                      name="numero_colegiatura_anterior"
-                      value={colegiadoData.numero_colegiatura_anterior as string}
-                      onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
-                    />
-                  </div>
-                  <div className="w-1/3">
-                    <label htmlFor="numero_colegiatura" className="block mb-1">N° Colegiatura / REGUC</label>
-                    <input
-                      type="text"
-                      id="numero_colegiatura"
-                      name="numero_colegiatura"
-                      value={colegiadoData.numero_colegiatura}
-                      onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8]  rounded-xl focus:outline-none focus:shadow-custom-input p-2"
-                      required
-                    />
-                  </div>
-                  <div className="w-1/3">
-                    <label htmlFor="fecha_colegiatura" className="block mb-1">Fecha de colegiatura</label>
-                    <input
-                      type="date"
-                      id="fecha_colegiatura"
-                      name="fecha_colegiatura"
-                      value={colegiadoData.fecha_colegiatura}
-                      onChange={handleChangeColegiado}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl px-5 py-4">
-                <div className="flex flex-row space-x-5">
-                  <div className="w-1/3">
-                    <label htmlFor="universidad" className="block mb-1">Universidad</label>
-                    <input
-                      type="text"
-                      id="universidad"
-                      name="universidad"
-                      value={historialData.universidad}
-                      onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
-                    />
-                  </div>
-                  <div className="w-1/3">
-                    <label htmlFor="capitulo" className="block mb-1">Capitulo</label>
-                    <Dropdown
-                      id="capitulo"
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
-                      panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
-                      value={selectedCapitulo}
-                      onChange={(e) => setSelectedCapitulo(e.value)}
-                      options={escuelaData}
-                      optionLabel="label"
-                      placeholder="Elegir capitulo..."
-                      itemTemplate={itemDropdown}
-                    />
-                  </div>
-                  <div className="w-1/3">
-                    <label htmlFor="especialidad" className="block mb-1">Especialidad</label>
-                    <Dropdown
-                      id="especialidad"
-                      className="w-full bg-[#ECF6E8] rounded-xl focus:outline-none focus:shadow-custom-input p-2"
-                      panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
-                      value={selectedEspecialidad}
-                      onChange={(e) => setSelectedEspecialidad(e.value)}
-                      options={filteredEspecialidadData.map(especialidad => ({
-                        label: especialidad.nombre_especialidad,
-                        value: especialidad.id
-                      }))}
-                      optionLabel="label"
-                      placeholder="Elegir especialidad..."
-                      disabled={!selectedCapitulo}
-                      itemTemplate={itemDropdown}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-[#C9D9C6] text-[#3A3A3A] rounded-2xl space-y-2 px-5 py-4">
-                <div className="flex flex-row space-x-5">
-                  <div className="w-1/2">
-                    <label htmlFor="nombre_universidad_bachiller" className="block mb-1">Universidad bachiller</label>
-                    <input
-                      type="text"
-                      id="nombre_universidad_bachiller"
-                      name="nombre_universidad_bachiller"
-                      value={historialData.nombre_universidad_bachiller}
-                      onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
-                    />
-                  </div>
-                  <div className="w-1/2">
-                    <label htmlFor="denominacion_bachiller" className="block mb-1">Denominación Bachiller</label>
-                    <input
-                      type="text"
-                      id="denominacion_bachiller"
-                      name="denominacion_bachiller"
-                      value={historialData.denominacion_bachiller}
-                      onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
-                      required
-                    />
-                  </div>
-                  <div className="w-1/2">
-                    <label htmlFor="fecha_bachiller" className="block mb-1">Fecha bachiller</label>
-                    <input
-                      type="date"
-                      id="fecha_bachiller"
-                      name="fecha_bachiller"
-                      value={historialData.fecha_bachiller}
-                      onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-row space-x-5">
-                  <div className="w-1/2">
-                    <label htmlFor="nombre_universidad_titulo" className="block mb-1">Universidad Título</label>
-                    <input
-                      type="text"
-                      id="nombre_universidad_titulo"
-                      name="nombre_universidad_titulo"
-                      value={historialData.nombre_universidad_titulo}
-                      onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
-                    />
-                  </div>
-                  <div className="w-1/2">
-                    <label htmlFor="denominacion_titulo" className="block mb-1">Denominación titulo</label>
-                    <input
-                      type="text"
-                      id="denominacion_titulo"
-                      name="denominacion_titulo"
-                      value={historialData.denominacion_titulo}
-                      onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
-                      required
-                    />
-                  </div>
-                  <div className="w-1/2">
-                    <label htmlFor="titulo_fecha" className="block mb-1">Fecha titulo</label>
-                    <input
-                      type="date"
-                      id="titulo_fecha"
-                      name="titulo_fecha"
-                      value={historialData.titulo_fecha}
-                      onChange={handleChangeHistorial}
-                      className="w-full bg-[#ECF6E8] rounded-lg focus:outline-none focus:shadow-custom-input p-2"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-
-            </div>
-            <div className="flex flex-row w-full text-[#3A3A3A] font-nunito font-bold rounded-2xl space-x-3 mt-5">
-              <button type="submit" className="w-2/3 bg-corlad hover:bg-hover-corlad transition duration-300 text-white rounded-lg p-3">
-                Actualizar colegiado
+      <form className="flex flex-col xl:flex-row w-full xl:space-x-5 space-y-5 xl:space-y-0" onSubmit={handleSubmit}>
+        <div className="flex flex-col w-full xl:w-1/4">
+          <FormHeader title="Actualizar colegiado" />
+          <div className="p-6">
+            <div className="flex flex-col items-center">
+              <img
+                className="w-56 h-56 rounded-full object-cover border-4 border-green-100"
+                src={imageUrl}
+                alt="Perfil colegiado"
+              />
+              <button
+                type="button"
+                className="flex items-center justify-between w-full mt-6 bg-corlad hover:bg-green-700 text-white font-bold rounded-lg px-4 py-2 transition duration-200"
+                onClick={handleFileButtonClick}
+              >
+                <span>Seleccionar archivo</span>
+                <RiImageAddFill size="24" />
               </button>
-              <Link to={"/admin/colegiado"} className="w-1/3">
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                onChange={handleFileChange}
+              />
+              <span className="text-sm text-gray-600 mt-3">
+                {fileName ? fileName : "Ningún archivo seleccionado"}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="w-px bg-gray-200 mx-10"></div>
+
+        <div className="flex flex-col w-full xl:w-3/4 overflow-y-auto px-5">
+          <div className="text-default font-nunito font-bold">
+            <div className="bg-light rounded-lg shadow-lg p-6 mb-6">
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Datos personales</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div>
+                  <label htmlFor="nombre" className="block text-sm font-semibold text-gray-700 mb-2">Nombres</label>
+                  <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    value={colegiadoData.nombre}
+                    onChange={handleChangeColegiado}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="apellido_paterno" className="block text-sm font-semibold text-gray-700 mb-2">Apellido paterno</label>
+                  <input
+                    type="text"
+                    id="apellido_paterno"
+                    name="apellido_paterno"
+                    value={colegiadoData.apellido_paterno}
+                    onChange={handleChangeColegiado}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="apellido_materno" className="block text-sm font-semibold text-gray-700 mb-2">Apellido materno</label>
+                  <input
+                    type="text"
+                    id="apellido_materno"
+                    name="apellido_materno"
+                    value={colegiadoData.apellido_materno}
+                    onChange={handleChangeColegiado}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div>
+                  <label htmlFor="dni_colegiado" className="block text-sm font-semibold text-gray-700 mb-2">DNI</label>
+                  <input
+                    type="text"
+                    id="dni_colegiado"
+                    name="dni_colegiado"
+                    value={colegiadoData.dni_colegiado}
+                    onChange={handleChangeColegiado}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="fecha_nacimiento" className="block text-sm font-semibold text-gray-700 mb-2">Fecha de Nacimiento</label>
+                  <input
+                    type="date"
+                    id="fecha_nacimiento"
+                    name="fecha_nacimiento"
+                    value={colegiadoData.fecha_nacimiento}
+                    onChange={handleChangeColegiado}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="sexo_colegiado" className="block text-sm font-semibold text-gray-700 mb-2">Sexo</label>
+                  <Dropdown
+                    id="sexo_colegiado"
+                    name="sexo_colegiado"
+                    className="w-full bg-white border border-gray-300 rounded-lg p-2"
+                    panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
+                    value={colegiadoData.sexo_colegiado}
+                    onChange={(e) => handleChangeColegiado({ name: 'sexo_colegiado', value: e.value })}
+                    options={optionsSexo}
+                    placeholder="Elegir..."
+                    itemTemplate={itemDropdown}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="correo" className="block text-sm font-semibold text-gray-700 mb-2">Correo electrónico</label>
+                  <input
+                    type="email"
+                    id="correo"
+                    name="correo"
+                    value={colegiadoData.correo}
+                    onChange={handleChangeColegiado}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="md:col-span-1">
+                  <label htmlFor="direccion" className="block text-sm font-semibold text-gray-700 mb-2">Dirección</label>
+                  <input
+                    type="text"
+                    id="direccion"
+                    name="direccion"
+                    value={colegiadoData.direccion}
+                    onChange={handleChangeColegiado}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                  />
+                </div>
+                <div className="md:col-span-1">
+                  <label htmlFor="celular" className="block text-sm font-semibold text-gray-700 mb-2">Número Celular</label>
+                  <input
+                    type="text"
+                    id="celular"
+                    name="celular"
+                    value={colegiadoData.celular}
+                    onChange={handleChangeColegiado}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="estado_civil" className="block text-sm font-semibold text-gray-700 mb-2">Estado Civil</label>
+                  <Dropdown
+                    id="estado_civil"
+                    name="estado_civil"
+                    className="w-full bg-white border border-gray-300 rounded-lg p-2"
+                    panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
+                    value={colegiadoData.estado_civil}
+                    onChange={(e) => handleChangeColegiado({ name: 'estado_civil', value: e.value })}
+                    options={optionsEstadoCivil}
+                    placeholder="Elegir..."
+                    itemTemplate={itemDropdown}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="estado_activo" className="block text-sm font-semibold text-gray-700 mb-2">Estado</label>
+                  <Dropdown
+                    id="estado_activo"
+                    name="estado_activo"
+                    className="w-full bg-white border border-gray-300 rounded-lg p-2"
+                    panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
+                    value={colegiadoData.estado_activo}
+                    onChange={(e) => {
+                      handleChangeColegiado({ name: 'estado_activo', value: e.value });
+                    }}
+                    options={optionsEstado}
+                    placeholder="Elegir..."
+                    itemTemplate={itemDropdown}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-light rounded-lg shadow-lg p-6 mb-6">
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Colegiatura</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <label htmlFor="numero_colegiatura_anterior" className="block text-sm font-semibold text-gray-700 mb-2">N° de Colegiatura anterior</label>
+                  <input
+                    type="text"
+                    id="numero_colegiatura_anterior"
+                    name="numero_colegiatura_anterior"
+                    value={colegiadoData.numero_colegiatura_anterior}
+                    onChange={handleChangeColegiado}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="numero_colegiatura" className="block text-sm font-semibold text-gray-700 mb-2">N° Colegiatura / REGUC</label>
+                  <input
+                    type="text"
+                    id="numero_colegiatura"
+                    name="numero_colegiatura"
+                    value={colegiadoData.numero_colegiatura}
+                    onChange={handleChangeColegiado}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="fecha_colegiatura" className="block text-sm font-semibold text-gray-700 mb-2">Fecha de colegiatura</label>
+                  <input
+                    type="date"
+                    id="fecha_colegiatura"
+                    name="fecha_colegiatura"
+                    value={colegiadoData.fecha_colegiatura}
+                    onChange={handleChangeColegiado}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-light rounded-lg shadow-lg p-6 mb-6">
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Historial educativo</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <label htmlFor="universidad" className="block text-sm font-semibold text-gray-700 mb-2">Universidad</label>
+                  <input
+                    type="text"
+                    id="universidad"
+                    name="universidad"
+                    value={historialData.universidad}
+                    onChange={handleChangeHistorial}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="capitulo" className="block text-sm font-semibold text-gray-700 mb-2">Capitulo</label>
+                  <Dropdown
+                    id="capitulo"
+                    className="w-full bg-white border border-gray-300 rounded-lg p-2"
+                    panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
+                    value={selectedCapitulo}
+                    onChange={(e) => setSelectedCapitulo(e.value)}
+                    options={escuelaData}
+                    optionLabel="label"
+                    placeholder="Elegir capitulo..."
+                    itemTemplate={itemDropdown}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="especialidad" className="block text-sm font-semibold text-gray-700 mb-2">Especialidad</label>
+                  <Dropdown
+                    id="especialidad"
+                    className="w-full bg-white border border-gray-300 rounded-lg p-2"
+                    panelClassName="bg-[#FAFDFA] border border-gray-200 rounded-md shadow-lg"
+                    value={selectedEspecialidad}
+                    onChange={(e) => setSelectedEspecialidad(e.value)}
+                    options={filteredEspecialidadData.map(especialidad => ({
+                      label: especialidad.nombre_especialidad,
+                      value: especialidad.id
+                    }))}
+                    optionLabel="label"
+                    placeholder="Elegir especialidad..."
+                    disabled={!selectedCapitulo}
+                    itemTemplate={itemDropdown}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="nombre_universidad_bachiller" className="block text-sm font-semibold text-gray-700 mb-2">Universidad bachiller</label>
+                  <input
+                    type="text"
+                    id="nombre_universidad_bachiller"
+                    name="nombre_universidad_bachiller"
+                    value={historialData.nombre_universidad_bachiller}
+                    onChange={handleChangeHistorial}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="denominacion_bachiller" className="block text-sm font-semibold text-gray-700 mb-2">Denominación Bachiller</label>
+                  <input
+                    type="text"
+                    id="denominacion_bachiller"
+                    name="denominacion_bachiller"
+                    value={historialData.denominacion_bachiller}
+                    onChange={handleChangeHistorial}
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="fecha_bachiller" className="block text-sm font-semibold text-gray-700 mb-2">Fecha bachiller</label>
+                  <input
+                    type="date"
+                    id="fecha_bachiller"
+                    name="fecha_bachiller"
+                    value={historialData.fecha_bachiller}
+                    onChange={handleChangeHistorial}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="nombre_universidad_titulo" className="block text-sm font-semibold text-gray-700 mb-2">Universidad Título</label>
+                  <input
+                    type="text"
+                    id="nombre_universidad_titulo"
+                    name="nombre_universidad_titulo"
+                    value={historialData.nombre_universidad_titulo}
+                    onChange={handleChangeHistorial}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="denominacion_titulo" className="block text-sm font-semibold text-gray-700 mb-2">Denominación titulo</label>
+                  <input
+                    type="text"
+                    id="denominacion_titulo"
+                    name="denominacion_titulo"
+                    value={historialData.denominacion_titulo}
+                    onChange={handleChangeHistorial}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="titulo_fecha" className="block text-sm font-semibold text-gray-700 mb-2">Fecha titulo</label>
+                  <input
+                    type="date"
+                    id="titulo_fecha"
+                    name="titulo_fecha"
+                    value={historialData.titulo_fecha}
+                    onChange={handleChangeHistorial}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent px-3 py-2"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-row w-full text-[#3A3A3A] font-nunito font-bold rounded-2xl space-x-3">
+            <button type="submit" className="w-2/3 bg-[#007336] hover:bg-[#00330A] transition duration-300 text-white rounded-xl p-3" disabled={isLoading}>
+              {isLoading ? <Spinner /> : 'Guardar colegiado'}
+            </button>
+            <Link to={"/admin/colegiado"} className="w-1/3">
               <button type="button" className="w-full border-solid border-2 border-[#3A3A3A] hover:bg-[#3A3A3A] hover:border-[#3A3A3A] hover:text-white transition duration-300 rounded-xl py-3">
                 Cancelar
               </button>
-              </Link>
-            </div>
-            <Toaster
-              position="bottom-center"
-              reverseOrder={false} />
+            </Link>
           </div>
         </div>
-      </form>
-
+      </form >
     </>
   )
 } 

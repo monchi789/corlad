@@ -15,7 +15,6 @@ interface EstadoOption {
 }
 
 export default function ConsultarHabilidad() {
-
   const [selectedOption, setSelectedOption] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [inputPaterno, setInputPaterno] = useState("");
@@ -25,13 +24,28 @@ export default function ConsultarHabilidad() {
   const [isNotFound, setIsNotFound] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(10); // Número de colegiados por página
+  const [rows, setRows] = useState(10);
 
   const options = [
     { label: 'Documento de identidad', value: 'dni' },
     { label: 'N° de Colegiatura', value: 'colegiatura' },
     { label: 'Apellidos', value: 'apellidos' },
   ];
+
+  const getEstadoColor = (estado: string) => {
+    switch (estado) {
+      case 'ACTIVO':
+        return 'text-green-600';
+      case 'NO_ACTIVO':
+        return 'text-red-600';
+      case 'TRASLADADO':
+        return 'text-blue-600';
+      case 'FALLECIDO':
+        return 'text-gray-600';
+      default:
+        return 'text-black';
+    }
+  };
 
   const itemCategoria = (option: EstadoOption) => {
     return (
@@ -41,7 +55,6 @@ export default function ConsultarHabilidad() {
     );
   };
 
-  // Función para manejar el cambio de página
   const onPageChange = (event: PaginatorPageChangeEvent) => {
     setFirst(event.first);
     setRows(event.rows);
@@ -49,13 +62,10 @@ export default function ConsultarHabilidad() {
     window.scrollTo(0, 0);
   };
 
-  // Template para el paginador
   const template = {
     layout: 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink',
     PageLinks: (options: any) => {
-
       const isActive = options.page === options.currentPage;
-
       return (
         <button
           className={classNames('px-3 py-1 mx-1 rounded-lg transition duration-300', {
@@ -96,7 +106,7 @@ export default function ConsultarHabilidad() {
 
         const res = await getConsultarHabilidad(params);
         if (res.data.results && res.data.results.length > 0) {
-          setColegiadoData(res.data.results); // Cambiar a múltiples resultados
+          setColegiadoData(res.data.results);
           setTotalRecords(res.data.count);
         } else {
           setColegiadoData([]);
@@ -129,7 +139,7 @@ export default function ConsultarHabilidad() {
             value={selectedOption}
             onChange={(e) => {
               setSelectedOption(e.value);
-              setInputValue("");  
+              setInputValue("");
               setInputPaterno("");
               setInputMaterno("");
             }}
@@ -208,8 +218,8 @@ export default function ConsultarHabilidad() {
                 </div>
                 <div className="space-y-1">
                   <p className="text-[#a67102] font-semibold">Estado:</p>
-                  <p className={colegiadoData[0].id_colegiado.estado_activo ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>
-                    {colegiadoData[0].id_colegiado.estado_activo ? "Habilitado" : "No Habilitado"}
+                  <p className={`font-semibold ${getEstadoColor(colegiadoData[0].id_colegiado.estado_activo)}`}>
+                  {colegiadoData[0].id_colegiado.estado_activo === 'NO_ACTIVO' ?  'No activo'  : colegiadoData[0].id_colegiado.estado_activo}
                   </p>
                 </div>
               </div>
@@ -234,11 +244,9 @@ export default function ConsultarHabilidad() {
                       <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900">{colegiado.id_colegiado.nombre}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900">{colegiado.id_colegiado.apellido_paterno + ' ' + colegiado.id_colegiado.apellido_materno}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-md">
-                        {colegiado.id_colegiado.estado_activo ? (
-                          <span className="text-[#00330a] font-semibold">Habilitado</span>
-                        ) : (
-                          <span className="text-red-600 font-semibold">No Habilitado</span>
-                        )}
+                        <span className={`font-semibold ${getEstadoColor(colegiado.id_colegiado.estado_activo)}`}>
+                          {colegiado.id_colegiado.estado_activo === 'NO_ACTIVO' ?  'No activo'  : colegiadoData[0].id_colegiado.estado_activo}
+                        </span>
                       </td>
                     </tr>
                   ))}

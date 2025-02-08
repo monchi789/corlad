@@ -32,15 +32,15 @@ class Colegiado(models.Model):
     celular = models.CharField(max_length=9, blank=True, null=True, validators=[validar_numero, validar_espacio], default='')
     correo = models.EmailField(blank=True, null=True, validators=[EmailValidator], default='')
     foto_colegiado = models.ImageField(upload_to='foto_colegiados/', null=False, blank=True, default='')
-    dni_colegiado = models.CharField(max_length=8, blank=True, null=True, validators=[validar_numero, validar_espacio], default='')
+    dni_colegiado = models.CharField(max_length=8, unique=True, null=False, blank=False, validators=[validar_numero, validar_espacio], default='')
     numero_colegiatura = models.CharField(max_length=250, blank=True, null=False, unique=True, validators=[validar_numero, validar_espacio], default='')
-    numero_colegiatura_anterior = models.CharField(max_length=250, blank=True, null=True, validators=[validar_numero])
+    numero_colegiatura_anterior = models.CharField(max_length=250, blank=True, null=True)
     fecha_colegiatura = models.DateField(null=False, blank=True, default=timezone.now)
-    sexo_colegiado = models.CharField(max_length=9, choices=SEXO, null=False, blank=True, default='O')
+    sexo_colegiado = models.CharField(max_length=9, choices=SEXO, null=True, blank=True, default='O')
     fecha_nacimiento = models.DateField(null=False, blank=True, default=timezone.now)
-    estado_civil = models.CharField(max_length=20, null=False, blank=True, choices=ESTADO_CIVIL, default='SOLTERO')
+    estado_civil = models.CharField(max_length=20, null=True, blank=True, choices=ESTADO_CIVIL, default='SOLTERO')
     direccion = models.CharField(max_length=300, blank=True, null=False, default='')
-    estado_activo = models.CharField(max_length=11, blank=False, null=True, choices=ESTADO_ACTIVO, default='ACTIVO')
+    estado_activo = models.CharField(max_length=11, blank=False, null=False, default='NO_ACTIVO', choices=ESTADO_ACTIVO)
 
     def __str__(self) -> str:
         return f'{self.nombre} - {self.apellido_paterno} - {self.numero_colegiatura} - {self.dni_colegiado} - {self.estado_activo}'

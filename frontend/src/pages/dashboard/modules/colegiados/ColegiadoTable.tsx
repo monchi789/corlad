@@ -4,6 +4,7 @@ import default_user from '../../../../assets/web/person_perfil.webp'
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { FaCircleCheck } from 'react-icons/fa6';
+import { BiSolidUserDetail } from "react-icons/bi";
 import {
   useReactTable,
   getCoreRowModel,
@@ -13,6 +14,7 @@ import {
 
 interface ColegiadoTableProps {
   colegiadosList: HistorialColegiado[];
+  onView: (colegiado: HistorialColegiado) => void;
   onDelete: (colegiado: HistorialColegiado) => void;
   currentPage: number;
   pageSize: number;
@@ -24,6 +26,7 @@ interface ColegiadoTableProps {
 
 export default function ColegiadoTable({
   colegiadosList,
+  onView,
   onDelete,
   currentPage,
   pageSize,
@@ -92,10 +95,13 @@ export default function ColegiadoTable({
     {
       header: "Acciones",
       cell: ({ row }) => (
-        <div className="flex justify-center space-x-2">
+        <div className="flex justify-center space-x-3">
+          <button type="button" onClick={() => onView(row.original)}>
+            <BiSolidUserDetail className="text-green-600" size={"35px"} />
+          </button>
           <button type="button">
             <Link to={`/admin/colegiado/editar-colegiado/${row.original.id}/${row.original.id_colegiado.id}`}>
-              <FaEdit className="text-custom-yellow" size={"25px"} />
+              <FaEdit className="text-yellow-500" size={"30px"} />
             </Link>
           </button>
           <button type="button" onClick={() => onDelete(row.original)}>
@@ -157,7 +163,7 @@ export default function ColegiadoTable({
           ) : (
             table.getRowModel().rows.map(row => (
               <tr
-                className="hover:bg-[#C9D9C6] transition duration-200"
+                className="bg-white hover:bg-light transition duration-200"
                 key={row.id}
               >
                 {row.getVisibleCells().map(cell => (

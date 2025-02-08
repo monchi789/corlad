@@ -8,6 +8,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { FaArrowCircleLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../../components/ui/Spinner';
+import AddSliderModal from './components/AddSliderModal';
 
 Modal.setAppElement('#root');
 
@@ -140,118 +141,6 @@ const Image: React.FC<ImageProps> = ({ id, imagenes, estado_slider, onStatusChan
       </Modal>
 
     </>
-  );
-};
-
-const AddModal: React.FC<{
-  isOpen: boolean;
-  isLoading: boolean;
-  onClose: () => void;
-  onSave: (newImages: File[]) => void;
-}> = ({ isOpen, isLoading, onClose, onSave }) => {
-  const [newImages, setNewImages] = useState<File[]>([]);
-  const [previewImages, setPreviewImages] = useState<string[]>([]);
-
-  // Handle file input change
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      if (files.length + newImages.length > 4) {
-        alert("Puedes seleccionar hasta 4 imágenes.");
-        return;
-      }
-      const updatedImages = [...newImages, ...files];
-      if (updatedImages.length > 4) {
-        alert("Solo puedes tener hasta 4 imágenes en total.");
-        return;
-      }
-      setNewImages(updatedImages);
-
-      // Generate previews for the selected images
-      const previews = updatedImages.map(file => URL.createObjectURL(file));
-      setPreviewImages(previews);
-    }
-  };
-
-  const handleAddImages = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.multiple = true;
-    input.onchange = (e) => {
-      const target = e.target as HTMLInputElement;
-      if (target.files) {
-        handleImageChange({ target } as unknown as React.ChangeEvent<HTMLInputElement>);
-      }
-    };
-    input.click();
-  };
-
-  // Guardar las imagenes
-  const handleSave = () => {
-    if (newImages.length > 0) {
-      onSave(newImages);
-
-      setNewImages([]);
-      setPreviewImages([]);
-    }
-  };
-
-  const handleCancel = () => {
-    onClose();
-    setNewImages([]);
-    setPreviewImages([]);
-  };
-
-  return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={handleCancel}
-      contentLabel="Add Images"
-      className="fixed inset-0 flex items-center justify-center z-[1000]"
-      overlayClassName="fixed inset-0 bg-black bg-opacity-75 z-[1000]"
-    >
-      <div className="relative z-50 bg-white p-5 rounded-lg">
-        <button
-          onClick={handleAddImages}
-          className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          Agregar Imágenes
-        </button>
-        {previewImages.length > 0 && (
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            {previewImages.map((src, index) => (
-              <div key={index} className="relative">
-                <img src={src} alt={`Preview ${index + 1}`} className="w-full h-32 object-cover rounded" />
-                <button
-                  onClick={() => {
-                    setPreviewImages(prev => prev.filter((_, i) => i !== index));
-                    setNewImages(prev => prev.filter((_, i) => i !== index));
-                  }}
-                  className="absolute top-1 right-1 bg-white text-red-600 rounded-full w-6 h-6 flex items-center justify-center"
-                >
-                  <IoCloseSharp />
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-        <div className="flex justify-end mt-4">
-          <button onClick={handleCancel} className="mr-2 px-4 py-2 bg-gray-500 text-white rounded">
-            Cancelar
-          </button>
-          <button
-            className={
-              `bg-corlad text-white rounded px-4 py-2
-            ${isLoading ? 'opacity-50' : 'hover:bg-hover-corlad transition duration-300'}`
-            }
-            onClick={handleSave}
-          >
-            {isLoading ? <Spinner /> : 'Guardar'}
-          </button>
-        </div>
-      </div>
-    </Modal>
   );
 };
 
@@ -431,7 +320,7 @@ const EditModal: React.FC<{
   );
 };
 
-export const SlidersList = () => {
+const SlidersMain = () => {
   const navigate = useNavigate();
 
   const [list, setList] = useState<Slider[]>([]);
@@ -492,7 +381,7 @@ export const SlidersList = () => {
     } catch (error) {
       toast.error('Error actualizando la galería');
     } finally {
-      setIsLoading(false); // Termina la carga después de la solicitud (tanto si es exitosa como si falla)
+      setIsLoading(false); 
     }
   };
 
@@ -502,17 +391,17 @@ export const SlidersList = () => {
       formData.append(`imagen_${index + 1}`, image);
     });
 
-    setIsLoading(true); // Comienza la carga antes de la solicitud
+    setIsLoading(true);
 
     try {
       await createSlider(formData);
-      fetchSlider(); // Refresh the list
+      fetchSlider(); 
       setAddModalIsOpen(false);
       toast.success('Galería guardada con éxito');
     } catch (error) {
       toast.error('Error al agregar la galería');
     } finally {
-      setIsLoading(false); // Termina la carga después de la solicitud (tanto si es exitosa como si falla)
+      setIsLoading(false); 
     }
   };
 
@@ -546,7 +435,7 @@ export const SlidersList = () => {
   }, []);
 
   return (
-    <div className="flex flex-col my-5 space-y-5">
+    <div className="flex flex-col space-y-5">
       <div className="flex flex-col md:flex-row justify-between space-y-5 md:space-y-0">
         <div className="flex flex-row">
           <button
@@ -608,7 +497,7 @@ export const SlidersList = () => {
         />
       )}
 
-      <AddModal
+      <AddSliderModal
         isOpen={addModalIsOpen}
         isLoading={isLoading}
         onClose={() => setAddModalIsOpen(false)}
@@ -627,3 +516,5 @@ export const SlidersList = () => {
 
   );
 };
+
+export default SlidersMain;

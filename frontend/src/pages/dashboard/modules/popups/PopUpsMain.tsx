@@ -1,154 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import Switch from "react-switch";
-import Modal from 'react-modal';
+import { useEffect, useState } from 'react';
+
 import { getPopUps, createPopUps, updatePopUps } from '../../../../api/popup.api';
 import { PopUp } from '../../../../interfaces/model/PopUp';
-import { IoAdd, IoCloseSharp, IoPencil, IoTrash, IoExpand } from "react-icons/io5";
-import toast, { Toaster } from 'react-hot-toast';
-import Spinner from '../../components/ui/Spinner';
+import { IoAdd } from "react-icons/io5";
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowCircleLeft } from 'react-icons/fa';
-import { EliminarPopUp } from './EliminarPopUp';
-import { EditarPopUps } from './EditarPopUp';
+import { EliminarPopUp } from './components/EliminarPopUp';
+import { EditarPopUps } from './components/EditarPopUp';
+import Image from './components/ImagePopup';
+import AddPopUpModal from './components/AddPopUpModal';
 
-Modal.setAppElement('#root');
-
-interface ImageProps {
-  id: number;
-  imagen?: string;
-  estado_popup?: boolean;
-  popup: PopUp;
-  onStatusChange: (id: number, checked: boolean) => void;
-  onEdit: (id: number) => void;
-  onDelete: (popup: PopUp) => void;
-}
-
-const Image: React.FC<ImageProps> = ({ id, imagen, estado_popup, popup, onStatusChange, onEdit, onDelete }) => {
-  const [checked, setChecked] = useState(estado_popup ?? false);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleChange = async (checked: boolean) => {
-    setChecked(checked);
-    onStatusChange(id, checked);
-  };
-
-  useEffect(() => {
-    setChecked(estado_popup ?? false);
-  }, [estado_popup]);
-
-  const openModal = () => setModalIsOpen(true);
-  const closeModal = () => setModalIsOpen(false);
-
-  return (
-    <>
-      <div
-        className={`w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 relative border-solid border-2 border-[#2A8B3D] shadow-custom rounded-xl overflow-hidden ${!checked ? 'bg-[#4E5E51]' : ''}`}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <img className={`w-full h-48 object-cover rounded-lg ${!checked ? 'opacity-50' : ''}`} src={imagen} alt="imagen" />
-        <div className="absolute top-0 right-0 m-3 z-30" onClick={(e) => e.stopPropagation()}>
-          <Switch onChange={handleChange} checked={checked} />
-        </div>
-        {isHovered && (
-          <div className="absolute inset-0 flex items-center justify-center space-x-2">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                openModal();
-              }}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold transition duration-200 rounded py-2 px-4"
-            >
-              <IoExpand />
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onEdit(id);
-              }}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold transition duration-200 rounded py-2 px-4"
-            >
-              <IoPencil />
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onDelete(popup);
-              }}
-              className="bg-red-500 hover:bg-red-700 text-white font-bold transition duration-200 rounded py-2 px-4"
-            >
-              <IoTrash />
-            </button>
-          </div>
-        )}
-      </div>
-
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Image Viewer"
-        className="fixed inset-0 flex items-center justify-center z-[1000]"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-75 z-[1000]"
-      >
-        <div className="relative z-50 p-4 bg-white rounded-lg shadow-lg">
-          <img src={imagen} alt="Full size image" className="max-h-[80vh] max-w-[90vw] object-contain" />
-          <button
-            onClick={closeModal}
-            className="absolute top-2 right-2 bg-white rounded-full w-8 h-8 text-xl cursor-pointer flex items-center justify-center"
-          >
-            <IoCloseSharp />
-          </button>
-        </div>
-      </Modal>
-    </>
-  );
-};
-
-const AddModal: React.FC<{
-  isOpen: boolean;
-  isLoading: boolean
-  onClose: () => void;
-  onSave: (newImage: File) => void;
-}> = ({ isOpen, isLoading, onClose, onSave }) => {
-  const [newImage, setNewImage] = useState<File | null>(null);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setNewImage(e.target.files[0]);
-    }
-  };
-
-  const handleSave = () => {
-    if (newImage) {
-      onSave(newImage);
-    }
-  };
-
-  return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      contentLabel="Add Image"
-      className="fixed inset-0 flex items-center justify-center z-[1000]"
-      overlayClassName="fixed inset-0 bg-black bg-opacity-75 z-[1000]"
-    >
-      <div className="relative z-50 bg-white p-5 rounded-lg">
-        <input type="file" onChange={handleImageChange} />
-        <div className="flex justify-end mt-4">
-          <button onClick={onClose} className="mr-2 px-4 py-2 bg-gray-500 text-white rounded">
-            Cancelar
-          </button>
-          <button onClick={handleSave} className="px-4 py-2 bg-green-500 text-white rounded">
-            {isLoading ? <Spinner /> : 'Guardar'}
-          </button>
-        </div>
-      </div>
-    </Modal>
-  );
-};
-
-export default function PopUpsPage() {
+const PopUpsMain = () => {
   const navigate = useNavigate();
 
   const [listPopUps, setListPopUps] = useState<PopUp[]>([]);
@@ -168,7 +31,7 @@ export default function PopUpsPage() {
       const res = await getPopUps();
       setListPopUps(res.data);
     } catch (error) {
-      toast.error('Error al cargar las categorias');
+      toast.error('Error al cargar los anuncios');
     } finally {
       setIsLoading(false); // Desactiva el estado de carga
     }
@@ -246,7 +109,7 @@ export default function PopUpsPage() {
   }, []);
 
   return (
-    <div className="flex flex-col my-5">
+    <div className="flex flex-col">
       <div className="flex flex-col md:flex-row justify-between space-y-5 md:space-y-0">
         <div className="flex flex-row">
           <button
@@ -261,7 +124,7 @@ export default function PopUpsPage() {
       <div className="text-default font-nunito font-bold my-5">
         <span>Bienvenido al panel de administración de anuncios, en este apartado se pueden crear anuncios importantes (máximo 5) que se quieran mostrar en la página web.</span>
       </div>
-      <div className="flex flex-wrap justify-center md:justify-start gap-5">
+      <div className="flex flex-wrap justify-center md:justify-start gap-3">
         {listPopUps.map((popup, index) => (
           <Image
             key={index}
@@ -287,7 +150,7 @@ export default function PopUpsPage() {
         }
       </div>
 
-      <AddModal
+      <AddPopUpModal
         isOpen={addModalIsOpen}
         isLoading={isLoading}
         onClose={() => setAddModalIsOpen(false)}
@@ -312,8 +175,8 @@ export default function PopUpsPage() {
         />
       )}
 
-      <Toaster position="bottom-center" reverseOrder={false} />
     </div>
-
   );
 }
+
+export default PopUpsMain;

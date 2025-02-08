@@ -20,7 +20,8 @@ export default function BolsaTrabajo() {
       const res = await getBolsaTrabajo();
       setNoticiasList(res.data.results);
       setTotalRecords(res.data.count);
-    } catch (error) {
+    } catch {
+      console.log('Error al cargar las noticias');
     }
   };
 

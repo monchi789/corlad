@@ -11,10 +11,9 @@ from .models import Pago
 class PagoSerializer(serializers.ModelSerializer):
     id_colegiado = ColegiadoSerializer(read_only=True)
     id_metodo_pago = MetodoPagoSerializer(read_only=True)
-    fecha_pago = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
 
+    fecha_pago = serializers.DateField(format="%d-%m-%Y")  
     
-    # Campos relacionados para crear o actualizar (Primary Key Related)
     id_colegiado_id = serializers.PrimaryKeyRelatedField(
         queryset=Colegiado.objects.all(),
         source='id_colegiado',
@@ -43,18 +42,21 @@ class PagoSerializer(serializers.ModelSerializer):
         read_only_fields = ['monto_total']
 
     def validate(self, data):
-        # Validación personalizada si es necesario
+        if self.instance is None and 'fecha_pago' not in data:
+            raise ValidationError({"fecha_pago": "Este campo es requerido."})
+
         if 'meses_pagados' in data and not data['meses_pagados']:
-            raise ValidationError("Debes especificar al menos un mes pagado.")
+            raise ValidationError({"meses_pagados": "Debes especificar al menos un mes pagado."})
         
-        # Agrega validaciones adicionales si es necesario
         return data
 
     def create(self, validated_data):
         tarifas = validated_data.pop('tarifas', [])
+        if 'fecha_pago' not in validated_data:
+            raise ValidationError({"fecha_pago": "Este campo es requerido."})
+            
         pago = Pago.objects.create(**validated_data)
         
-        # Asignar tarifas después de crear el pago (ya que es un ManyToMany)
         pago.tarifas.set(tarifas)
         pago.save()
         return pago

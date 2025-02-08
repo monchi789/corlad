@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
-import Grid from "@mui/material/Grid";
 import Modal from 'react-modal';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { getAllEscuelas, getAllEspecialidades, deleteEscuela, deleteEspecialidad } from "../../../../api/escuela.api";
 import { Escuela } from "../../../../interfaces/model/Escuela";
 import { Especialidad } from "../../../../interfaces/model/Especialidad";
-import { AgregarEscuela } from "./AgregarEscuela";
-import { AgregarEspecialidad } from "./AgregarEspecialidad";
-import { EditarEscuela } from "./EditarEscuela";
-import { EditarEspecialidad } from "./EditarEspecialidad";
+import AddCapituloModal from "./components/AddCapituloModal";
+import AddEspecialidadModal from "./components/AddEspecialidadModal";
+import EditCapituloModal from "./components/EditCapituloModal";
+import EditEspecialidadModal from "./components/EditEspecialidadModal";
 import contabilidad from '../../../../assets/dashboard/contabilidad.png';
 import { IoMdAddCircleOutline } from "react-icons/io";
 
-export default function Capitulos() {
+const CapitulosEspecialidadesMain = () => {
   const [escuelasList, setEscuelasList] = useState<Escuela[]>([]);
   const [especialidadesList, setEspecialidadesList] = useState<Especialidad[]>([]);
   const [isEscuelaModalOpen, setIsEscuelaModalOpen] = useState(false);
@@ -28,14 +27,11 @@ export default function Capitulos() {
   const [entityToDelete, setEntityToDelete] = useState<{ type: 'escuela' | 'especialidad'; id: number } | null>(null);
 
   const cargarDatos = async () => {
-    try {
-      const escuelasRes = await getAllEscuelas();
-      setEscuelasList(escuelasRes.data as Escuela[]);
+    const escuelasRes = await getAllEscuelas();
+    setEscuelasList(escuelasRes.data as Escuela[]);
 
-      const especialidadesRes = await getAllEspecialidades();
-      setEspecialidadesList(especialidadesRes.data as Especialidad[]);
-    } catch (error) {
-    }
+    const especialidadesRes = await getAllEspecialidades();
+    setEspecialidadesList(especialidadesRes.data as Especialidad[]);
   };
 
   useEffect(() => {
@@ -91,17 +87,14 @@ export default function Capitulos() {
 
   const handleConfirmDelete = async () => {
     if (entityToDelete) {
-      try {
-        if (entityToDelete.type === 'escuela') {
-          await deleteEscuela(entityToDelete.id);
-        } else if (entityToDelete.type === 'especialidad') {
-          await deleteEspecialidad(entityToDelete.id);
-        }
-        cargarDatos();
-        handleCloseConfirmDeleteModal();
-      } catch (error) {
-        // Manejo de errores
+
+      if (entityToDelete.type === 'escuela') {
+        await deleteEscuela(entityToDelete.id);
+      } else if (entityToDelete.type === 'especialidad') {
+        await deleteEspecialidad(entityToDelete.id);
       }
+      cargarDatos();
+      handleCloseConfirmDeleteModal();
     }
   };
 
@@ -123,42 +116,40 @@ export default function Capitulos() {
 
   return (
     <>
-      <div className="space-y-5 my-5">
-        <Grid container spacing={2} justifyContent="space-between" alignItems="center">
-          <Grid item>
-            <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold">Capítulos</h4>
-          </Grid>
-          <Grid item>
+      <div className="space-y-8">
+
+        <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
+          <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold w-full sm:w-auto text-center sm:text-left">
+            Capítulos
+          </h4>
+          <div className="flex flex-wrap items-center justify-center sm:justify-end space-y-4 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
             <input
               type="text"
               placeholder="Buscar capítulo"
               value={searchTermEscuela}
               onChange={handleSearchChangeEscuela}
-              className="bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-md shadow-custom-input focus:outline-none px-4 py-2"
+              className="w-full sm:w-auto text-default font-nunito font-semibold bg-default-input border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent placeholder-[#007336] px-5 py-2"
               required
             />
-          </Grid>
-          <Grid item>
             <button
-              className="flex flex-row bg-[#007336] text-lg text-white font-nunito font-semibold hover:bg-[#00330A] shadow-black shadow-md rounded-lg transition duration-300 hover:scale-110 ease-in-out delay-150 space-x-2 px-4 py-1"
+              className="flex items-center text-lg text-white font-nunito font-semibold bg-best-green hover:bg-green-600 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105 space-x-2 px-6 py-2 w-full sm:w-auto justify-center"
               onClick={handleAddSchool}
             >
-              <IoMdAddCircleOutline className="my-auto" size={"25px"} />
-              <span className="my-auto">Agregar Capítulo</span>
+              <IoMdAddCircleOutline size={"25px"} />
+              <span>Nuevo capítulo</span>
             </button>
-          </Grid>
-        </Grid>
+          </div>
+        </div>
 
-        <div className="min-h-[300px] max-h-[400px] overflow-y-auto p-2 mt-5"> {/* Contenedor con altura fija y scroll vertical */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="min-h-[300px] max-h-[400px] overflow-y-auto p-4 mt-6 rounded-lg">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredEscuelas.length > 0 ? (
               filteredEscuelas.map((escuela, index) => (
                 <div
                   key={index}
-                  className="relative bg-white rounded-lg shadow-lg text-center transition duration-200 hover:bg-[#458050] hover:text-white group p-5"
-                  style={{ boxShadow: "0 4px 6px rgba(0, 51, 10, 0.1)" }}
+                  className="relative bg-white rounded-lg shadow-md hover:shadow-xl text-center transition duration-300 ease-in-out hover:bg-corlad hover:text-white group p-6"
                 >
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-200 bg-[#458050] bg-opacity-75">
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-200 bg-[#458050] bg-opacity-80 rounded-lg">
                     <button className="text-xl text-white mx-2" onClick={() => handleEditSchool(escuela)}>
                       <FaEdit />
                     </button>
@@ -166,79 +157,76 @@ export default function Capitulos() {
                       <FaTrashAlt />
                     </button>
                   </div>
-                  <img src={contabilidad} alt="Contabilidad" className="mx-auto mb-4 w-20 h-20" />
+                  <img src={contabilidad} alt="Contabilidad" className="mx-auto mb-4 w-24 h-24 rounded-full border-4 border-white shadow-md" />
                   <h5 className="text-xl font-bold font-nunito-sans text-[#00330A] group-hover:text-white">
                     {escuela.nombre_escuela}
                   </h5>
                 </div>
               ))
             ) : (
-              <p className="col-span-full text-center text-lg font-semibold">No hay escuelas disponibles.</p>
+              <p className="col-span-full text-center text-lg font-semibold text-[#7A7A7A]">No hay capítulos disponibles.</p>
             )}
           </div>
         </div>
 
-        <Grid container spacing={2} justifyContent="space-between" alignItems="center">
-          <Grid item>
-            <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold">Especialidades</h4>
-          </Grid>
-          <Grid item>
+        <div className="flex flex-wrap justify-between items-center mt-10 mb-6 gap-4">
+          <h4 className="text-3xl text-[#3A3A3A] font-nunito-sans font-bold w-full sm:w-auto text-center sm:text-left">
+            Especialidades
+          </h4>
+          <div className="flex flex-wrap items-center justify-center sm:justify-end space-y-4 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
             <input
               type="text"
               placeholder="Buscar especialidad"
               value={searchTermEspecialidad}
               onChange={handleSearchChangeEspecialidad}
-              className="bg-[#ECF6E8] text-[#3A3A3A] font-nunito font-semibold rounded-md shadow-custom-input focus:outline-none px-4 py-2"
+              className="w-full sm:w-auto text-default font-nunito font-semibold bg-default-input border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-corlad focus:border-transparent placeholder-[#007336] px-5 py-2"
               required
             />
-          </Grid>
-          <Grid item>
             <button
-              className="flex flex-row bg-[#007336] text-lg text-white font-nunito font-semibold hover:bg-[#00330A] shadow-black shadow-md rounded-lg transition duration-300 hover:scale-110 ease-in-out delay-150 space-x-2 px-4 py-1"
+              className="flex items-center text-lg text-white font-nunito font-semibold bg-best-green hover:bg-green-600 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105 space-x-2 px-6 py-2 w-full sm:w-auto justify-center"
               onClick={handleAddSpecialty}
             >
-              <IoMdAddCircleOutline className="my-auto" size={"25px"} />
-              <span className="my-auto">Agregar Especialidad</span>
+              <IoMdAddCircleOutline size={"25px"} />
+              <span>Agregar especialidad</span>
             </button>
-          </Grid>
-        </Grid>
+          </div>
+        </div>
 
-        <div className="min-h-[200px] max-h-[400px] overflow-y-auto p-2 mt-5"> {/* Contenedor con altura fija y scroll vertical */}
+        <div className="min-h-[300px] max-h-[400px] overflow-y-auto p-4 mt-6 rounded-lg">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredEspecialidades.length > 0 ? (
               filteredEspecialidades.map((especialidad, index) => (
                 <div
                   key={index}
-                  className="relative bg-white rounded-lg shadow-lg p-5 flex justify-between items-center"
+                  className="flex justify-between items-center relative text-default hover:text-white bg-white hover:bg-best-green rounded-lg shadow-md hover:shadow-xl transition-all duration-300 ease-in-out p-5"
                   style={{ boxShadow: "0 4px 6px rgba(0, 51, 10, 0.1)" }}
                 >
                   <div>
-                    <h5 className="text-xl font-bold font-nunito-sans text-[#00330A]">
+                    <h5 className="text-xl font-bold font-nunito-sans">
                       {especialidad.nombre_especialidad}
                     </h5>
-                    <p className="text-sm font-semibold font-nunito-sans text-[#00330A]">
-                      Capitulo: {especialidad.id_escuela.nombre_escuela}
+                    <p className="text-sm font-semibold font-nunito-sans">
+                      Capítulo: {especialidad.id_escuela.nombre_escuela}
                     </p>
                   </div>
                   <div className="flex items-center">
-                    <button className="text-xl text-[#00330A] mx-2" onClick={() => handleEditSpecialty(especialidad)}>
+                    <button className="text-xl mx-2" onClick={() => handleEditSpecialty(especialidad)}>
                       <FaEdit />
                     </button>
-                    <button className="text-xl text-[#00330A] mx-2" onClick={() => handleOpenConfirmDeleteModal('especialidad', especialidad.id, especialidad.nombre_especialidad)}>
+                    <button className="text-xl mx-2" onClick={() => handleOpenConfirmDeleteModal('especialidad', especialidad.id, especialidad.nombre_especialidad)}>
                       <FaTrashAlt />
                     </button>
                   </div>
                 </div>
               ))
             ) : (
-              <p className="col-span-full text-center text-lg font-semibold mt-10">No hay especialidades disponibles.</p>
+              <p className="col-span-full text-center text-lg font-semibold mt-10 text-[#7A7A7A]">No hay especialidades disponibles.</p>
             )}
           </div>
         </div>
-
       </div>
 
-      {/* Modal de confirmación */}
+      {/* Modals */}
       <Modal
         isOpen={isConfirmDeleteModalOpen}
         onRequestClose={handleCloseConfirmDeleteModal}
@@ -265,19 +253,20 @@ export default function Capitulos() {
         </div>
       </Modal>
 
-      <AgregarEscuela isOpen={isEscuelaModalOpen} onClose={handleCloseEscuelaModal} onSchoolAdded={cargarDatos} />
+      <AddCapituloModal isOpen={isEscuelaModalOpen} onClose={handleCloseEscuelaModal} onSchoolAdded={cargarDatos} />
+      <AddEspecialidadModal isOpen={isEspecialidadModalOpen} onClose={handleCloseEspecialidadModal} onSpecialtyAdded={cargarDatos} />
 
-      <AgregarEspecialidad isOpen={isEspecialidadModalOpen} onClose={handleCloseEspecialidadModal} onSpecialtyAdded={cargarDatos} />
       {selectedEscuela && (
-        <EditarEscuela
+        <EditCapituloModal
           isOpen={isEscuelaEditModalOpen}
           onClose={handleCloseEscuelaEditModal}
           onSchoolUpdated={cargarDatos}
           escuela={selectedEscuela}
         />
       )}
+
       {selectedEspecialidad && (
-        <EditarEspecialidad
+        <EditEspecialidadModal
           isOpen={isEspecialidadEditModalOpen}
           onClose={handleCloseEspecialidadEditModal}
           onSpecialtyUpdated={cargarDatos}
@@ -287,3 +276,5 @@ export default function Capitulos() {
     </>
   );
 }
+
+export default CapitulosEspecialidadesMain;
