@@ -1,63 +1,139 @@
 import { Header } from "../../components/shared/Header";
 import { Footer } from "../../components/shared/Footer";
+import { 
+  FileText, 
+  CreditCard, 
+  Info, 
+  ExternalLink,
+  AlertTriangle,
+  Camera,
+  Building,
+  Clock
+} from "lucide-react";
 
 export default function Colegiarse() {
-
   return (
-    <div>
+    <div className="min-h-screen">
       <Header />
-      <div className="container mx-auto px-4 pb-12 font-nunito mt-48 items-center">
-      <h1 className="flex flex-col justify-center lg:flex-row font-extrabold text-4xl font-nunito text-[#a67102] mb-12 text-center">PASOS PARA&nbsp;<span className="text-[#363636]">COLEGIARSE</span></h1>
+      <div className="container mx-auto px-4 pb-16 font-nunito mt-40">
+        <div className="text-center mb-12">
+          <h1 className="inline-flex flex-col lg:flex-row items-center justify-center text-4xl font-extrabold">
+            <span className="text-[#a67102]">PASOS PARA</span>
+            <span className="lg:ml-2 text-gray-800">COLEGIARSE</span>
+          </h1>
+          <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+            Bienvenido al proceso de colegiación. Sigue estos pasos cuidadosamente para completar tu registro profesional.
+          </p>
+        </div>
 
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white shadow-lg rounded-lg p-8 mb-12">
-            <h3 className="text-2xl font-bold text-[#363636] mb-6">Requisitos para colegiarse</h3>
+        <div className="max-w-4xl mx-auto space-y-8">
+          <div className="bg-white rounded-lg shadow-sm p-8">
+            <div className="flex items-center gap-2 mb-6">
+              <FileText className="h-6 w-6 text-[#a67102]" />
+              <h2 className="text-2xl font-bold text-gray-800">Requisitos para colegiarse</h2>
+            </div>
 
-            <ol className="list-decimal list-inside space-y-4 text-[#363636]">
-              <li>Documento Nacional de Identidad (DNI) escaneado en formato PDF <span className="font-bold">(Ambas caras).</span></li>
-              <li>Diploma de Bachillerato en formato PDF <span className="font-bold">(Ambas caras).</span></li>
-              <li>Título Profesional en formato PDF <span className="font-bold">(Ambas caras).</span></li>
-              <li>Registro Nacional de grados académicos y títulos profesionales (SUNEDU) en formato PDF</li>
-              <li>Fotografía tamaño pasaporte en formato JPG <span className="font-bold">(Con terno oscuro).</span></li>
-              <li>Fotografía en físico tamaño pasaporte <span className="font-bold">(Traer al CORLAD-Cusco).</span></li>
-              <li>Voucher de pago en un solo depósito, escaneado en formato PDF por derechos de inscripción en la CMAC Cusco <span className="font-bold">(S/. 1000.00 soles).</span></li>
-            </ol>
+            <div className="grid gap-4">
+              {[
+                { text: "DNI escaneado en PDF (Ambas caras)", important: true },
+                { text: "Diploma de Bachillerato en PDF (Ambas caras)", important: true },
+                { text: "Título Profesional en PDF (Ambas caras)", important: true },
+                { text: "Registro Nacional de grados académicos y títulos profesionales (SUNEDU)" },
+                { text: "Fotografía tamaño pasaporte en PNG/JPG < 500kb (Con terno oscuro y fondo blanco)", icon: <Camera className="h-4 w-4" /> },
+                { text: "Fotografía en físico tamaño pasaporte (Entregar en CORLAD-CUSCO)", icon: <Building className="h-4 w-4" /> },
+                { text: "Voucher de pago en CMAC Cusco (S/. 1000.00 soles)", icon: <CreditCard className="h-4 w-4" /> }
+              ].map((req, index) => (
+                <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#a67102] text-white text-sm">
+                    {index + 1}
+                  </span>
+                  <div className="flex-1">
+                    <p className="text-gray-800">
+                      {req.text}
+                      {req.important && <span className="text-[#a67102] ml-1">*</span>}
+                    </p>
+                  </div>
+                  {req.icon && <div className="text-gray-500">{req.icon}</div>}
+                </div>
+              ))}
+            </div>
 
-            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-6">
-              <p className="font-bold">NOTA:</p>
-              <p>Enviar los requisitos: 1, 2, y 3 en un solo archivo, escaneado legible y de forma correcta (horizontal) consignando nombre completo (peso máximo de archivo: 4 MB).</p>
+            <div className="mt-6 flex gap-2 p-4 bg-amber-50 rounded-lg border border-amber-200">
+              <AlertTriangle className="h-5 w-5 text-amber-500 shrink-0 mt-1" />
+              <div>
+                <p className="font-semibold text-amber-800">IMPORTANTE:</p>
+                <p className="text-amber-700">
+                  Enviar los requisitos 1, 2 y 3 en un solo archivo escaneado, legible y en formato horizontal. 
+                  Nombre del archivo: <span className="font-semibold">NombreCompleto.pdf</span> (Máx. 4 MB).
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="bg-white shadow-lg rounded-lg p-8 mb-12">
-            <h3 className="text-xl font-bold text-[#363636] mb-4">Información de pago</h3>
-            <p className="mb-2"><span className="font-bold">Nº DE CUENTA:</span> 106042321009414461</p>
-            <p className="mb-2"><span className="font-bold">CAJA MUNICIPAL DE AHORRO Y CRÉDITO CUSCO</span></p>
-            <p className="mb-2">Lic. Adm. Willy Bravo Aparicio</p>
-            <p>Lic. Adm. Edgar Quispe Reyes</p>
+          <div className="bg-white rounded-lg shadow-sm p-8">
+            <div className="flex items-center gap-2 mb-6">
+              <CreditCard className="h-6 w-6 text-[#a67102]" />
+              <h2 className="text-2xl font-bold text-gray-800">Información de pago</h2>
+            </div>
+
+            <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
+              <p className="font-medium">Colegio Regional de Licenciados en Administración Cusco</p>
+              <div className="grid gap-2">
+                <div className="flex items-center">
+                  <span className="font-semibold min-w-[100px]">Banco:</span>
+                  <span>CONTINENTAL BBVA</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="font-semibold min-w-[100px]">Cuenta:</span>
+                  <span>0011 0224 0100 013353</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="font-semibold min-w-[100px]">CCI:</span>
+                  <span>0011 0224 0100 0133 5336</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="bg-white shadow-lg rounded-lg p-8">
-            <h3 className="text-xl font-bold text-[#363636] mb-4">Información adicional</h3>
-            <ul className="list-disc list-inside space-y-2 text-[#363636]">
-              <li>Antes de realizar el pago verificar que sus grados o títulos estén registrados en SUNEDU.</li>
-              <li>Item 6 traer a la oficina.</li>
-              <li>Estamos ubicados en la Av. Garcilaso Nº 806, Ref. costado Hotel Puma.</li>
-              <li>Consignar en el voucher de pago: nombre completo, número de celular y firma.</li>
-              <li>El trámite dura aprox. entre un mes y medio a 2 meses.</li>
-              <li>Enviar los documentos de acuerdo a las indicaciones. El escaneado de los documentos no deben tener marcas de agua de aplicativos, sombras ni brillo que no permitan ver los datos del documento.</li>
-            </ul>
+          <div className="bg-white rounded-lg shadow-sm p-8">
+            <div className="flex items-center gap-2 mb-6">
+              <Info className="h-6 w-6 text-[#a67102]" />
+              <h2 className="text-2xl font-bold text-gray-800">Información adicional</h2>
+            </div>
 
-            <div className="mt-8">
-              <h4 className="text-lg font-bold text-[#363636] mb-2">Formulario de solicitud de colegiación</h4>
-              <a href="https://forms.gle/j9iA8UWdAGvrZDqx6" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#a67102] text-white font-bold py-2 px-4 rounded hover:bg-[#8c5f02] transition duration-300">
+            <div className="grid gap-3">
+              {[
+                { icon: <AlertTriangle />, text: "Verificar registro de grados/títulos en SUNEDU antes del pago" },
+                { icon: <Building />, text: "Entregar foto física en Av. Garcilaso Nº 806 (costado Hotel Puma)" },
+                { icon: <CreditCard />, text: "Incluir nombre completo, celular y firma en el voucher" },
+                { icon: <Clock />, text: "Tiempo estimado: 1.5 a 2 meses" },
+                { icon: <FileText />, text: "Documentos sin marcas de agua, sombras ni reflejos" }
+              ].map((info, index) => (
+                <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                  <span className="text-[#a67102]">{info.icon}</span>
+                  <p className="text-gray-800">{info.text}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 p-6 bg-[#a67102]/10 rounded-lg text-center">
+              <h4 className="text-lg font-bold text-gray-800 mb-4">
+                ¿Listo para colegiarte?
+              </h4>
+              <a
+                href="https://forms.gle/Tz3fFPW34QYrcToF8"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-[#a67102] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#8c5f02] transition duration-300"
+              >
                 Llenar solicitud
+                <ExternalLink className="h-4 w-4" />
               </a>
             </div>
           </div>
         </div>
-      </div>  
+      </div>
       <Footer />
     </div>
-  )
+  );
 }
